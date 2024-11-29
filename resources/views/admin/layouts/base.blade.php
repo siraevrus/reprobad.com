@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель</title>
+    <!-- alpine -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <!-- tailwindcss -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- tinymce -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.5.0/tinymce.min.js"></script>
+
+    <!-- cropper -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- Контейнер -->
+<div class="container mx-auto px-4 max-w-[1270px] py-8">
+    <!-- Шапка с логотипом -->
+    <header class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <img src="https://cdn.prod.website-files.com/67040316492967a9326aebb1/6720a9e362cc884eee5120df_lgog-gold.svg" alt="Лого" class="w-12 h-12 rounded-full">
+            <h1 class="text-2xl font-semibold text-gray-800">Repro</h1>
+        </div>
+        <nav>
+            <a href="/" class="text-blue-500 hover:underline">На сайт</a>
+        </nav>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="flex gap-6">
+        <!-- Боковая панель -->
+        <aside class="w-1/6">
+            <nav class="sticky top-4">
+                <ul class="space-y-4">
+                    <li>
+                        <a href="{{ route('admin.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">home</span> Главная
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.articles.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">article</span> Новости
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.pages.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">pages</span> Страницы
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.config.edit') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">settings</span> Настройки
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Основной контент -->
+        <main class="w-5/6 bg-white shadow rounded-lg p-6">
+            @yield('content')
+        </main>
+    </div>
+</div>
+
+@yield('scripts')
+</body>
+</html>
