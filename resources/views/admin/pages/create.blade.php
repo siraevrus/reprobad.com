@@ -65,12 +65,12 @@
                 <template x-for="(block, index) in blocks" :key="index">
                     <div class="p-4 border rounded bg-gray-50 relative">
                         <!-- Удалить блок -->
-                        <button x-on:click="removeBlock(index)" class="absolute top-2 right-2 text-red-500">Удалить</button>
+                        <button x-on:click="removeBlock(index)" class="absolute top-2 right-2 text-red-500"><div class="material-icons">delete_forever</div></button>
 
                         <!-- Перемещение блоков -->
-                        <div class="absolute top-2 right-20 flex gap-2">
-                            <button x-on:click="moveBlock(index, 'up')" :disabled="index === 0" class="text-blue-500 disabled:opacity-50">⬆</button>
-                            <button x-on:click="moveBlock(index, 'down')" :disabled="index === blocks.length - 1" class="text-blue-500 disabled:opacity-50">⬇</button>
+                        <div class="absolute top-2 right-10 flex gap-2">
+                            <button x-on:click="moveBlock(index, 'up')" :disabled="index === 0" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_upward</div></button>
+                            <button x-on:click="moveBlock(index, 'down')" :disabled="index === blocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                         </div>
 
                         <!-- фото с названием -->
@@ -155,11 +155,11 @@
                                     <template x-for="(subBlock, subIndex) in block.data.subBlocks" :key="subIndex">
                                         <div class="p-2 pt-10 border rounded bg-white mt-2 relative">
 
-                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500">Удалить</button>
+                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500"><div class="material-icons">delete_forever</div></button>
 
                                             <div class="absolute top-2 left-2 flex gap-2">
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-blue-500 disabled:opacity-50">⬆</button>
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-blue-500 disabled:opacity-50">⬇</button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_upward</div></button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                                             </div>
 
                                             <div class="gap-4 mt-2"
@@ -338,11 +338,11 @@
                                     <template x-for="(subBlock, subIndex) in block.data.subBlocks" :key="subIndex">
                                         <div class="p-2 pt-10 border rounded bg-white mt-2 relative">
 
-                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500">Удалить</button>
+                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500"><div class="material-icons">delete_forever</div></button>
 
                                             <div class="absolute top-2 left-2 flex gap-2">
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-blue-500 disabled:opacity-50">⬆</button>
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-blue-500 disabled:opacity-50">⬇</button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_upward</div></button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                                             </div>
 
                                             <div class="grid grid-cols-2 gap-4 mt-2">
@@ -402,11 +402,11 @@
                                     <template x-for="(subBlock, subIndex) in block.data.subBlocks" :key="subIndex">
                                         <div class="p-2 pt-10 border rounded bg-white mt-2 relative">
 
-                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500">Удалить</button>
+                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500"><div class="material-icons">delete_forever</div></button>
 
                                             <div class="absolute top-2 left-2 flex gap-2">
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-blue-500 disabled:opacity-50">⬆</button>
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-blue-500 disabled:opacity-50">⬇</button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_upward</div></button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                                             </div>
 
                                             <div class="grid grid-cols-2 gap-4 mt-2">
@@ -478,11 +478,11 @@
                                     <template x-for="(subBlock, subIndex) in block.data.subBlocks" :key="subIndex">
                                         <div class="p-2 pt-10 border rounded bg-white mt-2 relative">
 
-                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500">Удалить</button>
+                                            <button x-on:click="removeSubBlock(block, subIndex)" class="absolute top-2 right-2 text-red-500"><div class="material-icons">delete_forever</div></button>
 
                                             <div class="absolute top-2 left-2 flex gap-2">
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-blue-500 disabled:opacity-50">⬆</button>
-                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-blue-500 disabled:opacity-50">⬇</button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'up')" :disabled="subIndex === 0" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_upward</div></button>
+                                                <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                                             </div>
 
                                             <div class="grid grid-cols-2 gap-4 mt-2">
