@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Plus Circle</title>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="010-Home" transform="translate(-87, -3607)" stroke="#4E515C" stroke-width="1.6000032">
+            <g id="Group-62" transform="translate(56, 3152)">
+                <g id="Group-49" transform="translate(32, 452)">
+                    <g id="Plus-Circle" transform="translate(0, 4)">
+                        <path d="M13.6568513,2.34314869 C16.7810496,5.46734693 16.7810496,10.5326851 13.6568513,13.6568513 C10.5326531,16.7810496 5.46731493,16.7810496 2.34314869,13.6568513 C-0.781049562,10.5326531 -0.781049562,5.46731493 2.34314869,2.34314869 C5.46734693,-0.781049562 10.5326851,-0.781049562 13.6568513,2.34314869" id="Path"></path>
+                        <line x1="7.99996" y1="4.8000096" x2="7.99996" y2="11.2000224" id="Path"></line>
+                        <line x1="4.7999536" y1="8.000016" x2="11.1999664" y2="8.000016" id="Path"></line>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

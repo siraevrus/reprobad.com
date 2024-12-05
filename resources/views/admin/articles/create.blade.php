@@ -2,19 +2,54 @@
 
 @section('content')
     <div x-data="app()">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Создать новость</h2>
-        <form action="#" method="POST" class="space-y-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Создать статью</h2>
+        <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf <!-- Добавляем CSRF-токен -->
             <!-- Поле для заголовка -->
             <div>
+                <label
+                    class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
+                >
+                    <p x-show="!form.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                    <input type="file" @change="uploadImage($event)" class="hidden" x-ref="fileInput">
+                    <img :src="form.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image">
+                    <button x-show="form.image" @click="removeImage()" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                </label>
+            </div>
+            <div>
                 <label class="block font-semibold mb-2">Заголовок</label>
-                <input type="text" x-model="title" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
+                <input type="text" x-model="form.title" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
+                <div class="text-red-500 text-xs mt-1" x-text="errors.title"></div>
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">Алиас</label>
+                <input type="text" x-model="form.alias" class="w-full p-2 border rounded" placeholder="Введите алиас">
+                <div class="text-red-500 text-xs mt-1" x-text="errors.alias"></div>
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">Время на чтение</label>
+                <input type="text" x-model="form.time" class="w-full p-2 border rounded" placeholder="">
+                <div class="text-red-500 text-xs mt-1" x-text="errors.time"></div>
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">Категория</label>
+                <input type="text" x-model="form.category" class="w-full p-2 border rounded" placeholder="">
+                <div class="text-red-500 text-xs mt-1" x-text="errors.category"></div>
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">Описание</label>
+                <textarea type="text" x-model="form.description" class="w-full p-2 border rounded" placeholder="Введите описание"></textarea>
+                <div class="text-red-500 text-xs mt-1" x-text="errors.description"></div>
             </div>
 
             <!-- Поле для содержания -->
             <div>
                 <label class="block font-semibold mb-2">Содержание</label>
-                <textarea id="content-editor" x-model="content" class="w-full p-2 border rounded editor"></textarea>
+                <textarea x-model="form.content" class="w-full p-2 border rounded editor"></textarea>
                 <div class="text-red-500 text-xs mt-1" x-text="errors.content"></div>
                 <div x-show="!errors.content" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
             </div>
@@ -42,8 +77,15 @@
                     type: ''
                 },
                 errors: {},
-                title: '',
-                content: '',
+                form: {
+                    title: '',
+                    description: '',
+                    alias: '',
+                    image: '',
+                    content: '',
+                    category: '',
+                    time: '',
+                },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {
                         await this.get();
@@ -52,6 +94,41 @@
                     this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                     await this.userIsNotActive();
                     this.initializeEditor();
+                },
+                async get() {
+                    const response = await fetch('/admin/articles/' + location.pathname.split('/')[3]);
+                    this.form = await response.json()
+                },
+                uploadImage(event) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        this.image = reader.result;
+                    };
+                    reader.readAsDataURL(event.target.files[0]);
+                    event.target.value = '';
+                },
+                removeImage() {
+                    this.image = null;
+                },
+                async save() {
+                    let method = 'POST';
+                    if(location.pathname.split('/')[3] !== 'create') method = 'PUT';
+                    let url = location.pathname.replace('create', '').replace('edit', '');
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': this.token
+                        },
+                        body: JSON.stringify(this.form)
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+
+                    } else {
+                        this.errors = data.errors;
+                    }
                 },
                 async userIsNotActive() {
                     let idleTime = 0;
@@ -90,7 +167,7 @@
                             toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
                             setup: (editor) => {
                                 editor.on('change', () => {
-                                    element.dataset.text = editor.getContent();
+                                    this.content = editor.getContent();
                                 });
                             }
                         });

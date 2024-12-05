@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="320px" height="320px" viewBox="0 0 320 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 38</title>
+    <defs>
+        <polygon id="path-1" points="0 0 320 0 320 320 0 320"></polygon>
+        <radialGradient cx="0%" cy="100%" fx="0%" fy="100%" r="159.422316%" gradientTransform="translate(0, 1), scale(0.8232, 1), rotate(-48.1227), scale(1, 0.9987), translate(-0, -1)" id="radialGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0.243310035" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-38">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Rectangle" fill-opacity="0" fill="#FFFFFF" xlink:href="#path-1"></use>
+            <g id="Group-36" mask="url(#mask-2)">
+                <g transform="translate(195, 184) rotate(-12) translate(-195, -184)translate(-0.982, 4.9782)">
+                    <path d="M356.460677,140.041034 L356.460677,281.767525 C356.460677,297.980208 343.397131,311.123437 327.282739,311.123437 L64.6812995,311.123437 C48.566908,311.123437 35.5033617,297.980208 35.5033617,281.767525 L35.5033617,140.041034 L356.460677,140.041034 Z M262.131957,173.124391 C257.309596,169.222662 250.236064,169.967426 246.332782,174.78787 L187.093092,247.945085 L164.106682,229.669299 C159.251125,225.808924 152.184222,226.614113 148.322311,231.467738 C144.4604,236.321363 145.265909,243.385455 150.121466,247.24583 L181.826142,272.452398 C186.652371,276.289455 193.670703,275.520166 197.550408,270.728839 L263.796098,188.917282 C267.69938,184.096838 266.954319,177.02612 262.131957,173.124391 Z M327.282739,46.920232 C343.397131,46.920232 356.460677,60.0634608 356.460677,76.2761437 L356.460677,120.310011 L35.5033617,120.310011 L35.5033617,76.2761437 C35.5033617,60.0634608 48.566908,46.920232 64.6812995,46.920232 L327.282739,46.920232 Z" id="Shape" stroke="none" fill="url(#radialGradient-3)" fill-rule="evenodd" opacity="0.830424717" transform="translate(195.982, 179.0218) rotate(20) translate(-195.982, -179.0218)"></path>
+                    <path d="M306.062303,47.252345 L285.973686,102.423412 M196.389132,7.35045481 L176.300515,62.5215219" id="Combined-Shape" stroke="#FFFFFF" stroke-width="22.4670121" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

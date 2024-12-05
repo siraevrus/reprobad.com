@@ -19,21 +19,23 @@
             </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
-            <tr class="border-b border-gray-200 hover:bg-gray-50">
-                <td class="py-3 px-6">1</td>
-                <td class="py-3 px-6">Заголовок новости 1</td>
-                <td class="py-3 px-6">2024-11-29</td>
-                <td class="py-3 px-6 text-center">
-                    <div class="flex items-center justify-center gap-2">
-                        <button class="text-blue-500 hover:text-blue-700">
-                            <span class="material-icons">edit</span>
-                        </button>
-                        <button class="text-red-500 hover:text-red-700">
-                            <span class="material-icons">delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+            @foreach($resources as $resource)
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td class="py-3 px-6">1</td>
+                    <td class="py-3 px-6">{{ $resource->title }}</td>
+                    <td class="py-3 px-6">{{ $resource->created_at }}</td>
+                    <td class="py-3 px-6 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <button class="text-blue-500 hover:text-blue-700">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="text-red-500 hover:text-red-700">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
             <!-- Повторите строки для других элементов -->
             </tbody>
         </table>

@@ -18,6 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -47,7 +49,7 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.articles.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">article</span> Новости
+                            <span class="material-icons">article</span> Статьи
                         </a>
                     </li>
                     <li>
