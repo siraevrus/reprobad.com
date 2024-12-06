@@ -97,7 +97,8 @@
                 },
                 async get() {
                     const response = await fetch('/admin/articles/' + location.pathname.split('/')[3]);
-                    this.form = await response.json()
+                    const data = await response.json()
+                    this.form = data
                 },
                 uploadImage(event) {
                     const reader = new FileReader();

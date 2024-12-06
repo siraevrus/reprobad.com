@@ -19,14 +19,17 @@ class ArticleController extends Controller
         return view('admin.articles.index', compact('resources'));
     }
 
-    public function show($id): JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
+        $request->headers->set('Accept', 'application/json');
         $resource = Article::query()->findOrFail($id);
         return response()->json($resource);
     }
 
     public function store(Request $request) : JsonResponse
     {
+        $request->headers->set('Accept', 'application/json');
+
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
