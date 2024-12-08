@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\Page;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +12,17 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+
+    public array $rules = [
+        'title' => 'required|string',
+        'content' => 'required|string',
+        'alias' => 'required|unique:articles,alias',
+        'description' => 'string|nullable',
+        'image' => 'string|nullable',
+        'category' => 'string|nullable',
+        'time' => 'string|nullable',
+    ];
+
     public function index(): View
     {
         $resources = Article::query()->paginate(20);
@@ -30,12 +40,7 @@ class ArticleController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'content' => 'required',
-            'alias' => 'required|unique:articles,alias',
-            'description' => 'nullable'
-        ]);
+        $validator = Validator::make($request->all(), $this->rules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -56,13 +61,9 @@ class ArticleController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'content' => 'required',
+        $validator = Validator::make($request->all(), array_merge($this->rules, [
             'alias' => 'required|unique:articles,alias,' . $id,
-            'description' => 'nullable',
-            'image' => 'string'
-        ]);
+        ]));
 
         if ($validator->fails()) {
             return response()->json([
@@ -95,6 +96,14 @@ class ArticleController extends Controller
 
     public function edit(): View
     {
-        return view('admin.articles.edit');
+        return view('admin.articles.create');
+    }
+
+    public function switch($id)
+    {
+        $resource = Article::query()->findOrFail($id);
+        $resource->active = $resource->active === 0;
+        $resource->save();
+        return back();
     }
 }

@@ -2,7 +2,7 @@
 
 @section('content')
     <div x-data="app()">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">Создать статью</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} статью</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf <!-- Добавляем CSRF-токен -->
             <!-- Поле для заголовка -->
@@ -103,13 +103,13 @@
                 uploadImage(event) {
                     const reader = new FileReader();
                     reader.onload = () => {
-                        this.image = reader.result;
+                        this.form.image = reader.result;
                     };
                     reader.readAsDataURL(event.target.files[0]);
                     event.target.value = '';
                 },
                 removeImage() {
-                    this.image = null;
+                    this.form.image = null;
                 },
                 async save() {
                     let method = 'POST';
@@ -168,7 +168,7 @@
                             toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
                             setup: (editor) => {
                                 editor.on('change', () => {
-                                    this.content = editor.getContent();
+                                    this.form.content = editor.getContent();
                                 });
                             }
                         });

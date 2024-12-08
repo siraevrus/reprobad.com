@@ -43,22 +43,45 @@
             <nav class="sticky top-4">
                 <ul class="space-y-4">
                     <li>
-                        <a href="{{ route('admin.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                        <a href="{{ route('admin.index') }}" class="{{ request()->segment(2) == '' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
                             <span class="material-icons">home</span> Главная
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.articles.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                        <a href="{{ route('admin.articles.index') }}" class="{{ request()->segment(2) == 'articles' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
                             <span class="material-icons">article</span> Статьи
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.pages.index') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                        <a href="{{ route('admin.events.index') }}" class="{{ request()->segment(2) == 'events' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">events</span> События
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.advises.index') }}" class="{{ request()->segment(2) == 'advises' ? 'text-blue-500' : 'text-gray-700' }}  hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">article</span> Советы
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.products.index') }}" class="{{  request()->segment(2) == 'products' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">tags</span> Продукты
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.pages.index') }}" class="{{ request()->segment(2) == 'pages' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
                             <span class="material-icons">pages</span> Страницы
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('admin.config.edit') }}" class="text-gray-700 hover:text-blue-500 font-medium flex items-center gap-2">
+                        <hr>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.users.index') }}" class="{{ request()->segment(2) == 'users' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span class="material-icons">person</span> Пользователи
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.config.edit') }}" class="{{ request()->segment(2) == 'config' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
                             <span class="material-icons">settings</span> Настройки
                         </a>
                     </li>

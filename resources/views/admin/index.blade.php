@@ -18,11 +18,23 @@
     <table class="min-w-full border border-gray-200">
         <tr class="text-gray-600 text-sm leading-normal b-gray-600 border-b">
             <td class="py-3 px-6 text-left">Всего новостей</td>
-            <td class="py-3 px-6 text-left">2</td>
+            <td class="py-3 px-6 text-left">{{ $articles }}</td>
         </tr>
         <tr class="text-gray-600 text-sm leading-normal">
             <td class="py-3 px-6 text-left">Всего страниц</td>
-            <td class="py-3 px-6 text-left">2</td>
+            <td class="py-3 px-6 text-left">{{ $pages }}</td>
+        </tr>
+        <tr class="text-gray-600 text-sm leading-normal">
+            <td class="py-3 px-6 text-left">Всего событий</td>
+            <td class="py-3 px-6 text-left">{{ $events }}</td>
+        </tr>
+        <tr class="text-gray-600 text-sm leading-normal">
+            <td class="py-3 px-6 text-left">Всего продуктов</td>
+            <td class="py-3 px-6 text-left">{{ $products }}</td>
+        </tr>
+        <tr class="text-gray-600 text-sm leading-normal">
+            <td class="py-3 px-6 text-left">Всего советов</td>
+            <td class="py-3 px-6 text-left">{{ $advises }}</td>
         </tr>
     </table>
 @endsection

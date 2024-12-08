@@ -25,14 +25,16 @@
                     <td class="py-3 px-6">{{ $resource->title }}</td>
                     <td class="py-3 px-6">{{ $resource->created_at }}</td>
                     <td class="py-3 px-6 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <button class="text-blue-500 hover:text-blue-700">
+                        <form method="post" action="{{ route('admin.pages.destroy', $resource->id) }}" class="flex items-center justify-center gap-2">
+                            @csrf
+                            @method('DELETE')
+                            <a href="{{ route('admin.pages.edit', $resource->id) }}" class="text-blue-500 hover:text-blue-700">
                                 <span class="material-icons">edit</span>
-                            </button>
-                            <button class="text-red-500 hover:text-red-700">
+                            </a>
+                            <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить?');" class="text-red-500 hover:text-red-700">
                                 <span class="material-icons">delete</span>
                             </button>
-                        </div>
+                        </form>
                     </td>
                 </tr>
             @endforeach

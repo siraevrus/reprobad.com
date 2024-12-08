@@ -8,5 +8,8 @@ class Page extends Model
 {
     protected $table = 'pages';
 
+    protected $casts = [
+        'content' => 'array'
+    ];
     protected $guarded = ['id'];
 }

@@ -25,7 +25,7 @@ class PageController extends Controller
 
     public function edit(): View
     {
-        return view('admin.pages.edit');
+        return view('admin.pages.create');
     }
 
     public function show($id): JsonResponse
@@ -36,11 +36,13 @@ class PageController extends Controller
 
     public function store(Request $request) : JsonResponse
     {
+        $request->headers->set('Accept', 'application/json');
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
             'alias' => 'required|unique:articles,alias',
-            'description' => 'nullable'
+            'description' => 'nullable',
+            'active' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -50,16 +52,32 @@ class PageController extends Controller
             ], 422);
         }
 
-        $resource = Page::query()->create(
-            $request->only(['title', 'content', 'alias', 'description'])
-        );
+        $resource = Page::query()->create($validator->validated());
         return response()->json($resource);
     }
 
-    public function update($id): JsonResponse
+    public function update(Request $request,$id): JsonResponse
     {
+        request()->headers->set('Accept', 'application/json');
+
+        $request->headers->set('Accept', 'application/json');
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'content' => 'required',
+            'alias' => 'required|unique:articles,alias,' . $id,
+            'description' => 'nullable',
+            'active' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
         $resource = Page::query()->findOrFail($id);
-        $resource->fill(request()->all());
+        $resource->fill($validator->validated());
         $resource->save();
         return response()->json($resource);
     }
@@ -71,5 +89,13 @@ class PageController extends Controller
         return response()->json([
             'success' => true
         ]);
+    }
+
+    public function switch($id)
+    {
+        $resource = Page::query()->findOrFail($id);
+        $resource->active = $resource->active === 0;
+        $resource->save();
+        return back();
     }
 }

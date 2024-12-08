@@ -50,15 +50,22 @@
 
             <!-- Кнопки для добавления блоков -->
             <div class="flex flex-wrap gap-2 mb-4">
+                <button x-on:click="addBlock('block13')" class="px-4 py-2 bg-gray-500 text-white rounded">Шапка</button>
+                <button x-on:click="addBlock('block12')" class="px-4 py-2 bg-gray-500 text-white rounded">Блок текст</button>
+                <button x-on:click="addBlock('block3')" class="px-4 py-2 bg-gray-500 text-white rounded">Фото</button>
+                <button x-on:click="addBlock('block14')" class="px-4 py-2 bg-gray-500 text-white rounded">2 колонки</button>
+                <button x-on:click="addBlock('block15')" class="px-4 py-2 bg-gray-500 text-white rounded">Заголовок + фото</button>
+
+                {{--
                 <button x-on:click="addBlock('block1')" class="px-4 py-2 bg-gray-500 text-white rounded">Блок с фото</button>
                 <button x-on:click="addBlock('block2')" class="px-4 py-2 bg-gray-500 text-white rounded">Блок шапка</button>
-                <button x-on:click="addBlock('block3')" class="px-4 py-2 bg-gray-500 text-white rounded">Фото</button>
                 <button x-on:click="addBlock('block4')" class="px-4 py-2 bg-gray-500 text-white rounded">Текстовый блок</button>
                 <button x-on:click="addBlock('block7')" class="px-4 py-2 bg-gray-500 text-white rounded">Кроппер</button>
                 <button x-on:click="addBlock('block8')" class="px-4 py-2 bg-gray-500 text-white rounded">html</button>
                 <button x-on:click="addBlock('block9')" class="px-4 py-2 bg-gray-500 text-white rounded">Аккордион</button>
                 <button x-on:click="addBlock('block10')" class="px-4 py-2 bg-gray-500 text-white rounded">Блок с карточками</button>
                 <button x-on:click="addBlock('block11')" class="px-4 py-2 bg-gray-500 text-white rounded">Информационный блок</button>
+                --}}
             </div>
             <!-- Динамические блоки -->
             <div class="space-y-4">
@@ -509,8 +516,135 @@
                             </div>
                         </template>
 
+                        <template x-if="block.type === 'block12'">
+                            <div>
+                                <h3 class="font-bold mb-2">Текст</h3>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-2">
+                                        <input type="checkbox" x-model="block.hide" :checked="block.hide" class="mr-2">
+                                        Скрыть
+                                    </label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Текст</label>
+                                        <textarea :id="'editor-' + index" x-ref="editor" x-model="block.data.text" placeholder="Введите текст" class="border p-2 w-full"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template x-if="block.type === 'block13'">
+                            <div>
+                                <h3 class="font-bold mb-2">Шапка</h3>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-2">
+                                        <input type="checkbox" x-model="block.hide" :checked="block.hide" class="mr-2">
+                                        Скрыть
+                                    </label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Заголовок</label>
+                                        <input type="text" x-model="block.data.title" class="w-full p-2 border rounded mb-2" placeholder="">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Подзаголовок</label>
+                                        <input type="text" x-model="block.data.subtitle" class="w-full p-2 border rounded mb-2" placeholder="">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label
+                                            x-on:dragover.prevent
+                                            x-on:drop.prevent="handleDrop($event, block)"
+                                            class="w-full w-lg-half max-h-[420px] border-2 relative border-dashed border-gray-300 rounded h-full flex items-center text-center justify-center mb-2 cursor-pointer"
+                                        >
+                                            <p x-show="!block.data.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                                            <input type="file" x-on:change="uploadImage($event, block)" class="hidden" x-ref="fileInput">
+                                            <img :src="block.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="block.data.image">
+                                            <button x-show="block.data.image" x-on:click="removeImage($event, block)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template x-if="block.type === 'block14'">
+                            <div>
+                                <h3 class="font-bold mb-2">Текст в 2 колонки</h3>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-2">
+                                        <input type="checkbox" x-model="block.hide" :checked="block.hide" class="mr-2">
+                                        Скрыть
+                                    </label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Заголовок</label>
+                                        <input type="text" x-model="block.data.title" class="w-full p-2 border rounded mb-2" placeholder="">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Текст слева</label>
+                                        <textarea x-model="block.data.col1" rows="6" placeholder="Введите текст" class="border p-2 w-full"></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Текст справа</label>
+                                        <textarea x-model="block.data.col2" rows="6" placeholder="Введите текст" class="border p-2 w-full"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template x-if="block.type === 'block15'">
+                            <div>
+                                <h3 class="font-bold mb-2">Блок с фото</h3>
+                                <div class="mb-4">
+                                    <label class="block font-semibold mb-2">
+                                        <input type="checkbox" x-model="block.hide" :checked="block.hide" class="mr-2">
+                                        Скрыть
+                                    </label>
+                                </div>
+
+                                <div class="mb-4">
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Заголовок</label>
+                                        <input type="text" x-model="block.data.title" class="w-full p-2 border rounded mb-2" placeholder="">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Подзаголовок</label>
+                                        <input type="text" x-model="block.data.subtitle" class="w-full p-2 border rounded mb-2" placeholder="">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label
+                                            x-on:dragover.prevent
+                                            x-on:drop.prevent="handleDrop($event, block)"
+                                            class="w-full w-lg-half max-h-[420px] border-2 relative border-dashed border-gray-300 rounded h-full flex items-center text-center justify-center mb-2 cursor-pointer"
+                                        >
+                                            <p x-show="!block.data.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                                            <input type="file" x-on:change="uploadImage($event, block)" class="hidden" x-ref="fileInput">
+                                            <img :src="block.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="block.data.image">
+                                            <button x-show="block.data.image" x-on:click="removeImage($event, block)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                                        </label>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="" class="mb-2 block">Заголовок</label>
+                                        <textarea :id="'editor-' + index" x-ref="editor" x-model="block.data.text" placeholder="Введите текст" class="border p-2 w-full"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
                     </div>
                 </template>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="flex justify-end gap-4">
+                <button type="submit" x-on:click="save" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                    Сохранить
+                </button>
             </div>
         </div>
     </div>
@@ -642,6 +776,25 @@
                             block.data.title = '';
                             block.data.text = '';
                             block.data.subBlocks = [];
+                            break;
+                        case 'block12':
+                            block.data.text = '';
+                            break;
+                        case 'block13':
+                            block.data.title = '';
+                            block.data.subtitle = '';
+                            block.data.image = '';
+                            break;
+                        case 'block14':
+                            block.data.title = '';
+                            block.data.col1 = '';
+                            block.data.col2 = '';
+                            break;
+                        case 'block15':
+                            block.data.title = '';
+                            block.data.subtitle = '';
+                            block.data.image = '';
+                            block.data.text = '';
                             break;
                         case 'block11':
                             block.data.title = '';
@@ -802,7 +955,7 @@
                         this.loading = true;
                         const id = location.pathname.split('/')[3];
 
-                        const response = await fetch('/admin/pages/' + id + '/show', {
+                        const response = await fetch('/admin/pages/' + id, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -816,7 +969,7 @@
                         this.alias = result.alias;
                         this.keywords = result.keywords;
                         this.description = result.description;
-                        this.blocks = result.blocks;
+                        this.blocks = result.content;
                         this.active = result.active;
                         this.category = result.category;
 
@@ -838,17 +991,18 @@
                             description: this.description,
                             keywords: this.keywords,
                             active: this.active,
-                            category: this.category,
-                            blocks: this.blocks
+                            content: this.blocks
                         }
 
                         let edit = '';
+                        let method = 'POST';
                         if(location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] != 'create') {
-                            edit = '/' + location.pathname.split('/')[3]
+                            edit = '/' + location.pathname.split('/')[3];
+                            method = 'PUT';
                         }
 
                         const response = await fetch(`/admin/pages` + edit, {
-                            method: 'POST',
+                            method: method,
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': this.token

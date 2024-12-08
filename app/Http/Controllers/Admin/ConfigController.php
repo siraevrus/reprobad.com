@@ -3,12 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class ConfigController extends Controller
 {
     public function edit(): View
     {
-        return view('admin.config.edit');
+        $config = [];
+
+        foreach(Config::all() as $item) {
+            $config[$item->key] = $item->value;
+        }
+
+        $config = json_decode(json_encode($config));
+
+        return view('admin.config.edit', compact('config'));
+    }
+
+    public function update(Request $request): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    {
+        $validated = $request->validate([
+            'address' => 'string|required',
+            'phone' => 'string|required',
+            'phone2' => 'string|nullable',
+            'email' => 'string|nullable',
+            'email2' => 'string|nullable',
+            'telegram' => 'string|nullable',
+            'rutube' => 'string|nullable',
+        ]);
+
+        foreach($validated as $key => $value) {
+            if(!$value) continue;
+            if($config = Config::query()->where('key', $key)->first()) {
+                $config->value = $value;
+                $config->save();
+            }
+            else {
+                Config::query()->create([
+                    'key' => $key,
+                    'value' => $value
+                ]);
+            }
+        }
+
+        return back();
     }
 }
