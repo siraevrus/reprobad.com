@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Config;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
         foreach ($configs as $config) {
             config([$config->key => $config->value]);
         }
+
+        Paginator::useTailwind();
     }
 }

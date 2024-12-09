@@ -41,5 +41,7 @@
             <!-- Повторите строки для других элементов -->
             </tbody>
         </table>
+
+        {{ $resources->links() }}
     </div>
 @endsection
