@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -73,8 +74,11 @@ class ArticleController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
+        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
+
         $resource = Article::query()->findOrFail($id);
-        $resource->fill($validator->validated());
+        $resource->fill($validated);
         $resource->save();
 
         return response()->json([

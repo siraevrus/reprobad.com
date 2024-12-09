@@ -27,7 +27,7 @@
                     <img class="w-[120px]" src="{{ $resource->image }}" alt="">
                 </td>
                 <td class="py-3 px-6">{{ $resource->title }}</td>
-                <td class="py-3 px-6">{{ $resource->created_at }}</td>
+                <td class="py-3 px-6">{{ $resource->published_at }}</td>
                 <td class="py-3 px-6 text-center">
                     <form method="post" action="{{ route('admin.articles.destroy', $resource->id) }}" class="flex items-center justify-center gap-2">
                         @csrf

@@ -138,7 +138,7 @@
 
                     const data = await response.json();
                     if (data.success) {
-
+                        this.form = data.resource;
                     } else {
                         this.errors = data.errors;
                     }

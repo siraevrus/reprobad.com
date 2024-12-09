@@ -19,6 +19,7 @@ use App\Http\Controllers\Site\ProductController as SiteProductController;
 use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
 use App\Http\Controllers\Site\PageController as SitePageController;
+use App\Http\Controllers\Site\MapController as SiteMapController;
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
@@ -61,6 +62,7 @@ Route::get('/company', [SitePageController::class, 'company'])->name('site.text.
 Route::get('/privacy', [SitePageController::class, 'privacy'])->name('site.text.privacy');
 Route::get('/about', [SitePageController::class, 'about'])->name('site.text.about');
 Route::get('/contacts', [SitePageController::class, 'contacts'])->name('site.text.contacts');
+Route::get('/map', [SiteMapController::class, 'index'])->name('site.map');
 
 Route::post('/forms/feedback', [FormController::class, 'feedback'])->name('site.form.feedback');
 Route::post('/forms/subscribe', [FormController::class, 'subscribe'])->name('site.form.subscribe');
