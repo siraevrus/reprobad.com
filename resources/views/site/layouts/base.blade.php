@@ -392,5 +392,28 @@
     });
 
 </script>
+<style>
+    .step-item-overlay.green {
+        background-color: #93b27866;
+    }
+    .step-item-overlay.mandarin {
+        background-color: #ff967b66;
+    }
+    .step-item-overlay.purple {
+        background-color: #9f99de66;
+    }
+
+    .step-item.mandarin {
+        background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb);
+    }
+
+    .step-item.purple {
+        background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6);
+    }
+
+    .step-item.green {
+        background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface);
+    }
+</style>
 </body>
 </html>

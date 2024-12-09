@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/text', TextController::class);
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
+    Route::get('/admin/icons', [ArticleController::class, 'icons'])->name('icons');
 
     Route::get('/admin/articles/{alias}/switch', [ArticleController::class, 'switch'])->name('articles.switch');
     Route::get('/admin/pages/{alias}/switch', [PageController::class, 'switch'])->name('pages.switch');
@@ -44,6 +45,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
 Route::get('/', [SiteIndexController::class, 'index'])->name('site.index');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
 Route::get('/login', [LoginController::class, 'form'])->name('login.form');
+Route::get('/login', [LoginController::class, 'form'])->name('login');
 Route::get('/articles', [SiteArticleController::class, 'index'])->name('site.articles.index');
 Route::get('/articles/{alias}', [SiteArticleController::class, 'show'])->name('site.articles.show');
 Route::get('/events', [SiteEventController::class, 'index'])->name('site.events.index');

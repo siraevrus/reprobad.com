@@ -29,6 +29,18 @@
             </div>
 
             <div>
+                <label class="block font-semibold mb-2">Иконка</label>
+                <div class="flex space-x-2">
+                    @foreach($icons as $icon)
+                        <label for="icon_{{ $icon }}">
+                            <input id="icon_{{ $icon }}" type="radio" name="icon" value="{{ $icon }}" x-model="form.icon" class="mr-2">
+                            <img src="{{ $icon }}" alt="">
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            <div>
                 <label class="block font-semibold mb-2">Время на чтение</label>
                 <input type="text" x-model="form.time" class="w-full p-2 border rounded" placeholder="">
                 <div class="text-red-500 text-xs mt-1" x-text="errors.time"></div>

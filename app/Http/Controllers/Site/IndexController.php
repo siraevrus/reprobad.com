@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 
 class IndexController extends Controller
 {
@@ -12,6 +13,7 @@ class IndexController extends Controller
             'home' => 1,
             'title' => 'Главная'
         ];
-        return view('site.index', compact('resource'));
+        $products = Product::all();
+        return view('site.index', compact('resource', 'products'));
     }
 }

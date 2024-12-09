@@ -7,6 +7,7 @@ use App\Models\Article;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -91,12 +92,16 @@ class ArticleController extends Controller
 
     public function create(): View
     {
-        return view('admin.articles.create');
+        $files = Storage::disk('public')->files('icons');
+        $icons = array_map(fn($file) => Storage::disk('public')->url($file), $files);
+        return view('admin.articles.create', compact('icons'));
     }
 
     public function edit(): View
     {
-        return view('admin.articles.create');
+        $files = Storage::disk('public')->files('icons');
+        $icons = array_map(fn($file) => Storage::disk('public')->url($file), $files);
+        return view('admin.articles.create', compact('icons'));
     }
 
     public function switch($id)
