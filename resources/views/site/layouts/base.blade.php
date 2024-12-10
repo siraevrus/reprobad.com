@@ -244,20 +244,22 @@
     <div class="products-popup-body">
         <div class="product-popup-container">
             <div class="products-grid">
-                @foreach(App\Models\Product::all() as $resource)
-                    <div class="product-item">
-                        <div class="product-item-content">
-                            <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="" class="repro-relax-giper-logo"></div>
-                            <p class="product-item-text">{{ $resource->description }}</p>
-                            <a href="{{ route('site.complex.show', $resource->alias) }}" class="product-item-link w-inline-block">
-                                <div class="sache-image-element"><img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image"></div>
-                                <div class="product-item-image-shadow"></div>
-                            </a>
-                            <div class="product-item-button-wrap">
-                                <a href="{{ route('site.complex.show', $resource->alias) }}" class="button w-button">Подробнее —&gt;</a>
+                @foreach(App\Models\Product::query()->with('complex')->get() as $resource)
+                    @if($resource->complex->alias)
+                        <div class="product-item">
+                            <div class="product-item-content">
+                                <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="" class="repro-relax-giper-logo"></div>
+                                <p class="product-item-text">{{ $resource->description }}</p>
+                                <a href="{{ route('site.complex.show', $resource->alias) }}" class="product-item-link w-inline-block">
+                                    <div class="sache-image-element"><img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image"></div>
+                                    <div class="product-item-image-shadow"></div>
+                                </a>
+                                <div class="product-item-button-wrap">
+                                    <a href="{{ route('site.complex.show', $resource->alias) }}" class="button w-button">Подробнее —&gt;</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>

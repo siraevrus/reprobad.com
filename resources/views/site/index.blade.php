@@ -9,26 +9,26 @@
             <p class="sistema-repro-steps-p">4 важных шага</p>
         </div>
         <div class="_4-steps-wrap">
-            @foreach($products as $idx => $product)
-            <div class="step-item {{ $product->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+            @foreach($complexes as $idx => $complex)
+            <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
                 <div class="step-item-content">
-                    <h2 class="step-h">{!! $product->title !!}</h2>
-                    <p class="step-description">{{ $product->subtitle }}</p>
+                    <h2 class="step-h">{!! $complex->title !!}</h2>
+                    <p class="step-description">{{ $complex->subtitle }}</p>
                     <div class="step-products">
-                        <a href="{{ route('site.complex.show', $product->alias) }}#first" class="step-product-left w-inline-block">
+                        <a href="{{ route('site.complex.show', $complex->alias) }}#first" class="step-product-left w-inline-block">
                             <div class="sache-image-element">
-                                <img src="{{ $product->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                                <img src="{{ $complex->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                             <div class="step-product-shadow"></div>
                         </a>
-                        <a href="{{ route('site.complex.show', $product->alias) }}#second" class="step-product-right w-inline-block">
+                        <a href="{{ route('site.complex.show', $complex->alias) }}#second" class="step-product-right w-inline-block">
                             <div class="sache-image-element">
-                                <img src="{{ $product->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                                <img src="{{ $complex->image_right }}" loading="lazy" alt="" class="sache-image"></div>
                             <div class="step-product-shadow gipokortizol"></div>
                         </a>
                     </div>
-                    <a href="{{ route('site.complex.show', $product->alias) }}" class="step-button {{ $product->color }} w-button">Подробнее —&gt;</a>
+                    <a href="{{ route('site.complex.show', $complex->alias) }}" class="step-button {{ $complex->color }} w-button">Подробнее —&gt;</a>
                 </div>
-                <div class="step-item-overlay {{ $product->color }}"></div>
+                <div class="step-item-overlay {{ $complex->color }}"></div>
             </div>
             @endforeach
         </div>
