@@ -10,20 +10,20 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         $resources = Event::query();
         $categories = Event::query()->distinct()->pluck('category');
 
-        if(request()->get('category')) {
-            $resources = $resources->where('category', request()->get('category'));
+        if($request->get('category')) {
+            $resources = $resources->where('category', $request->get('category'));
         }
 
-        if(request()->get('query')) {
+        if($request->get('query')) {
             $resources = $resources
-                ->where('title', 'like', '%' . request()->get('query') . '%')
-                ->where('description', 'like', '%' . request()->get('query') . '%')
-                ->orWhere('content', 'like', '%' . request()->get('query') . '%');
+                ->where('title', 'like', '%' . $request->get('query') . '%')
+                ->where('description', 'like', '%' . $request->get('query') . '%')
+                ->orWhere('content', 'like', '%' . $request->get('query') . '%');
         }
 
         $resources = $resources->paginate(7);

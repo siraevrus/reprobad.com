@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Page;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -91,7 +92,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Page::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

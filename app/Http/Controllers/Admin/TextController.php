@@ -97,7 +97,7 @@ class TextController extends Controller
         return view('admin.text.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Text::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

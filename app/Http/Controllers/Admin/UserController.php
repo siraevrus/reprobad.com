@@ -96,7 +96,7 @@ class UserController extends Controller
         return view('admin.users.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = User::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

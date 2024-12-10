@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class FormController extends Controller
 {
-    public function subscribe(Request $request)
+    public function subscribe(Request $request): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
 
@@ -26,7 +27,7 @@ class FormController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function feedback(Request $request)
+    public function feedback(Request $request): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
 

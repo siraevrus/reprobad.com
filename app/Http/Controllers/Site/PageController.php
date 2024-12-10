@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Complex;
 use App\Models\Page;
 use App\Models\Product;
+use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function company()
+    public function company(): View
     {
         $resource = Page::query()
             ->where('alias', 'o-kompanii-r-farm')
@@ -17,7 +18,7 @@ class PageController extends Controller
         return view('site.company', compact('resource'));
     }
 
-    public function privacy()
+    public function privacy(): View
     {
         $resource = Page::query()
             ->where('alias', 'privacy')
@@ -25,7 +26,7 @@ class PageController extends Controller
         return view('site.text', compact('resource'));
     }
 
-    public function about()
+    public function about(): View
     {
         $resource = Page::query()
             ->where('alias', 'about')
@@ -34,7 +35,7 @@ class PageController extends Controller
         return view('site.about', compact('resource', 'complexes'));
     }
 
-    public function contacts()
+    public function contacts(): View
     {
         $resource = [
             'title' => 'Контакты',

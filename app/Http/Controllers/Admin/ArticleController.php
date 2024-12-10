@@ -108,7 +108,7 @@ class ArticleController extends Controller
         return view('admin.articles.create', compact('icons'));
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Article::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

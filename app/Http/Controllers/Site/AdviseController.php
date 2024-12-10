@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -54,7 +55,7 @@ class AdviseController extends Controller
         return view('site.advises.show', compact('resource', 'other'));
     }
 
-    public function subscribe(Request $request)
+    public function subscribe(Request $request): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
 
@@ -68,5 +69,7 @@ class AdviseController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        return response()->json(['success' => true]);
     }
 }

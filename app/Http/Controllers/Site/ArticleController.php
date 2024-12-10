@@ -4,26 +4,27 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         $resources = Article::query();
         $categories = Article::query()->distinct()->pluck('category');
 
-        if(request()->get('category')) {
-            $resources = $resources->where('category', request()->get('category'));
+        if($request->get('category')) {
+            $resources = $resources->where('category', $request->get('category'));
         }
 
-        if(request()->get('query')) {
+        if($request->get('query')) {
             $resources = $resources
-                ->where('title', 'like', '%' . request()->get('query') . '%')
-                ->where('description', 'like', '%' . request()->get('query') . '%')
-                ->orWhere('content', 'like', '%' . request()->get('query') . '%');
+                ->where('title', 'like', '%' . $request->get('query') . '%')
+                ->where('description', 'like', '%' . $request->get('query') . '%')
+                ->orWhere('content', 'like', '%' . $request->get('query') . '%');
         }
 
         $resources = $resources->paginate(7);
@@ -55,7 +56,7 @@ class ArticleController extends Controller
         return view('site.articles.show', compact('resource', 'other'));
     }
 
-    public function subscribe(Request $request)
+    public function subscribe(Request $request): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
 
@@ -69,5 +70,9 @@ class ArticleController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 }

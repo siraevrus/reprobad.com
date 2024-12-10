@@ -100,7 +100,7 @@ class AdviseController extends Controller
         return view('admin.advises.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Advise::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

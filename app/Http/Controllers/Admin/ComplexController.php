@@ -115,7 +115,7 @@ class ComplexController extends Controller
         return view('admin.complex.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Complex::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

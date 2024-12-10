@@ -105,7 +105,7 @@ class EventController extends Controller
         return view('admin.events.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Event::query()->findOrFail($id);
         $resource->active = $resource->active === 0;

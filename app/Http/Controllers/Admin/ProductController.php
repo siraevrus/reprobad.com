@@ -111,7 +111,7 @@ class ProductController extends Controller
         return view('admin.products.create');
     }
 
-    public function switch($id)
+    public function switch($id): RedirectResponse
     {
         $resource = Product::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
