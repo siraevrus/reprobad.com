@@ -31,6 +31,7 @@ class ProductController extends Controller
         'image_right' => 'string|nullable',
         'title_left' => 'string|nullable',
         'color' => 'string|nullable',
+        'products' => 'string|nullable',
         'title_right' => 'string|nullable',
     ];
 

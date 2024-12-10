@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Page;
+use App\Models\Product;
 
 class PageController extends Controller
 {
@@ -28,7 +29,8 @@ class PageController extends Controller
         $resource = Page::query()
             ->where('alias', 'about')
             ->firstOrFail();
-        return view('site.about', compact('resource'));
+        $products = Product::query()->get();
+        return view('site.about', compact('resource', 'products'));
     }
 
     public function contacts()

@@ -8,14 +8,14 @@
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
                 <p class="product-hero-p">{!! $resource->text !!}</p>
                 <div class="product-buy-buttons">
-                    <a href="#first" class="button w-button">Подробнее —&gt;</a>
+                    <a href="{{ route('site.products.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
                 <div class="hero-products {{ $resource->color }}">
-                    <a href="#first" class="{{ $resource->title_left }} w-inline-block">
+                    <a href="{{ route('site.products.show', $resource->alias) }}#first" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                         <div class="hero-product-shadow embrio"></div>
                     </a>
-                    <a href="#second" class="{{ $resource->title_right }} w-inline-block">
+                    <a href="{{ route('site.products.show', $resource->alias) }}#second" class="{{ $resource->title_right }} w-inline-block">
                         <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
                     </a>
                 </div>
@@ -30,7 +30,9 @@
                 <p class="product-head-descriptor">{{ $resource->description }}</p>
                 <p class="product-head-text"> </p><img src="{{ $resource->photo }}" loading="lazy" alt="" class="product-head-image">
                 <div class="product-buy-buttons">
+                    {{--
                     <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
+                    --}}
                 </div>
             </div>
             <div class="product-body">
@@ -81,7 +83,10 @@
     </section>
 
     @if($resource->products)
-        @foreach($products as $product)
+        @foreach(explode(',', $resource->products) as $product)
+            @php
+                $product = \App\Models\Product::query()->where('id', $product)->first();
+            @endphp
             <section id="first" class="section product-section">
                 <div class="container product-container">
                     <div class="product-head">
@@ -89,7 +94,9 @@
                         <p class="product-head-descriptor">{{ $product->description }}</p>
                         <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image">
                         <div class="product-buy-buttons">
+                            {{--
                             <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
+                            --}}
                         </div>
                     </div>
                     <div class="product-body">
@@ -190,6 +197,7 @@
             </div>
         </div>
     </section>
+
     <section class="section sistema-section">
         <div class="container">
             <div class="sistema-repro-heading">
@@ -198,77 +206,28 @@
             </div>
             <div>
                 <div class="_4-steps-wrap">
-                    <div class="step-item"><img src="images/1.svg" loading="lazy" alt="" class="step-item-number">
-                        <div class="step-item-content">
-                            <h2 class="step-h">Психо-эмоциональное равновесие</h2>
-                            <p class="step-description">Защита от стресса и нормализация сна</p>
-                            <div class="step-products">
-                                <a href="/product-protect#first" class="step-product-left w-inline-block">
-                                    <div class="sache-image-element"><img src="images/1-1_ReproRelaks_Giperkortizol_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/1-1_ReproRelaks_Giperkortizol_sashe_11-1_ReproRelaks_Giperkortizol_sashe.avif 500w, images/1-1_ReproRelaks_Giperkortizol_sashe_11-1_ReproRelaks_Giperkortizol_sashe.avif 800w, images/1-1_ReproRelaks_Giperkortizol_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow"></div>
-                                </a>
-                                <a href="/product-protect#second" class="step-product-right w-inline-block">
-                                    <div class="sache-image-element"><img src="images/1-2_ReproRelaks_Gipokortizol_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/1-2_ReproRelaks_Gipokortizol_sashe_11-2_ReproRelaks_Gipokortizol_sashe.avif 500w, images/1-2_ReproRelaks_Gipokortizol_sashe_11-2_ReproRelaks_Gipokortizol_sashe.avif 800w, images/1-2_ReproRelaks_Gipokortizol_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow gipokortizol"></div>
-                                </a>
+                    @foreach($products as $idx => $product)
+                        <div class="step-item {{ $product->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+                            <div class="step-item-content">
+                                <h2 class="step-h">{!! $product->title !!}</h2>
+                                <p class="step-description">{{ $product->subtitle }}</p>
+                                <div class="step-products">
+                                    <a href="{{ route('site.products.show', $product->alias) }}#first" class="step-product-left w-inline-block">
+                                        <div class="sache-image-element">
+                                            <img src="{{ $product->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                                        <div class="step-product-shadow"></div>
+                                    </a>
+                                    <a href="{{ route('site.products.show', $product->alias) }}#second" class="step-product-right w-inline-block">
+                                        <div class="sache-image-element">
+                                            <img src="{{ $product->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                                        <div class="step-product-shadow gipokortizol"></div>
+                                    </a>
+                                </div>
+                                <a href="{{ route('site.products.show', $product->alias) }}" class="step-button {{ $product->color }} w-button">Подробнее —&gt;</a>
                             </div>
-                            <a href="product-protect.html" class="step-button w-button">Подробнее —&gt;</a>
+                            <div class="step-item-overlay {{ $product->color }}"></div>
                         </div>
-                        <div class="step-item-overlay"></div>
-                    </div>
-                    <div class="step-item _2"><img src="images/2.svg" loading="lazy" alt="" class="step-item-number">
-                        <div class="step-item-content">
-                            <h2 class="step-h">Очищение <br>организма</h2>
-                            <p class="step-description">Нормализация кишечной микрофлоры и поддержка печени</p>
-                            <div class="step-products">
-                                <a href="/product-detoxi#first" class="step-product-left w-inline-block">
-                                    <div class="sache-image-element"><img src="images/2-1_ReproDetoksi_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/2-1_ReproDetoksi_sashe_12-1_ReproDetoksi_sashe.avif 500w, images/2-1_ReproDetoksi_sashe_12-1_ReproDetoksi_sashe.avif 800w, images/2-1_ReproDetoksi_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow detoxi"></div>
-                                </a>
-                                <a href="/product-detoxi#second" class="step-product-right w-inline-block">
-                                    <div class="sache-image-element"><img src="images/2-2_ReproBiom_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/2-2_ReproBiom_sashe_12-2_ReproBiom_sashe.avif 500w, images/2-2_ReproBiom_sashe_12-2_ReproBiom_sashe.avif 800w, images/2-2_ReproBiom_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow biom"></div>
-                                </a>
-                            </div>
-                            <a href="product-detoxi.html" aria-current="page" class="step-button _2 w-button w--current">Подробнее —&gt;</a>
-                        </div>
-                        <div class="step-item-overlay _2"></div>
-                    </div>
-                    <div class="step-item _3"><img src="images/3.svg" loading="lazy" alt="" class="step-item-number">
-                        <div class="step-item-content">
-                            <h2 class="step-h">Общий метаболизм и углеводный обмен</h2>
-                            <p class="step-description">Коррекция энергетического обмена и нормализация метаболизма</p>
-                            <div class="step-products">
-                                <a href="/product-energy#first" class="step-product-left w-inline-block">
-                                    <div class="sache-image-element"><img src="images/3-2_ReproMetabo_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/3-2_ReproMetabo_sashe_13-2_ReproMetabo_sashe.avif 500w, images/3-2_ReproMetabo_sashe_13-2_ReproMetabo_sashe.avif 800w, images/3-2_ReproMetabo_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow metabo"></div>
-                                </a>
-                                <a href="/product-energy#second" class="step-product-right w-inline-block">
-                                    <div class="sache-image-element"><img src="images/3-1_ReproEnerdzhi_sashe_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/3-1_ReproEnerdzhi_sashe_13-1_ReproEnerdzhi_sashe.avif 500w, images/3-1_ReproEnerdzhi_sashe_13-1_ReproEnerdzhi_sashe.avif 800w, images/3-1_ReproEnerdzhi_sashe_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow energy"></div>
-                                </a>
-                            </div>
-                            <a href="product-energy.html" class="step-button _3 w-button">Подробнее —&gt;</a>
-                        </div>
-                        <div class="step-item-overlay _3"></div>
-                    </div>
-                    <div class="step-item _4"><img src="images/4.svg" loading="lazy" alt="" class="step-item-number">
-                        <div class="step-item-content">
-                            <h2 class="step-h">Здоровая наследственность</h2>
-                            <p class="step-description">Поддержка репродуктивного здоровья</p>
-                            <div class="step-products">
-                                <a href="/product-embrio#first" class="step-product-left repro-embrio w-inline-block">
-                                    <div class="sache-image-element"><img src="images/4-1_ReproEmbrio_sahe-1_1.avif" loading="lazy" alt="" sizes="100vw" srcset="images/4-1_ReproEmbrio_sahe-1_14-1_ReproEmbrio_sahe-1.avif 500w, images/4-1_ReproEmbrio_sahe-1_14-1_ReproEmbrio_sahe-1.avif 800w, images/4-1_ReproEmbrio_sahe-1_1.avif 866w" class="sache-image"></div>
-                                    <div class="step-product-shadow embrio"></div>
-                                </a>
-                                <a href="/product-embrio#second" class="step-product-right repro-genom w-inline-block">
-                                    <div class="bottle-image-element"><img sizes="(max-width: 479px) 34vw, (max-width: 767px) 35vw, 9vw" srcset="images/4-2_ReproGenom_banka_14-2_ReproGenom_banka.avif 500w, images/4-2_ReproGenom_banka_1.avif 1122w" alt="" loading="lazy" src="images/4-2_ReproGenom_banka_1.avif" class="bottle-image"></div>
-                                </a>
-                            </div>
-                            <a href="product-embrio.html" class="step-button _4 w-button">Подробнее —&gt;</a>
-                        </div>
-                        <div class="step-item-overlay _4"></div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

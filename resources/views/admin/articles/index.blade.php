@@ -49,6 +49,6 @@
             </tbody>
         </table>
 
-        {{ $resources->links() }}
+        {{ $resources->links('vendor.pagination.admin') }}
     </div>
 @endsection

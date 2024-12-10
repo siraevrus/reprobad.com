@@ -55,6 +55,7 @@
                 <button x-on:click="addBlock('block3')" class="px-4 py-2 bg-gray-500 text-white rounded">Фото</button>
                 <button x-on:click="addBlock('block14')" class="px-4 py-2 bg-gray-500 text-white rounded">2 колонки</button>
                 <button x-on:click="addBlock('block15')" class="px-4 py-2 bg-gray-500 text-white rounded">Заголовок + фото</button>
+                <button x-on:click="addBlock('block9')" class="px-4 py-2 bg-gray-500 text-white rounded">Галерея</button>
 
                 {{--
                 <button x-on:click="addBlock('block1')" class="px-4 py-2 bg-gray-500 text-white rounded">Блок с фото</button>
@@ -320,23 +321,12 @@
                         <!-- репитер -->
                         <template x-if="block.type === 'block9'">
                             <div>
-                                <h3 class="font-bold mb-2">Аккордион</h3>
+                                <h3 class="font-bold mb-2">Галерея</h3>
                                 <div class="mb-4">
                                     <label class="block font-semibold mb-2">
                                         <input type="checkbox" x-model="block.hide" :checked="block.hide" class="mr-2">
                                         Скрыть
                                     </label>
-                                </div>
-
-                                <div class="mb4">
-                                    <div>
-                                        <label for="" class="mb-2 block">Текст над заголовком</label>
-                                        <input type="text" x-model="block.data.suptitle" class="w-full p-2 border rounded mb-2" placeholder="Введите текст над заголовком">
-                                    </div>
-                                    <div>
-                                        <label for="" class="mb-2 block">Заголовок</label>
-                                        <input type="text" x-model="block.data.title" class="w-full p-2 border rounded mb-2" placeholder="Введите заголовок">
-                                    </div>
                                 </div>
 
                                 <!-- Подблоки -->
@@ -352,32 +342,17 @@
                                                 <button x-on:click="moveSubBlock(block, subIndex, 'down')" :disabled="subIndex === block.data.subBlocks.length - 1" class="text-black-500 disabled:opacity-50"><div class="material-icons">arrow_downward</div></button>
                                             </div>
 
-                                            <div class="grid grid-cols-2 gap-4 mt-2">
-                                                <div>
-                                                    <label class="block font-semibold mb-2">
-                                                        <input type="checkbox" x-model="subBlock.data.isExpanded" :checked="subBlock.data.isExpanded" class="mr-2">
-                                                        Показывать сразу
-                                                    </label>
-                                                    <input type="text" x-model="subBlock.data.subtitle" class="w-full p-2 border rounded mb-2" placeholder="Подзаголовок">
-                                                    <input type="text" x-model="subBlock.data.title" class="w-full p-2 border rounded mb-2" placeholder="Заголовок">
-                                                    <input type="text" x-model="subBlock.data.link" class="w-full p-2 border rounded mb-2" placeholder="Ссылка">
-                                                    <div>
-                                                        <label for="">Цвет фона</label>
-                                                        <input type="color" x-model="subBlock.data.className" class="w-full rounded mb-2" placeholder="Цвет фона">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label
-                                                        x-on:dragover.prevent
-                                                        x-on:drop.prevent="handleDrop($event, subBlock)"
-                                                        class="w-full w-lg-half border-2 relative border-dashed border-gray-300 rounded h-[200px] flex items-center text-center justify-center mb-2 cursor-pointer"
-                                                    >
-                                                        <p x-show="!subBlock.data.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                                                        <input type="file" x-on:change="uploadImage($event, subBlock)" class="hidden" x-ref="fileInput">
-                                                        <img :src="subBlock.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="subBlock.data.image">
-                                                        <button x-show="subBlock.data.image" x-on:click="removeImage($event, subBlock)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                                                    </label>
-                                                </div>
+                                            <div>
+                                                <label
+                                                    x-on:dragover.prevent
+                                                    x-on:drop.prevent="handleDrop($event, subBlock)"
+                                                    class="w-full w-lg-half border-2 relative border-dashed border-gray-300 rounded h-[200px] flex items-center text-center justify-center mb-2 cursor-pointer"
+                                                >
+                                                    <p x-show="!subBlock.data.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                                                    <input type="file" x-on:change="uploadImage($event, subBlock)" class="hidden" x-ref="fileInput">
+                                                    <img :src="subBlock.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="subBlock.data.image">
+                                                    <button x-show="subBlock.data.image" x-on:click="removeImage($event, subBlock)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                                                </label>
                                             </div>
                                         </div>
                                     </template>

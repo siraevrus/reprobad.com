@@ -22,7 +22,7 @@ class ProductController extends Controller
     {
         $articles = Article::query()->where('active', 1)->take(5)->get();
         $resource = Product::query()->where('alias', $alias)->firstOrFail();
-        $products = Product::query()->whereIn('id', explode(',', $resource->products))->get();
-        return view('site.products.show', compact('resource', 'articles'));
+        $products = Product::query()->get();
+        return view('site.products.show', compact('resource', 'articles', 'products'));
     }
 }

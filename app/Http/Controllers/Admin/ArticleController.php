@@ -27,7 +27,7 @@ class ArticleController extends Controller
 
     public function index(): View
     {
-        $resources = Article::query()->paginate(20);
+        $resources = Article::query()->paginate(5);
         return view('admin.articles.index', compact('resources'));
     }
 

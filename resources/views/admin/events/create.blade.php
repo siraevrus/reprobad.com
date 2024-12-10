@@ -7,6 +7,7 @@
             @csrf <!-- Добавляем CSRF-токен -->
             <!-- Поле для заголовка -->
             <div>
+                <label class="block font-semibold mb-2">Фото</label>
                 <label
                     class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
                 >
@@ -17,6 +18,7 @@
                 </label>
             </div>
             <div>
+                <label class="block font-semibold mb-2">Лого</label>
                 <label
                     class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
                 >
@@ -57,7 +59,7 @@
             </div>
 
             <div>
-                <label class="block font-semibold mb-2">Категория</label>
+                <label class="block font-semibold mb-2">Тег-месяц</label>
                 <input type="text" x-model="form.category" class="w-full p-2 border rounded" placeholder="">
                 <div class="text-red-500 text-xs mt-1" x-text="errors.category"></div>
             </div>

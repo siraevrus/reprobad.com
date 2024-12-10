@@ -1,7 +1,7 @@
 @extends('site.layouts.base')
 
 @section('content')
-    <div class="page-background"></div>
+    <div class="page-background mandarin"></div>
     <section class="section inner-section">
         <div class="container">
             <div class="items-head">

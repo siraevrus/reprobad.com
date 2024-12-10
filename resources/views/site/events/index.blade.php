@@ -26,7 +26,10 @@
                         <div class="events-card-date">{{ $resource->dates }} </div>
                         <div class="events-card-place">
                             <div class="events-card-city">{{ $resource->address }}</div>
-                        </div><img src="images/enc.png" loading="lazy" alt="" class="events-card-logo">
+                        </div>
+                        @if($resource->logo)
+                        <img src="{{ $resource->logo }}" loading="lazy" alt="" class="events-card-logo">
+                        @endif
                     </div>
                     <div class="events-card-body">
                         <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-title">{{ $resource->title }}</a>

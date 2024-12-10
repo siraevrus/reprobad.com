@@ -28,10 +28,11 @@ class EventController extends Controller
 
         $resources = $resources->paginate(7);
 
-        $categories = $categories->map(function ($item) use ($resources) {
+        $all = Event::query()->get();
+        $categories = $categories->map(function ($item) use ($all) {
             return [
                 'name' => $item,
-                'count' => $resources->where('category', $item)->count()
+                'count' => $all->where('category', $item)->count()
             ];
         });
 

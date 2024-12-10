@@ -153,7 +153,7 @@
                 <div class="nav-contacts">
                     <a href="tel:{{ str_replace([' ', ')', '(', '-'], '', config('phone')) }}" class="nav-contacts-phone">{{ config('phone') }}</a>
                     <a href="mailto:{{ config('email') }}" class="nav-contacts-email">{{ config('email') }}</a>
-                    <a href="privacy" target="_blank" class="nav-contacts-legal">Политика конфиденциальности <br>в отношении персональных данных</a>
+                    <a href="{{ route('site.text.privacy') }}" target="_blank" class="nav-contacts-legal">Политика конфиденциальности <br>в отношении персональных данных</a>
                 </div>
             </div>
         </nav>
@@ -209,7 +209,7 @@
                 <a href="faq" aria-current="page" class="footer-menu-link w--current">Вопросы-ответы</a>
                 <a href="contacts" class="footer-menu-link">Контакты</a>
             </div>
-            <a href="privacy" target="_blank" class="footer-terms-link">Политика конфиденциальности в отношении персональных данных</a>
+            <a href="{{ route('site.text.privacy') }}" target="_blank" class="footer-terms-link">Политика конфиденциальности в отношении персональных данных</a>
         </div>
         <div class="r-farm-footer">
             <a href="https://www.r-pharm.com/ru" target="_blank" class="r-farm-footer-link w-inline-block"><img src="images/RFarm-footer.png" loading="lazy" alt="Р-Фарм" class="r-farm-image"></a>
@@ -226,7 +226,7 @@
     <div class="cookies-banner">
         <div class="cookies-wrap">
             <div class="cookies">
-                <div class="cookies-text">Этот веб-сайт использует файлы cookies, чтобы обеспечить удобную работу пользователей с ним и функциональные возможности сайта. Нажимая &quot;Я принимаю&quot; вы соглашаетесь с <a href="privacy.html" target="_blank" class="cookies-text-link">условиями использования файлов cookies</a>
+                <div class="cookies-text">Этот веб-сайт использует файлы cookies, чтобы обеспечить удобную работу пользователей с ним и функциональные возможности сайта. Нажимая &quot;Я принимаю&quot; вы соглашаетесь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="cookies-text-link">условиями использования файлов cookies</a>
                 </div>
                 <a href="#" class="accept-cookies w-button">Принимаю</a>
             </div>
@@ -315,7 +315,7 @@
                 <div class="nav-contacts">
                     <a href="tel:+74959567937" class="nav-contacts-phone">{{ config('phone') }}</a>
                     <a href="mailto:{{ config('email') }}" class="nav-contacts-email">{{ config('email') }}</a>
-                    <a href="privacy" target="_blank" class="nav-contacts-legal">Политика конфиденциальности <br>в отношении персональных данных</a>
+                    <a href="{{ route('site.text.privacy') }}" target="_blank" class="nav-contacts-legal">Политика конфиденциальности <br>в отношении персональных данных</a>
                 </div>
             </div>
         </nav>

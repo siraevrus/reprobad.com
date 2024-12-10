@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
             config([$config->key => $config->value]);
         }
 
-        Paginator::useTailwind();
+        //Paginator::useTailwind();
     }
 }
