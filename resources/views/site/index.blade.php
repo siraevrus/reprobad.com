@@ -10,26 +10,7 @@
         </div>
         <div class="_4-steps-wrap">
             @foreach($complexes as $idx => $complex)
-            <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
-                <div class="step-item-content">
-                    <h2 class="step-h">{!! $complex->title !!}</h2>
-                    <p class="step-description">{{ $complex->subtitle }}</p>
-                    <div class="step-products">
-                        <a href="{{ route('site.complex.show', $complex->alias) }}#first" class="step-product-left w-inline-block">
-                            <div class="sache-image-element">
-                                <img src="{{ $complex->image_left }}" loading="lazy" alt="" class="sache-image"></div>
-                            <div class="step-product-shadow"></div>
-                        </a>
-                        <a href="{{ route('site.complex.show', $complex->alias) }}#second" class="step-product-right w-inline-block">
-                            <div class="sache-image-element">
-                                <img src="{{ $complex->image_right }}" loading="lazy" alt="" class="sache-image"></div>
-                            <div class="step-product-shadow gipokortizol"></div>
-                        </a>
-                    </div>
-                    <a href="{{ route('site.complex.show', $complex->alias) }}" class="step-button {{ $complex->color }} w-button">Подробнее —&gt;</a>
-                </div>
-                <div class="step-item-overlay {{ $complex->color }}"></div>
-            </div>
+                @include('site.components.complex.item', ['item' => $complex])
             @endforeach
         </div>
     </div>

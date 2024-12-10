@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Models\Complex;
 use App\Models\Page;
 use App\Models\Product;
 
@@ -29,8 +30,8 @@ class PageController extends Controller
         $resource = Page::query()
             ->where('alias', 'about')
             ->firstOrFail();
-        $products = Product::query()->get();
-        return view('site.about', compact('resource', 'products'));
+        $complexes = Complex::query()->get();
+        return view('site.about', compact('resource', 'complexes'));
     }
 
     public function contacts()

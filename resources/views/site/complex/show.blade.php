@@ -25,10 +25,7 @@
     </section>
 
     @if($resource->products)
-        @foreach(explode(',', $resource->products) as $product)
-            @php
-                $product = \App\Models\Product::query()->where('id', $product)->first();
-            @endphp
+        @foreach($resource->products as $product)
             <section id="first" class="section product-section">
                 <div class="container product-container">
                     <div class="product-head">

@@ -21,7 +21,7 @@ class ComplexController extends Controller
     public function show($alias)
     {
         $articles = Article::query()->where('active', 1)->take(5)->get();
-        $resource = Complex::query()->where('alias', $alias)->firstOrFail();
+        $resource = Complex::query()->with('products')->where('alias', $alias)->firstOrFail();
         $resources = Complex::query()->get();
         return view('site.complex.show', compact('resource', 'articles', 'resources'));
     }

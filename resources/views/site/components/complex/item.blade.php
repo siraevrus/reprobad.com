@@ -1,0 +1,20 @@
+<div class="step-item {{ $item->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+    <div class="step-item-content">
+        <h2 class="step-h">{!! $item->title !!}</h2>
+        <p class="step-description">{{ $item->subtitle }}</p>
+        <div class="step-products">
+            <a href="{{ route('site.complex.show', $item->alias) }}#first" class="step-product-left w-inline-block">
+                <div class="sache-image-element">
+                    <img src="{{ $item->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                <div class="step-product-shadow"></div>
+            </a>
+            <a href="{{ route('site.complex.show', $item->alias) }}#second" class="step-product-right w-inline-block">
+                <div class="sache-image-element">
+                    <img src="{{ $item->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                <div class="step-product-shadow gipokortizol"></div>
+            </a>
+        </div>
+        <a href="{{ route('site.complex.show', $item->alias) }}" class="step-button {{ $item->color }} w-button">Подробнее —&gt;</a>
+    </div>
+    <div class="step-item-overlay {{ $item->color }}"></div>
+</div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Complex;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -22,7 +23,7 @@ class ProductController extends Controller
     {
         $articles = Article::query()->where('active', 1)->take(5)->get();
         $resource = Product::query()->where('alias', $alias)->firstOrFail();
-        $products = Product::query()->get();
-        return view('site.products.show', compact('resource', 'articles', 'products'));
+        $complexes = Complex::query()->get();
+        return view('site.products.show', compact('resource', 'articles', 'complexes'));
     }
 }
