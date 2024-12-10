@@ -13,8 +13,8 @@ class ArticleController extends Controller
 {
     public function index(Request $request): View
     {
-        $resources = Article::query();
-        $categories = Article::query()->distinct()->pluck('category');
+        $resources = Article::active();
+        $categories = Article::active()->distinct()->pluck('category');
 
         if($request->get('category')) {
             $resources = $resources->where('category', $request->get('category'));
@@ -29,7 +29,7 @@ class ArticleController extends Controller
 
         $resources = $resources->paginate(7);
 
-        $all = Article::query()->get();
+        $all = Article::active()->get();
         $categories = $categories->map(function ($item) use ($all) {
             return [
                 'name' => $item,
@@ -47,8 +47,8 @@ class ArticleController extends Controller
 
     public function show($alias): View
     {
-        $resource = Article::query()->where('alias', $alias)->firstOrFail();
-        $other = Article::query()
+        $resource = Article::active()->where('alias', $alias)->firstOrFail();
+        $other = Article::active()
             ->where('category', $resource->category)
             ->where('id', '!=', $resource->id)
             ->take(6)

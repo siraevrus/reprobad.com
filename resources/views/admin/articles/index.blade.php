@@ -1,13 +1,8 @@
 @extends('admin.layouts.base')
 
 @section('content')
-    <div class="flex justify-between" >
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">Список статей</h1>
-        <a href="{{ route('admin.articles.create') }}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-5 items-center inline-flex gap-1">
-            <span class="material-icons">add</span>
-            <span>Создать</span>
-        </a>
-    </div>
+    @include('admin.components.header', ['title' => 'Список статей', 'route' => 'articles'])
+
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
             <thead>
@@ -29,23 +24,10 @@
                 <td class="py-3 px-6">{{ $resource->title }}</td>
                 <td class="py-3 px-6">{{ $resource->published_at }}</td>
                 <td class="py-3 px-6 text-center">
-                    <form method="post" action="{{ route('admin.articles.destroy', $resource->id) }}" class="flex items-center justify-center gap-2">
-                        @csrf
-                        @method('DELETE')
-                        <a href="{{ route('admin.articles.edit', $resource->id) }}" class="text-blue-500 hover:text-blue-700">
-                            <span class="material-icons">edit</span>
-                        </a>
-                        <a href="{{ route('admin.articles.switch', $resource->id) }}" class="text-blue-500 hover:text-blue-700">
-                            <span class="material-icons">visibility{{ $resource->active ? '' : '_off' }}</span>
-                        </a>
-                        <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить?');" class="text-red-500 hover:text-red-700">
-                            <span class="material-icons">delete</span>
-                        </button>
-                    </form>
+                    @include('admin.components.controls', ['route' => 'articles', 'resource' => $resource])
                 </td>
             </tr>
             @endforeach
-            <!-- Повторите строки для других элементов -->
             </tbody>
         </table>
 

@@ -12,7 +12,7 @@ class PageController extends Controller
 {
     public function company(): View
     {
-        $resource = Page::query()
+        $resource = Page::active()
             ->where('alias', 'o-kompanii-r-farm')
             ->firstOrFail();
         return view('site.company', compact('resource'));
@@ -20,7 +20,7 @@ class PageController extends Controller
 
     public function privacy(): View
     {
-        $resource = Page::query()
+        $resource = Page::active()
             ->where('alias', 'privacy')
             ->firstOrFail();
         return view('site.text', compact('resource'));
@@ -28,7 +28,7 @@ class PageController extends Controller
 
     public function about(): View
     {
-        $resource = Page::query()
+        $resource = Page::active()
             ->where('alias', 'about')
             ->firstOrFail();
         $complexes = Complex::query()->get();

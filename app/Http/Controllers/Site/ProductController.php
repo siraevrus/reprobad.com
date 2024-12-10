@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index(): View
     {
-        $resources = Product::query()->paginate(12);
+        $resources = Product::active()->paginate(12);
         return view('site.products.index', [
             'resources' => $resources,
             'bodyClass' => 'products-page',
@@ -22,9 +22,9 @@ class ProductController extends Controller
 
     public function show($alias): View
     {
-        $articles = Article::query()->where('active', 1)->take(5)->get();
-        $resource = Product::query()->where('alias', $alias)->firstOrFail();
-        $complexes = Complex::query()->get();
+        $articles = Article::active()->where('active', 1)->take(5)->get();
+        $resource = Product::active()->where('alias', $alias)->firstOrFail();
+        $complexes = Complex::active()->get();
         return view('site.products.show', compact('resource', 'articles', 'complexes'));
     }
 }

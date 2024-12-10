@@ -8,72 +8,26 @@
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-2">Фото товара 1</label>
-                    <label
-                        class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                    >
-                        <p x-show="!form.image_left">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'image_left')" class="hidden" x-ref="fileInput">
-                        <img :src="form.image_left" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image_left">
-                        <button x-show="form.image_left" @click="removeImage('image_left')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                    </label>
-                    <input type="text" x-model="form.title_left" class="w-full p-2 border rounded" placeholder="CSS класс для блока">
+                    @include('admin.components.image-input', ['title' => 'Фото товара 1', 'field' => 'image_left'])
+                    @include('admin.components.text-input', ['title' => 'CSS класс для блока', 'field' => 'title_left'])
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Фото товара 2</label>
-                    <label
-                        class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                    >
-                        <p x-show="!form.image_right">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'image_right')" class="hidden" x-ref="fileInput">
-                        <img :src="form.image_right" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image_right">
-                        <button x-show="form.image_right" @click="removeImage('image_right')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                    </label>
-                    <input type="text" x-model="form.title_right" class="w-full p-2 border rounded" placeholder="CSS класс для блока">
+                    @include('admin.components.image-input', ['title' => 'Фото товара 2', 'field' => 'image_right'])
+                    @include('admin.components.text-input', ['title' => 'CSS класс для блока', 'field' => 'title_right'])
                 </div>
             </div>
 
-            <div>
-                <label class="block font-semibold mb-2">Заголовок</label>
-                <input type="text" x-model="form.title" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.title"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Подзаголовок</label>
-                <input type="text" x-model="form.subtitle" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.subtitle"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Подзаголовок', 'field' => 'subtitle'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Цвет</label>
-                <select type="text" x-model="form.color" class="w-full p-2 border rounded">
-                    <option value="">По умолчанию</option>
-                    <option value="green">Зеленый</option>
-                    <option value="purple">Пурпурный</option>
-                    <option value="mandarin">Оранжевый</option>
-                </select>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.color"></div>
-            </div>
+            <div>@include('admin.components.select-input', ['title' => 'Цвет', 'field' => 'color', 'options' => ['green' => 'Зеленый', 'purple' => 'Пурпурный', 'mandarin' => 'Оранжевый']])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Алиас</label>
-                <input type="text" x-model="form.alias" class="w-full p-2 border rounded" placeholder="Введите алиас">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.alias"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Описание товара</label>
-                <textarea x-model="form.content" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.content"></div>
-                <div x-show="!errors.content" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Связанные товары (id через запятую)</label>
-                <input type="text" x-model="form.products" class="w-full p-2 border rounded" placeholder="Введите алиас">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.products"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Связанные товары (id через запятую)', 'field' => 'products'])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">

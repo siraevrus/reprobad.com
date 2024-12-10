@@ -7,93 +7,27 @@
             @csrf
 
             <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <label class="block font-semibold mb-2">Обложка</label>
-                    <label
-                        class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                    >
-                        <p x-show="!form.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'image')" class="hidden" x-ref="fileInput">
-                        <img :src="form.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image">
-                        <button x-show="form.image" @click="removeImage('image')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                    </label>
-                </div>
-                <div>
-                    <label class="block font-semibold mb-2">Фото внутри</label>
-                    <label
-                        class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                    >
-                        <p x-show="!form.photo">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'photo')" class="hidden" x-ref="fileInput">
-                        <img :src="form.photo" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.photo">
-                        <button x-show="form.image" @click="removeImage('photo')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                    </label>
-                </div>
+                <div>@include('admin.components.image-input', ['title' => 'Обложка', 'field' => 'image'])</div>
+                <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'photo'])</div>
             </div>
 
-            <div>
-                <label class="block font-semibold mb-2">Логотип</label>
-                <label
-                    class="block w-full w-lg-half h-[100px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                >
-                    <p x-show="!form.logo">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                    <input type="file" @change="uploadImage($event, 'logo')" class="hidden" x-ref="fileInput">
-                    <img :src="form.logo" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.logo">
-                    <button x-show="form.logo" @click="removeImage('logo')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                </label>
-            </div>
+            <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Заголовок</label>
-                <input type="text" x-model="form.title" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.title"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Подзаголовок</label>
-                <input type="text" x-model="form.subtitle" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.subtitle"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Подзаголовок', 'field' => 'subtitle'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Алиас</label>
-                <input type="text" x-model="form.alias" class="w-full p-2 border rounded" placeholder="Введите алиас">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.alias"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Описание</label>
-                <textarea type="text" x-model="form.description" class="w-full p-2 border rounded" placeholder="Введите описание"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.description"></div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Содержание</label>
-                <textarea x-model="form.content" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.content"></div>
-                <div x-show="!errors.content" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Состав</label>
-                <textarea x-model="form.includes" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.includes"></div>
-                <div x-show="!errors.includes" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Состав', 'field' => 'includes'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Применение</label>
-                <textarea x-model="form.usage" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.usage"></div>
-                <div x-show="!errors.usage" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Применение', 'field' => 'usage'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">О продукте</label>
-                <textarea x-model="form.about" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.about"></div>
-                <div x-show="!errors.about" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.textarea-input', ['title' => 'О продукте', 'field' => 'about'])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">

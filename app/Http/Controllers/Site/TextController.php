@@ -10,7 +10,7 @@ class TextController extends Controller
 {
     public function show($alias): View
     {
-        $resource = Text::query()->where('alias', $alias)->firstOrFail();
+        $resource = Text::active()->where('alias', $alias)->firstOrFail();
         return view('site.text.show', compact('resource'));
     }
 }

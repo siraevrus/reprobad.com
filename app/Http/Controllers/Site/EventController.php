@@ -12,8 +12,8 @@ class EventController extends Controller
 {
     public function index(Request $request): View
     {
-        $resources = Event::query();
-        $categories = Event::query()->distinct()->pluck('category');
+        $resources = Event::active();
+        $categories = Event::active()->distinct()->pluck('category');
 
         if($request->get('category')) {
             $resources = $resources->where('category', $request->get('category'));
@@ -28,7 +28,7 @@ class EventController extends Controller
 
         $resources = $resources->paginate(7);
 
-        $all = Event::query()->get();
+        $all = Event::active()->get();
         $categories = $categories->map(function ($item) use ($all) {
             return [
                 'name' => $item,
@@ -46,8 +46,8 @@ class EventController extends Controller
 
     public function show($alias): View
     {
-        $resource = Event::query()->where('alias', $alias)->firstOrFail();
-        $other = Event::query()
+        $resource = Event::active()->where('alias', $alias)->firstOrFail();
+        $other = Event::active()
             ->where('category', $resource->category)
             ->where('id', '!=', $resource->id)
             ->take(6)

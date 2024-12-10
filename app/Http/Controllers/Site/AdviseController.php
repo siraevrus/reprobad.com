@@ -13,8 +13,8 @@ class AdviseController extends Controller
 {
     public function index(): View
     {
-        $resources = Advise::query();
-        $categories = Advise::query()->distinct()->pluck('category');
+        $resources = Advise::active();
+        $categories = Advise::active()->distinct()->pluck('category');
 
         if(request()->get('category')) {
             $resources = $resources->where('category', request()->get('category'));
@@ -29,10 +29,11 @@ class AdviseController extends Controller
 
         $resources = $resources->paginate(7);
 
-        $categories = $categories->map(function ($item) use ($resources) {
+        $all = Advise::active()->get();
+        $categories = $categories->map(function ($item) use ($all) {
             return [
                 'name' => $item,
-                'count' => $resources->where('category', $item)->count()
+                'count' => $all->where('category', $item)->count()
             ];
         });
 
@@ -46,8 +47,8 @@ class AdviseController extends Controller
 
     public function show($alias): View
     {
-        $resource = Advise::query()->where('alias', $alias)->firstOrFail();
-        $other = Advise::query()
+        $resource = Advise::active()->where('alias', $alias)->firstOrFail();
+        $other = Advise::active()
             ->where('category', $resource->category)
             ->where('id', '!=', $resource->id)
             ->take(6)

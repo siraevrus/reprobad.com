@@ -4,85 +4,29 @@
     <div x-data="app()">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} событие</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
-            @csrf <!-- Добавляем CSRF-токен -->
-            <!-- Поле для заголовка -->
-            <div>
-                <label class="block font-semibold mb-2">Фото</label>
-                <label
-                    class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                >
-                    <p x-show="!form.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                    <input type="file" @change="uploadImage($event, 'image')" class="hidden" x-ref="fileInput">
-                    <img :src="form.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image">
-                    <button x-show="form.image" @click="removeImage('image')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                </label>
-            </div>
-            <div>
-                <label class="block font-semibold mb-2">Лого</label>
-                <label
-                    class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                >
-                    <p x-show="!form.logo">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                    <input type="file" @change="uploadImage($event, 'logo')" class="hidden" x-ref="fileInput">
-                    <img :src="form.logo" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.logo">
-                    <button x-show="form.logo" @click="removeImage('logo')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                </label>
-            </div>
-            <div>
-                <label class="block font-semibold mb-2">Заголовок</label>
-                <input type="text" x-model="form.title" class="w-full p-2 border rounded" placeholder="Введите подзаголовок">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.title"></div>
-            </div>
+            @csrf
 
-            <div>
-                <label class="block font-semibold mb-2">Алиас</label>
-                <input type="text" x-model="form.alias" class="w-full p-2 border rounded" placeholder="Введите алиас">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.alias"></div>
-            </div>
+            <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Даты проведения</label>
-                <input type="text" x-model="form.dates" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.dates"></div>
-            </div>
+            <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Телефон</label>
-                <input type="text" x-model="form.phone" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.phone"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">E-mail</label>
-                <input type="text" x-model="form.email" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.email"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Тег-месяц</label>
-                <input type="text" x-model="form.category" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.category"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Даты проведения', 'field' => 'dates'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Адрес</label>
-                <textarea type="text" x-model="form.address" class="w-full p-2 border rounded" placeholder="Введите описание"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.address"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Телефон', 'field' => 'phone'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Описание</label>
-                <textarea type="text" x-model="form.description" class="w-full p-2 border rounded" placeholder="Введите описание"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.description"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'E-mail', 'field' => 'email'])</div>
 
-            <!-- Поле для содержания -->
-            <div>
-                <label class="block font-semibold mb-2">Содержание</label>
-                <textarea x-model="form.content" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.content"></div>
-                <div x-show="!errors.content" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Тег-месяц', 'field' => 'category'])</div>
+
+            <div>@include('admin.components.text-input', ['title' => 'Адрес', 'field' => 'address'])</div>
+
+            <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
+
+            <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">
