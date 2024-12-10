@@ -6,41 +6,31 @@
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block font-semibold mb-2">Обложка</label>
+                    <label class="block font-semibold mb-2">Фото товара 1</label>
                     <label
                         class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
                     >
-                        <p x-show="!form.image">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'image')" class="hidden" x-ref="fileInput">
-                        <img :src="form.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image">
-                        <button x-show="form.image" @click="removeImage('image')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                        <p x-show="!form.image_left">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                        <input type="file" @change="uploadImage($event, 'image_left')" class="hidden" x-ref="fileInput">
+                        <img :src="form.image_left" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image_left">
+                        <button x-show="form.image_left" @click="removeImage('image_left')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
                     </label>
+                    <input type="text" x-model="form.title_left" class="w-full p-2 border rounded" placeholder="CSS класс для блока">
                 </div>
                 <div>
-                    <label class="block font-semibold mb-2">Фото внутри</label>
+                    <label class="block font-semibold mb-2">Фото товара 2</label>
                     <label
                         class="block w-full w-lg-half h-[220px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
                     >
-                        <p x-show="!form.photo">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                        <input type="file" @change="uploadImage($event, 'photo')" class="hidden" x-ref="fileInput">
-                        <img :src="form.photo" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.photo">
-                        <button x-show="form.image" @click="removeImage('photo')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+                        <p x-show="!form.image_right">Перетащите изображение сюда <br>или нажмите для загрузки</p>
+                        <input type="file" @change="uploadImage($event, 'image_right')" class="hidden" x-ref="fileInput">
+                        <img :src="form.image_right" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.image_right">
+                        <button x-show="form.image_right" @click="removeImage('image_right')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
                     </label>
+                    <input type="text" x-model="form.title_right" class="w-full p-2 border rounded" placeholder="CSS класс для блока">
                 </div>
-            </div>
-
-            <div>
-                <label class="block font-semibold mb-2">Логотип</label>
-                <label
-                    class="block w-full w-lg-half h-[100px] border-2 relative border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer"
-                >
-                    <p x-show="!form.logo">Перетащите изображение сюда <br>или нажмите для загрузки</p>
-                    <input type="file" @change="uploadImage($event, 'logo')" class="hidden" x-ref="fileInput">
-                    <img :src="form.logo" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.logo">
-                    <button x-show="form.logo" @click="removeImage('logo')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
-                </label>
             </div>
 
             <div>
@@ -56,43 +46,33 @@
             </div>
 
             <div>
+                <label class="block font-semibold mb-2">Цвет</label>
+                <select type="text" x-model="form.color" class="w-full p-2 border rounded">
+                    <option value="">По умолчанию</option>
+                    <option value="green">Зеленый</option>
+                    <option value="purple">Пурпурный</option>
+                    <option value="mandarin">Оранжевый</option>
+                </select>
+                <div class="text-red-500 text-xs mt-1" x-text="errors.color"></div>
+            </div>
+
+            <div>
                 <label class="block font-semibold mb-2">Алиас</label>
                 <input type="text" x-model="form.alias" class="w-full p-2 border rounded" placeholder="Введите алиас">
                 <div class="text-red-500 text-xs mt-1" x-text="errors.alias"></div>
             </div>
 
             <div>
-                <label class="block font-semibold mb-2">Описание</label>
-                <textarea type="text" x-model="form.description" class="w-full p-2 border rounded" placeholder="Введите описание"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.description"></div>
-            </div>
-
-            <div>
-                <label class="block font-semibold mb-2">Содержание</label>
+                <label class="block font-semibold mb-2">Описание товара</label>
                 <textarea x-model="form.content" class="w-full p-2 border rounded editor"></textarea>
                 <div class="text-red-500 text-xs mt-1" x-text="errors.content"></div>
                 <div x-show="!errors.content" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
             </div>
 
             <div>
-                <label class="block font-semibold mb-2">Состав</label>
-                <textarea x-model="form.includes" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.includes"></div>
-                <div x-show="!errors.includes" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
-
-            <div>
-                <label class="block font-semibold mb-2">Применение</label>
-                <textarea x-model="form.usage" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.usage"></div>
-                <div x-show="!errors.usage" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
-            </div>
-
-            <div>
-                <label class="block font-semibold mb-2">О продукте</label>
-                <textarea x-model="form.about" class="w-full p-2 border rounded editor"></textarea>
-                <div class="text-red-500 text-xs mt-1" x-text="errors.about"></div>
-                <div x-show="!errors.about" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
+                <label class="block font-semibold mb-2">Связанные товары (id через запятую)</label>
+                <input type="text" x-model="form.products" class="w-full p-2 border rounded" placeholder="Введите алиас">
+                <div class="text-red-500 text-xs mt-1" x-text="errors.products"></div>
             </div>
 
             <!-- Кнопки -->
@@ -120,23 +100,17 @@
                 errors: {},
                 form: {
                     title: '',
-                    description: '',
                     alias: '',
-                    image: '',
-                    logo: '',
-                    photo: '',
-                    content: '',
                     subtitle: '',
-                    includes: '',
-                    usage: '',
-                    text: '',
-                    products: '',
-                    about: '',
+                    content: '',
                     image_left: '',
                     image_right: '',
+                    description: '',
+                    color: '',
+                    products: '',
                     title_left: 'hero-product-1',
                     title_right: 'hero-product-2',
-                    color: ''
+                    active: true
                 },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {
@@ -148,7 +122,7 @@
                     this.initializeEditor();
                 },
                 async get() {
-                    const response = await fetch('/admin/products/' + location.pathname.split('/')[3]);
+                    const response = await fetch('/admin/complex/' + location.pathname.split('/')[3]);
                     const data = await response.json()
                     this.form = data
                 },
@@ -179,7 +153,7 @@
                     const data = await response.json();
                     if (data.success) {
                         if(method === 'POST') {
-                            window.location.href = '/admin/products/';
+                            window.location.href = '/admin/complex/';
                         }else {
                             alert('Данные сохранены');
                         }

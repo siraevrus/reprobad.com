@@ -15,18 +15,18 @@
                     <h2 class="step-h">{!! $product->title !!}</h2>
                     <p class="step-description">{{ $product->subtitle }}</p>
                     <div class="step-products">
-                        <a href="{{ route('site.products.show', $product->alias) }}#first" class="step-product-left w-inline-block">
+                        <a href="{{ route('site.complex.show', $product->alias) }}#first" class="step-product-left w-inline-block">
                             <div class="sache-image-element">
                                 <img src="{{ $product->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                             <div class="step-product-shadow"></div>
                         </a>
-                        <a href="{{ route('site.products.show', $product->alias) }}#second" class="step-product-right w-inline-block">
+                        <a href="{{ route('site.complex.show', $product->alias) }}#second" class="step-product-right w-inline-block">
                             <div class="sache-image-element">
                                 <img src="{{ $product->image_right }}" loading="lazy" alt="" class="sache-image"></div>
                             <div class="step-product-shadow gipokortizol"></div>
                         </a>
                     </div>
-                    <a href="{{ route('site.products.show', $product->alias) }}" class="step-button {{ $product->color }} w-button">Подробнее —&gt;</a>
+                    <a href="{{ route('site.complex.show', $product->alias) }}" class="step-button {{ $product->color }} w-button">Подробнее —&gt;</a>
                 </div>
                 <div class="step-item-overlay {{ $product->color }}"></div>
             </div>

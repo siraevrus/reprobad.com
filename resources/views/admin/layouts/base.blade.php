@@ -63,8 +63,13 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('admin.complex.index') }}" class="{{  request()->segment(2) == 'complex' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">view_stream</span> Комплексы
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('admin.products.index') }}" class="{{  request()->segment(2) == 'products' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">tags</span> Продукты
+                            <span style="width:24px" class="material-icons">sell</span> Продукты
                         </a>
                     </li>
                     <li>

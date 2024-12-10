@@ -204,7 +204,7 @@
                 <a href="articles" class="footer-menu-link">Статьи</a>
             </div>
             <div class="footer-menu-column">
-                <a href="map.html" class="footer-menu-link">Где купить</a>
+                <a href="map" class="footer-menu-link">Где купить</a>
                 <a href="company" aria-current="page" class="footer-menu-link w--current">О компании</a>
                 <a href="faq" aria-current="page" class="footer-menu-link w--current">Вопросы-ответы</a>
                 <a href="contacts" class="footer-menu-link">Контакты</a>
@@ -249,12 +249,12 @@
                         <div class="product-item-content">
                             <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="" class="repro-relax-giper-logo"></div>
                             <p class="product-item-text">{{ $resource->description }}</p>
-                            <a href="{{ route('site.products.show', $resource->alias) }}" class="product-item-link w-inline-block">
+                            <a href="{{ route('site.complex.show', $resource->alias) }}" class="product-item-link w-inline-block">
                                 <div class="sache-image-element"><img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image"></div>
                                 <div class="product-item-image-shadow"></div>
                             </a>
                             <div class="product-item-button-wrap">
-                                <a href="{{ route('site.products.show', $resource->alias) }}" class="button w-button">Подробнее —&gt;</a>
+                                <a href="{{ route('site.complex.show', $resource->alias) }}" class="button w-button">Подробнее —&gt;</a>
                             </div>
                         </div>
                     </div>

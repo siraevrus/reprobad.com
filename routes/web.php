@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdviseController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\ComplexController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\IndexController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\Site\ArticleController as SiteArticleController;
 use App\Http\Controllers\Site\IndexController as SiteIndexController;
 use App\Http\Controllers\Site\EventController as SiteEventController;
 use App\Http\Controllers\Site\ProductController as SiteProductController;
+use App\Http\Controllers\Site\ComplexController as SiteComplexController;
 use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
 use App\Http\Controllers\Site\PageController as SitePageController;
@@ -25,6 +27,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
     Route::resource('/admin/articles', ArticleController::class);
     Route::resource('/admin/pages', PageController::class);
+    Route::resource('/admin/complex', ComplexController::class);
     Route::resource('/admin/events', EventController::class);
     Route::resource('/admin/products', ProductController::class);
     Route::resource('/admin/advises', AdviseController::class);
@@ -53,6 +56,8 @@ Route::get('/events', [SiteEventController::class, 'index'])->name('site.events.
 Route::get('/events/{alias}', [SiteEventController::class, 'show'])->name('site.events.show');
 Route::get('/products', [SiteProductController::class, 'index'])->name('site.products.index');
 Route::get('/products/{alias}', [SiteProductController::class, 'show'])->name('site.products.show');
+Route::get('/complex', [SiteComplexController::class, 'index'])->name('site.complex.index');
+Route::get('/complex/{alias}', [SiteComplexController::class, 'show'])->name('site.complex.show');
 Route::get('/text', [SiteTextController::class, 'index'])->name('site.text.index');
 Route::get('/text/{alias}', [SiteTextController::class, 'show'])->name('site.text.show');
 Route::get('/usefully-tips', [SiteAdviseController::class, 'index'])->name('site.advises.index');

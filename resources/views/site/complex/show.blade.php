@@ -6,7 +6,7 @@
             <div class="product-hero">
                 <h1 class="product-h1 small">{!! $resource->title !!}</h1>
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
-                <p class="product-hero-p">{!! $resource->text !!}</p>
+                <p class="product-hero-p">{!! $resource->content !!}</p>
                 <div class="product-buy-buttons">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
@@ -22,64 +22,6 @@
             </div>
         </div>
         <div class="product-hero-gradient"></div>
-    </section>
-    <section id="first" class="section product-section">
-        <div class="container product-container">
-            <div class="product-head">
-                <div class="product-head-logo"><img src="{{ $resource->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
-                <p class="product-head-descriptor">{{ $resource->description }}</p>
-                <p class="product-head-text"> </p><img src="{{ $resource->photo }}" loading="lazy" alt="" class="product-head-image">
-                <div class="product-buy-buttons">
-                    {{--
-                    <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
-                    --}}
-                </div>
-            </div>
-            <div class="product-body">
-                <div class="product-options">
-                    <a href="#" class="product-options-tab w-inline-block">
-                        <div>Описание</div>
-                    </a>
-                    <div class="product-options-tab-content">
-                        <div class="product-options-content-wrap">
-                            <div class="product-options-content">
-                                {!! $resource->content !!}
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="product-options-tab w-inline-block">
-                        <div>Состав</div>
-                    </a>
-                    <div class="product-options-tab-content">
-                        <div class="product-options-content-wrap">
-                            <div class="product-options-content">
-                                {!! $resource->includes !!}
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="product-options-tab w-inline-block">
-                        <div>Применение</div>
-                    </a>
-                    <div class="product-options-tab-content">
-                        <div class="product-options-content-wrap">
-                            <div class="product-options-content">
-                                {!! $resource->usage !!}
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="product-options-tab w-inline-block">
-                        <div>О продукте</div>
-                    </a>
-                    <div class="product-options-tab-content">
-                        <div class="product-options-content-wrap">
-                            <div class="product-options-content">
-                                {!! $resource->about !!}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     @if($resource->products)
@@ -206,26 +148,26 @@
             </div>
             <div>
                 <div class="_4-steps-wrap">
-                    @foreach($products as $idx => $product)
-                        <div class="step-item {{ $product->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+                    @foreach($resources as $idx => $complex)
+                        <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
                             <div class="step-item-content">
-                                <h2 class="step-h">{!! $product->title !!}</h2>
-                                <p class="step-description">{{ $product->subtitle }}</p>
+                                <h2 class="step-h">{!! $complex->title !!}</h2>
+                                <p class="step-description">{{ $complex->subtitle }}</p>
                                 <div class="step-products">
-                                    <a href="{{ route('site.complex.show', $product->alias) }}#first" class="step-product-left w-inline-block">
+                                    <a href="{{ route('site.complex.show', $complex->alias) }}#first" class="step-product-left w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $product->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                                            <img src="{{ $complex->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                                         <div class="step-product-shadow"></div>
                                     </a>
-                                    <a href="{{ route('site.complex.show', $product->alias) }}#second" class="step-product-right w-inline-block">
+                                    <a href="{{ route('site.complex.show', $complex->alias) }}#second" class="step-product-right w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $product->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                                            <img src="{{ $complex->image_right }}" loading="lazy" alt="" class="sache-image"></div>
                                         <div class="step-product-shadow gipokortizol"></div>
                                     </a>
                                 </div>
-                                <a href="{{ route('site.complex.show', $product->alias) }}" class="step-button {{ $product->color }} w-button">Подробнее —&gt;</a>
+                                <a href="{{ route('site.complex.show', $complex->alias) }}" class="step-button {{ $complex->color }} w-button">Подробнее —&gt;</a>
                             </div>
-                            <div class="step-item-overlay {{ $product->color }}"></div>
+                            <div class="step-item-overlay {{ $complex->color }}"></div>
                         </div>
                     @endforeach
                 </div>
