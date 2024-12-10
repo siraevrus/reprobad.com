@@ -8,8 +8,11 @@ class Product extends Model
 {
     protected $guarded = ['id'];
 
-    public function complex(): void
+    protected $with = ['complex'];
+
+    public function complex()
     {
-        $this->belongsTo(Complex::class, 'complex_id', 'id');
+        return $this->belongsTo(Complex::class, 'complex_id', 'id')
+            ->withDefault();
     }
 }

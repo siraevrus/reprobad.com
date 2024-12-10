@@ -12,8 +12,8 @@ class Complex extends Model
 
     public $timestamps = false;
 
-    public function products(): void
+    public function products()
     {
-        $this->hasMany(Product::class, 'complex_id', 'id');
+        return $this->hasMany(Product::class, 'complex_id', 'id');
     }
 }
