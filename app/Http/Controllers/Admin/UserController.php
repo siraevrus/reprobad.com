@@ -101,6 +101,7 @@ class UserController extends Controller
         $resource = User::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 }

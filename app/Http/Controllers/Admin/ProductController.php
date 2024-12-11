@@ -116,6 +116,7 @@ class ProductController extends Controller
         $resource = Product::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 
@@ -135,7 +136,7 @@ class ProductController extends Controller
             $resourceAbove->save();
         }
         $resource->save();
-
+        session()->flash('message', 'Порядок элементов обновлен');
         return back();
     }
 
@@ -155,7 +156,7 @@ class ProductController extends Controller
             $resourceBelow->save();
         }
         $resource->save();
-
+        session()->flash('message', 'Порядок элементов обновлен');
         return back();
     }
 

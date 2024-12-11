@@ -97,6 +97,7 @@ class PageController extends Controller
         $resource = Page::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 }

@@ -105,7 +105,7 @@ class AdviseController extends Controller
         $resource = Advise::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
-        session()->flash('success', 'Обновлено');
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 
@@ -114,7 +114,7 @@ class AdviseController extends Controller
         $resource = Advise::findOrFail($id);
         $resource->home = $resource->home == false;
         $resource->save();
-        session()->flash('success', 'Обновлено');
+        session()->flash('message', 'Элементы на главной странице обновлены');
         return back();
     }
 }

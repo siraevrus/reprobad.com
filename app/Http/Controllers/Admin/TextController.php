@@ -102,6 +102,7 @@ class TextController extends Controller
         $resource = Text::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 }

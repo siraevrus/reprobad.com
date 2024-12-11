@@ -114,7 +114,7 @@ class ArticleController extends Controller
         $resource = Article::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
-        session()->flash('success', 'Обновлено');
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 
@@ -123,7 +123,7 @@ class ArticleController extends Controller
         $resource = Article::findOrFail($id);
         $resource->home = $resource->home == false;
         $resource->save();
-        session()->flash('success', 'Обновлено');
+        session()->flash('message', 'Элементы на главной странице обновлены');
         return back();
     }
 }

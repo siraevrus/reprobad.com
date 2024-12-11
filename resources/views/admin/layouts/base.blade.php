@@ -94,9 +94,16 @@
             </nav>
         </aside>
 
-        <!-- Основной контент -->
-        <main class="w-5/6 bg-white shadow rounded-lg p-6">
+        <main class="w-5/6">
+            @if(Session::has('message'))
+            <div class="shadow rounded-lg py-2 px-4 mb-4 bg-green-200 border text-green-700 border-green-300">
+                <p class="alert">{{ session()->get('message') }}</p>
+            </div>
+            @endif
+
+            <div class="bg-white shadow rounded-lg p-6">
             @yield('content')
+            </div>
         </main>
     </div>
 </div>

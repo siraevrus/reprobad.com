@@ -122,6 +122,7 @@ class ComplexController extends Controller
         $resource = Complex::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
         return back();
     }
 
@@ -141,7 +142,7 @@ class ComplexController extends Controller
             $resourceAbove->save();
         }
         $resource->save();
-
+        session()->flash('message', 'Порядок элементов обновлен');
         return back();
     }
 
@@ -161,7 +162,7 @@ class ComplexController extends Controller
             $resourceBelow->save();
         }
         $resource->save();
-
+        session()->flash('message', 'Порядок элементов обновлен');
         return back();
     }
 
