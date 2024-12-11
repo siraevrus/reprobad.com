@@ -37,7 +37,7 @@ class ProductController extends Controller
 
     public function index(): View
     {
-        $resources = Product::query()->paginate(20);
+        $resources = Product::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.products.index', compact('resources'));
     }
 

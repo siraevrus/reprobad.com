@@ -26,7 +26,7 @@ class AdviseController extends Controller
 
     public function index(): View
     {
-        $resources = Advise::query()->paginate(20);
+        $resources = Advise::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.advises.index', compact('resources'));
     }
 

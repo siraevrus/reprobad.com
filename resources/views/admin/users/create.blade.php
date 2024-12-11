@@ -4,25 +4,13 @@
     <div x-data="app()">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} пользователя</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
-            @csrf <!-- Добавляем CSRF-токен -->
-            <!-- Поле для заголовка -->
-            <div>
-                <label class="block font-semibold mb-2">Имя</label>
-                <input type="text" x-model="form.name" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.name"></div>
-            </div>
+            @csrf
 
-            <div>
-                <label class="block font-semibold mb-2">E-mail</label>
-                <input type="text" x-model="form.email" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.email"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'Имя', 'field' => 'name'])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Пароль</label>
-                <input type="text" x-model="form.password" class="w-full p-2 border rounded" placeholder="">
-                <div class="text-red-500 text-xs mt-1" x-text="errors.password"></div>
-            </div>
+            <div>@include('admin.components.text-input', ['title' => 'E-mail', 'field' => 'email'])</div>
+
+            <div>@include('admin.components.text-input', ['title' => 'Пароль', 'field' => 'password'])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">

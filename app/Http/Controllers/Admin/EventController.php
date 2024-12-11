@@ -31,7 +31,7 @@ class EventController extends Controller
 
     public function index(): View
     {
-        $resources = Event::query()->paginate(20);
+        $resources = Event::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.events.index', compact('resources'));
     }
 

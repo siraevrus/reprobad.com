@@ -15,7 +15,7 @@ class PageController extends Controller
 {
     public function index(): View
     {
-        $resources = Page::query()->paginate(20);
+        $resources = Page::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.pages.index', compact('resources'));
     }
 

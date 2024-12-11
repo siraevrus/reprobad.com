@@ -14,7 +14,7 @@ class TextController extends Controller
 {
     public function index(): View
     {
-        $resources = Text::query()->paginate(20);
+        $resources = Text::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.text.index', compact('resources'));
     }
 

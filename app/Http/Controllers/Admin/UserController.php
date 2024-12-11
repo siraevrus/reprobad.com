@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function index(): View
     {
-        $resources = User::query()->paginate(20);
+        $resources = User::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.users.index', compact('resources'));
     }
 

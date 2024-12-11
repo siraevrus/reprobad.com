@@ -27,7 +27,7 @@ class ArticleController extends Controller
 
     public function index(): View
     {
-        $resources = Article::query()->paginate(5);
+        $resources = Article::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.articles.index', compact('resources'));
     }
 

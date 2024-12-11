@@ -30,7 +30,7 @@ class ComplexController extends Controller
 
     public function index(): View
     {
-        $resources = Complex::query()->paginate(20);
+        $resources = Complex::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.complex.index', compact('resources'));
     }
 
