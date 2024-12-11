@@ -19,7 +19,7 @@ class IndexController extends Controller
             'title' => 'Главная'
         ];
         $resources = Article::active()->take(5)->get();
-        $complexes = Complex::all();
+        $complexes = Complex::active()->get();
         $events = Event::active()->take(2)->get();
         return view('site.index', compact('resource', 'complexes', 'resources', 'events'));
     }
