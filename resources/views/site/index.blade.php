@@ -15,13 +15,37 @@
         </div>
     </div>
 </section>
-<section class="section home-buy-section">
-    <div class="container home-buy-container">
-        <a href="products" class="home-buy-button w-inline-block"></a>
+
+<section class="articles-section" style="margin-top:2rem">
+    <div class="container articles-section-container">
+        <div class="section-head-with-detali-button">
+            <h2 class="big-section-h"><strong>Советы и статьи </strong>о совместной подготовке к успешному зачатию, беременности и улучшению здоровья</h2>
+            <a href="{{ route('site.advises.index') }}" class="more-purple-button w-button">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
+        </div>
+        <div class="items-wrap white-cards">
+            @foreach($resources as $idx => $item)
+                @if($idx == 3)
+                    @include('site.components.subscribe-block')
+                    @include('site.components.articles.item', ['item' => $item])
+                @else
+                    @include('site.components.articles.item', ['item' => $item])
+                @endif
+            @endforeach
+        </div>
     </div>
 </section>
+
 <section class="widgets-section">
     <div class="container widgets-container">
+        <div class="short-events"><img src="images/bg-cal.svg" loading="lazy" alt="" class="short-events-bg-image">
+            <div class="section-head-with-detali-button short-events-section">
+                <h2 class="big-section-h"><strong>Ближайшие</strong>&nbsp;мероприятия</h2>
+                <a href="{{ route('site.events.index') }}" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>
+            </div>
+            @foreach($events as $item)
+                @include('site.components.events.item', ['item' => $item])
+            @endforeach
+        </div>
         <div class="widgets-column">
             <div class="map-widget">
                 <h2 class="widget-h"><strong>Купить СИСТЕМУ РЕПРО</strong> <span class="inline-text-block">в ближайшей к вам аптеке</span></h2><img src="images/widget-map.webp" loading="lazy" sizes="(max-width: 767px) 100vw, 33vw" srcset="images/widget-map-p-500.webp 500w, images/widget-map.webp 680w" alt="" class="map-widget-image">

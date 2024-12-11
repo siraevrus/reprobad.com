@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
+use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -48,12 +49,8 @@ class AdviseController extends Controller
     public function show($alias): View
     {
         $resource = Advise::active()->where('alias', $alias)->firstOrFail();
-        $other = Advise::active()
-            ->where('category', $resource->category)
-            ->where('id', '!=', $resource->id)
-            ->take(6)
-            ->get();
-        return view('site.advises.show', compact('resource', 'other'));
+        $events = Event::active()->take(6)->get();
+        return view('site.advises.show', compact('resource', 'events'));
     }
 
     public function subscribe(Request $request): JsonResponse
