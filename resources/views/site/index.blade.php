@@ -78,71 +78,25 @@
                 <h2 class="widget-h"><strong>15 вопросов репродуктологу </strong><span class="inline-text-block">на первом приёме </span></h2>
                 <div class="questions-slider">
                     <div class="questions-slider-wrap">
+
                         <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Есть ли возрастные ограничения для лечения бесплодия?</div>
+                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
                             <div class="questions-slide-text"> </div>
                         </div>
                         <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какие вспомогательные репродуктивные технологии (ВРТ) доступны на сегодняшний день?</div>
-                            <div class="questions-slide-text"> </div>
+                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
+                            <div class="questions-slide-text"> </div>
                         </div>
                         <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какие показания и противопоказания есть к существующим методикам зачатия?</div>
-                            <div class="questions-slide-text"> </div>
+                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
+                            <div class="questions-slide-text"> </div>
                         </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Что лучше выбрать – внутриматочную инсеминацию (ВМИ) или экстракорпоральное оплодотворение (ЭКО)?</div>
-                            <div class="questions-slide-text"> </div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Как подготовить организм к процедуре ЭКО?</div>
-                            <div class="questions-slide-text"> </div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какое питание рекомендовано при планировании беременности? </div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какие витамины и минералы могут поддержать организм при подготовке к ЭКО?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Сколько времени от начала до конца занимает каждая процедура?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какие анализы и обследования нужно пройти предварительно?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Лучше перенести один или несколько эмбрионов?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">От чего зависит успех протокола?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Сколько раз можно повторять процедуру ЭКО?<br></div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Можно ли сделать процедуру ЭКО по ОМС?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какие побочные эффекты от лечения могут возникнуть?</div>
-                            <div class="questions-slide-text"></div>
-                        </div>
+
                     </div>
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    <a href="article.html" class="button w-button">Узнать больше —&gt;</a>
+                    <a href="articles" class="button w-button">Узнать больше —&gt;</a>
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>

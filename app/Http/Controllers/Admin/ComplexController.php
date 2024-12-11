@@ -58,6 +58,7 @@ class ComplexController extends Controller
             ->create($validator->validated());
 
         if($request->get('products')) {
+            Product::query()->update(['complex_id' => '']);
             $productIds = array_filter(array_map('trim', explode(',', $request->products)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
         }
@@ -88,6 +89,7 @@ class ComplexController extends Controller
         $resource->save();
 
         if($request->get('products')) {
+            Product::query()->update(['complex_id' => '']);
             $productIds = array_filter(array_map('trim', explode(',', $request->products)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
         }
