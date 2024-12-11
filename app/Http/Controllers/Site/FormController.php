@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
+use App\Mail\DefaultMail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class FormController extends Controller
 {
@@ -23,6 +25,8 @@ class FormController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
 
         return response()->json(['success' => true]);
     }
@@ -45,6 +49,8 @@ class FormController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
 
         return response()->json(['success' => true]);
     }

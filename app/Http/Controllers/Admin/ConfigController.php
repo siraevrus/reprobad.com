@@ -33,6 +33,8 @@ class ConfigController extends Controller
             'email2' => 'string|nullable',
             'telegram' => 'string|nullable',
             'rutube' => 'string|nullable',
+            'ok' => 'string|nullable',
+            'vk' => 'string|nullable',
         ]);
 
         foreach($validated as $key => $value) {

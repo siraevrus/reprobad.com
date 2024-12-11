@@ -115,11 +115,19 @@
                         if(method === 'POST') {
                             window.location.href = '/admin/products/';
                         }else {
-                            alert('Данные сохранены');
+                            this.showAlert('Сохранено');
                         }
                     } else {
                         this.errors = data.errors;
                     }
+                },
+                showAlert(message) {
+                    this.alert.show = false;
+                    this.$nextTick(() => {
+                        this.alert.show = true;
+                        this.alert.message = message;
+                        setTimeout(() => this.alert.show = false, 1000);
+                    });
                 },
                 async userIsNotActive() {
                     let idleTime = 0;

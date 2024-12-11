@@ -2,6 +2,12 @@
 
 @section('content')
     <div x-data="app()">
+
+        <div class="fixed bg-green-400 border text-white border-green-500 text-green-800 top-[20px] px-4 py-2 rounded z-50"
+             x-show="alert.show"
+             x-text="alert.message"
+        ></div>
+
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} статью</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
@@ -70,7 +76,7 @@
                     }
 
                     this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    await this.userIsNotActive();
+                    //await this.userIsNotActive();
                     this.initializeEditor();
                 },
                 async get() {
@@ -104,10 +110,23 @@
 
                     const data = await response.json();
                     if (data.success) {
-                        this.form = data.resource;
+                        if(method === 'POST') {
+                            window.location.href = '/admin/articles/';
+                        }else {
+                            this.form = data.resource;
+                            this.showAlert('Сохранено');
+                        }
                     } else {
                         this.errors = data.errors;
                     }
+                },
+                showAlert(message) {
+                    this.alert.show = false;
+                    this.$nextTick(() => {
+                        this.alert.show = true;
+                        this.alert.message = message;
+                        setTimeout(() => this.alert.show = false, 1000);
+                    });
                 },
                 async userIsNotActive() {
                     let idleTime = 0;

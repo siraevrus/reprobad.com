@@ -55,6 +55,20 @@
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('rutube') }}</div>
             @endif
         </div>
+        <div>
+            <label class="block font-semibold mb-2">OK</label>
+            <input type="text" value="{{ $config->ok ?? '' }}" name="ok" class="w-full p-2 border rounded" placeholder="">
+            @if($errors->has('ok'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('ok') }}</div>
+            @endif
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">VK</label>
+            <input type="text" value="{{ $config->vk ?? '' }}" name="vk" class="w-full p-2 border rounded" placeholder="">
+            @if($errors->has('vk'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('vk') }}</div>
+            @endif
+        </div>
 
         <!-- Кнопки -->
         <div class="flex justify-end gap-4">
