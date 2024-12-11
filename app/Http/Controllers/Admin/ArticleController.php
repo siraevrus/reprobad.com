@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Event;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -113,6 +114,16 @@ class ArticleController extends Controller
         $resource = Article::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('success', 'Обновлено');
+        return back();
+    }
+
+    public function home($id): RedirectResponse
+    {
+        $resource = Article::findOrFail($id);
+        $resource->home = $resource->home == false;
+        $resource->save();
+        session()->flash('success', 'Обновлено');
         return back();
     }
 }

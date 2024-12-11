@@ -11,6 +11,11 @@
     </a>
     @endif
 
+    @if(in_array($route, ['articles', 'advises', 'events']))
+    <a href="{{ route("admin.$route.home", $resource->id) }}" class="text-{{ $resource->home ? 'blue-500' : 'gray-300' }} hover:text-blue-700">
+        <span class="material-icons">home</span>
+    </a>
+    @endif
     <a href="{{ route("admin.$route.edit", $resource->id) }}" class="text-blue-500 hover:text-blue-700">
         <span class="material-icons">edit</span>
     </a>

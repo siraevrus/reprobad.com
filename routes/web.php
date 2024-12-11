@@ -51,6 +51,10 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
 
     Route::get('/admin/products/{alias}/down', [ProductController::class, 'down'])->name('products.down');
     Route::get('/admin/complex/{alias}/down', [ComplexController::class, 'down'])->name('complex.down');
+
+    Route::get('/admin/articles/{alias}/home', [ArticleController::class, 'home'])->name('articles.home');
+    Route::get('/admin/events/{alias}/home', [EventController::class, 'home'])->name('events.home');
+    Route::get('/admin/advises/{alias}/home', [AdviseController::class, 'home'])->name('advises.home');
 });
 
 Route::get('/', [SiteIndexController::class, 'index'])->name('site.index');

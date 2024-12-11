@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advise;
 use App\Models\Article;
 use App\Models\Event;
 use App\Models\Product;
@@ -110,6 +111,16 @@ class EventController extends Controller
         $resource = Event::query()->findOrFail($id);
         $resource->active = $resource->active === 0;
         $resource->save();
+        session()->flash('success', 'Обновлено');
+        return back();
+    }
+
+    public function home($id): RedirectResponse
+    {
+        $resource = Event::findOrFail($id);
+        $resource->home = $resource->home == false;
+        $resource->save();
+        session()->flash('success', 'Обновлено');
         return back();
     }
 }
