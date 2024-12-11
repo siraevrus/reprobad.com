@@ -128,7 +128,7 @@
                     <a href="events" class="nav-link hide-desktop">События</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="articles" class="nav-link hide-desktop">Статьи</a>
-                    <a href="map" class="nav-link">Где купить</a>
+                    {{-- <a href="map" class="nav-link">Где купить</a> --}}
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
@@ -143,7 +143,7 @@
                     <a href="events" class="nav-link hide-desktop">События</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Статьи</a>
-                    <a href="map" class="nav-link">Где купить</a>
+                    {{-- <a href="map" class="nav-link">Где купить</a> --}}
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
@@ -230,7 +230,7 @@
                 <a href="articles" class="footer-menu-link">Статьи</a>
             </div>
             <div class="footer-menu-column">
-                <a href="map" class="footer-menu-link">Где купить</a>
+                {{-- <a href="map" class="footer-menu-link">Где купить</a> --}}
                 <a href="company" aria-current="page" class="footer-menu-link w--current">О компании</a>
                 <a href="faq" aria-current="page" class="footer-menu-link w--current">Вопросы-ответы</a>
                 <a href="contacts" class="footer-menu-link">Контакты</a>
@@ -318,7 +318,7 @@
                     <a href="events" aria-current="page" class="nav-link hide-desktop w--current">События</a>
                     <a href="usefulyl-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Статьи</a>
-                    <a href="map" class="nav-link">Где купить</a>
+                    {{-- <a href="map" class="nav-link">Где купить</a> --}}
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
@@ -333,7 +333,7 @@
                     <a href="events" aria-current="page" class="nav-link hide-desktop w--current">События</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Статьи</a>
-                    <a href="map" class="nav-link">Где купить</a>
+                    {{-- <a href="map" class="nav-link">Где купить</a> --}}
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>

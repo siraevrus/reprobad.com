@@ -10,6 +10,7 @@
                 <th class="py-3 px-6 text-left">#</th>
                 <th class="py-3 px-6 text-left">Фото</th>
                 <th class="py-3 px-6 text-left">Заголовок</th>
+                <th class="py-3 px-6 text-left">Порядок</th>
                 <th class="py-3 px-6 text-center">Действия</th>
             </tr>
             </thead>
@@ -23,6 +24,7 @@
                     <td class="py-3 px-6">
                         {{ strip_tags($resource->title) }} <br> <b class="text-bold">{{ $resource->alias }}</b>
                     </td>
+                    <td class="py-3 px-6">{{ $resource->sort  }}</td>
                     <td class="py-3 px-6 text-center">
                         @include('admin.components.controls', ['route' => 'products', 'resource' => $resource])
                     </td>

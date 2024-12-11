@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $title
@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $title_right
  * @property string|null $description
  * @property string|null $color
+ * @property integer|null $sort
  * @property int $active
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  * @property-read int|null $products_count
@@ -55,6 +56,12 @@ class Complex extends Model
 
     public function scopeActive(Builder $query): void
     {
-        $query->where('active', 1);
+        $query->where('active', 1)
+            ->orderBy('sort', 'ASC');
+    }
+
+    public function scopeSorted(Builder $query): void
+    {
+        $query->orderBy('sort', 'ASC');
     }
 }

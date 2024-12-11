@@ -45,6 +45,12 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/users/{alias}/switch', [UserController::class, 'switch'])->name('users.switch');
     Route::get('/admin/text/{alias}/switch', [TextController::class, 'switch'])->name('text.switch');
     Route::get('/admin/complex/{alias}/switch', [ComplexController::class, 'switch'])->name('complex.switch');
+
+    Route::get('/admin/products/{alias}/up', [ProductController::class, 'up'])->name('products.up');
+    Route::get('/admin/complex/{alias}/up', [ComplexController::class, 'up'])->name('complex.up');
+
+    Route::get('/admin/products/{alias}/down', [ProductController::class, 'down'])->name('products.down');
+    Route::get('/admin/complex/{alias}/down', [ComplexController::class, 'down'])->name('complex.down');
 });
 
 Route::get('/', [SiteIndexController::class, 'index'])->name('site.index');
