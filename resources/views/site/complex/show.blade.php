@@ -25,13 +25,14 @@
     </section>
 
     @if($resource->products)
+        @php $idx = 1 @endphp
         @foreach($resource->products as $product)
             <section id="first" class="section product-section">
                 <div class="container product-container">
-                    <div class="product-head">
+                    <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
                         <p class="product-head-descriptor">{{ $product->description }}</p>
-                        <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image">
+                        <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                         <div class="product-buy-buttons">
                             {{--
                             <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
