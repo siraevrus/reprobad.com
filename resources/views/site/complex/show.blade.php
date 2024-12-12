@@ -93,7 +93,7 @@
         <div class="container articles-section-container">
             <div class="section-head-with-detali-button">
                 <h2 class="big-section-h product-articles-h"><strong>Полезные советы</strong> и статьи</h2>
-                <a href="{{ route('site.advises.index') }}" class="more-purple-button w-button">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
+                <a href="{{ route('site.advises.index') }}" class="more-{{ $resource->color }}-button w-button" style="background-color: #fff;">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
             </div>
             <div class="items-wrap white-cards">
                 @foreach($articles as $item)
