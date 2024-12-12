@@ -462,6 +462,19 @@
         background-color: #fff !important;
         color: #498aa9 !important;
     }
+
+    .articles-section.product-articles .more-green-button,
+    .articles-section.product-articles .more-mandarin-button,
+    .articles-section.product-articles .more-purple-button {
+        text-align: center;
+        text-transform: uppercase;
+        border-radius: 10rem;
+        padding: .75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.5;
+        transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
+    }
 </style>
 </body>
 </html>
