@@ -31,7 +31,7 @@
                 <div class="container product-container">
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
-                        <p class="product-head-descriptor">{{ $product->description }}</p>
+                        <p class="product-head-descriptor text-{{ $prodcut->color }}">{{ $product->description }}</p>
                         <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                         <div class="product-buy-buttons">
                             {{--

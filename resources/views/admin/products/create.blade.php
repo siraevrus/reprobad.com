@@ -19,6 +19,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
+            <div>@include('admin.components.select-input', ['title' => 'Цвет', 'field' => 'color', 'options' => ['green' => 'Зеленый', 'purple' => 'Пурпурный', 'mandarin' => 'Оранжевый']])</div>
+
             <div>@include('admin.components.select-input', ['title' => 'Связанный комплекс (id)', 'field' => 'complex_id', 'options' => App\Models\Complex::pluck('alias', 'id')->toArray()])</div>
 
             <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
