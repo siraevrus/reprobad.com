@@ -57,9 +57,9 @@ class ComplexController extends Controller
         $resource = Complex::query()
             ->create($validator->validated());
 
-        if($request->get('product_ids')) {
+        if($request->product_ids) {
             Product::query()->update(['complex_id' => 0]);
-            $productIds = array_filter(array_map('trim', explode(',', $request->products)));
+            $productIds = array_filter(array_map('trim', explode(',', $request->product_ids)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
         }
 
@@ -88,9 +88,9 @@ class ComplexController extends Controller
         $resource->fill($validator->validated());
         $resource->save();
 
-        if($request->get('product_ids')) {
+        if($request->product_ids) {
             Product::query()->update(['complex_id' => 0]);
-            $productIds = array_filter(array_map('trim', explode(',', $request->products)));
+            $productIds = array_filter(array_map('trim', explode(',', $request->product_ids)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
         }
 
