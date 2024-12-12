@@ -447,7 +447,6 @@
 
     .step-item.mandarin { background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb); }
     .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6); }
-
     .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface); }
 
     .articles-section.product-articles .more-green-button {
@@ -463,9 +462,7 @@
         color: #498aa9 !important;
     }
 
-    .articles-section.product-articles .more-green-button,
-    .articles-section.product-articles .more-mandarin-button,
-    .articles-section.product-articles .more-purple-button {
+    .custom-button-product {
         text-align: center;
         text-transform: uppercase;
         border-radius: 10rem;
@@ -474,6 +471,14 @@
         font-weight: 700;
         line-height: 1.5;
         transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    .custom-button-product:hover {
+        opacity: 1;
+        color: var(--white);
+        background-color: #70639f;
+        text-decoration: none;
+        transform: scale(1.02);
     }
 </style>
 </body>
