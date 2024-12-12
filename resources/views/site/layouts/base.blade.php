@@ -425,9 +425,32 @@
 
 </script>
 <style>
-    .step-item-overlay.green, .background-green { background-color: #93b27866 !important; }
+    .step-item-overlay.green, .background-green { background: #93b27866 !important; }
     .step-item-overlay.mandarin, .background-mandarin { background-color: #ff967b66 !important; }
     .step-item-overlay.purple, .background-purple { background-color: #9f99de66 !important; }
+
+    .background-green {
+        background-color: #839f6a;
+        background-image: url('/images/prod-lines.webp'), radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface);
+        background-position: 50%, 0 0;
+        background-repeat: no-repeat, repeat;
+        background-size: cover, auto;
+    }
+
+    .background-mandarin {
+        background-color: #ff967b;
+        background-image: url('/images/prod-lines.webp'), radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb);
+        background-position: 50%, 0 0;
+        background-repeat: no-repeat, repeat;
+        background-size: cover, auto;
+    }
+
+    .background-purple {
+        background-color: #9f99de;
+        background-image: url('/images/prod-lines.webp'), radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6);
+        background-position: 50%, 0 0;
+        background-repeat: no-repeat, repeat;
+    }
 
     .text-green { color: #93b27866 !important; }
     .text-mandarin { color: #ff967b66 !important; }
