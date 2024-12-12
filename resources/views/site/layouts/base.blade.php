@@ -421,9 +421,9 @@
 
 </script>
 <style>
-    .step-item-overlay.green { background-color: #93b27866; }
-    .step-item-overlay.mandarin { background-color: #ff967b66; }
-    .step-item-overlay.purple { background-color: #9f99de66; }
+    .step-item-overlay.green, .background-green { background-color: #93b27866 !important; }
+    .step-item-overlay.mandarin, .background-mandarin { background-color: #ff967b66 !important; }
+    .step-item-overlay.purple, .background-purple { background-color: #9f99de66 !important; }
 
     .text-green { color: #93b27866 !important; }
     .text-mandarin { color: #ff967b66 !important; }

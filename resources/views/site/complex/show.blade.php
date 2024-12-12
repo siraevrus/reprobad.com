@@ -89,7 +89,7 @@
         @endforeach
     @endif
 
-    <section class="articles-section product-articles">
+    <section class="articles-section product-articles {{ $resource->color ? 'background-' . $resource->color : '' }}">
         <div class="container articles-section-container">
             <div class="section-head-with-detali-button">
                 <h2 class="big-section-h product-articles-h"><strong>Полезные советы</strong> и статьи</h2>
