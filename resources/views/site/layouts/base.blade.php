@@ -449,6 +449,19 @@
     .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6); }
 
     .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface); }
+
+    .articles-section.product-articles .more-green-button {
+        background-color: #fff !important;
+        color: #93B278 !important;
+    }
+    .articles-section.product-articles .more-mandarin-button {
+        background-color: #fff !important;
+        color: #F6927E !important;
+    }
+    .articles-section.product-articles .more-purple-button {
+        background-color: #fff !important;
+        color: #498aa9 !important;
+    }
 </style>
 </body>
 </html>
