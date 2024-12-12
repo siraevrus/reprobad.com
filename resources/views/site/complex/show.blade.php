@@ -41,7 +41,7 @@
                     </div>
                     <div class="product-body">
                         <div class="product-options">
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
                                 <div>Описание</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
                                 <div>Состав</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
                                 <div>Применение</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
                                 <div>О продукте</div>
                             </a>
                             <div class="product-options-tab-content">
