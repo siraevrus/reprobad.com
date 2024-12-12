@@ -85,6 +85,7 @@
                     </div>
                 </div>
             </section>
+            @php $idx++ @endphp
         @endforeach
     @endif
 
