@@ -112,9 +112,11 @@
             <a href="articles" class="nav-quick-link">Статьи</a>
             <a href="events" class="nav-quick-link">События</a>
         </div>
+        {{--
         @if(!isset($isHome))
             <a href="#" class="navbar-buy-button w-button">Купить</a>
         @endif
+        --}}
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
                 <div class="menu-button-icon w-icon-nav-menu"></div>
@@ -304,7 +306,9 @@
             <a href="articles" class="nav-quick-link">Статьи</a>
             <a href="events" aria-current="page" class="nav-quick-link w--current">События</a>
         </div>
+        {{--
         <a href="#" class="navbar-buy-button w-button">Купить</a>
+        --}}
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
                 <div class="menu-button-icon w-icon-nav-menu"></div>
