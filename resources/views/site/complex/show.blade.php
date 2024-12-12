@@ -31,7 +31,7 @@
                 <div class="container product-container">
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
-                        <p class="product-head-descriptor" style="color: {{ $product->color }}">{{ $product->description }}</p>
+                        <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
                         <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                         <div class="product-buy-buttons">
                             {{--
@@ -41,7 +41,7 @@
                     </div>
                     <div class="product-body">
                         <div class="product-options">
-                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $product->color }}">
                                 <div>Описание</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $product->color }}">
                                 <div>Состав</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $product->color }}">
                                 <div>Применение</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $resource->color }}">
+                            <a href="#" class="product-options-tab w-inline-block" style="background-color: {{ $product->color }}">
                                 <div>О продукте</div>
                             </a>
                             <div class="product-options-tab-content">
