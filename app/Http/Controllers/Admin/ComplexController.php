@@ -25,7 +25,7 @@ class ComplexController extends Controller
         'title_right' => 'string|nullable',
         'description' => 'string|nullable',
         'color' => 'string|nullable',
-        'products' => 'string|nullable',
+        'product_ids' => 'string|nullable',
     ];
 
     public function index(): View
@@ -57,7 +57,7 @@ class ComplexController extends Controller
         $resource = Complex::query()
             ->create($validator->validated());
 
-        if($request->get('products')) {
+        if($request->get('product_ids')) {
             Product::query()->update(['complex_id' => 0]);
             $productIds = array_filter(array_map('trim', explode(',', $request->products)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
@@ -88,7 +88,7 @@ class ComplexController extends Controller
         $resource->fill($validator->validated());
         $resource->save();
 
-        if($request->get('products')) {
+        if($request->get('product_ids')) {
             Product::query()->update(['complex_id' => 0]);
             $productIds = array_filter(array_map('trim', explode(',', $request->products)));
             Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
