@@ -430,24 +430,15 @@
     .step-item-overlay.purple, .background-purple { background-color: #9f99de66 !important; }
 
     .background-green {
-        --p-grad-from: var(--p-first-color);
-        --p-grad-to:
-            color-mix(in srgb, var(--p-first-color) 50%, white);
-        background: radial-gradient(circle at 0 0, var(--p-grad-from), var(--p-grad-to)) !important;
+        background: radial-gradient(circle at 0 0, #93B278, color-mix(in srgb, #93B278 50%, white)) !important;
     }
 
     .background-mandarin {
-        --p-grad-from: var(--p-first-color);
-        --p-grad-to:
-            color-mix(in srgb, var(--p-first-color) 50%, white);
-        background: radial-gradient(circle at 0 0, var(--p-grad-from), var(--p-grad-to)) !important;
+        background: radial-gradient(circle at 0 0, #F6927E, color-mix(in srgb, #F6927E 50%, white)) !important;
     }
 
     .background-purple {
-        --p-grad-from: var(--p-first-color);
-        --p-grad-to:
-            color-mix(in srgb, var(--p-first-color) 50%, white);
-        background: radial-gradient(circle at 0 0, var(--p-grad-from), var(--p-grad-to)) !important;
+        background: radial-gradient(circle at 0 0, #498aa9, color-mix(in srgb, #498aa9 50%, white)) !important;
     }
 
     .text-green { color: #93b27866 !important; }
