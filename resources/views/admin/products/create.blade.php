@@ -19,6 +19,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
+            <div>@include('admin.components.text-input', ['title' => 'Связанный комплекс (id)', 'field' => 'complex_id'])</div>
+
             <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
