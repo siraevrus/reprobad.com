@@ -18,6 +18,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
+            <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => ['1' => 'Да', '0' => 'Нет']])</div>
+
             <div>
                 <label class="block font-semibold mb-2">Иконка</label>
                 <div class="flex space-x-2">
