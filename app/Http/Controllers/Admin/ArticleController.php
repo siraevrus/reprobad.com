@@ -22,6 +22,7 @@ class ArticleController extends Controller
         'alias' => 'required|unique:articles,alias',
         'description' => 'string|nullable',
         'image' => 'string|nullable',
+        'icon' => 'string|nullable',
         'category' => 'string|nullable',
         'time' => 'string|nullable',
         'active' => 'boolean|required',
