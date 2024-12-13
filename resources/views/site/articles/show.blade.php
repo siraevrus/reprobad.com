@@ -47,8 +47,8 @@
                         <div class="side-h">Другие статьи по этой теме:</div>
                         @foreach($other as $item)
                         <div class="card side-card">
-                            @if(isset($item->ico->image))
-                            <div class="card-head"><img src="{{ $item->ico->image ?? '' }}" loading="lazy" alt="" class="card-icon"></div>
+                            @if(isset($item->icon))
+                            <div class="card-head"><img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="card-icon"></div>
                             @endif
                             <div class="card-body">
                                 <a href="{{ route('site.articles.show', $item->id) }}" aria-current="page" class="card-title w--current">{{ $item->title }}</a>
