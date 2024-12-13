@@ -25,13 +25,14 @@
     </section>
 
     @if($resource->products)
+        @php $idx = 1 @endphp
         @foreach($resource->products as $product)
-            <section id="first" class="section product-section">
+            <section id="first" class="section product-section {{ $idx % 2 == 0 ? 'second' : '' }}">
                 <div class="container product-container">
-                    <div class="product-head">
+                    <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
-                        <p class="product-head-descriptor">{{ $product->description }}</p>
-                        <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image">
+                        <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
+                        <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                         <div class="product-buy-buttons">
                             {{--
                             <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
@@ -40,7 +41,7 @@
                     </div>
                     <div class="product-body">
                         <div class="product-options">
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" @if($product->color)style="background-color: {{ $product->color }}50;border-color: {{ $product->color }}"@endif>
                                 <div>Описание</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -50,7 +51,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" @if($product->color)style="background-color: {{ $product->color }}50;border-color: {{ $product->color }}"@endif>
                                 <div>Состав</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -60,7 +61,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" @if($product->color)style="background-color: {{ $product->color }}50;border-color: {{ $product->color }}"@endif>
                                 <div>Применение</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -70,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="product-options-tab w-inline-block">
+                            <a href="#" class="product-options-tab w-inline-block" @if($product->color)style="background-color: {{ $product->color }}50;border-color: {{ $product->color }}"@endif>
                                 <div>О продукте</div>
                             </a>
                             <div class="product-options-tab-content">
@@ -84,14 +85,15 @@
                     </div>
                 </div>
             </section>
+            @php $idx++ @endphp
         @endforeach
     @endif
 
-    <section class="articles-section product-articles">
+    <section class="articles-section product-articles {{ $resource->color ? 'background-' . $resource->color : '' }}">
         <div class="container articles-section-container">
             <div class="section-head-with-detali-button">
                 <h2 class="big-section-h product-articles-h"><strong>Полезные советы</strong> и статьи</h2>
-                <a href="{{ route('site.advises.index') }}" class="more-purple-button w-button">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
+                <a href="{{ route('site.advises.index') }}" class="more-{{ $resource->color }}-button custom-button-product w-button" style="background-color: #fff;">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
             </div>
             <div class="items-wrap white-cards">
                 @foreach($articles as $item)

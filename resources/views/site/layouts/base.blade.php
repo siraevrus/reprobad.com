@@ -112,9 +112,11 @@
             <a href="articles" class="nav-quick-link">Статьи</a>
             <a href="events" class="nav-quick-link">События</a>
         </div>
+        {{--
         @if(!isset($isHome))
             <a href="#" class="navbar-buy-button w-button">Купить</a>
         @endif
+        --}}
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
                 <div class="menu-button-icon w-icon-nav-menu"></div>
@@ -304,7 +306,9 @@
             <a href="articles" class="nav-quick-link">Статьи</a>
             <a href="events" aria-current="page" class="nav-quick-link w--current">События</a>
         </div>
+        {{--
         <a href="#" class="navbar-buy-button w-button">Купить</a>
+        --}}
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
                 <div class="menu-button-icon w-icon-nav-menu"></div>
@@ -421,26 +425,60 @@
 
 </script>
 <style>
-    .step-item-overlay.green {
-        background-color: #93b27866;
-    }
-    .step-item-overlay.mandarin {
-        background-color: #ff967b66;
-    }
-    .step-item-overlay.purple {
-        background-color: #9f99de66;
+    .step-item-overlay.green, .background-green { background: #93b27866 !important; }
+    .step-item-overlay.mandarin, .background-mandarin { background-color: #ff967b66 !important; }
+    .step-item-overlay.purple, .background-purple { background-color: #9f99de66 !important; }
+
+    .background-green {
+        background: radial-gradient(circle at 0 0, #93B278, color-mix(in srgb, #93B278 50%, white)) !important;
     }
 
-    .step-item.mandarin {
-        background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb);
+    .background-mandarin {
+        background: radial-gradient(circle at 0 0, #F6927E, color-mix(in srgb, #F6927E 50%, white)) !important;
     }
 
-    .step-item.purple {
-        background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6);
+    .background-purple {
+        background: radial-gradient(circle at 0 0, #498aa9, color-mix(in srgb, #498aa9 50%, white)) !important;
     }
 
-    .step-item.green {
-        background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface);
+    .text-green { color: #93b27866 !important; }
+    .text-mandarin { color: #ff967b66 !important; }
+    .text-purple { color: #9f99de66 !important; }
+
+    .step-item.mandarin { background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb); }
+    .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6); }
+    .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface); }
+
+    .articles-section.product-articles .more-green-button {
+        background-color: #fff !important;
+        color: #93B278 !important;
+    }
+    .articles-section.product-articles .more-mandarin-button {
+        background-color: #fff !important;
+        color: #F6927E !important;
+    }
+    .articles-section.product-articles .more-purple-button {
+        background-color: #fff !important;
+        color: #498aa9 !important;
+    }
+
+    .custom-button-product {
+        text-align: center;
+        text-transform: uppercase;
+        border-radius: 10rem;
+        padding: .75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.5;
+        transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    .custom-button-product:hover {
+        opacity: 1;
+        color: var(--white);
+        background-color: #70639f;
+        text-decoration: none;
+        transform: scale(1.02);
     }
 </style>
 </body>

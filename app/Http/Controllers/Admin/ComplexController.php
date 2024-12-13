@@ -57,12 +57,6 @@ class ComplexController extends Controller
         $resource = Complex::query()
             ->create($validator->validated());
 
-        if($request->get('product_ids')) {
-            Product::query()->update(['complex_id' => 0]);
-            $productIds = array_filter(array_map('trim', explode(',', $request->products)));
-            Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
-        }
-
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -87,12 +81,6 @@ class ComplexController extends Controller
         $resource = Complex::query()->findOrFail($id);
         $resource->fill($validator->validated());
         $resource->save();
-
-        if($request->get('product_ids')) {
-            Product::query()->update(['complex_id' => 0]);
-            $productIds = array_filter(array_map('trim', explode(',', $request->products)));
-            Product::query()->whereIn('id', $productIds)->update(['complex_id' => $resource->id]);
-        }
 
         return response()->json([
             'success' => true,

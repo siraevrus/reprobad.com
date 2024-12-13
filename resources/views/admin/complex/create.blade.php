@@ -27,8 +27,6 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
 
-            <div>@include('admin.components.text-input', ['title' => 'Связанные товары (id через запятую)', 'field' => 'product_ids'])</div>
-
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">
                 <button type="reset" class="px-6 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">
@@ -61,7 +59,6 @@
                     image_right: '',
                     description: '',
                     color: '',
-                    product_ids: '',
                     title_left: 'hero-product-1',
                     title_right: 'hero-product-2',
                     active: true
