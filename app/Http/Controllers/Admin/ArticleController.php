@@ -24,6 +24,7 @@ class ArticleController extends Controller
         'image' => 'string|nullable',
         'category' => 'string|nullable',
         'time' => 'string|nullable',
+        'active' => 'boolean|required',
     ];
 
     public function index(): View
