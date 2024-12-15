@@ -40,24 +40,28 @@
                     --p-first-color: #498aa9;
                     --p-second-color: #25BAC8;
                 }
+                .product-section { background-color: #E8F3F4 !important; }
                 @case('purple')
                  body {
                     --p-bg-color: #E8F3F4;
                     --p-first-color: #498aa9;
                     --p-second-color: #25BAC8;
                 }
+                .product-section { background-color: #E8F3F4 !important; }
                 @case('green')
                 body {
                     --p-bg-color: #EAF4E5;
                     --p-first-color: #93B278;
                     --p-second-color: #688B4A;
                 }
+                .product-section { background-color: #EAF4E5 !important; }
                 @case('mandarin')
                 body {
                     --p-bg-color: #FCF0EC;
                     --p-first-color: #F6927E;
                     --p-second-color: #F79548;
                 }
+                .product-section { background-color: #FCF0EC !important; }
             @endswitch
         @endif
     </style>
