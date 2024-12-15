@@ -197,10 +197,12 @@
         <div class="navbar-background"></div>
     @endif
 </div>
-@if(isset($isHome) || isset($$bodyClass) && $bodyClass == 'products-page')
-<div class="heart-bg">
-    <img src="images/heart_1.webp" loading="lazy" sizes="100vw" srcset="images/heart_1-p-500.webp 500w, images/heart_1-p-800.webp 800w, images/heart_1-p-1080.webp 1080w, images/heart_1-p-1600.webp 1600w, images/heart_1.webp 2000w" alt="" class="heart-bg-image">
-</div>
+
+@if(isset($isHome) || isset($bodyClass) && $bodyClass == 'products-page')
+    <div class="heart-bg">
+        <img src="images/heart.webp" loading="lazy" sizes="100vw" srcset="images/heart-p-500.webp 500w, images/heart-p-800.webp 800w, images/heart-p-1080.webp 1080w, images/heart-p-1600.webp 1600w, images/heart.webp 2000w" alt="" class="heart-bg-image">
+        <div class="heart-bg-mandarin-gradient"></div>
+    </div>
 @endif
 
 @yield('content')
