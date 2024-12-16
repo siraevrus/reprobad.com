@@ -14,6 +14,10 @@
                     <div class="manufacturer-richtext w-richtext">
                         {!! $block['data']['text'] !!}
                     </div>
+                @elseif($block['type'] == 'block3')
+                    <div class="manufacturer-images-wrap main-image">
+                        <img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="manufacturer-image">
+                    </div>
                 @elseif($block['type'] == 'block9')
                     <div class="manufacturer-images-wrap">
                         @foreach($block['data']['subBlocks'] as $idx => $subBlock)
