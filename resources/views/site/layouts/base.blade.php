@@ -114,9 +114,11 @@
             .desktop-hyphen::after { content: ''; }
             .mobile-hyphen::after { content: '-'; }
         }
+        @if(isset($resource->color) && $resource->color)
         .product-options-tab-content {
             background: var(--p-bg-color) !important;
         }
+        @endif
         .nav-quick-link.active {
             opacity: 1;
             color: var(--text);
