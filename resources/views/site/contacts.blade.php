@@ -47,7 +47,7 @@
             </div>
             <div class="contacts-form">
                 <div class="question-form-block w-form">
-                    <form id="wf-form-Question-Form" name="wf-form-Question-Form" data-name="Question Form" method="get" class="form" data-wf-page-id="673718a9aa664236cdc0b68b" data-wf-element-id="1aa26553-0562-af66-9151-7e4d4dc2d3fa">
+                    <form id="wf-form-Question-Form" name="form wf-form-Question-Form" data-name="Question Form" method="get" class="form" data-wf-page-id="673718a9aa664236cdc0b68b" data-wf-element-id="1aa26553-0562-af66-9151-7e4d4dc2d3fa">
                         <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                         <div class="form-h">Возникли вопросы?</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="name-3" data-name="Name 3" placeholder="ФИО*" type="text" id="name-3" required=""><input class="text-field w-input" autocomplete="off" maxlength="256" name="email-6" data-name="Email 6" placeholder="Email*" type="email" id="email-6" required=""><input class="text-field w-input" autocomplete="off" maxlength="256" name="phone-2" data-name="Phone 2" placeholder="Номер телефона" type="tel" id="phone-2" required=""><textarea class="text-field text-area w-input" autocomplete="off" maxlength="5000" name="message-2" data-name="Message 2" placeholder="Ваш вопрос…" id="message-2"></textarea>
                         <div class="checkbox-wrap"><label class="w-checkbox subscribe-checkbox black">

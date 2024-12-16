@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                             <div class="subscribe-body w-form">
-                                <form action="{{ route('site.form.subscribe') }}" method="post" class="subscribe-form">
+                                <form action="{{ route('site.form.subscribe') }}" method="post" class="form subscribe-form">
                                     @csrf
                                     <div class="subscribe-head-label">Подписаться на рассылку</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="subscribe_email" data-name="subscribe_email" placeholder="Ваш Email*" type="email" id="subscribe_email"><label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a></span>

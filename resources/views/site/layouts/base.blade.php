@@ -341,7 +341,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Находим все формы
-        const forms = document.querySelectorAll('form');
+        const forms = document.querySelectorAll('.form');
 
         forms.forEach((form) => {
             const formBlock = form.closest('div'); // Блок формы
