@@ -51,7 +51,7 @@
                             <div class="card-head"><img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="card-icon"></div>
                             @endif
                             <div class="card-body">
-                                <a href="{{ route('site.articles.show', $item->id) }}" aria-current="page" class="card-title w--current">{{ $item->title }}</a>
+                                <a href="{{ route('site.articles.show', $item->alias) }}" aria-current="page" class="card-title w--current">{{ $item->title }}</a>
                                 <div class="card-text">{{ $item->description }}</div>
                             </div>
                             <div class="card-footer">
