@@ -13,10 +13,13 @@
                 <div class="hero-products {{ $resource->color }}">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
-                        <div class="hero-product-shadow embrio"></div>
                     </a>
                     <a href="{{ route('site.complex.show', $resource->alias) }}#second" class="{{ $resource->title_right }} w-inline-block">
-                        <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
+                        @if($resource->id == 1)
+                            <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
+                        @else
+                            <div class="sache-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="sache-image"></div>
+                        @endif
                     </a>
                 </div>
             </div>
