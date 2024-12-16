@@ -30,7 +30,10 @@
         .bad-wrap { position: fixed; visibility: hidden; }
         .search-input:placeholder-shown ~ .search-button { display: none; }
         .cookies-banner { display: none; }
-
+        .step-item.blue { background-image: radial-gradient(circle at 0 0, #4e8eaa, #5694ae 20%, #c4f2f5) }
+        .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6) }
+        .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface) }
+        .step-item.mandarin { background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb) }
 
         @if(isset($resource->color))
             @switch($resource->color)
