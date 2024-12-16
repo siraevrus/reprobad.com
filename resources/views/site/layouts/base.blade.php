@@ -34,43 +34,6 @@
         .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6) }
         .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface) }
         .step-item.mandarin { background-image: radial-gradient(circle at 0 0, #ff967b, #ff9a7e 24%, #ffe3cb) }
-
-        @if(isset($resource->color))
-            @switch($resource->color)
-                @case('blue')
-                body {
-                    --p-bg-color: #E8F3F4;
-                    --p-first-color: #498aa9;
-                    --p-second-color: #25BAC8;
-                }
-                .product-section { background-color: #E8F3F4 !important; }
-                @case('purple')
-                 body {
-                    --p-bg-color: #E8F3F4;
-                    --p-first-color: #498aa9;
-                    --p-second-color: #25BAC8;
-                }
-                .product-section { background-color: #E8F3F4 !important; }
-                @case('green')
-                body {
-                    --p-bg-color: #EAF4E5;
-                    --p-first-color: #93B278;
-                    --p-second-color: #688B4A;
-                }
-                .product-section { background-color: #EAF4E5 !important; }
-                @case('mandarin')
-                body {
-                    --p-bg-color: #FCF0EC;
-                    --p-first-color: #F6927E;
-                    --p-second-color: #F79548;
-                }
-                .product-section { background-color: #FCF0EC !important; }
-            @endswitch
-        @endif
-    </style>
-    <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <style>
         .top-5-slider-dot { font-size: 0rem; width: 0.375rem; }
         .top-5-slider-dot.active { font-size: 0.875rem; min-width: 1.5rem }
         .top-5-slider-dot:has(+ .active ) { width: 0.75rem; }
@@ -79,6 +42,11 @@
         .swiper-button-disabled { opacity: 0; pointer-events: none; }
         .swiper-3d .swiper-slide-shadow { background: rgba(244,187,174,0.25); }
     </style>
+    <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    @isset($resouce->color)
+        <link rel="stylesheet" href="css/{{ $resource->color }}.css">
+    @endisset
 </head>
 <body class="{{ isset($isHome) ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
 <div class="w-embed">

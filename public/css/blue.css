@@ -1,0 +1,6 @@
+body {
+    --p-bg-color: #E8F3F4;
+    --p-first-color: #498aa9;
+    --p-second-color: #25BAC8;
+}
+.product-section { background-color: #E8F3F4 !important; }
