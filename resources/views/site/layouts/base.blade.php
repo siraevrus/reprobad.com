@@ -114,6 +114,9 @@
             .desktop-hyphen::after { content: ''; }
             .mobile-hyphen::after { content: '-'; }
         }
+        .product-options-tab-content {
+            background: var(--p-first-color) !important;
+        }
     </style>
 </div>
 <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">

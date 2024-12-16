@@ -11,3 +11,9 @@ body {
         color-mix(in srgb, var(--p-first-color) 50%, white);
     background: radial-gradient(circle at 0 0, var(--p-grad-from), var(--p-grad-to)) !important;
 }
+.product-options-tab.active {
+    color: var(--white);
+    background-color: var(--p-color);
+    border-color:
+        color-mix(in srgb, var(--p-color) 50%, rgba(255, 255, 255, 0));
+}
