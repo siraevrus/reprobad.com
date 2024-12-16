@@ -49,6 +49,10 @@
     @endisset
 </head>
 <body class="{{ isset($isHome) ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
+
+@if(isset($resource->color) && $resource->color)
+    @include('site.components.embed')
+@else
 <div class="w-embed">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <style>
@@ -127,6 +131,7 @@
         }
     </style>
 </div>
+@endif
 <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">
