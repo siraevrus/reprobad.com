@@ -4,3 +4,10 @@ body {
     --p-second-color: #688B4A;
 }
 .product-section { background-color: #EAF4E5 !important; }
+
+.articles-section.product-articles {
+    --p-grad-from: var(--p-first-color);
+    --p-grad-to:
+        color-mix(in srgb, var(--p-first-color) 50%, white);
+    background: radial-gradient(circle at 0 0, var(--p-grad-from), var(--p-grad-to)) !important;
+}
