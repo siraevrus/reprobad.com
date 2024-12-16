@@ -21,10 +21,11 @@ class ArticleController extends Controller
         }
 
         if($request->get('query')) {
+            $query = strtolower($request->get('query'));
             $resources = $resources
-                ->where('title', 'like', '%' . $request->get('query') . '%')
-                ->where('description', 'like', '%' . $request->get('query') . '%')
-                ->orWhere('content', 'like', '%' . $request->get('query') . '%');
+                ->where('title', 'like', '%' . $query . '%')
+                ->where('description', 'like', '%' . $query . '%')
+                ->orWhere('content', 'like', '%' . $query . '%');
         }
 
         $resources = $resources->paginate(7);

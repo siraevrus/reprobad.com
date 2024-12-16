@@ -4620,6 +4620,10 @@ figcaption {
     padding-top: 3.5rem;
   }
 
+    .navbar-container {
+        display: block;
+    }
+
   h1 {
     font-size: 1.5rem;
     line-height: 1.16667;
