@@ -3,7 +3,7 @@
         <img src="{{ $item->icon ?? 'images/bolt.svg' }}" loading="lazy" alt="" class="card-icon">
     </div>
     <div class="card-body">
-        <a href="{{ route('site.articles.show', $item->alias) }}" class="card-title">{{ $item->title }}</a>
+        <a href="{{ route('site.articles.show', $item->alias) }}" class="card-title {{ $resource->color ?? '' }}">{{ $item->title }}</a>
         <div class="card-text">{{ Str::limit($item->description, 100) }}</div>
     </div>
     <div class="card-footer">

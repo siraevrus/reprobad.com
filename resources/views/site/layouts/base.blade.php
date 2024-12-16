@@ -75,6 +75,7 @@
             line-height: 1.5;
             transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
         }
+        .card-title { color: var(--p-first-color); }
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; }
         .o-span::after {
