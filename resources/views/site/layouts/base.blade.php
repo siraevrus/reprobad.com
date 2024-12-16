@@ -51,7 +51,7 @@
 <body class="{{ isset($isHome) ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
 
 @if(isset($resource->color) && $resource->color)
-    @include('site.components.embed')
+    @include('site.components.products.' . $resource->color)
 @else
 <div class="w-embed">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
