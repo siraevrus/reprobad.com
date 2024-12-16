@@ -115,7 +115,13 @@
             .mobile-hyphen::after { content: '-'; }
         }
         .product-options-tab-content {
-            background: var(--p-first-color) !important;
+            background: var(--bg-color) !important;
+        }
+        .nav-quick-link.active {
+            opacity: 1;
+            color: var(--text);
+            background-color: #8577b71a;
+            text-decoration: none;
         }
     </style>
 </div>
@@ -126,11 +132,11 @@
             <div>готовимся <br>к беременности <br>вместе</div>
         </a>
         <div class="nav-desktop-links">
-            <a href="about" class="nav-quick-link">О системе РЕПРО</a>
-            <a href="products" class="nav-quick-link">Продукты</a>
-            <a href="usefully-tips" class="nav-quick-link">Полезные советы</a>
-            <a href="articles" class="nav-quick-link">Статьи</a>
-            <a href="events" class="nav-quick-link">События</a>
+            <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">О системе РЕПРО</a>
+            <a href="products" class="nav-quick-link {{ request()->is('products') ? 'active' : '' }}">Продукты</a>
+            <a href="usefully-tips" class="nav-quick-link {{ request()->is('usefully-tips') ? 'active' : '' }}">Полезные советы</a>
+            <a href="articles" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
+            <a href="events" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
         </div>
         {{--
         @if(!isset($isHome))
@@ -322,11 +328,11 @@
             <div>готовимся <br>к беременности <br>вместе</div>
         </a>
         <div class="nav-desktop-links">
-            <a href="about" class="nav-quick-link">О системе РЕПРО</a>
-            <a href="products" class="nav-quick-link">Продукты</a>
-            <a href="usefully-tips" class="nav-quick-link">Полезные советы</a>
-            <a href="articles" class="nav-quick-link">Статьи</a>
-            <a href="events" aria-current="page" class="nav-quick-link w--current">События</a>
+            <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">О системе РЕПРО</a>
+            <a href="products" class="nav-quick-link {{ request()->is('products') ? 'active' : '' }}">Продукты</a>
+            <a href="usefully-tips" class="nav-quick-link {{ request()->is('usefully-tips') ? 'active' : '' }}">Полезные советы</a>
+            <a href="articles" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
+            <a href="events" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
         </div>
         {{--
         <a href="#" class="navbar-buy-button w-button">Купить</a>
