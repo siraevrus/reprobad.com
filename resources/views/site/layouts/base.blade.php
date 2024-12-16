@@ -68,17 +68,6 @@
         .w-richtext figure img { border-radius: 1rem; }
         .w-richtext figure { --figure-width: 100%; width: var(--figure-width); max-width: var(--figure-width); }
         .w-richtext figure div, .w-richtext figure img { width: 100% !important; !important; max-width: 100% !important; }
-        .custom-button-product {
-            color: var(--p-first-color);
-            text-align: center;
-            text-transform: uppercase;
-            border-radius: 10rem;
-            padding: .75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 700;
-            line-height: 1.5;
-            transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
-        }
         .card-title { color: var(--p-first-color); }
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; }
@@ -132,6 +121,19 @@
     </style>
 </div>
 @endif
+<style>
+    .custom-button-product {
+        color: var(--p-first-color);
+        text-align: center;
+        text-transform: uppercase;
+        border-radius: 10rem;
+        padding: .75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.5;
+        transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
+    }
+</style>
 <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">
