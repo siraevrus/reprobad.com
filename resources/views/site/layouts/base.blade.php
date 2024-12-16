@@ -115,7 +115,7 @@
             .mobile-hyphen::after { content: '-'; }
         }
         .product-options-tab-content {
-            background: var(--bg-color) !important;
+            background: var(--p-bg-color) !important;
         }
         .nav-quick-link.active {
             opacity: 1;
