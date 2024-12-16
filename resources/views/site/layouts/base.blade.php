@@ -44,7 +44,7 @@
     </style>
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    @isset($resouce->color)
+    @isset($resource->color)
         <link rel="stylesheet" href="css/{{ $resource->color }}.css">
     @endisset
 </head>
