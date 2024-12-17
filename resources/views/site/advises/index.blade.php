@@ -6,7 +6,7 @@
         <div class="container">
             <div class="items-head">
                 @if(!request()->get('query'))
-                    <h1 class="inner-h1"><strong>Полезные советы </strong>о совместной подготовке <br>к успешному зачатию, беременности <br>и улучшению здоровья</h1>
+                    <h1 class="inner-h1"><strong>Советы и статьи</strong> о совместной подготовке к успешному зачатию, беременности и улучшении здоровья</h1>
                 @else
                     <h1 class="inner-h1"><strong>Найдено</strong> {{ $resources->count() }} материал(ов)</h1>
                 @endif
@@ -80,9 +80,9 @@
                             </div>
                         @endif
                         <div class="card">
-                            @if(isset($item->ico->image))
+                            @if(isset($item->icon))
                                 <div class="card-head">
-                                    <img src="{{ $item->ico->image ?? '' }}" loading="lazy" alt="" class="card-icon">
+                                    <img src="{{ $item->icon }}" loading="lazy" alt="" class="card-icon">
                                 </div>
                             @endif
                             <div class="card-body">
