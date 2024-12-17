@@ -4620,6 +4620,10 @@ figcaption {
     padding-top: 3.5rem;
   }
 
+    .bottle-image-element {
+        max-width: 200px;
+    }
+
     .navbar-container {
         display: block;
     }
