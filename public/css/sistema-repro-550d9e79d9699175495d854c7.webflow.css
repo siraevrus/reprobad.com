@@ -4987,11 +4987,16 @@ figcaption {
     line-height: 1.5;
   }
 
+  .item-wrap {
+    display: block;
+  }
+
   .news-card {
     background-color: var(--white);
     border-radius: 1rem;
     padding-top: 0;
-    padding-bottom: 0;
+    padding-bottom: 1rem;
+    max-width: none;
   }
 
   .news-card-icon {
@@ -6209,7 +6214,7 @@ figcaption {
   }
 
   .product-h1, .product-h1.small {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .product-descriptor {
