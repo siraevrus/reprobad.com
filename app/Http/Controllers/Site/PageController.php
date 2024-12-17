@@ -31,7 +31,7 @@ class PageController extends Controller
         $resource = Page::active()
             ->where('alias', 'about')
             ->firstOrFail();
-        $complexes = Complex::query()->get();
+        $complexes = Complex::sorted()->get();
         return view('site.about', compact('resource', 'complexes'));
     }
 
