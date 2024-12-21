@@ -51,9 +51,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/users/{alias}/switch', [UserController::class, 'switch'])->name('users.switch');
     Route::get('/admin/text/{alias}/switch', [TextController::class, 'switch'])->name('text.switch');
     Route::get('/admin/complex/{alias}/switch', [ComplexController::class, 'switch'])->name('complex.switch');
-    Route::get('/admin/point/{alias}/switch', [PointController::class, 'switch'])->name('point.switch');
-    Route::get('/admin/question/{alias}/switch', [QuestionController::class, 'switch'])->name('question.switch');
-    Route::get('/admin/step/{alias}/switch', [StepController::class, 'switch'])->name('step.switch');
+    Route::get('/admin/points/{alias}/switch', [PointController::class, 'switch'])->name('points.switch');
+    Route::get('/admin/questions/{alias}/switch', [QuestionController::class, 'switch'])->name('questions.switch');
+    Route::get('/admin/steps/{alias}/switch', [StepController::class, 'switch'])->name('steps.switch');
 
     Route::get('/admin/products/{alias}/up', [ProductController::class, 'up'])->name('products.up');
     Route::get('/admin/complex/{alias}/up', [ComplexController::class, 'up'])->name('complex.up');

@@ -16,7 +16,7 @@
             <tbody class="text-gray-600 text-sm font-light">
             @foreach($resources as $resource)
                 <tr class="border-b border-gray-200 hover:bg-gray-50">
-                    <td class="py-3 px-6">1</td>
+                    <td class="py-3 px-6">{{ $resource->id }}</td>
                     <td class="py-3 px-6">{{ $resource->title }}</td>
                     <td class="py-3 px-6">{{ $resource->created_at }}</td>
                     <td class="py-3 px-6 text-center">

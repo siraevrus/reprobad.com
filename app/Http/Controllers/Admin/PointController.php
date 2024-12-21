@@ -15,7 +15,10 @@ class PointController extends Controller
 {
 
     public array $rules = [
-        'coords' => 'string|required',
+        'coords' => [
+            'regex:/^-?\d{1,3}(\.\d+)?,\-?\d{1,3}(\.\d+)?$/',
+            'required'
+        ],
         'title' => 'string|required',
         'subtitle' => 'string|nullable',
         'address' => 'string|nullable',

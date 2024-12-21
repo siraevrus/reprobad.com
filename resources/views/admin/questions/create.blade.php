@@ -86,7 +86,7 @@
 
                     const data = await response.json();
                     if (data.success) {
-
+                        if(location.pathname.split('/')[3] === 'create') location.href = '/admin/questions';
                     } else {
                         this.errors = data.errors;
                     }

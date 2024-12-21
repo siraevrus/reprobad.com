@@ -116,11 +116,7 @@
 
                     const data = await response.json();
                     if (data.success) {
-                        if(method === 'POST') {
-                            window.location.href = '/admin/products/';
-                        }else {
-                            this.showAlert('Сохранено');
-                        }
+                        if(location.pathname.split('/')[3] === 'create') location.href = '/admin/products';
                     } else {
                         this.errors = data.errors;
                     }

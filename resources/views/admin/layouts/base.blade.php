@@ -18,8 +18,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -119,7 +117,9 @@
             <div class="bg-white shadow rounded-lg p-6">
             @yield('content')
             </div>
+
         </main>
+
     </div>
 </div>
 

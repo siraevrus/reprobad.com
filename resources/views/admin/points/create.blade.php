@@ -96,7 +96,7 @@
 
                     const data = await response.json();
                     if (data.success) {
-
+                        if(location.pathname.split('/')[3] === 'create') location.href = '/admin/points';
                     } else {
                         this.errors = data.errors;
                     }
