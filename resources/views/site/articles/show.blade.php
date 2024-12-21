@@ -124,26 +124,9 @@
     <section class="section short-events-in-article">
         <div class="container">
             <div class="short-events"><img loading="lazy" src="images/bg-cal.svg" alt="" class="short-events-bg-image">
-                <div class="section-head-with-detali-button short-events-section">
-                    <h2 class="big-section-h"><strong>Ближайшие</strong> мастерклассы и мероприятия по теме статьи</h2>
-                    <a href="events.html" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>
-                </div>
-                <div class="short-event">
-                    <div class="short-event-date">26-27 октября 2024 года</div>
-                    <a href="event.html" class="short-event-h">IX Всероссийская конференция с международным участием «Репродуктивное здоровье женщин и мужчин»</a>
-                    <div class="short-event-text">Приглашаем вас принять участие в работе II Всероссийской конференции с международным участием «Репродуктивное здоровье женщин и мужчин»</div>
-                    <div class="short-event-footer">
-                        <a href="event.html" class="button short-event-button w-button">Подробнее —&gt;</a><img loading="lazy" src="images/enc.png" alt="" class="short-event-logo">
-                    </div>
-                </div>
-                <div class="short-event">
-                    <div class="short-event-date">19 декабря 2024 года</div>
-                    <a href="event.html" class="short-event-h">Международный Междисциплинарный Семинар «Благосостояние народа саами. Ценность репродуктивного здоровья и качества окружающей среды»</a>
-                    <div class="short-event-text">Здоровье человека, благополучие и изменение экосистем — <br>общие и специфические вопросы. Репродуктивное здоровье <br>и репродуктивное поведение, показатели, оценки, критерии.</div>
-                    <div class="short-event-footer">
-                        <a href="event.html" class="button short-event-button w-button">Подробнее —&gt;</a><img loading="lazy" src="images/ficcran.png" alt="" class="short-event-logo">
-                    </div>
-                </div>
+                @foreach($events as $item)
+                    @include('site.components.events.item', ['item' => $item])
+                @endforeach
             </div>
         </div>
     </section>

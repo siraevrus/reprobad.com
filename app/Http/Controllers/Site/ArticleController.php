@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -54,7 +55,8 @@ class ArticleController extends Controller
             ->where('id', '!=', $resource->id)
             ->take(6)
             ->get();
-        return view('site.articles.show', compact('resource', 'other'));
+        $events = Event::active()->get();
+        return view('site.articles.show', compact('resource', 'other', 'events'));
     }
 
     public function subscribe(Request $request): JsonResponse
