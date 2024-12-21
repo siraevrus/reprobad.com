@@ -121,7 +121,33 @@
             // Добавляем все маркеры на карту
             placemarks.forEach(addPlacemark);
 
-            // Фильтрация маркеров по запросу
+            // Функция для получения параметра search из URL
+            function getSearchParam() {
+                var urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('search') || ''; // Если параметр не найден, возвращаем пустую строку
+            }
+
+            // Получаем значение search из URL и фильтруем маркеры
+            var searchQuery = getSearchParam();
+            if (searchQuery) {
+                var lowerCaseQuery = searchQuery.toLowerCase();
+
+                // Удаляем все маркеры
+                map.geoObjects.removeAll();
+                mapPlacemarks = [];
+
+                // Фильтруем маркеры и добавляем только те, которые соответствуют запросу
+                placemarks.forEach(function(placemark) {
+                    if (placemark.title.toLowerCase().includes(lowerCaseQuery) || placemark.address.toLowerCase().includes(lowerCaseQuery)) {
+                        addPlacemark(placemark);
+                    }
+                });
+
+                // Заполняем поле поиска значением из URL
+                document.querySelector('.map-search').value = searchQuery;
+            }
+
+            // Фильтрация маркеров по запросу в поле ввода
             var searchInput = document.querySelector('.map-search');
             searchInput.addEventListener('input', function() {
                 var query = searchInput.value.toLowerCase();
