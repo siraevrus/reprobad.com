@@ -59,7 +59,7 @@
                                 <div class="card-read"><img loading="lazy" src="images/sm-clock.svg" alt="" class="clock-icon">
                                     <div>{{ $item->time }}</div>
                                 </div>
-                                <a href="{{ route('site.articles.show', $item->id) }}" aria-current="page" class="card-link w-inline-block w--current">
+                                <a href="{{ route('site.articles.show', $item->alias) }}" aria-current="page" class="card-link w-inline-block w--current">
                                     <div class="text-block">Читать</div>
                                 </a>
                             </div>
