@@ -59,7 +59,7 @@
                     </li>
                     <li>
                         <a href="{{ route('admin.advises.index') }}" class="{{ request()->segment(2) == 'advises' ? 'text-blue-500' : 'text-gray-700' }}  hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">article</span> Советы
+                            <span class="material-icons">sms</span> Советы
                         </a>
                     </li>
                     <li>
@@ -70,6 +70,21 @@
                     <li>
                         <a href="{{ route('admin.products.index') }}" class="{{  request()->segment(2) == 'products' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
                             <span style="width:24px" class="material-icons">sell</span> Продукты
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.questions.index') }}" class="{{  request()->segment(2) == 'questions' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">help</span> Вопросы
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.points.index') }}" class="{{  request()->segment(2) == 'points' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">navigation</span> Точки
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.steps.index') }}" class="{{  request()->segment(2) == 'steps' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
+                            <span style="width:24px" class="material-icons">stairs_2</span> Этапы подготовки
                         </a>
                     </li>
                     <li>

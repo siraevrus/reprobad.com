@@ -2233,6 +2233,7 @@ figcaption {
   padding: .75rem 1.5rem;
   font-size: 1rem;
   font-weight: 700;
+  z-index: 999;
   line-height: 1.5;
 }
 

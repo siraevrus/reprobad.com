@@ -2,43 +2,20 @@
 
 @section('content')
     <div x-data="app()">
-
-        <div class="fixed bg-green-400 border text-white border-green-500 text-green-800 top-[20px] px-4 py-2 rounded z-50"
-             x-show="alert.show"
-             x-text="alert.message"
-        ></div>
-
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} статью</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} текстовую страницу</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
-            @csrf
+            @csrf <!-- Добавляем CSRF-токен -->
+            <!-- Поле для заголовка -->
 
-            <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])</div>
+            <div>@include('admin.components.image-input', ['title' => 'Изображение', 'field' => 'image'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
+            <div>@include('admin.components.select-input', ['title' => 'Статья', 'field' => 'article_id', 'options' => App\Models\Article::query()->pluck('title', 'id')])</div>
 
-            <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => ['1' => 'Да', '0' => 'Нет']])</div>
+            <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => [1 => 'Да', 0 => 'Нет']])</div>
 
-            <div>
-                <label class="block font-semibold mb-2">Иконка</label>
-                <div class="flex space-x-2">
-                    @foreach($icons as $icon)
-                        <label for="icon_{{ $icon }}">
-                            <input id="icon_{{ $icon }}" type="radio" name="icon" value="{{ $icon }}" x-model="form.icon" class="mr-2">
-                            <img src="{{ $icon }}" alt="">
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-
-            <div>@include('admin.components.text-input', ['title' => 'Время на чтение', 'field' => 'time'])</div>
-
-            <div>@include('admin.components.text-input', ['title' => 'Категория', 'field' => 'category'])</div>
-
-            <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
-
-            <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Текст', 'field' => 'text'])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">
@@ -64,14 +41,10 @@
                 },
                 errors: {},
                 form: {
-                    title: '',
-                    description: '',
-                    alias: '',
                     image: '',
-                    content: '',
-                    category: '',
-                    time: '',
+                    title: '',
                     active: 1,
+                    text: '',
                 },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {
@@ -79,11 +52,11 @@
                     }
 
                     this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    //await this.userIsNotActive();
+                    await this.userIsNotActive();
                     this.initializeEditor();
                 },
                 async get() {
-                    const response = await fetch('/admin/articles/' + location.pathname.split('/')[3]);
+                    const response = await fetch('/admin/questions/' + location.pathname.split('/')[3]);
                     const data = await response.json()
                     this.form = data
                 },
@@ -113,23 +86,10 @@
 
                     const data = await response.json();
                     if (data.success) {
-                        if(method === 'POST') {
-                            window.location.href = '/admin/articles/';
-                        }else {
-                            this.form = data.resource;
-                            this.showAlert('Сохранено');
-                        }
+
                     } else {
                         this.errors = data.errors;
                     }
-                },
-                showAlert(message) {
-                    this.alert.show = false;
-                    this.$nextTick(() => {
-                        this.alert.show = true;
-                        this.alert.message = message;
-                        setTimeout(() => this.alert.show = false, 1000);
-                    });
                 },
                 async userIsNotActive() {
                     let idleTime = 0;

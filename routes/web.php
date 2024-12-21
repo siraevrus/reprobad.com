@@ -8,7 +8,10 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\StepController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\FormController;
@@ -33,6 +36,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/advises', AdviseController::class);
     Route::resource('/admin/users', UserController::class);
     Route::resource('/admin/text', TextController::class);
+    Route::resource('/admin/points', PointController::class);
+    Route::resource('/admin/questions', QuestionController::class);
+    Route::resource('/admin/steps', StepController::class);
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
     Route::get('/admin/icons', [ArticleController::class, 'icons'])->name('icons');
@@ -45,6 +51,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/users/{alias}/switch', [UserController::class, 'switch'])->name('users.switch');
     Route::get('/admin/text/{alias}/switch', [TextController::class, 'switch'])->name('text.switch');
     Route::get('/admin/complex/{alias}/switch', [ComplexController::class, 'switch'])->name('complex.switch');
+    Route::get('/admin/point/{alias}/switch', [PointController::class, 'switch'])->name('point.switch');
+    Route::get('/admin/question/{alias}/switch', [QuestionController::class, 'switch'])->name('question.switch');
+    Route::get('/admin/step/{alias}/switch', [StepController::class, 'switch'])->name('step.switch');
 
     Route::get('/admin/products/{alias}/up', [ProductController::class, 'up'])->name('products.up');
     Route::get('/admin/complex/{alias}/up', [ComplexController::class, 'up'])->name('complex.up');

@@ -99,6 +99,12 @@ class UserController extends Controller
     public function switch($id): RedirectResponse
     {
         $resource = User::query()->findOrFail($id);
+
+        if($resource->name === 'admin') {
+            session()->flash('message', 'Невозможно удалить пользователя superuser');
+            return back();
+        }
+
         $resource->active = $resource->active === 0;
         $resource->save();
         session()->flash('message', 'Статус публикации обновлен');
