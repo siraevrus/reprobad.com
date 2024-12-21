@@ -5,20 +5,10 @@
         <div class="container">
             <div class="inner-repro-head">
                 <h1 class="inner-repro-h1"><span class="sistema-repro-semibold">Купить СИСТЕМУ РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="inline-text-block">в ближайшей к вам аптеке</span></h1>
-                <div class="map-search-wrap"><input name="search" placeholder="Ваш адрес" class="map-search">
+                <div class="map-search-wrap">
+                    <input name="search" placeholder="Ваш адрес" class="map-search">
                     <div class="suggest-view">
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
-                        <a href="#" class="suggest-link">Link</a>
+                        <!-- Список подсказок будет здесь -->
                     </div>
                 </div>
             </div>
@@ -101,7 +91,10 @@
                 }
             ];
 
-            placemarks.forEach(function(placemark) {
+            var mapPlacemarks = [];
+
+            // Функция для добавления маркера на карту
+            function addPlacemark(placemark) {
                 var myPlacemark = new ymaps.Placemark(placemark.coords, {
                     hintContent: placemark.title,
                     balloonContent: placemark.title
@@ -122,6 +115,27 @@
                 });
 
                 map.geoObjects.add(myPlacemark);
+                mapPlacemarks.push(myPlacemark);
+            }
+
+            // Добавляем все маркеры на карту
+            placemarks.forEach(addPlacemark);
+
+            // Фильтрация маркеров по запросу
+            var searchInput = document.querySelector('.map-search');
+            searchInput.addEventListener('input', function() {
+                var query = searchInput.value.toLowerCase();
+
+                // Удаляем все маркеры
+                map.geoObjects.removeAll();
+                mapPlacemarks = [];
+
+                // Фильтруем маркеры и добавляем только те, которые соответствуют запросу
+                placemarks.forEach(function(placemark) {
+                    if (placemark.title.toLowerCase().includes(query) || placemark.address.toLowerCase().includes(query)) {
+                        addPlacemark(placemark);
+                    }
+                });
             });
         });
     </script>
