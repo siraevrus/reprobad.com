@@ -9,6 +9,7 @@ use App\Models\Complex;
 use App\Models\Event;
 use App\Models\Product;
 use App\Models\Question;
+use App\Models\Step;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -43,7 +44,8 @@ class IndexController extends Controller
             ->get();
 
         $questions = Question::active()->get();
+        $steps = Step::active()->get();
 
-        return view('site.index', compact('resource', 'complexes', 'resources', 'events', 'favorites', 'questions'));
+        return view('site.index', compact('resource', 'complexes', 'resources', 'events', 'favorites', 'questions', 'steps'));
     }
 }

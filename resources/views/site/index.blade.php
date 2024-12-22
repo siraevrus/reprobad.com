@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="widget-footer">
-                    <a href="article.html" class="button w-button">Подробнее —&gt;</a>
+                    <a href="{{ route('site.articles.index') }}" class="button w-button">Подробнее —&gt;</a>
                 </div>
             </div>
         </div>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    <a href="articles" class="button w-button">Узнать больше —&gt;</a>
+                    <a href="{{ route('site.articles.index') }}" class="button w-button">Узнать больше —&gt;</a>
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
@@ -100,18 +100,11 @@
                 <h2 class="widget-h"><span class="inline-text-block"><strong>Этапы подготовки к ЭКО</strong></span></h2>
                 <div class="top-5-slider">
                     <div class="top-5-slider-wrap">
+                        @foreach($steps as $item)
                         <div class="top-5-slide">
-                            <div>Здоровый образ жизни</div>
+                            <div>{{ $item->title }}</div>
                         </div>
-                        <div class="top-5-slide">
-                            <div>Снижение уровня стресса</div>
-                        </div>
-                        <div class="top-5-slide">
-                            <div>Финансовое планирование</div>
-                        </div>
-                        <div class="top-5-slide">
-                            <div>Консультации специалистов</div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="top-5-slider-pagination">
                         <div class="top-5-slider-dot active">1</div>
@@ -122,7 +115,7 @@
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    <a href="article.html" class="button w-button">Все способы —&gt;</a>
+                    <a href="{{ route('site.articles.index') }}" class="button w-button">Все способы —&gt;</a>
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>

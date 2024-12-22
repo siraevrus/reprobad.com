@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Step;
-use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -18,6 +16,7 @@ class StepController extends Controller
     public array $rules = [
         'title' => 'string|required',
         'text' => 'string|nullable',
+        'article_id' => 'string|nullable',
         'active' => 'boolean|required',
     ];
 

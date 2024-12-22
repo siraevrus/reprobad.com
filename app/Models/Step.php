@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Step extends Model
 {
-    /** @use HasFactory<\Database\Factories\StepFactory> */
-    use HasFactory;
+    protected $guarded = ['id'];
+
+    protected $with = ['article'];
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('active', 1);
+    }
+
+    public function article()
+    {
+        return $this->belongsTo(Article::class);
+    }
 }
