@@ -30,7 +30,7 @@
     @if($resource->products)
         @php $idx = 1 @endphp
         @foreach($resource->products as $product)
-            <section id="first" class="section product-section {{ $idx % 2 == 0 ? 'second' : '' }}">
+            <section id="{{ $idx == 1 ? 'first' : 'second' }}" class="section product-section {{ $idx % 2 == 0 ? 'second' : '' }}">
                 <div class="container product-container">
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
