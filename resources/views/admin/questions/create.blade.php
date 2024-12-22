@@ -7,7 +7,7 @@
             @csrf <!-- Добавляем CSRF-токен -->
             <!-- Поле для заголовка -->
 
-            <div>@include('admin.components.image-input', ['title' => 'Изображение', 'field' => 'image'])</div>
+            <div>@include('admin.components.image-input', ['title' => 'Изображение', 'field' => 'icon'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
@@ -41,7 +41,7 @@
                 },
                 errors: {},
                 form: {
-                    image: '',
+                    icon: '',
                     title: '',
                     active: 1,
                     text: '',
@@ -63,13 +63,13 @@
                 uploadImage(event) {
                     const reader = new FileReader();
                     reader.onload = () => {
-                        this.form.image = reader.result;
+                        this.form.icon = reader.result;
                     };
                     reader.readAsDataURL(event.target.files[0]);
                     event.target.value = '';
                 },
                 removeImage() {
-                    this.form.image = null;
+                    this.form.icon = null;
                 },
                 async save() {
                     let method = 'POST';

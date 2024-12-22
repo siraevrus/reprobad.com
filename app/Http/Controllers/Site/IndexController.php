@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Complex;
 use App\Models\Event;
 use App\Models\Product;
+use App\Models\Question;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -41,7 +42,8 @@ class IndexController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+        $questions = Question::active()->get();
 
-        return view('site.index', compact('resource', 'complexes', 'resources', 'events', 'favorites'));
+        return view('site.index', compact('resource', 'complexes', 'resources', 'events', 'favorites', 'questions'));
     }
 }

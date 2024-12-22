@@ -78,20 +78,14 @@
                 <h2 class="widget-h"><strong>15 вопросов репродуктологу </strong><span class="inline-text-block">на первом приёме </span></h2>
                 <div class="questions-slider">
                     <div class="questions-slider-wrap">
-
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
-                            <div class="questions-slide-text"> </div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
-                            <div class="questions-slide-text"> </div>
-                        </div>
-                        <div class="questions-slide"><img src="images/question-slide-icon.svg" loading="lazy" alt="" class="questions-slide-icon">
-                            <div class="questions-slide-h">Какова стоимость лечения и финансовые риски</div>
-                            <div class="questions-slide-text"> </div>
-                        </div>
-
+                        @foreach($questions as $item)
+                        <a href="{{ route('site.articles.show', $item->article->alias) }}" class="questions-slide"><img src="{{ $item->icon }}" loading="lazy" alt="{{ $item->title }}" class="questions-slide-icon">
+                            <div class="questions-slide-h">{{ $item->title }}</div>
+                            <div class="questions-slide-text">
+                                {{ $item->text }}
+                            </div>
+                        </a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="widget-footer">

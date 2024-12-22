@@ -16,7 +16,10 @@
                 <div id="map" class="map-container"></div>
                 <div class="map-info-overlay"></div>
                 <div id="map-info" class="map-info" style="display: none;">
-                    <a href="#" class="map-info-close-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="map-info-close-icon"></a><img src="images/enc.png" loading="lazy" alt="" class="map-info-logo">
+                    <a href="#" class="map-info-close-button w-inline-block">
+                        <img src="images/x.svg" loading="lazy" alt="" class="map-info-close-icon">
+                    </a>
+                    <img src="images/enc.png" id="place-logo" loading="lazy" alt="" class="map-info-logo">
                     <div class="place-title" id="place-title">Аптека при клинике «Доктор Озон»</div>
                     <div class="place-subtitle" id="place-subtitle">на Бульваре Дм. Донского</div>
                     <div class="place-address" id="place-address">г. Москва, ул. Старокачаловская, д. 6</div>
@@ -95,12 +98,14 @@
                     document.getElementById('place-phone').innerText = placemark.phone;
                     document.getElementById('place-time').innerText = placemark.time;
                     document.getElementById('place-site').setAttribute('href', placemark.site);
+                    document.getElementById('place-logo').setAttribute('src', placemark.image);
 
                     if(!placemark.site) document.getElementById('place-site').style.display = 'none';
                     if(!placemark.phone) document.getElementById('place-phone').style.display = 'none';
                     if(!placemark.time) document.getElementById('place-time').style.display = 'none';
                     if(!placemark.text) document.getElementById('place-text').style.display = 'none';
                     if(!placemark.metro) document.getElementById('place-metro').style.display = 'none';
+                    if(!placemark.image) document.getElementById('place-logo').style.display = 'none';
 
                     // Показываем карточку с информацией
                     document.getElementById('map-info').style.display = 'block';

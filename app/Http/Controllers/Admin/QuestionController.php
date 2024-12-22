@@ -61,7 +61,6 @@ class QuestionController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['icon']) $validated['icon'] = ImageService::resize($validated['icon']);
 
         $resource = Question::query()
             ->create($validated);
@@ -98,7 +97,6 @@ class QuestionController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['icon']) $validated['icon'] = ImageService::resize($validated['icon']);
 
         $resource = Question::query()->findOrFail($id);
         $resource->fill($validated);
