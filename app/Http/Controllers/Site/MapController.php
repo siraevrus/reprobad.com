@@ -10,7 +10,7 @@ class MapController extends Controller
 {
     public function index(): View
     {
-        $resources = Point::active()->get();
-        return view('site.map');
+        $resources = Point::active()->get()->toJson();
+        return view('site.map', compact('resources'));
     }
 }

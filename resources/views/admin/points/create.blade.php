@@ -19,9 +19,17 @@
                 <div>@include('admin.components.text-input', ['title' => 'Метро', 'field' => 'metro'])</div>
             </div>
 
+            <div>@include('admin.components.text-input', ['title' => 'Адрес сайта', 'field' => 'site'])</div>
+
+            <div class="grid grid-cols-3 gap-4">
+                <div>@include('admin.components.text-input', ['title' => 'Телефон', 'field' => 'phone'])</div>
+                <div>@include('admin.components.text-input', ['title' => 'Дни', 'field' => 'days'])</div>
+                <div>@include('admin.components.text-input', ['title' => 'Время работы', 'field' => 'time'])</div>
+            </div>
+
             <div>@include('admin.components.text-input', ['title' => 'Координаты', 'field' => 'coords'])</div>
 
-            <div>@include('admin.components.textarea-input', ['title' => 'Текст', 'field' => 'text'])</div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Текст', 'field' => 'text', 'no_editor' => 1])</div>
 
             <!-- Кнопки -->
             <div class="flex justify-end gap-4">
@@ -62,7 +70,7 @@
                     }
 
                     this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    await this.userIsNotActive();
+                    //await this.userIsNotActive();
                     this.initializeEditor();
                 },
                 async get() {
@@ -138,7 +146,8 @@
                             toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
                             setup: (editor) => {
                                 editor.on('change', () => {
-                                    this.form.content = editor.getContent();
+                                    let field = element.getAttribute('x-model').split('.')[1];
+                                    this.form[field] = editor.getContent();
                                 });
                             }
                         });

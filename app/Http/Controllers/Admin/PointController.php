@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Point;
-use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,6 +24,10 @@ class PointController extends Controller
         'metro' => 'string|nullable',
         'text' => 'string|nullable',
         'image' => 'string|nullable',
+        'phone' => 'string|nullable',
+        'days' => 'string|nullable',
+        'time' => 'string|nullable',
+        'site' => 'url|nullable',
         'active' => 'boolean|required',
     ];
 
@@ -67,7 +70,6 @@ class PointController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
 
         $resource = Point::query()
             ->create($validated);
@@ -104,7 +106,6 @@ class PointController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
 
         $resource = Point::query()->findOrFail($id);
         $resource->fill($validated);

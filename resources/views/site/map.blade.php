@@ -26,7 +26,7 @@
                     <div class="place-text" id="place-text">В медцентре «Доктор Озон» клиенты могут получить медицинское обслуживание по таким профилям, как кардиология, терапия, маммология, эндокринология, трихология, отоларингология, косметология, офтальмология.</div>
                     <div class="map-info-contacts">
                         <div class="map-info-contacts-col">
-                            <a href="#" class="place-phone">8 (495) 135-38-48</a>
+                            <a href="#" class="place-phone" id="place-phone">8 (495) 135-38-48</a>
                             <div class="map-info-socials">
                                 <!-- Социальные сети -->
                                 <a social="vkontakte" href="#" target="_blank" class="map-info-social w-inline-block">
@@ -45,12 +45,12 @@
                         </div>
                         <div class="map-info-working-time">
                             <div class="map-info-work">
-                                <div class="map-info-work-day">пн-пт</div>
-                                <div class="map-info-work-hours">7:00 - 21:00</div>
+                                <div class="map-info-work-day" id="place-days">пн-пт</div>
+                                <div class="map-info-work-hours" id="place-time">7:00 - 21:00</div>
                             </div>
                         </div>
                     </div>
-                    <a href="#" target="_blank" class="map-info-button w-button">Сайт аптеки —&gt;</a>
+                    <a href="#" id="place-site" target="_blank" class="map-info-button w-button">Сайт аптеки —&gt;</a>
                 </div>
             </div>
             <div class="map-objects">
@@ -72,30 +72,13 @@
             });
 
             // Пример маркеров с информацией
-            var placemarks = [
-                {
-                    coords: [55.7558, 37.6176],
-                    title: "Аптека при клинике «Доктор Озон»",
-                    subtitle: "на Бульваре Дм. Донского",
-                    address: "г. Москва, ул. Старокачаловская, д. 6",
-                    metro: "Бульвар Дмитрия Донского, Улица Старокачаловская",
-                    text: "В медцентре «Доктор Озон» клиенты могут получить медицинское обслуживание."
-                },
-                {
-                    coords: [55.8038, 37.5876],
-                    title: "Аптека в торговом центре",
-                    subtitle: "на Проспекте Мира",
-                    address: "г. Москва, Проспект Мира, д. 100",
-                    metro: "Проспект Мира",
-                    text: "Медицинские услуги, аптека с доставкой."
-                }
-            ];
+            var placemarks = {!! $resources !!};
 
             var mapPlacemarks = [];
 
             // Функция для добавления маркера на карту
             function addPlacemark(placemark) {
-                var myPlacemark = new ymaps.Placemark(placemark.coords, {
+                var myPlacemark = new ymaps.Placemark(placemark.coordinates, {
                     hintContent: placemark.title,
                     balloonContent: placemark.title
                 }, {
@@ -109,6 +92,15 @@
                     document.getElementById('place-address').innerText = placemark.address;
                     document.getElementById('place-metro').innerText = placemark.metro;
                     document.getElementById('place-text').innerText = placemark.text;
+                    document.getElementById('place-phone').innerText = placemark.phone;
+                    document.getElementById('place-time').innerText = placemark.time;
+                    document.getElementById('place-site').setAttribute('href', placemark.site);
+
+                    if(!placemark.site) document.getElementById('place-site').style.display = 'none';
+                    if(!placemark.phone) document.getElementById('place-phone').style.display = 'none';
+                    if(!placemark.time) document.getElementById('place-time').style.display = 'none';
+                    if(!placemark.text) document.getElementById('place-text').style.display = 'none';
+                    if(!placemark.metro) document.getElementById('place-metro').style.display = 'none';
 
                     // Показываем карточку с информацией
                     document.getElementById('map-info').style.display = 'block';
