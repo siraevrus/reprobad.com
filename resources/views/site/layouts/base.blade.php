@@ -62,7 +62,6 @@
         html { overflow-y: scroll; overflow-x: hidden; height: -webkit-fill-available; }
         @supports (scrollbar-gutter: stable) { html { overflow-y: auto; scrollbar-gutter: stable; } }
         body { min-height: 100vh; min-height: -webkit-fill-available; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        @supports (font: -apple-system-body) and (-webkit-appearance: none) { img[loading="lazy"] { clip-path: inset(0.6px); } }
         .w-richtext > *:first-child { margin-top: 0; }
         .w-richtext > *:last-child { margin-bottom: 0; }
         .w-richtext figure img { border-radius: 1rem; }
