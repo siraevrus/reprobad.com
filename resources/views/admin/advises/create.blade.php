@@ -147,7 +147,8 @@
                             toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
                             setup: (editor) => {
                                 editor.on('change', () => {
-                                    this.form.content = editor.getContent();
+                                    let field = element.getAttribute('x-model').split('.')[1];
+                                    this.form[field] = editor.getContent();
                                 });
                             }
                         });
