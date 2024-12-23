@@ -16,7 +16,7 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Категория', 'field' => 'category'])</div>
 
-            <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>
+            <div>@include('admin.components.textarea-input', ['title' => 'Короткое описание', 'field' => 'description'])</div>
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 

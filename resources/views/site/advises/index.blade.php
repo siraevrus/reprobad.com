@@ -46,7 +46,7 @@
                             </div>
                             <div class="news-card-body">
                                 <a href="{{ route('site.advises.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
-                                <div class="news-card-text">{{ $item->description }}</div>
+                                <div class="news-card-text">{!! $item->description ?? '' !!}</div>
                             </div>
                             <div class="news-card-footer">
                                 <a href="{{ route('site.advises.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
