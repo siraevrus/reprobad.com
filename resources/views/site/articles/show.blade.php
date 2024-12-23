@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <h1 class="article-h1"><strong>{{ $resource->title }}</strong></h1>
-                <p class="big-paragraph article-short">{{ $resource->description ?? '' }}</p>
+                <p class="big-paragraph article-short">{!! $resource->description ?? '' !!}</p>
                 <div class="article-options">
                     <div class="article-date">{{ $resource->published_at }}</div>
                     <div class="article-read-time"><img src="images/sm-clock.svg" loading="lazy" alt="" class="clock-icon">
