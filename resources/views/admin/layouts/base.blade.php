@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- alpine mixins -->
-    <script src="/admin/js/utils.js"></script>
+    <script src="/js/utils.js"></script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
