@@ -39,7 +39,7 @@
     <div class="container widgets-container">
         <div class="short-events"><img src="images/bg-cal.svg" loading="lazy" alt="" class="short-events-bg-image">
             <div class="section-head-with-detali-button short-events-section">
-                <h2 class="big-section-h"><strong>Ближайшие</strong>&nbsp;мероприятия</h2>
+                <h2 class="big-section-h"><strong>События</strong> и&nbsp;мероприятия</h2>
                 <a href="{{ route('site.events.index') }}" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>
             </div>
             @foreach($events as $item)
