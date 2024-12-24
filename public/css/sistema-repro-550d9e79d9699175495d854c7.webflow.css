@@ -381,6 +381,16 @@ figcaption {
   position: relative;
 }
 
+.container._404-container {
+    text-align: center;
+    flex-flow: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    display: flex;
+}
+
 .big-paragraph {
   opacity: .8;
   font-size: 1.25rem;
