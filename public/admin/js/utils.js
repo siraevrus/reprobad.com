@@ -4,12 +4,13 @@ const variables = {
     alert: {
         show: false,
         message: '',
-        type: ''
+        error: ''
     },
     errors: {},
     route: '',
     action: '',
-    url: ''
+    url: '',
+    loading: false
 }
 
 const initializeEditor = {
@@ -77,46 +78,79 @@ const imageUpload = {
 }
 
 const showAlert = {
-    showAlert(message) {
+
+    getErrorMessages(errorObject) {
+        let messages = '';
+        for (const key in errorObject) {
+            if (errorObject.hasOwnProperty(key)) {
+                messages += errorObject[key].join("<br>") + "<br>";
+            }
+        }
+        return messages;
+    },
+
+    showAlert(message, error = false) {
         this.alert.show = false;
         this.$nextTick(() => {
             this.alert.show = true;
-            this.alert.message = message;
-            setTimeout(() => this.alert.show = false, 1000);
+            this.alert.message = error ? this.getErrorMessages(message) : message;
+            this.alert.error = error;
+            setTimeout(() => this.alert.show = false, 2500);
         });
     },
 }
 
 const save = {
     async save() {
-        const response = await fetch(this.url, {
-            method: this.action !== 'create' ? 'PUT' : 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': this.token
-            },
-            body: JSON.stringify(this.form)
-        });
+        this.loading = true;
+        try {
+            const response = await fetch(this.url, {
+                method: this.action !== 'create' ? 'PUT' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': this.token
+                },
+                body: JSON.stringify(this.form)
+            });
 
-        const data = await response.json();
-        if (data.success) {
-            if(this.action === 'create') {
-                window.location.href = '/admin/' + this.route+ '/';
-            }else {
-                this.form = data.resource;
-                this.showAlert('Сохранено');
+            const data = await response.json();
+            if (data.success) {
+                if(this.action === 'create') {
+                    window.location.href = '/admin/' + this.route+ '/';
+                }else {
+                    this.form = data.resource;
+                    this.showAlert('Сохранено');
+                }
+            } else {
+                this.errors = data.errors;
+                this.showAlert(data.errors, true);
             }
-        } else {
-            this.errors = data.errors;
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            this.loading = false;
         }
     },
 }
 
 const get = {
     async get() {
-        const response = await fetch('/admin/' + this.route + '/' + this.action);
-        const data = await response.json()
-        this.form = data
+        this.loading = true;
+        try {
+            const response = await fetch('/admin/' + this.route + '/' + this.action);
+            const data = await response.json()
+            this.form = data
+
+            this.loading = false;
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            this.loading = false;
+        }
     },
 }
 

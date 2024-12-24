@@ -3,10 +3,7 @@
 @section('content')
     <div x-data="app()">
 
-        <div class="fixed bg-green-400 border text-white border-green-500 text-green-800 top-[20px] px-4 py-2 rounded z-50"
-             x-show="alert.show"
-             x-text="alert.message"
-        ></div>
+        @include('admin.components.alert')
 
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} статью</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
@@ -42,15 +39,7 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
-            <!-- Кнопки -->
-            <div class="flex justify-end gap-4">
-                <button type="reset" class="px-6 py-2 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300">
-                    Отмена
-                </button>
-                <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                    Сохранить
-                </button>
-            </div>
+            @include('admin.components.buttons')
         </form>
     </div>
 @endsection
