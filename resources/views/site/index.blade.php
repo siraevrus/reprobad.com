@@ -79,18 +79,19 @@
                 <div class="questions-slider">
                     <div class="questions-slider-wrap">
                         @foreach($questions as $item)
-                        <a href="{{ route('site.articles.show', $item->article->alias) }}" class="questions-slide"><img src="{{ $item->icon }}" loading="lazy" alt="{{ $item->title }}" class="questions-slide-icon">
+                        <div class="questions-slide">
+                            <img src="{{ $item->icon }}" loading="lazy" alt="{{ $item->title }}" class="questions-slide-icon">
                             <div class="questions-slide-h">{{ $item->title }}</div>
                             <div class="questions-slide-text">
                                 {{ $item->text }}
                             </div>
-                        </a>
+                        </div>
                         @endforeach
                     </div>
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    <a href="{{ route('site.articles.index') }}" class="button w-button">Узнать больше —&gt;</a>
+                    <a href="/usefully-tips/etapy" class="button w-button">Узнать больше —&gt;</a>
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
@@ -115,7 +116,7 @@
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    <a href="{{ route('site.articles.index') }}" class="button w-button">Все способы —&gt;</a>
+                    <a href="/usefully-tips/etapy" class="button w-button">Все способы —&gt;</a>
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>

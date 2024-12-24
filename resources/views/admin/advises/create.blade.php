@@ -12,6 +12,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
+            <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
+
             <div>@include('admin.components.text-input', ['title' => 'Время на чтение', 'field' => 'time'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Категория', 'field' => 'category'])</div>

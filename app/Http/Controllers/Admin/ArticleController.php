@@ -26,6 +26,7 @@ class ArticleController extends Controller
         'category' => 'string|nullable',
         'time' => 'string|nullable',
         'active' => 'boolean|required',
+        'seo_description' => 'string|nullable',
     ];
 
     public function index(): View

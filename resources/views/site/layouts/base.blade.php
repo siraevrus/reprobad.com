@@ -8,7 +8,7 @@
     <meta content="{{ $resource->description ?? '' }}" property="og:description">
     <meta content="{{ $resource->image ?? '' }}" property="og:image">
     <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
-    <meta content="{{ $resource->description ?? '' }}" property="twitter:description">
+    <meta content="{{ $resource->seo_description ?? '' }}" property="twitter:description">
     <meta content="{{ $resource->image ?? '' }}" property="twitter:image">
     <meta property="og:type" content="website">
     <base href="/">

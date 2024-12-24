@@ -22,6 +22,7 @@ class AdviseController extends Controller
         'image' => 'string|nullable',
         'category' => 'string|nullable',
         'time' => 'string|nullable',
+        'seo_description' => 'string|nullable',
     ];
 
     public function index(): View
