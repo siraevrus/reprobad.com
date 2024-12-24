@@ -18,7 +18,6 @@ class StepController extends Controller
     public array $rules = [
         'title' => 'string|required',
         'text' => 'string|nullable',
-        'article_id' => 'string|nullable',
         'active' => 'boolean|required',
     ];
 

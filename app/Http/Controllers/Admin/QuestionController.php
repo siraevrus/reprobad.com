@@ -17,7 +17,6 @@ class QuestionController extends Controller
 {
 
     public array $rules = [
-        'article_id' => 'integer|required',
         'title' => 'string|required',
         'text' => 'string|nullable',
         'icon' => 'string|nullable',

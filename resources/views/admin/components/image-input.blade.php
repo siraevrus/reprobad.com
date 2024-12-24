@@ -5,5 +5,5 @@
     <p x-show="!form.{{ $field }}">Перетащите изображение сюда <br>или нажмите для загрузки</p>
     <input type="file" @change="uploadImage($event, '{{ $field }}')" class="hidden" x-ref="fileInput">
     <img :src="form.{{ $field }}" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="form.{{ $field }}">
-    <button x-show="form.{{ $field }}" @click="removeImage('{{ $field }}')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
+    <button x-show="form.{{ $field }}" @click.prevent="removeImage('{{ $field }}')" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
 </label>

@@ -34,105 +34,19 @@
     <script>
         function app() {
             return {
-                alert: {
-                    show: false,
-                    message: '',
-                    type: ''
-                },
-                errors: {},
+                ...initializeEditor,
+                ...userIsNotActive,
+                ...imageUpload,
+                ...variables,
+                ...showAlert,
+                ...get,
+                ...save,
+                ...init,
                 form: {
                     title: '',
                     text: '',
                     article_id: '',
                     active: 1,
-                },
-                async init() {
-                    if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {
-                        await this.get();
-                    }
-
-                    this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    await this.userIsNotActive();
-                    this.initializeEditor();
-                },
-                async get() {
-                    const response = await fetch('/admin/steps/' + location.pathname.split('/')[3]);
-                    const data = await response.json()
-                    this.form = data
-                },
-                uploadImage(event) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        this.form.image = reader.result;
-                    };
-                    reader.readAsDataURL(event.target.files[0]);
-                    event.target.value = '';
-                },
-                removeImage() {
-                    this.form.image = null;
-                },
-                async save() {
-                    let method = 'POST';
-                    if(location.pathname.split('/')[3] !== 'create') method = 'PUT';
-                    let url = location.pathname.replace('create', '').replace('edit', '');
-                    const response = await fetch(url, {
-                        method: method,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': this.token
-                        },
-                        body: JSON.stringify(this.form)
-                    });
-
-                    const data = await response.json();
-                    if (data.success) {
-                        if(location.pathname.split('/')[3] === 'create') location.href = '/admin/steps';
-                    } else {
-                        this.errors = data.errors;
-                    }
-                },
-                async userIsNotActive() {
-                    let idleTime = 0;
-                    const idleLimit = 10; // Время бездействия в секундах
-
-                    const resetIdleTimer = () => {
-                        idleTime = 0;
-                    };
-
-                    document.addEventListener('mousemove', resetIdleTimer);
-                    document.addEventListener('keydown', resetIdleTimer);
-                    document.addEventListener('mousedown', resetIdleTimer);
-                    document.addEventListener('scroll', resetIdleTimer);
-
-                    setInterval(async () => {
-                        idleTime++;
-                        if (idleTime >= idleLimit) {
-                            console.log('Пользователь неактивен');
-                            await this.save(true);
-                        }
-                    }, 1000);
-                },
-                initializeEditor() {
-                    document.querySelectorAll('.editor').forEach((element, index) => {
-                        if (!element.id) {
-                            element.id = `editor-${index}`; // Назначаем уникальный ID
-                        }
-
-                        tinymce.init({
-                            selector: `#${element.id}`, // Используем уникальный ID
-                            height: 300,
-                            menubar: false,
-                            language: 'ru',
-                            language_url: '/js/ru.min.js',
-                            plugins: 'advlist autolink lists link image charmap preview anchor code',
-                            toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
-                            setup: (editor) => {
-                                editor.on('change', () => {
-                                    this.form.content = editor.getContent();
-                                });
-                            }
-                        });
-                    });
                 },
             }
         }
