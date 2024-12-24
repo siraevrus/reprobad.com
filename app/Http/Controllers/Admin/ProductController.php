@@ -34,6 +34,7 @@ class ProductController extends Controller
         'products' => 'string|nullable',
         'title_right' => 'string|nullable',
         'complex_id' => 'integer|nullable',
+        'seo_description' => 'string|nullable',
     ];
 
     public function index(): View

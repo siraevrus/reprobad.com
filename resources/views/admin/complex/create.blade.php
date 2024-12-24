@@ -25,6 +25,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
+            <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
+
             <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
 
             <!-- Кнопки -->
@@ -61,7 +63,8 @@
                     color: '',
                     title_left: 'hero-product-1',
                     title_right: 'hero-product-2',
-                    active: true
+                    active: true,
+                    seo_description: ''
                 },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {

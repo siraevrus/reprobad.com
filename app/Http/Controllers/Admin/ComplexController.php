@@ -26,6 +26,7 @@ class ComplexController extends Controller
         'description' => 'string|nullable',
         'color' => 'string|nullable',
         'product_ids' => 'string|nullable',
+        'seo_description' => 'string|nullable',
     ];
 
     public function index(): View

@@ -74,6 +74,7 @@
                     category: '',
                     time: '',
                     active: 1,
+                    seo_description: ''
                 },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {

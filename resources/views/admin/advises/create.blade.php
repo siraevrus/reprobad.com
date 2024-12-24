@@ -53,6 +53,7 @@
                     content: '',
                     category: '',
                     time: '',
+                    seo_description: ''
                 },
                 async init() {
                     if (location.pathname.split('/')[3] !== undefined && location.pathname.split('/')[3] !== 'create') {
