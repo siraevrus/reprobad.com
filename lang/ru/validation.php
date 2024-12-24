@@ -194,7 +194,22 @@ return [
         'category' => 'категория',
         'title' => 'заголовок',
         'image' => 'изображение',
-        'content' => 'содержание'
+        'content' => 'содержание',
+        'coords' => 'координаты',
+        'name' => 'имя',
+        'email' => 'e-mail',
+        'password' => 'пароль',
+        'description' => 'короткое описание',
+        'time' => 'время работы',
+        'seo_description' => 'сео-описание',
+        'icon' => 'иконка',
+        'active' => 'активность',
+        'image_left' => 'фото слева',
+        'image_right' => 'фото справа',
+        'title_left' => 'css класс фото слева',
+        'title_right' => 'css класс фото справа',
+        'color' => 'цвет',
+        'product_ids' => 'id товаров'
     ],
 
 ];
