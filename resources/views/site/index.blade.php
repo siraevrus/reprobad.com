@@ -91,7 +91,9 @@
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
+                    {{--
                     <a href="/usefully-tips/etapy" class="button w-button">Узнать больше —&gt;</a>
+                    --}}
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
