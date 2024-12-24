@@ -48,14 +48,6 @@
                 ...save,
                 ...init,
                 form: {
-                    title: '',
-                    description: '',
-                    alias: '',
-                    image: '',
-                    content: '',
-                    category: '',
-                    time: '',
-                    seo_description: ''
                 },
             }
         }

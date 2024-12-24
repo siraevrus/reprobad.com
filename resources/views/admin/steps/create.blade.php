@@ -43,9 +43,6 @@
                 ...save,
                 ...init,
                 form: {
-                    title: '',
-                    text: '',
-                    article_id: '',
                     active: 1,
                 },
             }

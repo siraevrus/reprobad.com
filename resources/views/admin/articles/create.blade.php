@@ -68,15 +68,7 @@
                 ...save,
                 ...init,
                 form: {
-                    title: '',
-                    description: '',
-                    alias: '',
-                    image: '',
-                    content: '',
-                    category: '',
-                    time: '',
                     active: 1,
-                    seo_description: ''
                 },
             }
         }

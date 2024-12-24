@@ -45,10 +45,7 @@
                 ...save,
                 ...init,
                 form: {
-                    icon: '',
-                    title: '',
                     active: 1,
-                    text: '',
                 },
             }
         }

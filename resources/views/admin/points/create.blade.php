@@ -4,8 +4,8 @@
     <div x-data="app()">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">{{ request()->segment(3) == 'create' ? 'Создать' : 'Изменить' }} точку продаж</h2>
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
-            @csrf <!-- Добавляем CSRF-токен -->
-            <!-- Поле для заголовка -->
+            @csrf
+
             <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'image'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
@@ -57,14 +57,7 @@
                 ...save,
                 ...init,
                 form: {
-                    image: '',
-                    title: '',
-                    subtitle: '',
                     active: 1,
-                    address: '',
-                    metro: '',
-                    coords: '',
-                    text: '',
                 },
             }
         }

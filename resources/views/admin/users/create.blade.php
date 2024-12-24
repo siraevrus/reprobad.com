@@ -37,11 +37,7 @@
                 ...get,
                 ...save,
                 ...init,
-                form: {
-                    name: '',
-                    email: '',
-                    password: '',
-                },
+                form: {},
             }
         }
     </script>

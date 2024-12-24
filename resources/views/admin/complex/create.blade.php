@@ -55,18 +55,9 @@
                 ...save,
                 ...init,
                 form: {
-                    title: '',
-                    alias: '',
-                    subtitle: '',
-                    content: '',
-                    image_left: '',
-                    image_right: '',
-                    description: '',
-                    color: '',
                     title_left: 'hero-product-1',
                     title_right: 'hero-product-2',
-                    active: true,
-                    seo_description: ''
+                    active: 1,
                 },
             }
         }

@@ -79,15 +79,7 @@
                 ...get,
                 ...save,
                 ...init,
-                form: {
-                    title: '',
-                    description: '',
-                    alias: '',
-                    image: '',
-                    content: '',
-                    category: '',
-                    time: '',
-                },
+                form: {},
             }
         }
     </script>
