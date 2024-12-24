@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advise;
+use App\Models\Article;
 use App\Models\Step;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -34,12 +36,18 @@ class StepController extends Controller
      */
     public function create(): View
     {
-        return view('admin.steps.create');
+        $articles = Article::query()->pluck('title', 'id');
+        $advises = Advise::query()->pluck('title', 'id');
+        $options = $articles->union($advises);
+        return view('admin.steps.create', compact('options'));
     }
 
     public function edit(): View
     {
-        return view('admin.steps.create');
+        $articles = Article::query()->pluck('title', 'id');
+        $advises = Advise::query()->pluck('title', 'id');
+        $options = $articles->union($advises);
+        return view('admin.steps.create', compact('options'));
     }
 
     /**

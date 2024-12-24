@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Advise;
+use App\Models\Article;
 use App\Models\Question;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -36,12 +38,18 @@ class QuestionController extends Controller
      */
     public function create(): View
     {
-        return view('admin.questions.create');
+        $articles = Article::query()->pluck('title', 'id');
+        $advises = Advise::query()->pluck('title', 'id');
+        $options = $articles->union($advises);
+        return view('admin.questions.create', compact('options'));
     }
 
     public function edit(): View
     {
-        return view('admin.questions.create');
+        $articles = Article::query()->pluck('title', 'id');
+        $advises = Advise::query()->pluck('title', 'id');
+        $options = $articles->union($advises);
+        return view('admin.questions.create', compact('options'));
     }
 
     /**

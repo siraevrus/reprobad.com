@@ -11,7 +11,7 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>@include('admin.components.select-input', ['title' => 'Статья', 'field' => 'article_id', 'options' => App\Models\Article::query()->pluck('title', 'id')])</div>
+            <div>@include('admin.components.select-input', ['title' => 'Статья', 'field' => 'article_id', 'options' => $articles])</div>
 
             <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => [1 => 'Да', 0 => 'Нет']])</div>
 
