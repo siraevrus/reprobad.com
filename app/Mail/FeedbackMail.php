@@ -24,8 +24,8 @@ class FeedbackMail extends Mailable
     public function build()
     {
         return $this->markdown('mail.feedback')
-            ->from(env('MAIN_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-            ->to(env('MAIN_TO_ADDRESS'))
+            ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
+            ->to(env('MAIL_TO_ADDRESS'))
             ->subject('Обратная связь на сайте Repro')
             ->with([
                 'name' => $this->message['name'],

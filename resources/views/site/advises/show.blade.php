@@ -148,3 +148,53 @@
         </div>
     </section>
 @endsection
+
+@section('scripts')
+<style>
+    .input-error {
+        border: 1px solid red;
+    }
+</style>
+<script>
+    function app() {
+        return {
+            form: {
+                name: '',
+                email: '',
+                phone: '',
+                message: '',
+                agree: 1
+            },
+            errors: {
+
+            },
+            success: false,
+
+            async submit() {
+                try {
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const response = await fetch('/forms/subscribe', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify(this.form)
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        this.errors = {};
+                        this.success = true;
+                    } else {
+                        this.errors = data.errors;
+                    }
+                }
+                catch (e) {
+                    console.log(e)
+                }
+            }
+        }
+    }
+</script>
+@endsection
