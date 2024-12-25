@@ -40,7 +40,7 @@ class PageController extends Controller
         $resource = [
             'title' => 'Контакты',
             'description' => 'Контакты',
-            'isHome' => true,
+            'isHome' => 1,
         ];
         return view('site.contacts', compact('resource'));
     }
