@@ -34,7 +34,7 @@
                 <div class="article-content">
                     <div class="w-richtext">
                         @if($resource->image)
-                        <figure style="max-width:960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                        <figure class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                             <div><img src="{{ $resource->image }}" loading="lazy" alt="" class="image"></div>
                         </figure>
                         @endif

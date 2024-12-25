@@ -34,7 +34,7 @@
                 <div class="article-content">
                     <div class="w-richtext">
                         @if($resource->image)
-                        <figure style="max-width:960px" class="w-richtext-align-fullwidth w-richtext-figure-type-image">
+                        <figure class="w-richtext-align-fullwidth w-richtext-figure-type-image">
                             <div><img src="{{ $resource->image }}" loading="lazy" alt="" class="image"></div>
                         </figure>
                         @endif
@@ -103,17 +103,28 @@
                                 </div>
                             </div>
                             <div class="subscribe-body w-form">
-                                <form id="wf-form-Subscribe-Form" name="form wf-form-Subscribe-Form" data-name="Subscribe Form" method="get" class="subscribe-form" data-wf-page-id="673718a9aa664236cdc0b66c" data-wf-element-id="d970ee92-496f-2ca2-29f1-141b2fef1c1d">
-                                    <div class="subscribe-head-label">Подписаться на рассылку</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="subscribe_email" data-name="subscribe_email" placeholder="Ваш Email*" type="email" id="subscribe_email"><label class="w-checkbox subscribe-checkbox">
-                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
-                                    </label><input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
+                                <form name="form wf-form-Subscribe-Form" method="post" class="subscribe-form" action="{{ route('site.form.subscribe') }}">
+                                    @csrf
+                                    <div class="subscribe-head-label">Подписаться на рассылку</div>
+                                    <input class="text-field w-input" autocomplete="off" maxlength="256" name="email" placeholder="Ваш Email*" type="email" id="subscribe_email">
+                                    <label class="w-checkbox subscribe-checkbox">
+                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
+                                        <input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
+                                    </label>
+                                    <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
-                                <div class="subscribe-success w-form-done"><img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                                    <div>Вы успешно подписались <br>на рассылку!</div>
+                                @if(session()->has('message'))
+                                <div class="subscribe-success w-form-done" style="display: block">
+                                    <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                                    <div>{{ session()->get('message') }}</div>
                                 </div>
-                                <div class="error-message mt-0 w-form-fail">
-                                    <div>Oops! Something went wrong while submitting the form.</div>
+                                @endif
+                                @if($errors->has('email'))
+                                <div class="error-message mt-0 w-form-fail" style="display: block">
+                                    <div>Заполните форму</div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

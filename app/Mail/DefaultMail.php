@@ -14,41 +14,21 @@ class DefaultMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(
-        $message,
-    ) {}
+    public $message;
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function __construct(array $message)
     {
-        return new Envelope(
-            from: new Address(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME')),
-            subject: 'Заявка на сайте Репро',
-        );
+        $this->message = $message;
     }
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'mail.default',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->markdown('mail.default')
+            ->from(env('MAIN_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
+            ->to(env('MAIN_TO_ADDRESS'))
+            ->subject('Новая заявка на сайте Repro')
+            ->with([
+                'email' => $this->message['email'],
+            ]);
     }
 }

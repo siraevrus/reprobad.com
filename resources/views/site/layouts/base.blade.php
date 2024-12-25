@@ -331,70 +331,11 @@
 </div>
 
 <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="js/webflow.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://files.raketadesign.ru/files/sistema-repro/home.js" type="text/javascript"></script>
+<script src="/js/webflow.js"></script>
 
 @yield('scripts')
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Находим все формы
-        const forms = document.querySelectorAll('.form');
-
-        forms.forEach((form) => {
-            const formBlock = form.closest('div'); // Блок формы
-            const successMessage = formBlock.querySelector('.success-message'); // Сообщение об успехе
-            const errorMessage = formBlock.querySelector('.error-message'); // Сообщение об ошибке
-            const closeButtons = formBlock.querySelectorAll('.close-popup-button'); // Кнопки закрытия
-
-            // Закрытие формы и сообщений
-            closeButtons.forEach((button) => {
-                button.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    form.reset(); // Сбрасываем данные формы
-                    successMessage.style.display = 'none'; // Скрываем сообщение об успехе
-                    errorMessage.style.display = 'none'; // Скрываем сообщение об ошибке
-                    form.style.display = 'block'; // Показываем форму обратно
-                });
-            });
-
-            // Обработка отправки формы
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault(); // Отключаем стандартное поведение
-
-                const formData = new FormData(form); // Собираем данные формы
-
-                // Скрываем старые сообщения
-                successMessage.style.display = 'none';
-                errorMessage.style.display = 'none';
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: form.method || 'POST',
-                        body: formData,
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`Ошибка: ${response.statusText}`);
-                    }
-
-                    const result = await response.json();
-
-                    if (result.success) {
-                        form.style.display = 'none'; // Скрываем форму
-                        successMessage.style.display = 'block'; // Показываем сообщение об успехе
-                    } else {
-                        throw new Error(result.message || 'Неизвестная ошибка');
-                    }
-                } catch (error) {
-                    console.log(error);
-                    errorMessage.style.display = 'block'; // Показываем сообщение об ошибке
-                }
-            });
-        });
-    });
-
-</script>
 </body>
 </html>

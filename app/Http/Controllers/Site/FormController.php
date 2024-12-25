@@ -11,31 +11,20 @@ use Illuminate\Support\Facades\Mail;
 
 class FormController extends Controller
 {
-    public function subscribe(Request $request): JsonResponse
+    public function subscribe(Request $request)
     {
-        $request->headers->set('Accept', 'application/json');
-
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'email' => 'required|email',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
-
-        return response()->json(['success' => true]);
+        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validated));
+        session()->flash('message', 'Вы были успешно подписаны на рассылку');
+        return back();
     }
 
-    public function feedback(Request $request): JsonResponse
+    public function feedback(Request $request)
     {
-        $request->headers->set('Accept', 'application/json');
-
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|string',
@@ -43,15 +32,8 @@ class FormController extends Controller
             'agree' => 'accepted|required'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
-
-        return response()->json(['success' => true]);
+        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validated));
+        session()->flash('message', 'Ваше сообщение успешно отправлено');
+        return back();
     }
 }

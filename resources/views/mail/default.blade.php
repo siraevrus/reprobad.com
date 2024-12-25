@@ -1,5 +1,8 @@
-<x-mail::message>
-    # Заявка на сайте
+@component('mail::message')
+    # Подпись на рассылку
 
+    E-mail: {{ $email }}
 
-</x-mail::message>
+    Спасибо,<br>
+    {{ config('app.name') }}
+@endcomponent
