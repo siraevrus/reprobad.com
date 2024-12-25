@@ -52,4 +52,11 @@ class Subscribe extends Model
     protected $table = 'subscribers';
 
     protected $guarded = ['id'];
+
+    protected $appends = ['date'];
+
+    public function getDateAttribute()
+    {
+        return $this->created_at->format('d.m.Y H:i:s');
+    }
 }

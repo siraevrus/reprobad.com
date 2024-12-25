@@ -18,7 +18,7 @@
                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                     <td class="py-3 px-6">1</td>
                     <td class="py-3 px-6">{{ $resource->email }}</td>
-                    <td class="py-3 px-6">{{ $resource->created_at }}</td>
+                    <td class="py-3 px-6">{{ $resource->date }}</td>
                 </tr>
             @endforeach
             </tbody>
