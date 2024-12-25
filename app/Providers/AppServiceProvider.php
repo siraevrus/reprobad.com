@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Config;
+use App\Models\Point;
+use App\Policies\PointPolicy;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

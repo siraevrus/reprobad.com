@@ -10,7 +10,7 @@
                 <div class="product-buy-buttons">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
-                <div class="hero-products {{ $resource->color }}">
+                <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                     </a>

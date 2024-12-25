@@ -12,7 +12,6 @@ use Illuminate\View\View;
 
 class PointController extends Controller
 {
-
     public array $rules = [
         'coords' => [
             'regex:/^-?\d{1,3}(\.\d+)?,\-?\d{1,3}(\.\d+)?$/',
@@ -36,6 +35,7 @@ class PointController extends Controller
      */
     public function index(): View
     {
+        if(request()->user()->cannot('viewAny', Point::class)) abort(403);
         $resources = Point::query()->paginate(env('PAGINATION_LIMIT', 20));
         return view('admin.points.index', compact('resources'));
     }
@@ -45,11 +45,14 @@ class PointController extends Controller
      */
     public function create(): View
     {
+        if(request()->user()->cannot('create', Point::class)) abort(403);
         return view('admin.points.create');
     }
 
-    public function edit(): View
+    public function edit($id): View
     {
+        $resource = Point::query()->findOrFail($id);
+        if(request()->user()->cannot('update', $resource)) abort(403);
         return view('admin.points.create');
     }
 
@@ -58,6 +61,8 @@ class PointController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if(request()->user()->cannot('create', Point::class)) abort(403);
+
         $request->headers->set('Accept', 'application/json');
 
         $validator = Validator::make($request->all(), $this->rules);
@@ -85,7 +90,11 @@ class PointController extends Controller
     public function show(Request $request, $id): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+
         $resource = Point::query()->findOrFail($id);
+
+        if(request()->user()->cannot('view', $resource)) abort(403);
+
         return response()->json($resource);
     }
 
@@ -95,6 +104,10 @@ class PointController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+
+        $resource = Point::query()->findOrFail($id);
+
+        if(request()->user()->cannot('update', $resource)) abort(403);
 
         $validator = Validator::make($request->all(), $this->rules);
 
@@ -107,7 +120,6 @@ class PointController extends Controller
 
         $validated = $validator->validated();
 
-        $resource = Point::query()->findOrFail($id);
         $resource->fill($validated);
         $resource->save();
 
@@ -117,16 +129,22 @@ class PointController extends Controller
         ]);
     }
 
-    public function destroy($id): RedirectResponse
+    public function destroy(Request $request, $id): RedirectResponse
     {
         $resource = Point::query()->findOrFail($id);
+
+        if(request()->user()->cannot('delete', $resource)) abort(403);
+
         $resource->delete();
         return back();
     }
 
-    public function switch($id): RedirectResponse
+    public function switch(Request $request, $id): RedirectResponse
     {
         $resource = Point::query()->findOrFail($id);
+
+        if(request()->user()->cannot('update', $resource)) abort(403);
+
         $resource->active = $resource->active === 0;
         $resource->save();
         session()->flash('message', 'Статус публикации обновлен');
