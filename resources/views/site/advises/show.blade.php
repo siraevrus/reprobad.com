@@ -109,7 +109,7 @@
                                     <input class="text-field w-input" autocomplete="off" maxlength="256" name="email" placeholder="Ваш Email*" type="email" id="subscribe_email">
                                     <label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
-                                        <input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <input type="checkbox" value="1" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
                                         <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
                                     </label>
                                     <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
@@ -120,7 +120,7 @@
                                     <div>{{ session()->get('message') }}</div>
                                 </div>
                                 @endif
-                                @if($errors->has('email'))
+                                @if($errors->any())
                                 <div class="error-message mt-0 w-form-fail" style="display: block">
                                     <div>Заполните форму</div>
                                 </div>

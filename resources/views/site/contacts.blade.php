@@ -47,21 +47,40 @@
             </div>
             <div class="contacts-form">
                 <div class="question-form-block w-form">
-                    <form id="wf-form-Question-Form" name="form wf-form-Question-Form" data-name="Question Form" method="get" class="form" data-wf-page-id="673718a9aa664236cdc0b68b" data-wf-element-id="1aa26553-0562-af66-9151-7e4d4dc2d3fa">
-                        <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
-                        <div class="form-h">Возникли вопросы?</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="name-3" data-name="Name 3" placeholder="ФИО*" type="text" id="name-3" required=""><input class="text-field w-input" autocomplete="off" maxlength="256" name="email-6" data-name="Email 6" placeholder="Email*" type="email" id="email-6" required=""><input class="text-field w-input" autocomplete="off" maxlength="256" name="phone-2" data-name="Phone 2" placeholder="Номер телефона" type="tel" id="phone-2" required=""><textarea class="text-field text-area w-input" autocomplete="off" maxlength="5000" name="message-2" data-name="Message 2" placeholder="Ваш вопрос…" id="message-2"></textarea>
-                        <div class="checkbox-wrap"><label class="w-checkbox subscribe-checkbox black">
-                                <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree-2" id="agree-2" data-name="Agree 2" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree-2">Соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами политики конфиденциальности в отношении персональных данных</a></span>
-                            </label></div><input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
+                    <form class="form wf-form-Subscribe-Form" method="post" action="{{ route('site.form.feedback') }}">
+                        @csrf
+                        <a href="#" class="close-popup-button w-inline-block">
+                            <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
+                        </a>
+                        <div class="form-h">Возникли вопросы?</div>
+                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="name" placeholder="ФИО*" type="text" required="">
+                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="email" placeholder="Email*" type="email" required="">
+                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="phone" placeholder="Номер телефона" type="tel" required="">
+                        <textarea class="text-field text-area w-input" autocomplete="off" maxlength="5000" name="message" placeholder="Ваш вопрос…"></textarea>
+                        <div class="checkbox-wrap">
+                            <label class="w-checkbox subscribe-checkbox black">
+                                <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
+                                <input type="checkbox" value="1" name="agree" id="agree-2" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                <span class="subscribe-checkbox-label w-form-label" for="agree-2">
+                                    Соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами политики конфиденциальности в отношении персональных данных</a>
+                                </span>
+                            </label>
+                        </div>
+                        <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
                     </form>
-                    <div class="success-message w-form-done"><img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                </div>
+                @if(session()->has('message'))
+                    <div class="success-message w-form-done" style="display: block;margin-top:30px">
+                        <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                         <div>Ваш вопрос отправлен!</div>
                         <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                     </div>
-                    <div class="error-message w-form-fail">
-                        <div>Что-то произошло во время отправки формы. Попробуйте ещё раз позже!</div>
+                @endif
+                @if($errors->any())
+                    <div class="error-message w-form-fail" style="display: block">
+                        <div>Заполните требуемые поля</div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </section>
