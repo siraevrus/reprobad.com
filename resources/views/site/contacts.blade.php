@@ -68,19 +68,19 @@
                         </div>
                         <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
                     </form>
-                </div>
-                @if(session()->has('message'))
-                    <div class="success-message w-form-done" style="display: block;margin-top:30px">
+                    @if(session()->has('message'))
+                    <div class="success-message w-form-done" style="display: block;margin-top: 20px">
                         <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                         <div>Ваш вопрос отправлен!</div>
                         <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                     </div>
-                @endif
-                @if($errors->any())
+                    @endif
+                    @if($errors->any())
                     <div class="error-message w-form-fail" style="display: block">
                         <div>Заполните требуемые поля</div>
                     </div>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
     </section>
