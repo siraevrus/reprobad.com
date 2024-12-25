@@ -16,6 +16,7 @@
                     <input type="submit" class="search-button w-button" value="—&gt;">
                 </form>
 
+                @if(!request()->get('query'))
                 <div class="tags">
                     <a href="{{ route('site.articles.index') }}" class="tag {{ !request()->get('category') ? 'active' : '' }} w-inline-block">
                         <div class="tag-label">Все</div>
@@ -28,6 +29,8 @@
                     </a>
                     @endforeach
                 </div>
+                @endif
+
                 <a href="#" class="mobile-search-button w-inline-block"><img src="images/Search.svg" loading="lazy" alt="" class="mobile-search-button-icon"></a>
             </div>
             <div class="items-wrap">
