@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\StepController;
+use App\Http\Controllers\Admin\SubscribeController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Site\FormController;
@@ -38,6 +39,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/text', TextController::class);
     Route::resource('/admin/points', PointController::class);
     Route::resource('/admin/questions', QuestionController::class);
+    Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');

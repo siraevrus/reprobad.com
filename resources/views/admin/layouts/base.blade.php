@@ -90,6 +90,7 @@
                 { href: '{{ route('admin.points.index') }}', segment: 'points', icon: 'navigation', text: 'Точки' },
                 { href: '{{ route('admin.steps.index') }}', segment: 'steps', icon: 'stairs_2', text: 'Этапы подготовки' },
                 { href: '{{ route('admin.pages.index') }}', segment: 'pages', icon: 'pages', text: 'Страницы' },
+                { href: '{{ route('admin.subscribers.index') }}', segment: 'subscribers', icon: 'mail', text: 'Подписчики' },
                 { href: '#', segment: 'divider', icon: '', text: '' }, // Separator
                 { href: '{{ route('admin.users.index') }}', segment: 'users', icon: 'person', text: 'Пользователи' },
                 { href: '{{ route('admin.config.edit') }}', segment: 'config', icon: 'settings', text: 'Настройки' }
