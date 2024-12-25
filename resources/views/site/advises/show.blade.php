@@ -102,30 +102,24 @@
                                     <script async="" src="https://static.addtoany.com/menu/page.js"></script>
                                 </div>
                             </div>
-                            <div class="subscribe-body w-form">
-                                @if(!session()->has('message'))
-                                <form name="form wf-form-Subscribe-Form" method="post" class="subscribe-form" action="{{ route('site.form.subscribe') }}">
-                                    @csrf
+                            <div class="subscribe-body w-form" x-data="app()">
+                                <form name="form wf-form-Subscribe-Form" method="post" @submit.prevent="submit" class="subscribe-form" action="{{ route('site.form.subscribe') }}" x-show="!success">
                                     <div class="subscribe-head-label">Подписаться на рассылку</div>
-                                    <input class="text-field w-input" autocomplete="off" maxlength="256" name="email" placeholder="Ваш Email*" type="email" id="subscribe_email">
+                                    <input class="text-field w-input" autocomplete="off" maxlength="256" x-model="form.email" placeholder="Ваш Email*" type="email" id="subscribe_email" :class="errors.email ? 'input-error' : ''">
                                     <label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
-                                        <input type="checkbox" value="1" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <input type="checkbox" value="1" x-model="form.agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
                                         <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
                                     </label>
                                     <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
-                                @else
-                                <div class="subscribe-success w-form-done" style="display: block">
+
+                                <div class="subscribe-success w-form-done" x-show="success">
                                     <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                                    <div>{{ session()->get('message') }}</div>
+                                    <div>Ваш вопрос отправлен!</div>
+                                    <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                                 </div>
-                                @endif
-                                @if($errors->any())
-                                <div class="error-message mt-0 w-form-fail" style="display: block">
-                                    <div>Заполните форму</div>
-                                </div>
-                                @endif
+
                             </div>
                         </div>
                     </div>
@@ -159,10 +153,7 @@
     function app() {
         return {
             form: {
-                name: '',
                 email: '',
-                phone: '',
-                message: '',
                 agree: 1
             },
             errors: {
