@@ -48,7 +48,7 @@
         <link rel="stylesheet" href="css/{{ $resource->color }}.css">
     @endisset
 </head>
-<body class="{{ isset($isHome) || $resource->title == 'Контакты' ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
+<body class="{{ isset($isHome) || request()->segment(1) == 'contacts' ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
 
 @if(isset($resource->color) && in_array($resource->color, ['blue', 'purple', 'orange', 'green', 'mandarin']))
     @include('site.components.products.' . $resource->color)
