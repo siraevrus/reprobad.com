@@ -42,70 +42,17 @@
         <!-- Боковая панель -->
         <aside class="w-1/6">
             <nav class="sticky top-4">
-                <ul class="space-y-4">
-                    <li>
-                        <a href="{{ route('admin.index') }}" class="{{ request()->segment(2) == '' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">home</span> Главная
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.articles.index') }}" class="{{ request()->segment(2) == 'articles' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">article</span> Статьи
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.events.index') }}" class="{{ request()->segment(2) == 'events' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">events</span> События
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.advises.index') }}" class="{{ request()->segment(2) == 'advises' ? 'text-blue-500' : 'text-gray-700' }}  hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">sms</span> Советы
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.complex.index') }}" class="{{  request()->segment(2) == 'complex' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">view_stream</span> Комплексы
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.products.index') }}" class="{{  request()->segment(2) == 'products' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">sell</span> Продукты
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.questions.index') }}" class="{{  request()->segment(2) == 'questions' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">help</span> Вопросы
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.points.index') }}" class="{{  request()->segment(2) == 'points' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">navigation</span> Точки
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.steps.index') }}" class="{{  request()->segment(2) == 'steps' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span style="width:24px" class="material-icons">stairs_2</span> Этапы подготовки
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.pages.index') }}" class="{{ request()->segment(2) == 'pages' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">pages</span> Страницы
-                        </a>
-                    </li>
-                    <li>
-                        <hr>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.users.index') }}" class="{{ request()->segment(2) == 'users' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">person</span> Пользователи
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.config.edit') }}" class="{{ request()->segment(2) == 'config' ? 'text-blue-500' : 'text-gray-700' }} hover:text-blue-500 font-medium flex items-center gap-2">
-                            <span class="material-icons">settings</span> Настройки
-                        </a>
-                    </li>
+                <ul class="space-y-4" x-data="nav()">
+                    <template x-for="(item, index) in menuItems" :key="index">
+                        <li>
+                            <a :href="item.href"
+                               :class="currentSegment === item.segment ? 'text-blue-500' : 'text-gray-700'"
+                               class="hover:text-blue-500 font-medium flex items-center gap-2">
+                                <span class="material-icons w-[30px]" x-text="item.icon"></span>
+                                <span x-text="item.text"></span>
+                            </a>
+                        </li>
+                    </template>
                 </ul>
             </nav>
         </aside>
@@ -127,5 +74,28 @@
 </div>
 
 @yield('scripts')
+
+<script>
+    function nav() {
+        return {
+            currentSegment: '{{ request()->segment(2) }}',
+            menuItems: [
+                { href: '{{ route('admin.index') }}', segment: '', icon: 'home', text: 'Главная' },
+                { href: '{{ route('admin.articles.index') }}', segment: 'articles', icon: 'article', text: 'Статьи' },
+                { href: '{{ route('admin.events.index') }}', segment: 'events', icon: 'events', text: 'События' },
+                { href: '{{ route('admin.advises.index') }}', segment: 'advises', icon: 'sms', text: 'Советы' },
+                { href: '{{ route('admin.complex.index') }}', segment: 'complex', icon: 'view_stream', text: 'Комплексы' },
+                { href: '{{ route('admin.products.index') }}', segment: 'products', icon: 'sell', text: 'Продукты' },
+                { href: '{{ route('admin.questions.index') }}', segment: 'questions', icon: 'help', text: 'Вопросы' },
+                { href: '{{ route('admin.points.index') }}', segment: 'points', icon: 'navigation', text: 'Точки' },
+                { href: '{{ route('admin.steps.index') }}', segment: 'steps', icon: 'stairs_2', text: 'Этапы подготовки' },
+                { href: '{{ route('admin.pages.index') }}', segment: 'pages', icon: 'pages', text: 'Страницы' },
+                { href: '#', segment: 'divider', icon: '', text: '' }, // Separator
+                { href: '{{ route('admin.users.index') }}', segment: 'users', icon: 'person', text: 'Пользователи' },
+                { href: '{{ route('admin.config.edit') }}', segment: 'config', icon: 'settings', text: 'Настройки' }
+            ]
+        };
+    }
+</script>
 </body>
 </html>
