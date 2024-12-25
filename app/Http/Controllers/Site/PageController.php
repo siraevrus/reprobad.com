@@ -41,7 +41,6 @@ class PageController extends Controller
             'title' => 'Контакты',
             'description' => 'Контакты',
         ];
-        $isHome = 1;
-        return view('site.contacts', compact('resource', 'isHome'));
+        return view('site.contacts', compact('resource'));
     }
 }
