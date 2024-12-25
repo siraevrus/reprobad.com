@@ -103,6 +103,7 @@
                                 </div>
                             </div>
                             <div class="subscribe-body w-form">
+                                @if(!session()->has('message'))
                                 <form name="form wf-form-Subscribe-Form" method="post" class="subscribe-form" action="{{ route('site.form.subscribe') }}">
                                     @csrf
                                     <div class="subscribe-head-label">Подписаться на рассылку</div>
@@ -114,7 +115,7 @@
                                     </label>
                                     <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
-                                @if(session()->has('message'))
+                                @else
                                 <div class="subscribe-success w-form-done" style="display: block">
                                     <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                                     <div>{{ session()->get('message') }}</div>

@@ -46,42 +46,100 @@
                 </div>
             </div>
             <div class="contacts-form">
-                <div class="question-form-block w-form">
-                    <form class="form wf-form-Subscribe-Form" method="post" action="{{ route('site.form.feedback') }}">
-                        @csrf
+                <div x-data="app()" class="question-form-block w-form">
+
+                    <form class="form wf-form-Subscribe-Form" @submit.prevent="submit" method="post" action="{{ route('site.form.feedback') }}" x-show="!success">
                         <a href="#" class="close-popup-button w-inline-block">
                             <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
                         </a>
                         <div class="form-h">Возникли вопросы?</div>
-                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="name" placeholder="ФИО*" type="text" required="">
-                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="email" placeholder="Email*" type="email" required="">
-                        <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" name="phone" placeholder="Номер телефона" type="tel" required="">
-                        <textarea class="text-field text-area w-input" autocomplete="off" maxlength="5000" name="message" placeholder="Ваш вопрос…"></textarea>
+                        <div>
+                            <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" x-model="form.name" placeholder="ФИО*" type="text" :class="errors.name ? 'input-error' : ''">
+                            <div style="color:red;font-size:14px;margin-top:5px" x-text="errors.name"></div>
+                        </div>
+                        <div>
+                            <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" x-model="form.email" placeholder="Email*" type="email" :class="errors.email ? 'input-error' : ''">
+                            <div style="color:red;font-size:14px;margin-top:5px" x-text="errors.email"></div>
+                        </div>
+                        <div>
+                            <input class="text-field w-input mb-2" autocomplete="off" maxlength="256" x-model="form.phone" placeholder="Номер телефона" type="tel" :class="errors.phone ? 'input-error' : ''">
+                            <div style="color:red;font-size:14px;margin-top:5px" x-text="errors.phone"></div>
+                        </div>
+                        <div>
+                            <textarea class="text-field text-area w-input" autocomplete="off" maxlength="5000" x-model="form.message" placeholder="Ваш вопрос…" :class="errors.message ? 'input-error' : ''"></textarea>
+                            <div style="color:red;font-size:14px;margin-top:5px" x-text="errors.message"></div>
+                        </div>
                         <div class="checkbox-wrap">
                             <label class="w-checkbox subscribe-checkbox black">
                                 <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
-                                <input type="checkbox" value="1" name="agree" id="agree-2" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                <input type="checkbox" value="1" x-model="form.agree" id="agree-2" style="opacity:0;position:absolute;z-index:-1" checked="">
                                 <span class="subscribe-checkbox-label w-form-label" for="agree-2">
                                     Соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами политики конфиденциальности в отношении персональных данных</a>
                                 </span>
                             </label>
+                            <div style="color:red;font-size:14px;margin-top:5px" x-text="errors.agree"></div>
                         </div>
                         <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
                     </form>
-                    @if(session()->has('message'))
-                    <div class="success-message w-form-done" style="display: block;margin-top: 20px">
+
+                    <div class="success-message w-form-done" style="margin-top: 20px;" x-show="success">
                         <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                         <div>Ваш вопрос отправлен!</div>
                         <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                     </div>
-                    @endif
-                    @if($errors->any())
-                    <div class="error-message w-form-fail" style="display: block">
-                        <div>Заполните требуемые поля</div>
-                    </div>
-                    @endif
+
                 </div>
             </div>
         </div>
     </section>
+@endsection
+
+@section('scripts')
+<style>
+.input-error {
+    border: 1px solid red;
+}
+</style>
+<script>
+    function app() {
+        return {
+            form: {
+                name: '',
+                email: '',
+                phone: '',
+                message: '',
+                agree: 1
+            },
+            errors: {
+
+            },
+            success: false,
+
+            async submit() {
+                try {
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const response = await fetch('/forms/feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify(this.form)
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        this.errors = {};
+                        this.success = true;
+                    } else {
+                        this.errors = data.errors;
+                    }
+                }
+                catch (e) {
+                    console.log(e)
+                }
+            }
+        }
+    }
+</script>
 @endsection

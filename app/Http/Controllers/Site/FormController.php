@@ -24,7 +24,9 @@ class FormController extends Controller
 
     public function feedback(Request $request)
     {
-        $validated = $request->validate([
+        $request->headers->set('Accept', 'application/json');
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|string',
@@ -32,8 +34,18 @@ class FormController extends Controller
             'agree' => 'accepted|required'
         ]);
 
-        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validated));
-        session()->flash('message', 'Ваше сообщение успешно отправлено');
-        return back();
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Успешно отправлено'
+        ]);
     }
 }
