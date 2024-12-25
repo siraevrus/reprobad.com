@@ -40,8 +40,8 @@ class PageController extends Controller
         $resource = [
             'title' => 'Контакты',
             'description' => 'Контакты',
-            'isHome' => 1,
         ];
-        return view('site.contacts', compact('resource'));
+        $isHome = 1;
+        return view('site.contacts', compact('resource', 'isHome'));
     }
 }
