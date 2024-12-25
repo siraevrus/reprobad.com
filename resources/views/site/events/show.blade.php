@@ -49,22 +49,21 @@
                         {!! $resource->content ?? '' !!}
                     </div>
                 </div>
-                <div class="side">
+                <div class="side" x-data="app()">
                     <div class="mobile-popup">
                         <div class="mobile-popup-overlay"></div>
                         <div class="question-form-block w-form">
-                            <form action="{{ route('site.form.feedback') }}" method="post" class="form">
-                                @csrf
+                            <form action="{{ route('site.form.feedback') }}" @submit.prevent="feedbackForm" method="post" class="form" x-show="!successFeedback">
                                 <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                                 <div class="form-h">Возникли вопросы?</div>
-                                <input class="text-field w-input" name="name" autocomplete="off" maxlength="256" data-name="Name 3" placeholder="ФИО*" type="text" id="name-3" required="">
-                                <input class="text-field w-input" name="email" autocomplete="off" maxlength="256" data-name="Email 6" placeholder="Email*" type="email" id="email-6" required="">
-                                <input class="text-field w-input" name="phone" autocomplete="off" maxlength="256" data-name="Phone 2" placeholder="Номер телефона" type="tel" id="phone-2" required="">
-                                <textarea class="text-field text-area w-input" name="message" autocomplete="off" maxlength="5000" data-name="Message 2" placeholder="Ваш вопрос…" id="message-2"></textarea>
+                                <input class="text-field w-input" x-model="formFeedback.name" autocomplete="off" maxlength="256" placeholder="ФИО*" type="text" id="name-3"  :class="errorsFeedback.name ? 'input-error' : ''">
+                                <input class="text-field w-input" x-model="formFeedback.email" autocomplete="off" maxlength="256" placeholder="Email*" type="email" id="email-6"  :class="errorsFeedback.email ? 'input-error' : ''">
+                                <input class="text-field w-input" x-model="formFeedback.phone" autocomplete="off" maxlength="256" placeholder="Номер телефона" type="tel" id="phone-2"  :class="errorsFeedback.phone ? 'input-error' : ''">
+                                <textarea class="text-field text-area w-input" x-model="formFeedback.message" autocomplete="off" maxlength="5000" placeholder="Ваш вопрос…" id="message-2" :class="errorsFeedback.message ? 'input-error' : ''"></textarea>
                                 <div class="checkbox-wrap">
                                     <label class="w-checkbox subscribe-checkbox black">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
-                                        <input type="checkbox" name="agree-2" id="agree-2" data-name="Agree 2" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <input type="checkbox" x-model="formFeedback.agree" id="agree-2" data-name="Agree 2" style="opacity:0;position:absolute;z-index:-1" checked="">
                                         <span class="subscribe-checkbox-label w-form-label" for="agree-2">
                                             Соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами <a href="privacy" target="_blank">политики конфиденциальности</a> в&nbsp;отношении персональных&nbsp;данных</a>
                                         </span>
@@ -72,17 +71,20 @@
                                 </div>
                                 <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
                             </form>
-                            <div class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success"><img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+
+                            <div x-show="successFeedback" class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success">
+                                <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                                 <div>Ваш вопрос отправлен!</div>
-                                <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
+                                <a href="#" class="close-popup-button w-inline-block">
+                                    <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
+                                </a>
                             </div>
-                            <div class="error-message w-form-fail" tabindex="-1" role="region" aria-label="Question Form failure">
-                                <div>В форме обнаружены ошибки</div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="side-footer">
                         <div class="subscribe">
+
                             <div class="share">
                                 <div class="subscribe-head-label">Поделиться мероприятием</div>
                                 <div class="share-buttons a2a_kit" style="line-height: 16px;">
@@ -116,24 +118,114 @@
                                     <script async="" src="https://static.addtoany.com/menu/page.js"></script>
                                 </div>
                             </div>
+
                             <div class="subscribe-body w-form">
-                                <form action="{{ route('site.form.subscribe') }}" method="post" class="form subscribe-form">
-                                    @csrf
-                                    <div class="subscribe-head-label">Подписаться на рассылку</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="subscribe_email" data-name="subscribe_email" placeholder="Ваш Email*" type="email" id="subscribe_email"><label class="w-checkbox subscribe-checkbox">
-                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a></span>
-                                    </label><input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
+                                <form action="{{ route('site.form.subscribe') }}" @submit.prevent="subscribeForm" method="post" class="form subscribe-form" x-show="!successSubscribe">
+                                    <div class="subscribe-head-label">Подписаться на рассылку</div>
+                                    <input class="text-field w-input" autocomplete="off" maxlength="256" x-model="formSubscribe.email" placeholder="Ваш Email*" type="email" id="subscribe_email" :class="errorsSubscribe.email ? 'input-error' : ''">
+                                    <label class="w-checkbox subscribe-checkbox">
+                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
+                                        <input type="checkbox" x-model="formSubscribe.agree" id="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <span class="subscribe-checkbox-label w-form-label" for="agree">
+                                            Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a>
+                                        </span>
+                                    </label>
+                                    <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
-                                <div class="subscribe-success w-form-done" tabindex="-1" role="region" aria-label="Subscribe Form success"><img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+
+                                <div x-show="successSubscribe" class="subscribe-success w-form-done" tabindex="-1" role="region" aria-label="Subscribe Form success">
+                                    <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                                     <div>Вы успешно подписались <br>на рассылку!</div>
                                 </div>
-                                <div class="error-message mt-0 w-form-fail" tabindex="-1" role="region" aria-label="Subscribe Form failure">
-                                    <div>Oops! Something went wrong while submitting the form.</div>
-                                </div>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+
+@section('scripts')
+    <style>
+        .input-error {
+            border: 1px solid red;
+        }
+    </style>
+    <script>
+        function app() {
+            return {
+                formFeedback: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    message: '',
+                    agree: 1
+                },
+                formSubscribe: {
+                    email: '',
+                    agree: 1
+                },
+                errorsFeedback: {},
+                errorsSubscribe: {},
+                successFeedback: false,
+                successSubscribe: false,
+
+                async feedbackForm() {
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const response = await fetch('/forms/feedback', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(this.formFeedback)
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.errorsFeedback = {};
+                            this.successFeedback = true;
+                        } else {
+                            this.errorsFeedback = data.errors;
+                        }
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
+                },
+
+                async subscribeForm() {
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const response = await fetch('/forms/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify({
+                                email: this.formSubscribe.email,
+                                agree: this.formSubscribe.agree
+                            })
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.errorsSubscribe = {};
+                            this.successSubscribe = true;
+                        } else {
+                            this.errorsSubscribe = data.errors;
+                        }
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
+                }
+            }
+        }
+    </script>
 @endsection
