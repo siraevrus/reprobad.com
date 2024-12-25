@@ -4632,13 +4632,18 @@ figcaption {
     padding-top: 3.5rem;
   }
 
-    .bottle-image-element {
-        max-width: 200px;
-    }
+  .product-head-image {
+      max-width: 100%;
+      margin: auto;
+  }
 
-    .navbar-container {
-        display: block;
-    }
+  .bottle-image-element {
+      max-width: 200px;
+  }
+
+  .navbar-container {
+      display: block;
+  }
 
   h1 {
     font-size: 1.5rem;
