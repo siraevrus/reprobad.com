@@ -102,18 +102,24 @@
                                     <script async="" src="https://static.addtoany.com/menu/page.js"></script>
                                 </div>
                             </div>
-                            <div class="subscribe-body w-form">
-                                <form id="wf-form-Subscribe-Form" name="form wf-form-Subscribe-Form" data-name="Subscribe Form" method="get" class="subscribe-form" data-wf-page-id="673718a9aa664236cdc0b66c" data-wf-element-id="d970ee92-496f-2ca2-29f1-141b2fef1c1d">
-                                    <div class="subscribe-head-label">Подписаться на рассылку</div><input class="text-field w-input" autocomplete="off" maxlength="256" name="subscribe_email" data-name="subscribe_email" placeholder="Ваш Email*" type="email" id="subscribe_email"><label class="w-checkbox subscribe-checkbox">
-                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
-                                    </label><input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
+                            <div class="subscribe-body w-form" x-data="app()">
+                                <form name="form wf-form-Subscribe-Form" method="post" @submit.prevent="submit" class="subscribe-form" action="{{ route('site.form.subscribe') }}" x-show="!success">
+                                    <div class="subscribe-head-label">Подписаться на рассылку</div>
+                                    <input class="text-field w-input" autocomplete="off" maxlength="256" x-model="form.email" placeholder="Ваш Email*" type="email" id="subscribe_email" :class="errors.email ? 'input-error' : ''">
+                                    <label class="w-checkbox subscribe-checkbox">
+                                        <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
+                                        <input type="checkbox" value="1" x-model="form.agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
+                                        <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
+                                    </label>
+                                    <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
-                                <div class="subscribe-success w-form-done"><img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                                    <div>Вы успешно подписались <br>на рассылку!</div>
+
+                                <div class="subscribe-success w-form-done" x-show="success">
+                                    <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                                    <div>Ваш вопрос отправлен!</div>
+                                    <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                                 </div>
-                                <div class="error-message mt-0 w-form-fail">
-                                    <div>Oops! Something went wrong while submitting the form.</div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -130,4 +136,51 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('scripts')
+    <style>
+        .input-error {
+            border: 1px solid red;
+        }
+    </style>
+    <script>
+        function app() {
+            return {
+                form: {
+                    email: '',
+                    agree: 1
+                },
+                errors: {
+
+                },
+                success: false,
+
+                async submit() {
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const response = await fetch('/forms/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(this.form)
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            this.errors = {};
+                            this.success = true;
+                        } else {
+                            this.errors = data.errors;
+                        }
+                    }
+                    catch (e) {
+                        console.log(e)
+                    }
+                }
+            }
+        }
+    </script>
 @endsection
