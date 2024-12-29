@@ -55,8 +55,9 @@ class ArticleController extends Controller
             ], 422);
         }
 
-        $resource = Article::query()
-            ->create($validator->validated());
+        $validated = $validator->validated();
+
+        $resource = Article::query()->create($validated);
         return response()->json([
             'success' => true,
             'resource' => $resource

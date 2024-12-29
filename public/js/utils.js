@@ -6,11 +6,12 @@ const variables = {
         message: '',
         error: ''
     },
+    isDragging: false,
     errors: {},
     route: '',
     action: '',
     url: '',
-    loading: false
+    loading: false,
 }
 
 const initializeEditor = {
@@ -140,9 +141,7 @@ const get = {
         this.loading = true;
         try {
             const response = await fetch('/admin/' + this.route + '/' + this.action);
-            const data = await response.json()
-            this.form = data
-
+            this.form = await response.json()
             this.loading = false;
         }
         catch (e) {
@@ -168,4 +167,33 @@ const init = {
         //await this.userIsNotActive();
         this.initializeEditor();
     },
+}
+
+const dropzone = {
+    handleDropzoneFiles(event, field) {
+        const files = event.target.files;
+        this.addDropzoneFiles(files, field);
+    },
+
+    handleDropzoneDrop(event, field) {
+        this.isDragging = false;
+        const files = event.dataTransfer.files;
+        this.addDropzoneFiles(files, field);
+    },
+
+    addDropzoneFiles(files, field) {
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.form[field].push({ url: e.target.result, name: file.name });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    },
+
+    removeDropzoneImage(index, field) {
+        this.form[field].splice(index, 1);
+    }
 }
