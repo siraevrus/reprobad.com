@@ -197,3 +197,16 @@ const dropzone = {
         this.form[field].splice(index, 1);
     }
 }
+
+const tags = {
+    addTag(field) {
+        if (this.form[field + '_input'].trim() !== '' && !this.form[field].includes(this.form[field + '_input'].trim())) {
+            this.form[field].push(this.form[field + '_input'].trim());
+        }
+        this.form[field + '_input'] = '';
+    },
+
+    removeTag(index, field) {
+        this.form[field].splice(index, 1);
+    }
+}

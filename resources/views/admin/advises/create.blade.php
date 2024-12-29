@@ -35,7 +35,9 @@
                 ...get,
                 ...save,
                 ...init,
-                form: {},
+                form: {
+                    tags: []
+                },
             }
         }
     </script>
