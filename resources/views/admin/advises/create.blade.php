@@ -36,7 +36,8 @@
                 ...save,
                 ...init,
                 form: {
-                    tags: []
+                    tags: [],
+                    images: []
                 },
             }
         }

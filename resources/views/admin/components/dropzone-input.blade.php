@@ -19,7 +19,12 @@
     <!-- Gallery -->
     <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         <template x-for="(image, index) in form.{{$field}}" :key="index">
-            <div class="relative group">
+            <div class="relative group cursor-move"
+                 draggable="true"
+                 @dragstart="dragDropzoneImageStart($event, index, '{{$field}}')"
+                 @dragover.prevent="dragDropzoneImageOver($event, index, '{{$field}}')"
+                 @drop.prevent="dropDropzoneImage($event, index, '{{$field}}')"
+                 @dragend="dragDropzoneImageEnd($event, '{{$field}}')">
                 <img :src="image.url" :alt="image.name" class="rounded-lg w-full h-auto">
                 <button
                     class="absolute top-2 right-2 bg-red-500 text-white p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity"

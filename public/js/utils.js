@@ -195,6 +195,29 @@ const dropzone = {
 
     removeDropzoneImage(index, field) {
         this.form[field].splice(index, 1);
+    },
+
+    dragDropzoneImageStart(event, index, field) {
+        this.draggedItem = this.form[field][index];
+    },
+
+    dragDropzoneImageOver(event, index, field) {
+        const draggedOverItem = this.form[field][index];
+
+        if (this.draggedItem === draggedOverItem) {
+            return;
+        }
+
+        this.form[field] = this.form[field].filter((item) => item !== this.draggedItem);
+        this.form[field].splice(index, 0, this.draggedItem);
+    },
+
+    dropDropzoneImage(event, index) {
+        this.draggedItem = null;
+    },
+
+    dragDropzoneImageEnd(event) {
+        this.draggedItem = null;
     }
 }
 
