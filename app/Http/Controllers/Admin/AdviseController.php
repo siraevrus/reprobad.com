@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
-use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,9 +24,14 @@ class AdviseController extends Controller
         'seo_description' => 'string|nullable',
     ];
 
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = Advise::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.advises.index', compact('resources'));
     }
 

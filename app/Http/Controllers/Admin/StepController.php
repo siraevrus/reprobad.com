@@ -24,9 +24,14 @@ class StepController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = Step::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.steps.index', compact('resources'));
     }
 

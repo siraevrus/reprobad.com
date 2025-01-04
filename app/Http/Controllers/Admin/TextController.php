@@ -12,9 +12,14 @@ use Illuminate\View\View;
 
 class TextController extends Controller
 {
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = Text::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.text.index', compact('resources'));
     }
 

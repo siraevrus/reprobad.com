@@ -13,9 +13,14 @@ use Illuminate\View\View;
 
 class PageController extends Controller
 {
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = Page::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.pages.index', compact('resources'));
     }
 

@@ -15,7 +15,22 @@ const variables = {
 }
 
 const initializeEditor = {
-    initializeEditor () {
+    initializeEditorJs () {
+        document.querySelectorAll('.editor-js').forEach((element, index) => {
+            if (!element.id) {
+                element.id = `editor-js-${index}`; // Назначаем уникальный ID
+            }
+
+            const editor = new EditorJS({
+                holder: element.id,
+                onChange: (api, event) => {
+                    const field = element.getAttribute('x-model').split('.')[1];
+                    this.form[field] = event.detail.target.holder;
+                }
+            });
+        });
+    },
+    initializeTinyMCE () {
         document.querySelectorAll('.editor').forEach((element, index) => {
             if (!element.id) {
                 element.id = `editor-${index}`; // Назначаем уникальный ID
@@ -31,7 +46,7 @@ const initializeEditor = {
                 toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
                 setup: (editor) => {
                     editor.on('change', () => {
-                        let field = element.getAttribute('x-model').split('.')[1];
+                        const field = element.getAttribute('x-model').split('.')[1];
                         this.form[field] = editor.getContent();
                     });
                 }
@@ -165,7 +180,9 @@ const init = {
 
         this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         //await this.userIsNotActive();
-        this.initializeEditor();
+        this.initializeTinyMCE();
+        this.initializeEditorJs();
+        this.initializeAce();
     },
 }
 

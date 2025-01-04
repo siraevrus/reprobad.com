@@ -14,9 +14,14 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = User::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.users.index', compact('resources'));
     }
 

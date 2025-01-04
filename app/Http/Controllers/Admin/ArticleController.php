@@ -29,9 +29,14 @@ class ArticleController extends Controller
         'seo_description' => 'string|nullable',
     ];
 
-    public function index(): View
+    public function index(): View|JsonResponse
     {
         $resources = Article::query()->paginate(env('PAGINATION_LIMIT', 20));
+
+        if(request()->ajax()) {
+            return response()->json($resources);
+        }
+
         return view('admin.articles.index', compact('resources'));
     }
 
