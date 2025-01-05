@@ -12,6 +12,13 @@ const variables = {
     action: '',
     url: '',
     loading: false,
+
+    initVariables() {
+        this.route = location.pathname.split('/')[2];
+        this.action = location.pathname.split('/')[3];
+        this.url = location.pathname.replace('create', '').replace('edit', '');
+        this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    }
 }
 
 const initializeEditor = {
@@ -170,19 +177,15 @@ const get = {
 
 const init = {
     async init() {
-        this.route = location.pathname.split('/')[2];
-        this.action = location.pathname.split('/')[3];
-        this.url = location.pathname.replace('create', '').replace('edit', '');
+        this.initVariables();
 
         if (this.action !== 'create') {
             await this.get();
         }
 
-        this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         //await this.userIsNotActive();
         this.initializeTinyMCE();
         this.initializeEditorJs();
-        this.initializeAce();
     },
 }
 

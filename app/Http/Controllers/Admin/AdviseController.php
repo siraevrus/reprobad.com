@@ -29,6 +29,7 @@ class AdviseController extends Controller
         $resources = Advise::query()->paginate(env('PAGINATION_LIMIT', 20));
 
         if(request()->ajax()) {
+            request()->headers->set('Accept', 'application/json');
             return response()->json($resources);
         }
 

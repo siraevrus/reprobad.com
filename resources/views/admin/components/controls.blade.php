@@ -19,7 +19,7 @@
     <a href="{{ route("admin.$route.edit", $resource->id) }}" class="text-blue-500 hover:text-blue-700">
         <span class="material-icons">edit</span>
     </a>
-    <a href="{{ route("admin.$route.switch", $resource->id) }}" class="text-blue-500 hover:text-blue-700">
+    <a href="{{ route("admin.$route.switch", $resource->id) }}" class="{{ $resource->active ? 'text-blue-500' : 'text-gray-300' }} hover:text-blue-700">
         <span class="material-icons">visibility{{ $resource->active ? '' : '_off' }}</span>
     </a>
     <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить?');" class="text-red-500 hover:text-red-700">
