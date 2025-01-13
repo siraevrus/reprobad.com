@@ -37,19 +37,23 @@
                         <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
                         <p class="product-head-text"> </p>
 
-                        <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
-                            <!-- Основное изображение -->
-                            <div class="slider-main">
-                                <img :src="slides[currentIndex].url" alt="Main Image">
-                            </div>
+                        @if($product->images)
+                            <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
+                                <!-- Основное изображение -->
+                                <div class="slider-main">
+                                    <img :src="slides[currentIndex].url" alt="Main Image">
+                                </div>
 
-                            <!-- Миниатюры -->
-                            <div class="thumbnails">
-                                <template x-for="(image, index) in slides" :key="index">
-                                    <img :src="image.url" :class="{'active': index === currentIndex}" @click="currentIndex = index">
-                                </template>
+                                <!-- Миниатюры -->
+                                <div class="thumbnails">
+                                    <template x-for="(image, index) in slides" :key="index">
+                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="currentIndex = index">
+                                    </template>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
+                        @endif
 
                         <div class="product-buy-buttons">
                             {{--
