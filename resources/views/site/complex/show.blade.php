@@ -39,12 +39,10 @@
 
                         @if($product->images)
                             <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
-                                <!-- Основное изображение -->
                                 <div class="slider-main">
                                     <img :src="slides[currentIndex].url" alt="Main Image">
                                 </div>
 
-                                <!-- Миниатюры -->
                                 <div class="thumbnails">
                                     <template x-for="(image, index) in slides" :key="index">
                                         <img :src="image.url" :class="{'active': index === currentIndex}" @click="currentIndex = index">
@@ -193,34 +191,26 @@
         @endif
     </script>
     <style>
-        /* Стили для основного контейнера */
         .slider-container {
-            max-width: 600px;
             margin: 0 auto;
             text-align: center;
         }
-
-        /* Стили для текущего изображения */
         .slider-main {
             position: relative;
             margin-bottom: 20px;
-            height: 300px;
+            height: 84%;
         }
-
         .slider-main img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             border-radius: 8px;
         }
-
-        /* Стили для миниатюр */
         .thumbnails {
             display: flex;
             justify-content: center;
             gap: 10px;
         }
-
         .thumbnails img {
             width: 80px;
             height: 60px;
@@ -229,11 +219,9 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-
         .thumbnails img:hover {
             transform: scale(1.1);
         }
-
         .thumbnails img.active {
             border: 2px solid #007bff;
         }
