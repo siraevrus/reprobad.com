@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Product;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class ProductController extends Controller
         'title_right' => 'string|nullable',
         'complex_id' => 'integer|nullable',
         'seo_description' => 'string|nullable',
+        'images' => 'array|nullable',
     ];
 
     public function index(): View|JsonResponse
@@ -68,8 +70,13 @@ class ProductController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
+
         $resource = Product::query()
-            ->create($validator->validated());
+            ->create($validated);
+
+        ImageService::uploadGallery($validated['images'], $resource);
+
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -91,9 +98,13 @@ class ProductController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
+
         $resource = Product::query()->findOrFail($id);
-        $resource->fill($validator->validated());
+        $resource->fill($validated);
         $resource->save();
+
+        ImageService::uploadGallery($validated['images'], $resource);
 
         return response()->json([
             'success' => true,

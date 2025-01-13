@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $text
  * @property string|null $content
  * @property string|null $image
+ * @property string|null $images
  * @property string|null $photo
  * @property string|null $image_left
  * @property string|null $image_right
@@ -63,6 +64,10 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'images' => 'json'
+    ];
 
     protected $with = ['complex'];
 

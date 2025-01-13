@@ -35,7 +35,22 @@
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
                         <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
-                        <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
+                        <p class="product-head-text"> </p>
+
+                        <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
+                            <!-- Основное изображение -->
+                            <div class="slider-main">
+                                <img :src="slides[currentIndex].url" alt="Main Image">
+                            </div>
+
+                            <!-- Миниатюры -->
+                            <div class="thumbnails">
+                                <template x-for="(image, index) in slides" :key="index">
+                                    <img :src="image.url" :class="{'active': index === currentIndex}" @click="currentIndex = index">
+                                </template>
+                            </div>
+                        </div>
+
                         <div class="product-buy-buttons">
                             {{--
                             <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
@@ -154,4 +169,70 @@
             .product-table-cell.active { display: block; }
         }
     </style>
+    <script>
+        @if($resource->products)
+            @foreach($resource->products as $product)
+            function slider{{ $product->id }}() {
+                return {
+                    slides: @json($product->images),
+                    currentIndex: 0,
+
+                    prevImage() {
+                        this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
+                    },
+                    nextImage() {
+                        this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
+                    }
+                };
+            }
+            @endforeach
+        @endif
+    </script>
+    <style>
+        /* Стили для основного контейнера */
+        .slider-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Стили для текущего изображения */
+        .slider-main {
+            position: relative;
+            margin-bottom: 20px;
+            height: 300px;
+        }
+
+        .slider-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Стили для миниатюр */
+        .thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .thumbnails img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .thumbnails img:hover {
+            transform: scale(1.1);
+        }
+
+        .thumbnails img.active {
+            border: 2px solid #007bff;
+        }
+    </style>
+
 @endsection

@@ -32,8 +32,6 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
 
-            <div>@include('admin.components.dropzone-input', ['title' => 'Галерея', 'field' => 'images'])</div>
-
             @include('admin.components.buttons')
         </form>
     </div>
@@ -48,7 +46,6 @@
                 ...imageUpload,
                 ...variables,
                 ...showAlert,
-                ...dropzone,
                 ...get,
                 ...save,
                 ...init,
@@ -56,7 +53,6 @@
                     title_left: 'hero-product-1',
                     title_right: 'hero-product-2',
                     active: 1,
-                    images: []
                 },
             }
         }
