@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Complex;
 use App\Models\Product;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -25,6 +27,7 @@ class ComplexController extends Controller
         'title_right' => 'string|nullable',
         'description' => 'string|nullable',
         'color' => 'string|nullable',
+        'images' => 'array|nullable',
         'product_ids' => 'string|nullable',
         'seo_description' => 'string|nullable',
     ];
@@ -60,8 +63,11 @@ class ComplexController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
         $resource = Complex::query()
-            ->create($validator->validated());
+            ->create($validated);
+
+        $this->uploadGallery($validated['images'], $resource);
 
         return response()->json([
             'success' => true,
@@ -84,9 +90,13 @@ class ComplexController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
+
         $resource = Complex::query()->findOrFail($id);
-        $resource->fill($validator->validated());
+        $resource->fill($validated);
         $resource->save();
+
+        $this->uploadGallery($validated['images'], $resource);
 
         return response()->json([
             'success' => true,
@@ -172,6 +182,29 @@ class ComplexController extends Controller
                 $product->save();
             }
         }
+    }
+
+    /**
+     * @param array $images
+     * @param Complex $resource
+     * @return bool
+     */
+    public function uploadGallery(array $images, Complex $resource): bool
+    {
+        foreach ($images as $key => $image) {
+            if(isset($image['remove']) && $image['remove'] === true) {
+                Storage::disk('public')->delete($image['url']);
+                unset($images[$key]);
+                continue;
+            }
+            if(!str_contains($image['url'], 'data:')) continue;
+            $path = ImageService::resize($image['url'], 'png', 'complex/' . $resource->id);
+            $images[$key]['url'] = $path;
+        }
+        $resource->images = $images;
+        $resource->save();
+
+        return true;
     }
 
 }

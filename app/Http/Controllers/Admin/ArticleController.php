@@ -61,6 +61,7 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
+        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
 
         $resource = Article::query()->create($validated);
         return response()->json([
@@ -85,7 +86,7 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
+        if($validated['image']) $validated['image'] = ImageService::resize($validated['image'], 'jpg', 'articles');
 
         $resource = Article::query()->findOrFail($id);
         $resource->fill($validated);

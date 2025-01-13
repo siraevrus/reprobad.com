@@ -163,7 +163,7 @@ const get = {
         this.loading = true;
         try {
             const response = await fetch('/admin/' + this.route + '/' + this.action);
-            this.form = await response.json()
+            this.form = Object.assign(this.form, await response.json());
             this.loading = false;
         }
         catch (e) {
@@ -214,7 +214,12 @@ const dropzone = {
     },
 
     removeDropzoneImage(index, field) {
-        this.form[field].splice(index, 1);
+        if(this.form[field][index].url.startsWith('data:')) {
+            this.form[field].splice(index, 1);
+        }
+        else {
+            this.form[field][index]['remove'] = !this.form[field][index]['remove'];
+        }
     },
 
     dragDropzoneImageStart(event, index, field) {

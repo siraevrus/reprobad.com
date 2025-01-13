@@ -25,7 +25,9 @@
                  @dragover.prevent="dragDropzoneImageOver($event, index, '{{$field}}')"
                  @drop.prevent="dropDropzoneImage($event, index, '{{$field}}')"
                  @dragend="dragDropzoneImageEnd($event, '{{$field}}')">
-                <img :src="image.url" :alt="image.name" class="rounded-lg w-full h-auto">
+                <img :src="image.url" :alt="image.name" class="rounded-lg w-full h-auto"
+                     :class="image.remove ? 'opacity-25' : ''"
+                >
                 <button
                     class="absolute top-2 right-2 bg-red-500 text-white p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                     @click.prevent="removeDropzoneImage(index, '{{$field}}')">&times;</button>

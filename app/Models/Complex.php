@@ -47,6 +47,10 @@ class Complex extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'images' => 'json'
+    ];
+
     public $timestamps = false;
 
     public function products()
