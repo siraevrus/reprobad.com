@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class InputService
 {
 
-    public static function uploadFile(string $fileBase64, $resource, string $field): bool
+    public static function uploadFile($fileBase64, $resource, $field): bool
     {
         if(!is_string($fileBase64) || empty($fileBase64)) return false;
 
