@@ -206,6 +206,7 @@ const dropzone = {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
+                    if(this.form[field] === null) this.form[field] = [];
                     this.form[field].push({ url: e.target.result, name: file.name });
                 };
                 reader.readAsDataURL(file);
