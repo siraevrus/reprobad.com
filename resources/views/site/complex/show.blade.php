@@ -40,13 +40,16 @@
                         @if($product->images)
                             <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
                                 <div class="slider-main">
-                                    <img :src="slides[currentIndex].url" alt="Main Image">
+                                    <img x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
+                                    <video :src="video" x-show="showVideo" controls></video>
                                 </div>
 
                                 <div class="thumbnails">
                                     <template x-for="(image, index) in slides" :key="index">
-                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="currentIndex = index">
+                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
                                     </template>
+
+                                    <img @click="handleShowVideo" src="images/icons8-play-video-100.png" x-show="video" alt="">
                                 </div>
                             </div>
                         @else
@@ -178,7 +181,16 @@
                 return {
                     slides: @json($product->images),
                     currentIndex: 0,
+                    showVideo: false,
+                    video: @json($product->video),
 
+                    handleShowVideo() {
+                        this.showVideo = true;
+                    },
+                    setCurrentIndex(index) {
+                        this.currentIndex = index;
+                        this.showVideo = false;
+                    },
                     prevImage() {
                         this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
                     },
@@ -200,7 +212,8 @@
             margin-bottom: 20px;
             height: 84%;
         }
-        .slider-main img {
+        .slider-main img,
+        .slider-main video {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -214,7 +227,7 @@
         .thumbnails img {
             width: 80px;
             height: 60px;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 4px;
             cursor: pointer;
             transition: transform 0.2s ease;
