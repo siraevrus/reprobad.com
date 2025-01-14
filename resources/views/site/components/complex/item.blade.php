@@ -3,14 +3,16 @@
         <h2 class="step-h">{!! $item->title !!}</h2>
         <p class="step-description">{{ $item->subtitle }}</p>
         <div class="step-products">
-            <a href="{{ route('site.complex.show', $item->alias) }}#first" class="step-product-left w-inline-block">
+            <a href="{{ route('site.complex.show', $item->alias) }}#{{ $item->anchor_left }}" class="step-product-left w-inline-block">
                 <div class="sache-image-element">
-                    <img src="{{ $item->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                    <img src="{{ $item->image_left }}" loading="lazy" alt="" class="sache-image">
+                </div>
                 <div class="step-product-shadow"></div>
             </a>
-            <a href="{{ route('site.complex.show', $item->alias) }}#second" class="step-product-right w-inline-block">
+            <a href="{{ route('site.complex.show', $item->alias) }}#{{ $item->anchor_right }}" class="step-product-right w-inline-block">
                 <div class="sache-image-element">
-                    <img src="{{ $item->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                    <img src="{{ $item->image_right }}" loading="lazy" alt="" class="sache-image">
+                </div>
                 <div class="step-product-shadow gipokortizol"></div>
             </a>
         </div>

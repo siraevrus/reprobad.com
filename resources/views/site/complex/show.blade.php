@@ -11,10 +11,10 @@
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
                 <div class="hero-products">
-                    <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="{{ $resource->title_left }} w-inline-block">
+                    <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                     </a>
-                    <a href="{{ route('site.complex.show', $resource->alias) }}#second" class="{{ $resource->title_right }} w-inline-block">
+                    <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_right }}" class="{{ $resource->title_right }} w-inline-block">
                         @if($resource->id == 1)
                             <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
                         @else

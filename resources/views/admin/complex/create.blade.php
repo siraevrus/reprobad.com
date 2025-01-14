@@ -13,10 +13,12 @@
                 <div>
                     @include('admin.components.image-input', ['title' => 'Фото товара 1', 'field' => 'image_left'])
                     @include('admin.components.text-input', ['title' => 'CSS класс для блока', 'field' => 'title_left'])
+                    @include('admin.components.text-input', ['title' => 'Якорь (алиас продукта)', 'field' => 'anchor_left'])
                 </div>
                 <div>
                     @include('admin.components.image-input', ['title' => 'Фото товара 2', 'field' => 'image_right'])
                     @include('admin.components.text-input', ['title' => 'CSS класс для блока', 'field' => 'title_right'])
+                    @include('admin.components.text-input', ['title' => 'Якорь (алиас продукта)', 'field' => 'anchor_right'])
                 </div>
             </div>
 
