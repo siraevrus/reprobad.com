@@ -9,20 +9,22 @@
             </div>
             <div class="spacer desktop-2-rem"></div>
             <div class="products-grid">
+                @php $idx = 1 @endphp
                 @foreach($resources as $resource)
                     @if($resource->complex->alias)
                         <div class="product-item">
                             <div class="product-item-content">
                                 <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="" class="repro-relax-giper-logo"></div>
                                 <p class="product-item-text">{{ $resource->description }}</p>
-                                <a href="{{ route('site.complex.show', $resource->complex->alias) }}" class="product-item-link w-inline-block">
+                                <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $idx == 1 ? 'first' : 'second' }}" class="product-item-link w-inline-block">
                                     <div class="sache-image-element"><img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image"></div>
                                 </a>
                                 <div class="product-item-button-wrap">
-                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}" class="button w-button">Подробнее —&gt;</a>
+                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $idx == 1 ? 'first' : 'second' }}" class="button w-button">Подробнее —&gt;</a>
                                 </div>
                             </div>
                         </div>
+                        @php $idx++ @endphp
                     @endif
                 @endforeach
             </div>
