@@ -10,6 +10,8 @@ class InputService
 
     public static function uploadFile(string $fileBase64, $resource, string $field): bool
     {
+        if(!is_string($fileBase64) || empty($fileBase64)) return false;
+
         list($metaData, $fileBase64) = explode('base64,', $fileBase64);
         preg_match('/data:(.*?);/', $metaData, $matches);
         $mimeType = $matches[1] ?? 'application/octet-stream';
