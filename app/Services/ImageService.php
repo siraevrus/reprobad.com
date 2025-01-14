@@ -11,7 +11,15 @@ use Intervention\Image\Decoders\Base64ImageDecoder;
 
 class ImageService
 {
-    public static function resize($input, $format = 'jpg', $path = ''): string
+    /**
+     * Resize images by intervention package
+     *
+     * @param string $input
+     * @param string $format
+     * @param string $path
+     * @return string
+     */
+    public static function resize(string $input, string $format = 'jpg', string $path = ''): string
     {
         $manager = new ImageManager(new Driver());
 
@@ -46,17 +54,25 @@ class ImageService
         return $image->toDataUri();
     }
 
-    function upload($input, $path): bool|string
+    /**
+     * @param $input
+     * @param string $path
+     * @return bool|string
+     */
+    function upload($input, string $path): bool|string
     {
         return Storage::disk('public')->put($path, $input);
     }
 
     /**
+     * Upload gallery
+     *
      * @param array $images
      * @param $resource
+     * @param string $field
      * @return bool
      */
-    public static function uploadGallery(array $images, $resource): bool
+    public static function uploadGallery(array $images, $resource, $field = 'images'): bool
     {
         foreach ($images as $key => $image) {
             if(isset($image['remove']) && $image['remove'] === true) {
@@ -65,10 +81,10 @@ class ImageService
                 continue;
             }
             if(!str_contains($image['url'], 'data:')) continue;
-            $path = ImageService::resize($image['url'], 'png', 'complex/' . $resource->id);
+            $path = self::resize($image['url'], 'png', 'complex/' . $resource->id);
             $images[$key]['url'] = $path;
         }
-        $resource->images = $images;
+        $resource->$field = $images;
         $resource->save();
 
         return true;
