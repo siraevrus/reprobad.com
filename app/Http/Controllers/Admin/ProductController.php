@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Product;
 use App\Services\ImageService;
+use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -16,9 +18,9 @@ class ProductController extends Controller
 {
 
     public array $rules = [
-        'title' => 'required',
+        'title' => 'required|max:255',
         'content' => 'string|nullable',
-        'alias' => 'required|unique:articles,alias',
+        'alias' => 'required|unique:articles,alias|max:255',
         'description' => 'nullable',
         'image' => 'string|nullable',
         'logo' => 'string|nullable',
@@ -35,8 +37,7 @@ class ProductController extends Controller
         'products' => 'string|nullable',
         'title_right' => 'string|nullable',
         'complex_id' => 'integer|nullable',
-        'seo_description' => 'string|nullable',
-        'images' => 'array|nullable',
+        'seo_description' => 'string|nullable|max:255',
     ];
 
     public function index(): View|JsonResponse
@@ -75,7 +76,8 @@ class ProductController extends Controller
         $resource = Product::query()
             ->create($validated);
 
-        ImageService::uploadGallery($validated['images'], $resource);
+        InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->video, $resource, 'video');
 
         return response()->json([
             'success' => true,
@@ -104,7 +106,8 @@ class ProductController extends Controller
         $resource->fill($validated);
         $resource->save();
 
-        ImageService::uploadGallery($validated['images'], $resource);
+        InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->video, $resource, 'video');
 
         return response()->json([
             'success' => true,

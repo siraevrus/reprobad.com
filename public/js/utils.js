@@ -100,6 +100,28 @@ const imageUpload = {
     },
 }
 
+const fileUpload = {
+    async fileUpload(event, field) {
+        const file = event.target.files[0];
+        if (file) {
+            try {
+                this.form[field] = await this.convertFileToBase64(file);
+            } catch (error) {
+                this.showAlert(error, true);
+            }
+        }
+    },
+
+    convertFileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
 const showAlert = {
 
     getErrorMessages(errorObject) {

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Complex;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -62,31 +61,5 @@ class ImageService
     function upload($input, string $path): bool|string
     {
         return Storage::disk('public')->put($path, $input);
-    }
-
-    /**
-     * Upload gallery
-     *
-     * @param array $images
-     * @param $resource
-     * @param string $field
-     * @return bool
-     */
-    public static function uploadGallery(array $images, $resource, $field = 'images'): bool
-    {
-        foreach ($images as $key => $image) {
-            if(isset($image['remove']) && $image['remove'] === true) {
-                Storage::disk('public')->delete($image['url']);
-                unset($images[$key]);
-                continue;
-            }
-            if(!str_contains($image['url'], 'data:')) continue;
-            $path = self::resize($image['url'], 'png', 'complex/' . $resource->id);
-            $images[$key]['url'] = $path;
-        }
-        $resource->$field = $images;
-        $resource->save();
-
-        return true;
     }
 }

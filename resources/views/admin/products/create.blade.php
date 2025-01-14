@@ -36,6 +36,8 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'О продукте', 'field' => 'about'])</div>
 
+            <div>@include('admin.components.file-input', ['title' => 'Видео', 'field' => 'video'])</div>
+
             <div>@include('admin.components.dropzone-input', ['title' => 'Галерея', 'field' => 'images'])</div>
 
             @include('admin.components.buttons')
@@ -50,6 +52,7 @@
                 ...initializeEditor,
                 ...userIsNotActive,
                 ...imageUpload,
+                ...fileUpload,
                 ...variables,
                 ...dropzone,
                 ...showAlert,
