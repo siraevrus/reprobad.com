@@ -29,13 +29,13 @@
                                 <p class="product-item-text">
                                     {{ $resource->description }}
                                 </p>
-                                <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $idx % 2 == 0 ? 'second' : 'first' }}" class="product-item-link w-inline-block">
+                                <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="product-item-link w-inline-block">
                                     <div class="sache-image-element">
                                         <img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image">
                                     </div>
                                 </a>
                                 <div class="product-item-button-wrap">
-                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $idx % 2 == 0 ? 'second' : 'first' }}" class="button w-button">
+                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="button w-button">
                                         Подробнее —&gt;
                                     </a>
                                 </div>
