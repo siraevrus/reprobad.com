@@ -13,7 +13,7 @@ class CreateCrud extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-crud {name}';
+    protected $signature = 'make:crud {name}';
 
     /**
      * The console command description.
@@ -113,5 +113,27 @@ class CreateCrud extends Command
         $filePath = base_path("stubs/migrations/migration.stub");
         $content = File::get($filePath);
         return str_replace(['{{ table }}'], [$pluralName], $content);
+    }
+
+    private function addNewRoute($pluralName, $name): int
+    {
+        $routeFilePath = base_path('routes/web.php'); // Или routes/api.php
+
+        if (!file_exists($routeFilePath)) {
+            $this->error('Файл маршрутов не найден.');
+            return 1;
+        }
+
+        $routeDefinition = PHP_EOL . "Route::resource('/admin/{$pluralName}', {$name}Controller::class)" . PHP_EOL;
+
+        try {
+            file_put_contents($routeFilePath, $routeDefinition, FILE_APPEND);
+            $this->info('Routes created!');
+        } catch (\Exception $e) {
+            $this->error('Ошибка при добавлении маршрута: ' . $e->getMessage());
+            return 1;
+        }
+
+        return 0;
     }
 }
