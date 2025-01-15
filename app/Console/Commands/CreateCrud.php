@@ -37,7 +37,10 @@ class CreateCrud extends Command
         $this->info("Model created: $modelPath");
 
         // 1. Создать миграцию
-        $this->call('make:migration', ['name' => "Create{$pluralName}Table"]);
+        $migrationPath = base_path("database/migrations/Create{$pluralName}Table.php");
+        $migrationContent = $this->getMigrationTemplateContent($pluralName);
+        File::put($migrationPath, $migrationContent);
+        $this->info("Migration created: $migrationPath");
 
         // 2. Создать контроллер
         $controllerPath = app_path("Http/Controllers/Admin/{$name}Controller.php");
@@ -103,5 +106,12 @@ class CreateCrud extends Command
         $filePath = base_path("stubs/policies/policy.stub");
         $content = File::get($filePath);
         return str_replace(['{{ class }}'], [$name], $content);
+    }
+
+    private function getMigrationTemplateContent(string $pluralName): string
+    {
+        $filePath = base_path("stubs/migrations/migration.stub");
+        $content = File::get($filePath);
+        return str_replace(['{{ table }}'], [$pluralName], $content);
     }
 }
