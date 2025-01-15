@@ -9,9 +9,21 @@
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
 
-            // use tailwind
+            // соответствующие поля должны присутствовать в таблице
 
-            <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
+            <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
+
+            <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
+
+            <div>@include('admin.components.text-input', ['title' => 'Seo описание', 'field' => 'description'])</div>
+
+            <div>@include('admin.components.textarea-input', ['title' => 'Аннотация', 'field' => 'introtext', 'no_editor' => true])</div>
+
+            <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'content'])</div>
+
+            <div>@include('admin.components.image-input', ['title' => 'Изображение', 'field' => 'image'])</div>
+
+            <div>@include('admin.components.dropzone-input', ['title' => 'Галерея', 'field' => 'gallery'])</div>
 
             @include('admin.components.buttons')
         </form>
@@ -25,13 +37,16 @@
                 ...initializeEditor,
                 ...userIsNotActive,
                 ...imageUpload,
+                ...fileUpload,
                 ...variables,
+                ...dropzone,
                 ...showAlert,
                 ...get,
                 ...save,
                 ...init,
                 form: {
                     active: 1,
+                    gallery: []
                 },
             }
         }
