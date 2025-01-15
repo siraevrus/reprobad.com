@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\{{ model }};
+use App\Services\ImageService;
+use App\Services\InputService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
+
+class {{ class }} extends Controller
+{
+
+    public array $rules = [
+        'title' => 'required|max:255',
+        'content' => 'string|nullable',
+        'alias' => 'required|unique:articles,alias|max:255',
+        'description' => 'nullable',
+    ];
+
+    public function index(): View|JsonResponse
+    {
+        if(request()->user()->cannot('viewAny', {{ model }}::class)) abort(403);
+
+        $resources = {{ model }}::sorted()->paginate(env('PAGINATION_LIMIT', 20));
+        return view('admin.{{ route }}.index', compact('resources'));
+    }
+
+    public function show(Request $request, $id): JsonResponse
+    {
+        $request->headers->set('Accept', 'application/json');
+        $resource = {{ model }}::query()->findOrFail($id);
+        return response()->json($resource);
+    }
+
+    public function store(Request $request) : JsonResponse
+    {
+        $request->headers->set('Accept', 'application/json');
+        if(request()->user()->cannot('create', {{ model }}::class)) abort(403);
+
+        $validator = Validator::make($request->all(), $this->rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $validated = $validator->validated();
+
+        $resource = {{ model }}::query()
+            ->create($validated);
+
+        InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->video, $resource, 'video');
+
+        return response()->json([
+            'success' => true,
+            'resource' => $resource
+        ]);
+    }
+
+    public function update(Request $request, $id): JsonResponse
+    {
+        $request->headers->set('Accept', 'application/json');
+        if(request()->user()->cannot('update', {{ model }}::class)) abort(403);
+
+        $validator = Validator::make($request->all(), array_merge($this->rules, [
+            'alias' => 'required|unique:{{ route }},alias,' . $id,
+        ]));
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $validated = $validator->validated();
+
+        $resource = {{ model }}::query()->findOrFail($id);
+        $resource->fill($validated);
+        $resource->save();
+
+        InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->video, $resource, 'video');
+
+        return response()->json([
+            'success' => true,
+            'resource' => $resource
+        ]);
+    }
+
+    public function destroy($id): RedirectResponse
+    {
+        if(request()->user()->cannot('destroy', {{ model }}::class)) abort(403);
+
+        $resource = {{ model }}::query()->findOrFail($id);
+        $resource->delete();
+        return back();
+    }
+
+    public function create(): View
+    {
+        if(request()->user()->cannot('create', {{ model }}::class)) abort(403);
+        return view('admin.{{ route }}.create');
+    }
+
+    public function edit(): View
+    {
+        if(request()->user()->cannot('update', {{ model }}::class)) abort(403);
+        return view('admin.{{ route }}.create');
+    }
+
+    public function switch($id): RedirectResponse
+    {
+        if(request()->user()->cannot('update', {{ model }}::class)) abort(403);
+        $resource = {{ model }}::query()->findOrFail($id);
+        $resource->active = $resource->active === 0;
+        $resource->save();
+        session()->flash('message', 'Статус публикации обновлен');
+        return back();
+    }
+
+    public function up(Request $request, $id): RedirectResponse
+    {
+        if(request()->user()->cannot('update', {{ model }}::class)) abort(403);
+
+        $this->initializeSortValues(); // Проверка и инициализация sort
+
+        $resource = {{ model }}::findOrFail($id);
+        $resourceAbove = {{ model }}::where('sort', '<', $resource->sort)
+            ->orderBy('sort', 'desc')
+            ->first();
+
+        if ($resourceAbove) {
+            $tempOrder = $resource->sort;
+            $resource->sort = $resourceAbove->sort;
+            $resourceAbove->sort = $tempOrder;
+            $resourceAbove->save();
+        }
+        $resource->save();
+        session()->flash('message', 'Порядок элементов обновлен');
+        return back();
+    }
+
+    public function down(Request $request, $id): RedirectResponse
+    {
+        if(request()->user()->cannot('update', {{ model }}::class)) abort(403);
+
+        $this->initializeSortValues(); // Проверка и инициализация sort
+
+        $resource = {{ model }}::findOrFail($id);
+        $resourceBelow = {{ model }}::where('sort', '>', $resource->sort)
+            ->orderBy('sort', 'asc')
+            ->first();
+
+        if ($resourceBelow) {
+            $tempOrder = $resource->sort;
+            $resource->sort = $resourceBelow->sort;
+            $resourceBelow->sort = $tempOrder;
+            $resourceBelow->save();
+        }
+        $resource->save();
+        session()->flash('message', 'Порядок элементов обновлен');
+        return back();
+    }
+
+    /**
+     * Инициализация значений sort, если у всех элементов они равны 0.
+     */
+    protected function initializeSortValues(): void
+    {
+        $resources = {{ model }}::all();
+        if ($resources->every(fn($resource) => $resource->sort === 0)) {
+            foreach ($resources as $index => $resource) {
+                $resource->sort = $index + 1;
+                $resource->save();
+            }
+        }
+    }
+
+}

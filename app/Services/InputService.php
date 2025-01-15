@@ -2,12 +2,16 @@
 
 namespace App\Services;
 
-
 use Illuminate\Support\Facades\Storage;
 
 class InputService
 {
-
+    /**
+     * @param $fileBase64
+     * @param $resource
+     * @param $field
+     * @return bool
+     */
     public static function uploadFile($fileBase64, $resource, $field): bool
     {
         if(!is_string($fileBase64) || empty($fileBase64)) return false;
@@ -28,7 +32,13 @@ class InputService
         return true;
     }
 
-    public static function uploadGallery($images, $resource, string $field): bool
+    /**
+     * @param $images
+     * @param $resource
+     * @param $field
+     * @return bool
+     */
+    public static function uploadGallery($images, $resource, $field): bool
     {
         if(!is_array($images)) return false;
 
