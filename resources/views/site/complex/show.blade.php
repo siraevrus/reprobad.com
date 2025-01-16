@@ -222,9 +222,8 @@
             margin: auto;
             height: 30px;
             width: 30px;
-            background: #00000030;
             border-radius: 100%;
-            color: #fff;
+            color: #000;
             cursor: pointer;
             line-height: 160%;
         }
