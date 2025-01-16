@@ -44,6 +44,13 @@
                                     <video :src="video" x-show="showVideo" controls></video>
                                 </div>
 
+                                <div class="slider-prev" @click="prevImage">
+                                    <
+                                </div>
+                                <div class="slider-next" @click="nextImage">
+                                    >
+                                </div>
+
                                 <div class="thumbnails">
                                     <template x-for="(image, index) in slides" :key="index">
                                         <img :src="image.url" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
@@ -206,6 +213,26 @@
         .slider-container {
             margin: 0 auto;
             text-align: center;
+        }
+        .slider-prev,
+        .slider-next {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: 30px;
+            width: 30px;
+            background: #00000030;
+            border-radius: 100%;
+            color: #fff;
+            cursor: pointer;
+            line-height: 160%;
+        }
+        .slider-prev {
+            left: 30px;
+        }
+        .slider-next {
+            right: 30px;
         }
         .slider-main {
             position: relative;
