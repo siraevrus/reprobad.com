@@ -14,6 +14,11 @@ class InputService
      */
     public static function uploadFile($fileBase64, $resource, $field): bool
     {
+        if($fileBase64 == '') {
+            $resource->$field = '';
+            $resource->save();
+        }
+
         if(!is_string($fileBase64) || empty($fileBase64)) return false;
 
         list($metaData, $fileBase64) = explode('base64,', $fileBase64);

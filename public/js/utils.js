@@ -112,6 +112,10 @@ const fileUpload = {
         }
     },
 
+    removeFile(field) {
+        this.form[field] = '';
+    },
+
     convertFileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
