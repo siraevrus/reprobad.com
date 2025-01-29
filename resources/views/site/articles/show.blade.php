@@ -52,7 +52,7 @@
                             @endif
                             <div class="card-body">
                                 <a href="{{ route('site.articles.show', $item->alias) }}" aria-current="page" class="card-title w--current">{{ $item->title }}</a>
-                                <div class="card-text">{{ $item->description }}</div>
+                                <div class="card-text">{!! $item->description ?? '' !!}</div>
                             </div>
                             <div class="card-footer">
                                 <div class="card-date">{{ $item->published_at }}</div>
