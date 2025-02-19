@@ -7,9 +7,11 @@
                 <h1 class="product-h1 small">{!! $resource->title !!}</h1>
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
                 <p class="product-hero-p">{!! $resource->content !!}</p>
+                {{--
                 <div class="product-buy-buttons">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
+                --}}
                 <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
