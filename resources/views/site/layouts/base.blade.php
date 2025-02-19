@@ -145,7 +145,7 @@
             <div>готовимся <br>к беременности <br>вместе</div>
         </a>
         <div class="nav-desktop-links">
-            <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">О системе РЕПРО</a>
+            <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">Система РЕПРО</a>
             <a href="products" class="nav-quick-link {{ request()->is('products') ? 'active' : '' }}">Продукты</a>
             <a href="usefully-tips" class="nav-quick-link {{ request()->is('usefully-tips') ? 'active' : '' }}">Полезные советы</a>
             <a href="articles" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
@@ -266,7 +266,7 @@
         </div>
         <div class="footer-menu">
             <div class="footer-menu-column">
-                <a href="about" class="footer-menu-link">О системе РЕПРО</a>
+                <a href="about" class="footer-menu-link">Система РЕПРО</a>
                 <a href="products" class="footer-menu-link">Продукты</a>
                 <a href="events" class="footer-menu-link">События</a>
                 <a href="usefully-tips" class="footer-menu-link">Полезные советы</a>
