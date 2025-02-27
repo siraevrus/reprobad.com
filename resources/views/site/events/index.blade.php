@@ -27,9 +27,6 @@
                         <div class="events-card-place">
                             <div class="events-card-city">{{ $resource->address }}</div>
                         </div>
-                        @if($resource->logo)
-                        <img src="{{ $resource->logo }}" loading="lazy" alt="" class="events-card-logo">
-                        @endif
                     </div>
                     <div class="events-card-body">
                         <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-title">{{ $resource->title }}</a>
