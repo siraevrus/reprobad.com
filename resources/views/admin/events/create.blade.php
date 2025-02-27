@@ -11,8 +11,6 @@
 
             <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])</div>
 
-            <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])</div>
-
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
