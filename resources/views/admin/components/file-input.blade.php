@@ -18,5 +18,14 @@
         >
             Открыть
         </a>
+        <a
+            href="#"
+            @click.prevent="removeFile('{{$field}}')"
+            target="_blank"
+            x-show="form.{{$field}}"
+            class="text-blue-600 hover:text-blue-800 transition"
+        >
+            Удалить
+        </a>
     </div>
 </div>

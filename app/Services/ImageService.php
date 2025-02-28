@@ -27,7 +27,7 @@ class ImageService
             Base64ImageDecoder::class,
         ]);
 
-        $image->scale(width: 1200);
+        //$image->scale(width: 1200);
 
         switch($format) {
             case 'jpg':

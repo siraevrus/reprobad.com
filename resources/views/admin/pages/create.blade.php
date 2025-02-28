@@ -8,7 +8,7 @@
             <!-- Основные поля -->
             <div class="mb-4">
                 <label class="block font-semibold mb-2">Заголовок страницы</label>
-                <input type="text" x-model="title" @input="generateAlias" class="w-full p-2 border rounded" placeholder="Введите заголовок страницы">
+                <input type="text" x-model="title" class="w-full p-2 border rounded" placeholder="Введите заголовок страницы">
                 <div class="text-red-500 text-xs mt-1" x-text="errors.title"></div>
                 <div x-show="!errors.title" class="text-gray-400 text-xs mt-1">Максимум 250 символов</div>
             </div>

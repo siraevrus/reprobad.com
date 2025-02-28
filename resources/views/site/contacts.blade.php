@@ -5,7 +5,7 @@
         <div class="container contacts-form-container"><img sizes="100vw" srcset="images/m1-p-500.webp 500w, images/m1-p-800.webp 800w, images/m1-p-1080.webp 1080w, images/m1.webp 1440w" alt="" src="images/m1.webp" loading="lazy" class="contacts-bg">
             <div class="contacts-content">
                 <div class="contacts-head">
-                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="images/RFarmLogo.png" alt="" class="rfarm-green-logo"></div>
+                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="images/RFarmLogo.svg" alt="" class="rfarm-green-logo"></div>
                     <h1 class="contacts-h1">Контакты</h1>
                     <div>
                         {{ config('address') }}<br>

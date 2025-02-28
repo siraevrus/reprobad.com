@@ -7,9 +7,11 @@
                 <h1 class="product-h1 small">{!! $resource->title !!}</h1>
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
                 <p class="product-hero-p">{!! $resource->content !!}</p>
+                {{--
                 <div class="product-buy-buttons">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
                 </div>
+                --}}
                 <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
@@ -40,8 +42,15 @@
                         @if($product->images)
                             <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
                                 <div class="slider-main">
-                                    <img x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
+                                    <img @click="currentImage = slides[currentIndex].url;open = true" x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
                                     <video :src="video" x-show="showVideo" controls></video>
+                                </div>
+
+                                <div class="modal" :class="{ 'active' : open }" @click="open = false">
+                                    <div class="modal-close" @click="open = false">&times;</div>
+                                    <div class="modal-content">
+                                        <img :src="currentImage" alt="">
+                                    </div>
                                 </div>
 
                                 <div class="slider-prev" @click="prevImage">
@@ -190,6 +199,8 @@
                     currentIndex: 0,
                     showVideo: false,
                     video: @json($product->video),
+                    currentImage: '',
+                    open: false,
 
                     handleShowVideo() {
                         this.showVideo = true;
@@ -263,6 +274,45 @@
         }
         .thumbnails img.active {
             border: 2px solid #007bff;
+        }
+        .modal {
+            position: fixed;
+            z-index: -1;
+            background: rgba(0,0,0,.4);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            width: 700px;
+            max-width: 100%;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            height: max-content;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            color: #fff;
+            font-size: 60px;
+            cursor: pointer;
+            right: 20px;
+            height: 40px;
+            line-height: .55;
+        }
+        .modal.active {
+            display: block;
+            z-index: 100;
         }
     </style>
 

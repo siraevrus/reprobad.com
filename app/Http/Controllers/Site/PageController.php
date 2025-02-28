@@ -12,25 +12,19 @@ class PageController extends Controller
 {
     public function company(): View
     {
-        $resource = Page::active()
-            ->where('alias', 'o-kompanii-r-farm')
-            ->firstOrFail();
+        $resource = Page::active()->find(1);
         return view('site.company', compact('resource'));
     }
 
     public function privacy(): View
     {
-        $resource = Page::active()
-            ->where('alias', 'privacy')
-            ->firstOrFail();
+        $resource = Page::active()->find(2);
         return view('site.text', compact('resource'));
     }
 
     public function about(): View
     {
-        $resource = Page::active()
-            ->where('alias', 'about')
-            ->firstOrFail();
+        $resource = Page::active()->find(3);
         $complexes = Complex::sorted()->get();
         return view('site.about', compact('resource', 'complexes'));
     }
