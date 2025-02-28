@@ -3663,7 +3663,6 @@ figcaption {
   flex-flow: column;
   flex: none;
   width: 100%;
-  max-width: calc(50% - .5rem);
   display: flex;
 }
 
@@ -3755,6 +3754,9 @@ figcaption {
   bottom: 2.5rem;
   overflow: clip;
   box-shadow: 0 1rem 1rem -.5rem #4f646c70;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .input {
