@@ -31,6 +31,8 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
+            <div>@include('admin.components.dropzone-input', ['title' => 'Содержание', 'field' => 'images'])</div>
+
             @include('admin.components.buttons')
         </form>
     </div>
@@ -44,11 +46,14 @@
                 ...userIsNotActive,
                 ...imageUpload,
                 ...variables,
+                ...dropzone,
                 ...showAlert,
                 ...get,
                 ...save,
                 ...init,
-                form: {},
+                form: {
+                    images: []
+                },
             }
         }
     </script>

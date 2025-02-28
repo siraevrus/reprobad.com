@@ -43,10 +43,15 @@
     </header>
 
     <!-- Основное содержимое -->
-    <div class="flex gap-6">
+    <div class="flex flex-col md:flex-row gap-6" x-data="{ menuOpen: false }">
         <!-- Боковая панель -->
-        <aside class="w-1/6">
-            <nav class="sticky top-4">
+        <aside class="w-full md:w-1/6">
+            <button
+                @click="menuOpen = !menuOpen"
+                class="block md:hidden text-white bg-blue-500 px-4 py-2 rounded mb-4">
+                Меню
+            </button>
+            <nav :class="menuOpen ? 'block' : 'hidden'" class="sticky top-4 md:block">
                 <ul class="space-y-4" x-data="nav()">
                     <template x-for="(item, index) in menuItems" :key="index">
                         <li>
@@ -62,15 +67,15 @@
             </nav>
         </aside>
 
-        <main class="w-5/6">
+        <main class="w-full md:w-5/6">
             @if(Session::has('message'))
-            <div class="shadow rounded-lg py-2 px-4 mb-4 bg-green-200 border text-green-700 border-green-300">
-                <p class="alert">{{ session()->get('message') }}</p>
-            </div>
+                <div class="shadow rounded-lg py-2 px-4 mb-4 bg-green-200 border text-green-700 border-green-300">
+                    <p class="alert">{{ session()->get('message') }}</p>
+                </div>
             @endif
 
             <div class="bg-white shadow rounded-lg p-6">
-            @yield('content')
+                @yield('content')
             </div>
 
         </main>
