@@ -53,6 +53,7 @@
                     <button type="submit" class="map-widget-button w-button"><span class="hide-on-mobile">Найти </span>—&gt;</button>
                 </div>
             </form>
+            {{--
             <div class="shpargalka-widget">
                 <h2 class="widget-h"><strong>Шпаргалка: каких врачей нужно пройти </strong>перед процедурой ЭКО</h2><img src="images/shpargalka.webp" loading="lazy" sizes="(max-width: 767px) 91vw, 49vw" srcset="images/shpargalka-p-500.webp 500w, images/shpargalka-p-800.webp 800w, images/shpargalka.webp 900w" alt="" class="shpargalka-image">
                 <div class="shpargalka-docs">
@@ -72,7 +73,9 @@
                     <a href="{{ route('site.articles.index') }}" class="button w-button">Подробнее —&gt;</a>
                 </div>
             </div>
+            --}}
         </div>
+        {{--
         <div class="widgets-column _2">
             <div class="questions-widget">
                 <h2 class="widget-h"><strong>15 вопросов репродуктологу </strong><span class="inline-text-block">на первом приёме </span></h2>
@@ -91,9 +94,7 @@
                 </div>
                 <div class="widget-footer">
                     <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
-                    {{--
                     <a href="/usefully-tips/etapy" class="button w-button">Узнать больше —&gt;</a>
-                    --}}
                     <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
@@ -123,6 +124,7 @@
                 </div>
             </div>
         </div>
+        --}}
     </div>
 </section>
 @endsection
