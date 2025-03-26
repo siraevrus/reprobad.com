@@ -63,7 +63,7 @@ class TextController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
-            'alias' => 'required|unique:articles,alias,' . $id,
+            'alias' => 'required|unique:text,alias,' . $id,
             'description' => 'nullable',
             'image' => 'string'
         ]);
