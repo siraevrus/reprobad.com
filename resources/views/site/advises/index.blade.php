@@ -97,7 +97,7 @@
                                 <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="" class="clock-icon">
                                     <div>{{ $item->time }}</div>
                                 </div>
-                                <a href="{{ route('site.articles.show', $item->alias) }}" class="card-link w-inline-block">
+                                <a href="{{ route('site.advises.show', $item->alias) }}" class="card-link w-inline-block">
                                     <div class="text-block">Читать</div>
                                     <div class="card-link-arrow">—&gt;</div>
                                 </a>
