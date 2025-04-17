@@ -33,7 +33,7 @@
                         @if($resource->image)
                         <img src="{{ $resource->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 27vw" srcset="{{ $resource->image }} 500w, {{ $resource->image }} 800w, {{ $resource->image }} 1080w, {{ $resource->image }} 1440w" class="events-card-image">
                         @endif
-                        <div class="events-card-text">{{ $resource->title }}</div>
+                        <div class="events-card-text">{{ $resource->description }}</div>
                         {{-- <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-button w-button">Подробнее —&gt;</a> --}}
                     </div>
                 </div>
