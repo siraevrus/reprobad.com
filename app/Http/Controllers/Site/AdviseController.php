@@ -32,14 +32,16 @@ class AdviseController extends Controller
         $resources = $resources->paginate(7);
 
         $all = Advise::active()->get();
-        $categories = $categories->map(function ($item) use ($all) {
-            if($item) {
+        $categories = $categories
+            ->filter(fn($item) => !empty($item)) // убираем пустые
+            ->map(function ($item) use ($all) {
                 return [
                     'name' => $item,
                     'count' => $all->where('category', $item)->count()
                 ];
-            }
-        });
+            })
+            ->values();
+
 
         $resource = [
             'title' => 'События',
