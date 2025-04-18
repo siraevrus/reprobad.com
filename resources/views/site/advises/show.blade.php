@@ -4,7 +4,7 @@
     <section class="section article-section">
         <div class="container">
             <div class="breadcrumbs">
-                <a href="{{ route('site.articles.index') }}" nav="back" class="breadcrumb">&lt;- Статьи</a>
+                <a href="{{ route('site.articles.index') }}" nav="back" class="breadcrumb">&lt;- Полезные советы</a>
             </div>
             <div class="article-head">
                 <div class="article-icon">
