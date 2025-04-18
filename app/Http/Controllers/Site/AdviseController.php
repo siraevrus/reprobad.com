@@ -33,10 +33,12 @@ class AdviseController extends Controller
 
         $all = Advise::active()->get();
         $categories = $categories->map(function ($item) use ($all) {
-            return [
-                'name' => $item,
-                'count' => $all->where('category', $item)->count()
-            ];
+            if($item) {
+                return [
+                    'name' => $item,
+                    'count' => $all->where('category', $item)->count()
+                ];
+            }
         });
 
         $resource = [
