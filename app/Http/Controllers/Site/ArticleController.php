@@ -32,12 +32,15 @@ class ArticleController extends Controller
         $resources = $resources->paginate(7);
 
         $all = Article::active()->get();
-        $categories = $categories->map(function ($item) use ($all) {
-            return [
-                'name' => $item,
-                'count' => $all->where('category', $item)->count()
-            ];
-        });
+        $categories = $categories
+            ->filter(fn($item) => !empty($item)) // убираем пустые
+            ->map(function ($item) use ($all) {
+                return [
+                    'name' => $item,
+                    'count' => $all->where('category', $item)->count()
+                ];
+            })
+            ->values();
 
         $resource = [
             'title' => 'События',
