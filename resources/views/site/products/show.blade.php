@@ -30,9 +30,9 @@
                 <p class="product-head-descriptor">{{ $resource->description }}</p>
                 <p class="product-head-text"> </p><img src="{{ $resource->photo }}" loading="lazy" alt="" class="product-head-image">
                 <div class="product-buy-buttons">
-                    {{--
-                    <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
-                    --}}
+                    @if($resource->link)
+                    <a href="{{ $resource->link }}" target="_blank" class="button w-button">Купить —&gt;</a>
+                    @endif
                 </div>
             </div>
             <div class="product-body">
@@ -94,9 +94,9 @@
                         <p class="product-head-descriptor">{{ $product->description }}</p>
                         <p class="product-head-text"> </p><img src="{{ $product->photo }}" loading="lazy" alt="" class="product-head-image">
                         <div class="product-buy-buttons">
-                            {{--
-                            <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
-                            --}}
+                            @if($product->link)
+                            <a href="{{ $product->link }}" target="_blank" class="button w-button">Купить —&gt;</a>
+                            @endif
                         </div>
                     </div>
                     <div class="product-body">
