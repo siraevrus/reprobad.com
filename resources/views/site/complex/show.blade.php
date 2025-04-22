@@ -73,9 +73,9 @@
                         @endif
 
                         <div class="product-buy-buttons">
-                            {{--
-                            <a href="https://www.eapteka.ru" target="_blank" class="button w-button">Купить —&gt;</a>
-                            --}}
+                            @if($product->link)
+                                <a href="{{ $product->link }}" target="_blank" class="button w-button">Купить —&gt;</a>
+                            @endif
                         </div>
                     </div>
                     <div class="product-body">
