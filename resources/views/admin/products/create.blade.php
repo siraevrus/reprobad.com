@@ -18,9 +18,9 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
-            <div>@include('admin.components.text-input', ['title' => 'Подзаголовок', 'field' => 'link'])</div>
+            <div>@include('admin.components.text-input', ['title' => 'Подзаголовок', 'field' => 'subtitle'])</div>
 
-            <div>@include('admin.components.text-input', ['title' => 'Ссылка', 'field' => 'subtitle'])</div>
+            <div>@include('admin.components.text-input', ['title' => 'Ссылка', 'field' => 'link'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
