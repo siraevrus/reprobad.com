@@ -18,6 +18,7 @@ class EventController extends Controller
         'alias' => 'required|unique:events,alias',
         'description' => 'string|nullable',
         'image' => 'string|nullable',
+        'images' => 'array|nullable',
         'category' => 'string|nullable',
         'logo' => 'string|nullable',
         'date' => 'string|nullable',

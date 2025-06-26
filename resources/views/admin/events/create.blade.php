@@ -29,7 +29,7 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
-            <div>@include('admin.components.dropzone-input', ['title' => 'Содержание', 'field' => 'images'])</div>
+            <div>@include('admin.components.dropzone-input', ['title' => 'Галерея', 'field' => 'images'])</div>
 
             @include('admin.components.buttons')
         </form>
