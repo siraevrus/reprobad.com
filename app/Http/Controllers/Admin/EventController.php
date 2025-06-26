@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -61,6 +62,9 @@ class EventController extends Controller
 
         $resource = Event::query()
             ->create($validator->validated());
+
+        InputService::uploadGallery($request->images, $resource, 'images');
+
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -85,6 +89,8 @@ class EventController extends Controller
         $resource = Event::query()->findOrFail($id);
         $resource->fill($validator->validated());
         $resource->save();
+
+        InputService::uploadGallery($request->images, $resource, 'images');
 
         return response()->json([
             'success' => true,
