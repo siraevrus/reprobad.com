@@ -23,6 +23,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Тег-месяц', 'field' => 'category'])</div>
 
+            <div>@include('admin.components.file-input', ['title' => 'Программа мероприятия', 'field' => 'file'])</div>
+
             <div>@include('admin.components.text-input', ['title' => 'Адрес', 'field' => 'address'])</div>
 
             <div>@include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description'])</div>

@@ -21,6 +21,7 @@ class EventController extends Controller
         'image' => 'string|nullable',
         'images' => 'array|nullable',
         'category' => 'string|nullable',
+        'file' => 'string|nullable',
         'logo' => 'string|nullable',
         'date' => 'string|nullable',
         'dates' => 'string|nullable',
@@ -64,6 +65,7 @@ class EventController extends Controller
             ->create($validator->validated());
 
         InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->file, $resource, 'file');
 
         return response()->json([
             'success' => true,
@@ -91,6 +93,7 @@ class EventController extends Controller
         $resource->save();
 
         InputService::uploadGallery($request->images, $resource, 'images');
+        InputService::uploadFile($request->file, $resource, 'file');
 
         return response()->json([
             'success' => true,
