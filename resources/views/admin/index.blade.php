@@ -28,6 +28,11 @@
         <span>страница</span>
     </a>
 
+    <a href="{{ route('admin.file-manager.index') }}" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 mb-5 items-center inline-flex gap-1">
+        <span class="material-icons">folder</span>
+        <span>файловый менеджер</span>
+    </a>
+
     <div class="px-6 py-4 text-base text-green-600 rounded-lg mb-5 bg-green-200 border border-green-500">
         Иконки должны находится по пути "storage/app/public/icons" в формате svg
     </div>

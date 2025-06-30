@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ComplexController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\FileManagerController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\Admin\PageController;
@@ -41,6 +42,12 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/questions', QuestionController::class);
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
+    
+    // Файловый менеджер
+    Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
+    Route::post('/admin/file-manager', [FileManagerController::class, 'store'])->name('file-manager.store');
+    Route::delete('/admin/file-manager/{filename}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
+    
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
     Route::get('/admin/icons', [ArticleController::class, 'icons'])->name('icons');
