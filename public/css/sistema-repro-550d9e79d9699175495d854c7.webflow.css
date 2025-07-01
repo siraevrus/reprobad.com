@@ -1766,7 +1766,6 @@ figcaption {
   grid-row-gap: 1rem;
   flex-flow: column;
   flex: none;
-  justify-content: space-between;
   align-items: stretch;
   width: 100%;
   max-width: 24rem;
