@@ -43,7 +43,7 @@
                 </div>
                 <div class="side">
                     <div class="side-promo">
-                        <a href="//www.eapteka.ru/search/?q=репро">
+                        <a href="//www.eapteka.ru/search/?q=репро" target="_blank">
                             <img src="images/banner.png" style="width:100%" alt="">
                         </a>
                     </div>
