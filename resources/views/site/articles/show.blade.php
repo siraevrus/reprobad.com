@@ -43,7 +43,9 @@
                 </div>
                 <div class="side">
                     <div class="side-promo">
-                        <img src="images/banner.png" styles="width:100%" alt="">
+                        <a href="/">
+                            <img src="images/banner.png" styles="width:100%" alt="">
+                        </a>
                     </div>
                     @if(!empty($other))
                     <div class="side-head">
