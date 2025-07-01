@@ -67,6 +67,9 @@
                         @endforeach
                     </div>
                     @endif
+                    <div class="side-promo">
+                        <img src="images/banner.png" alt="">
+                    </div>
                     <div class="side-footer">
                         <div class="subscribe">
                             <div class="share">
