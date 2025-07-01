@@ -42,6 +42,9 @@
                     </div>
                 </div>
                 <div class="side">
+                    <div class="side-promo">
+                        <img src="images/banner.png" alt="">
+                    </div>
                     @if(!empty($other))
                     <div class="side-head">
                         <div class="side-h">Другие статьи по этой теме:</div>
