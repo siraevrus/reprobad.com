@@ -43,7 +43,7 @@
                 </div>
                 <div class="side">
                     <div class="side-promo">
-                        <img src="images/banner.png" alt="">
+                        <img src="images/banner.png" styles="width:100%" alt="">
                     </div>
                     @if(!empty($other))
                     <div class="side-head">
