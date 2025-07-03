@@ -50,6 +50,11 @@
                     </div>
                 </div>
                 <div class="side" x-data="app()">
+                    <div class="side-promo">
+                        <a href="//www.eapteka.ru/search/?q=репро" target="_blank">
+                            <img src="images/banner.png" style="width:100%" alt="">
+                        </a>
+                    </div>
                     <div class="mobile-popup">
                         <div class="mobile-popup-overlay"></div>
                         <div class="question-form-block w-form">
