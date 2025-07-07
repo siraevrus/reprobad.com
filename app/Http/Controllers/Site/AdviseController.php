@@ -12,58 +12,25 @@ use Illuminate\View\View;
 
 class AdviseController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
-        $resources = Advise::active();
-        $categories = Advise::active()->distinct()->pluck('category');
-
-        if($request->get('category')) {
-            $resources = $resources->where('category', $request->get('category'));
-        }
-
-        if($request->get('query')) {
-            $query = $request->get('query');
-            $resources = $resources
-                ->where('title', 'like', '%' . $query . '%')
-                ->where('description', 'like', '%' . $query . '%')
-                ->orWhere('content', 'like', '%' . $query . '%');
-        }
-
-        $resources = $resources->paginate(7);
-
-        $all = Advise::active()->get();
-        $categories = $categories
-            ->filter(fn($item) => !empty($item)) // убираем пустые
-            ->map(function ($item) use ($all) {
-                return [
-                    'name' => $item,
-                    'count' => $all->where('category', $item)->count()
-                ];
-            })
-            ->values();
-
-        $resource = [
-            'title' => 'Полезные советы',
-            'description' => 'Полезные советы по подготовке к беременности'
-        ];
-
-        // SEO данные для списка советов
+        $resources = Advise::where('active', 1)->orderBy('sort', 'asc')->get();
+        $categories = Advise::where('active', 1)->distinct()->pluck('category')->filter();
+        
+        $resource = null;
         $pageType = 'Advise';
-        $pageId = 0; // 0 означает список советов
-
-        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType', 'pageId'));
+        
+        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType'));
     }
 
     public function show($alias): View
     {
-        $resource = Advise::active()->where('alias', $alias)->firstOrFail();
-        $events = Event::active()->take(6)->get();
+        $resource = Advise::where('alias', $alias)->where('active', 1)->firstOrFail();
+        $events = Event::where('active', 1)->take(3)->get();
         
-        // SEO данные для конкретного совета
         $pageType = 'Advise';
-        $pageId = $resource->id;
         
-        return view('site.advises.show', compact('resource', 'events', 'pageType', 'pageId'));
+        return view('site.advises.show', compact('resource', 'events', 'pageType'));
     }
 
     public function subscribe(Request $request): JsonResponse

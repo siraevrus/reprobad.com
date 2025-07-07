@@ -25,7 +25,6 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Тип страницы</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Название</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
@@ -36,30 +35,30 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     @switch($seo->page_type)
+                                        @case('Home')
+                                            Главная
+                                            @break
                                         @case('Article')
-                                            Статья
+                                            Статьи
                                             @break
                                         @case('Page')
-                                            Страница
+                                            Страницы
                                             @break
                                         @case('Product')
-                                            Продукт
+                                            Продукты
                                             @break
                                         @case('Event')
-                                            Событие
+                                            События
                                             @break
                                         @case('Advise')
-                                            Совет
+                                            Советы
                                             @break
                                         @case('Complex')
-                                            Комплекс
+                                            Комплексы
                                             @break
                                         @default
                                             {{ $seo->page_type }}
                                     @endswitch
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {{ $seo->page->title ?? 'Не найдено' }}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ Str::limit($seo->title, 50) }}

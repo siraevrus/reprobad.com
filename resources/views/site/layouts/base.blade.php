@@ -3,10 +3,9 @@
 <head>
     <meta charset="utf-8">
     
-    @if(isset($resource) && isset($pageType) && isset($pageId))
+    @if(isset($resource) && isset($pageType))
         <x-seo-meta 
             :pageType="$pageType" 
-            :pageId="$pageId" 
             :defaultTitle="$resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? ''"
         />

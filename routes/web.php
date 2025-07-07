@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/seo/{id}/edit', [SeoController::class, 'edit'])->name('seo.edit');
     Route::put('/admin/seo/{id}', [SeoController::class, 'update'])->name('seo.update');
     Route::delete('/admin/seo/{id}', [SeoController::class, 'destroy'])->name('seo.destroy');
-    Route::get('/admin/seo/get-pages', [SeoController::class, 'getPages'])->name('seo.get-pages');
     
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');

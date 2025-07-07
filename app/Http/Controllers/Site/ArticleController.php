@@ -12,63 +12,26 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
-    public function index(Request $request): View
+    public function index(): View
     {
-        $resources = Article::active();
-        $categories = Article::active()->distinct()->pluck('category');
-
-        if($request->get('category')) {
-            $resources = $resources->where('category', $request->get('category'));
-        }
-
-        if($request->get('query')) {
-            $query = strtolower($request->get('query'));
-            $resources = $resources
-                ->where('title', 'like', '%' . $query . '%')
-                ->where('description', 'like', '%' . $query . '%')
-                ->orWhere('content', 'like', '%' . $query . '%');
-        }
-
-        $resources = $resources->paginate(7);
-
-        $all = Article::active()->get();
-        $categories = $categories
-            ->filter(fn($item) => !empty($item)) // убираем пустые
-            ->map(function ($item) use ($all) {
-                return [
-                    'name' => $item,
-                    'count' => $all->where('category', $item)->count()
-                ];
-            })
-            ->values();
-
-        $resource = [
-            'title' => 'Статьи',
-            'description' => 'Статьи о подготовке к беременности'
-        ];
-
-        // SEO данные для списка статей
+        $resources = Article::where('active', 1)->orderBy('sort', 'asc')->get();
+        $categories = Article::where('active', 1)->distinct()->pluck('category')->filter();
+        
+        $resource = null;
         $pageType = 'Article';
-        $pageId = 0; // 0 означает список статей
-
-        return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType', 'pageId'));
+        
+        return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType'));
     }
 
     public function show($alias): View
     {
-        $resource = Article::active()->where('alias', $alias)->firstOrFail();
-        $other = Article::active()
-            ->where('category', $resource->category)
-            ->where('id', '!=', $resource->id)
-            ->take(6)
-            ->get();
-        $events = Event::active()->get();
+        $resource = Article::where('alias', $alias)->where('active', 1)->firstOrFail();
+        $other = Article::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
+        $events = Event::where('active', 1)->take(3)->get();
         
-        // SEO данные для конкретной статьи
         $pageType = 'Article';
-        $pageId = $resource->id;
         
-        return view('site.articles.show', compact('resource', 'other', 'events', 'pageType', 'pageId'));
+        return view('site.articles.show', compact('resource', 'other', 'events', 'pageType'));
     }
 
     public function subscribe(Request $request): JsonResponse

@@ -12,31 +12,22 @@ class ProductController extends Controller
 {
     public function index(): View
     {
-        $resources = Product::active()->paginate(12);
+        $resources = Product::where('active', 1)->orderBy('sort', 'asc')->get();
         
-        // SEO данные для списка продуктов
+        $resource = null;
         $pageType = 'Product';
-        $pageId = 0; // 0 означает список продуктов
         
-        return view('site.products.index', [
-            'resources' => $resources,
-            'bodyClass' => 'products-page',
-            'isHome' => 1,
-            'pageType' => $pageType,
-            'pageId' => $pageId
-        ]);
+        return view('site.products.index', compact('resources', 'resource', 'pageType'));
     }
 
     public function show($alias): View
     {
-        $articles = Article::active()->where('active', 1)->take(5)->get();
-        $resource = Product::active()->where('alias', $alias)->firstOrFail();
-        $complexes = Complex::active()->get();
+        $resource = Product::where('alias', $alias)->where('active', 1)->firstOrFail();
+        $articles = Article::where('active', 1)->take(3)->get();
+        $complexes = Complex::where('active', 1)->take(3)->get();
         
-        // SEO данные для конкретного продукта
         $pageType = 'Product';
-        $pageId = $resource->id;
         
-        return view('site.products.show', compact('resource', 'articles', 'complexes', 'pageType', 'pageId'));
+        return view('site.products.show', compact('resource', 'articles', 'complexes', 'pageType'));
     }
 }

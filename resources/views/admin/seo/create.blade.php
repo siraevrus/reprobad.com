@@ -123,27 +123,5 @@
         updateCounter('description', 'description-count');
         updateCounter('og_title', 'og-title-count');
         updateCounter('og_description', 'og-description-count');
-
-        // Загрузка страниц при выборе типа
-        document.getElementById('page_type').addEventListener('change', function() {
-            const pageType = this.value;
-            const pageSelect = document.getElementById('page_id');
-            
-            if (pageType) {
-                fetch(`{{ route('admin.seo.get-pages') }}?page_type=${pageType}`)
-                    .then(response => response.json())
-                    .then(pages => {
-                        pageSelect.innerHTML = '<option value="">Выберите страницу</option>';
-                        pages.forEach(page => {
-                            const option = document.createElement('option');
-                            option.value = page.id;
-                            option.textContent = page.title;
-                            pageSelect.appendChild(option);
-                        });
-                    });
-            } else {
-                pageSelect.innerHTML = '<option value="">Сначала выберите тип страницы</option>';
-            }
-        });
     </script>
 @endsection 

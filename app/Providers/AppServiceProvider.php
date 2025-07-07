@@ -7,6 +7,7 @@ use App\Models\Point;
 use App\Policies\PointPolicy;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,9 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $configs = Config::all();
-        foreach ($configs as $config) {
-            config([$config->key => $config->value]);
+        // Проверяем существование таблицы config перед загрузкой данных
+        if (Schema::hasTable('config')) {
+            $configs = Config::all();
+            foreach ($configs as $config) {
+                config([$config->key => $config->value]);
+            }
         }
 
         //Paginator::useTailwind();

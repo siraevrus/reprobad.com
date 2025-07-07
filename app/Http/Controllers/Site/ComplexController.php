@@ -11,31 +11,22 @@ class ComplexController extends Controller
 {
     public function index(): View
     {
-        $resources = Complex::active()->paginate(12);
+        $resources = Complex::where('active', 1)->orderBy('sort', 'asc')->get();
         
-        // SEO данные для списка комплексов
+        $resource = null;
         $pageType = 'Complex';
-        $pageId = 0; // 0 означает список комплексов
         
-        return view('site.complex.index', [
-            'resources' => $resources,
-            'bodyClass' => 'products-page',
-            'isHome' => 1,
-            'pageType' => $pageType,
-            'pageId' => $pageId
-        ]);
+        return view('site.complex.index', compact('resources', 'resource', 'pageType'));
     }
 
     public function show($alias): View
     {
-        $articles = Article::active()->where('active', 1)->take(5)->get();
-        $resource = Complex::active()->with('products')->where('alias', $alias)->firstOrFail();
-        $resources = Complex::active()->get();
+        $resource = Complex::where('alias', $alias)->where('active', 1)->firstOrFail();
+        $articles = Article::where('active', 1)->take(3)->get();
+        $resources = Complex::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
         
-        // SEO данные для конкретного комплекса
         $pageType = 'Complex';
-        $pageId = $resource->id;
         
-        return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType', 'pageId'));
+        return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType'));
     }
 }

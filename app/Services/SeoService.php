@@ -6,17 +6,14 @@ use App\Models\Seo;
 
 class SeoService
 {
-
-    public static function getSeoData($pageType, $pageId)
+    public static function getSeoData($pageType)
     {
-        return Seo::where('page_type', $pageType)
-                  ->where('page_id', $pageId)
-                  ->first();
+        return Seo::where('page_type', $pageType)->first();
     }
 
-    public static function getMetaTags($pageType, $pageId)
+    public static function getMetaTags($pageType)
     {
-        $seo = self::getSeoData($pageType, $pageId);
+        $seo = self::getSeoData($pageType);
         
         if (!$seo) {
             return [
