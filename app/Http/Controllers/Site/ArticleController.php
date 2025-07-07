@@ -12,12 +12,45 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $resources = Article::where('active', 1)->orderBy('created_at', 'desc')->get();
-        $categories = Article::where('active', 1)->distinct()->pluck('category')->filter();
+        $resources = Article::where('active', 1);
         
-        $resource = null;
+        // Фильтрация по категории
+        if ($request->get('category')) {
+            $resources = $resources->where('category', $request->get('category'));
+        }
+        
+        // Поиск
+        if ($request->get('query')) {
+            $query = strtolower($request->get('query'));
+            $resources = $resources->where(function($q) use ($query) {
+                $q->where('title', 'like', '%' . $query . '%')
+                  ->orWhere('description', 'like', '%' . $query . '%')
+                  ->orWhere('content', 'like', '%' . $query . '%');
+            });
+        }
+        
+        $resources = $resources->orderBy('created_at', 'desc')->paginate(7);
+        
+        // Получаем категории с подсчетом количества статей
+        $allArticles = Article::where('active', 1)->get();
+        $categories = Article::where('active', 1)
+            ->distinct()
+            ->pluck('category')
+            ->filter()
+            ->map(function ($category) use ($allArticles) {
+                return [
+                    'name' => $category,
+                    'count' => $allArticles->where('category', $category)->count()
+                ];
+            })
+            ->values();
+        
+        $resource = [
+            'title' => 'Статьи',
+            'description' => 'Статьи о подготовке к беременности'
+        ];
         $pageType = 'Article';
         
         return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType'));

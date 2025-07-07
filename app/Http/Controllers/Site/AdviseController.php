@@ -12,12 +12,45 @@ use Illuminate\View\View;
 
 class AdviseController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $resources = Advise::where('active', 1)->orderBy('sort', 'asc')->get();
-        $categories = Advise::where('active', 1)->distinct()->pluck('category')->filter();
+        $resources = Advise::where('active', 1);
         
-        $resource = null;
+        // Фильтрация по категории
+        if ($request->get('category')) {
+            $resources = $resources->where('category', $request->get('category'));
+        }
+        
+        // Поиск
+        if ($request->get('query')) {
+            $query = strtolower($request->get('query'));
+            $resources = $resources->where(function($q) use ($query) {
+                $q->where('title', 'like', '%' . $query . '%')
+                  ->orWhere('description', 'like', '%' . $query . '%')
+                  ->orWhere('content', 'like', '%' . $query . '%');
+            });
+        }
+        
+        $resources = $resources->orderBy('sort', 'asc')->paginate(7);
+        
+        // Получаем категории с подсчетом количества советов
+        $allAdvises = Advise::where('active', 1)->get();
+        $categories = Advise::where('active', 1)
+            ->distinct()
+            ->pluck('category')
+            ->filter()
+            ->map(function ($category) use ($allAdvises) {
+                return [
+                    'name' => $category,
+                    'count' => $allAdvises->where('category', $category)->count()
+                ];
+            })
+            ->values();
+        
+        $resource = [
+            'title' => 'Полезные советы',
+            'description' => 'Полезные советы по подготовке к беременности'
+        ];
         $pageType = 'Advise';
         
         return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType'));
