@@ -69,7 +69,6 @@ class SeoController extends Controller
     {
         $request->validate([
             'page_type' => 'required|string',
-            'page_id' => 'required|integer',
             'title' => 'nullable|string|max:60',
             'description' => 'nullable|string|max:160',
             'keywords' => 'nullable|string',

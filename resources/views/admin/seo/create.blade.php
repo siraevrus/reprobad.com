@@ -23,14 +23,6 @@
                         @endforeach
                     </select>
                 </div>
-
-                <div>
-                    <label for="page_id" class="block text-sm font-medium text-gray-700 mb-2">Страница</label>
-                    <select name="page_id" id="page_id" required 
-                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Сначала выберите тип страницы</option>
-                    </select>
-                </div>
             </div>
 
             <div class="border-t pt-6">

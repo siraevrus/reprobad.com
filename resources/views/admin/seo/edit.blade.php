@@ -19,12 +19,6 @@
                     <input type="text" value="{{ $seo->page_type }}" disabled
                            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50">
                 </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Страница</label>
-                    <input type="text" value="{{ $seo->page->title ?? 'Не найдено' }}" disabled
-                           class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50">
-                </div>
             </div>
 
             <div class="border-t pt-6">
