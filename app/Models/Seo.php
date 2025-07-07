@@ -6,16 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seo extends Model
 {
-    protected $fillable = [
-        'page_type',
-        'page_id',
-        'title',
-        'description',
-        'keywords',
-        'og_title',
-        'og_description',
-        'og_image',
-    ];
+
+    protected $table = 'seo';
+
+    protected $guarded = ['id'];
 
     public function page()
     {

@@ -6,6 +6,7 @@ use App\Models\Seo;
 
 class SeoService
 {
+
     public static function getSeoData($pageType, $pageId)
     {
         return Seo::where('page_type', $pageType)
