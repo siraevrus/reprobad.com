@@ -38,10 +38,14 @@ class EventController extends Controller
 
         $resource = [
             'title' => 'События',
-            'description' => 'События'
+            'description' => 'События о подготовке к беременности'
         ];
 
-        return view('site.events.index', compact('resources', 'categories', 'resource'));
+        // SEO данные для списка событий
+        $pageType = 'Event';
+        $pageId = 0; // 0 означает список событий
+
+        return view('site.events.index', compact('resources', 'categories', 'resource', 'pageType', 'pageId'));
     }
 
     public function show($alias): View
@@ -52,8 +56,11 @@ class EventController extends Controller
             ->where('id', '!=', $resource->id)
             ->take(6)
             ->get();
-        return view('site.events.show', compact('resource', 'other'));
+            
+        // SEO данные для конкретного события
+        $pageType = 'Event';
+        $pageId = $resource->id;
+        
+        return view('site.events.show', compact('resource', 'other', 'pageType', 'pageId'));
     }
-
-
 }

@@ -13,10 +13,17 @@ class ProductController extends Controller
     public function index(): View
     {
         $resources = Product::active()->paginate(12);
+        
+        // SEO данные для списка продуктов
+        $pageType = 'Product';
+        $pageId = 0; // 0 означает список продуктов
+        
         return view('site.products.index', [
             'resources' => $resources,
             'bodyClass' => 'products-page',
-            'isHome' => 1
+            'isHome' => 1,
+            'pageType' => $pageType,
+            'pageId' => $pageId
         ]);
     }
 
@@ -25,6 +32,11 @@ class ProductController extends Controller
         $articles = Article::active()->where('active', 1)->take(5)->get();
         $resource = Product::active()->where('alias', $alias)->firstOrFail();
         $complexes = Complex::active()->get();
-        return view('site.products.show', compact('resource', 'articles', 'complexes'));
+        
+        // SEO данные для конкретного продукта
+        $pageType = 'Product';
+        $pageId = $resource->id;
+        
+        return view('site.products.show', compact('resource', 'articles', 'complexes', 'pageType', 'pageId'));
     }
 }

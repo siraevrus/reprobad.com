@@ -43,11 +43,15 @@ class ArticleController extends Controller
             ->values();
 
         $resource = [
-            'title' => 'События',
-            'description' => 'События'
+            'title' => 'Статьи',
+            'description' => 'Статьи о подготовке к беременности'
         ];
 
-        return view('site.articles.index', compact('resources', 'categories', 'resource'));
+        // SEO данные для списка статей
+        $pageType = 'Article';
+        $pageId = 0; // 0 означает список статей
+
+        return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType', 'pageId'));
     }
 
     public function show($alias): View
@@ -59,7 +63,12 @@ class ArticleController extends Controller
             ->take(6)
             ->get();
         $events = Event::active()->get();
-        return view('site.articles.show', compact('resource', 'other', 'events'));
+        
+        // SEO данные для конкретной статьи
+        $pageType = 'Article';
+        $pageId = $resource->id;
+        
+        return view('site.articles.show', compact('resource', 'other', 'events', 'pageType', 'pageId'));
     }
 
     public function subscribe(Request $request): JsonResponse

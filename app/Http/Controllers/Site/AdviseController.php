@@ -42,20 +42,28 @@ class AdviseController extends Controller
             })
             ->values();
 
-
         $resource = [
-            'title' => 'События',
-            'description' => 'События'
+            'title' => 'Полезные советы',
+            'description' => 'Полезные советы по подготовке к беременности'
         ];
 
-        return view('site.advises.index', compact('resources', 'categories', 'resource'));
+        // SEO данные для списка советов
+        $pageType = 'Advise';
+        $pageId = 0; // 0 означает список советов
+
+        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType', 'pageId'));
     }
 
     public function show($alias): View
     {
         $resource = Advise::active()->where('alias', $alias)->firstOrFail();
         $events = Event::active()->take(6)->get();
-        return view('site.advises.show', compact('resource', 'events'));
+        
+        // SEO данные для конкретного совета
+        $pageType = 'Advise';
+        $pageId = $resource->id;
+        
+        return view('site.advises.show', compact('resource', 'events', 'pageType', 'pageId'));
     }
 
     public function subscribe(Request $request): JsonResponse

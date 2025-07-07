@@ -2,15 +2,32 @@
 <html data-wf-page="673718a9aa664236cdc0b634" data-wf-site="673718a9aa664236cdc0b633">
 <head>
     <meta charset="utf-8">
-    <title>{{ isset($resource->title) ? strip_tags($resource->title) : '' }}</title>
-    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" name="description">
-    <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="og:title">
-    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
-    <meta content="{{ $resource->image ?? '' }}" property="og:image">
-    <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
-    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
-    <meta content="{{ $resource->image ?? '' }}" property="twitter:image">
-    <meta property="og:type" content="website">
+    
+    @if(isset($resource) && isset($pageType) && isset($pageId))
+        <x-seo-meta 
+            :pageType="$pageType" 
+            :pageId="$pageId" 
+            :defaultTitle="$resource->title ?? ''"
+            :defaultDescription="$resource->seo_description ?? ''"
+        />
+    @elseif(isset($resource))
+        <title>{{ isset($resource->title) ? strip_tags($resource->title) : '' }}</title>
+        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" name="description">
+        <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="og:title">
+        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
+        <meta content="{{ $resource->image ?? '' }}" property="og:image">
+        <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
+        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
+        <meta content="{{ $resource->image ?? '' }}" property="twitter:image">
+        <meta property="og:type" content="website">
+    @else
+        <title>РЕПРО АПОТЕКА • REPRO APOTHEKA</title>
+        <meta content="Готовимся к беременности вместе" name="description">
+        <meta content="РЕПРО АПОТЕКА • REPRO APOTHEKA" property="og:title">
+        <meta content="Готовимся к беременности вместе" property="og:description">
+        <meta property="og:type" content="website">
+    @endif
+    
     <base href="/">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">

@@ -1,7 +1,19 @@
 @props(['pageType', 'pageId', 'defaultTitle' => null, 'defaultDescription' => null])
 
 @php
-    $seoData = \App\Services\SeoService::getMetaTags($pageType, $pageId);
+    // Если pageId = 0, это список страниц, для него SEO данные не ищем
+    if ($pageId == 0) {
+        $seoData = [
+            'title' => null,
+            'description' => null,
+            'keywords' => null,
+            'og_title' => null,
+            'og_description' => null,
+            'og_image' => null,
+        ];
+    } else {
+        $seoData = \App\Services\SeoService::getMetaTags($pageType, $pageId);
+    }
 @endphp
 
 @if($seoData['title'])
