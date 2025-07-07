@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <title>{{ isset($resource->title) ? strip_tags($resource->title) : '' }}</title>
-    <meta content="{{ isset($resource->description) ? strip_tags($resource->description) : '' }}" name="description">
+    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" name="description">
     <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="og:title">
-    <meta content="{{ isset($resource->description) ? strip_tags($resource->description) : '' }}" property="og:description">
+    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
     <meta content="{{ $resource->image ?? '' }}" property="og:image">
     <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
-    <meta content="{{ isset($resource->description) ? strip_tags($resource->description) : '' }}" property="twitter:description">
+    <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
     <meta content="{{ $resource->image ?? '' }}" property="twitter:image">
     <meta property="og:type" content="website">
     <base href="/">
