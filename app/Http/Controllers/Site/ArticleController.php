@@ -14,7 +14,7 @@ class ArticleController extends Controller
 {
     public function index(): View
     {
-        $resources = Article::where('active', 1)->orderBy('sort', 'asc')->get();
+        $resources = Article::where('active', 1)->orderBy('created_at', 'desc')->get();
         $categories = Article::where('active', 1)->distinct()->pluck('category')->filter();
         
         $resource = null;
