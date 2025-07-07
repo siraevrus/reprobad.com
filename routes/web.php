@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\SeoController;
 use App\Http\Controllers\Admin\StepController;
 use App\Http\Controllers\Admin\SubscribeController;
 use App\Http\Controllers\Admin\TextController;
@@ -47,6 +48,15 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
     Route::post('/admin/file-manager', [FileManagerController::class, 'store'])->name('file-manager.store');
     Route::delete('/admin/file-manager/{filename}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
+    
+    // SEO управление
+    Route::get('/admin/seo', [SeoController::class, 'index'])->name('seo.index');
+    Route::get('/admin/seo/create', [SeoController::class, 'create'])->name('seo.create');
+    Route::post('/admin/seo', [SeoController::class, 'store'])->name('seo.store');
+    Route::get('/admin/seo/{id}/edit', [SeoController::class, 'edit'])->name('seo.edit');
+    Route::put('/admin/seo/{id}', [SeoController::class, 'update'])->name('seo.update');
+    Route::delete('/admin/seo/{id}', [SeoController::class, 'destroy'])->name('seo.destroy');
+    Route::get('/admin/seo/get-pages', [SeoController::class, 'getPages'])->name('seo.get-pages');
     
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
