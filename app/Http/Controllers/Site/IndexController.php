@@ -43,9 +43,11 @@ class IndexController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
+        $pageType = 'Home';
+
         $questions = Question::active()->get();
         $steps = Step::active()->get();
 
-        return view('site.index', compact('resource', 'complexes', 'resources', 'events', 'favorites', 'questions', 'steps'));
+        return view('site.index', compact('resource', 'complexes', 'resources', 'pageType', 'events', 'favorites', 'questions', 'steps'));
     }
 }

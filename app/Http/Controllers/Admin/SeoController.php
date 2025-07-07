@@ -24,6 +24,7 @@ class SeoController extends Controller
     public function create()
     {
         $pageTypes = [
+            'Home' => 'Главная',
             'Article' => 'Статьи',
             'Page' => 'Страницы',
             'Product' => 'Продукты',
