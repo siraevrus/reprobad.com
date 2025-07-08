@@ -155,19 +155,24 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /var/www/your-app
+          
+          # Остановка приложения
           php artisan down
           
           # Создание бэкапа
           tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz --exclude='storage/logs/*' --exclude='storage/framework/cache/*' .
+          
+          # Получение изменений из git
+          git pull origin master
+          
+          # Установка зависимостей
+          composer install --no-dev --optimize-autoloader
           
           # Очистка кэша
           php artisan cache:clear
           php artisan config:clear
           php artisan route:clear
           php artisan view:clear
-          
-          # Установка зависимостей
-          composer install --no-dev --optimize-autoloader
           
           # Миграции
           php artisan migrate --force
@@ -178,8 +183,11 @@ jobs:
           php artisan view:cache
           
           # Установка прав
-          chown -R www-data:www-data storage bootstrap/cache
-          chmod -R 775 storage bootstrap/cache
+          sudo chown -R www-data:www-data storage bootstrap/cache
+          sudo chmod -R 775 storage bootstrap/cache
           
           # Запуск приложения
-          php artisan up 
+          php artisan up
+          
+          # Перезапуск веб-сервера
+          sudo systemctl reload nginx 
