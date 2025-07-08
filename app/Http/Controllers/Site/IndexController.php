@@ -17,7 +17,7 @@ class IndexController extends Controller
 {
     public function index(): View
     {
-        $resource = [
+        $resource = (object)[
             'home' => 1,
             'title' => 'Главная'
         ];

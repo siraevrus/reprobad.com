@@ -47,7 +47,7 @@ class ArticleController extends Controller
             })
             ->values();
         
-        $resource = [
+        $resource = (object)[
             'title' => 'Статьи',
             'description' => 'Статьи о подготовке к беременности'
         ];

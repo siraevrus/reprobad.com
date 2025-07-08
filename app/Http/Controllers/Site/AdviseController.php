@@ -47,10 +47,10 @@ class AdviseController extends Controller
             })
             ->values();
         
-        $resource = [
+        $resource = (object)[
             'title' => 'Полезные советы',
             'description' => 'Полезные советы по подготовке к беременности'
-        ];
+        ]; 
         $pageType = 'Advise';
         
         return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType'));

@@ -6,7 +6,7 @@
     @if(isset($resource) && isset($pageType))
         <x-seo-meta
             :pageType="$pageType"
-            :defaultTitle="$resource->seo_title ?? $resource->title"
+            :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? ''"
         />
     @elseif(isset($resource))
