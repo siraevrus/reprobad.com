@@ -27,10 +27,17 @@ class AppServiceProvider extends ServiceProvider
     {
         // Проверяем существование таблицы config перед загрузкой данных
         // Пропускаем в тестовом окружении, чтобы избежать ошибок подключения к БД
-        if (!app()->environment('testing') && Schema::hasTable('config')) {
-            $configs = Config::all();
-            foreach ($configs as $config) {
-                config([$config->key => $config->value]);
+        try {
+            if (!app()->environment('testing') && Schema::hasTable('config')) {
+                $configs = Config::all();
+                foreach ($configs as $config) {
+                    config([$config->key => $config->value]);
+                }
+            }
+        } catch (\Exception $e) {
+            // Игнорируем ошибки подключения к БД в тестовом окружении
+            if (!app()->environment('testing')) {
+                throw $e;
             }
         }
 
