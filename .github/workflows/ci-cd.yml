@@ -27,19 +27,13 @@ jobs:
     - name: Create deployment package
       run: |
         tar -czf deployment.tar.gz \
-          --warning=no-file-changed \
           --exclude='.git' \
           --exclude='node_modules' \
           --exclude='tests' \
           --exclude='.github' \
-          --exclude='.env.example' \
-          --exclude='README.md' \
-          --exclude='CHANGELOG.md' \
-          --exclude='phpunit.xml' \
-          --exclude='tailwind.config.js' \
-          --exclude='vite.config.js' \
-          --exclude='package.json' \
-          --exclude='package-lock.json' \
+          --exclude='vendor' \
+          --exclude='storage/logs' \
+          --exclude='storage/framework/cache' \
           .
 
     - name: Upload deployment package
