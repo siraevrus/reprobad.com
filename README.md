@@ -67,3 +67,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 # Проверка CI/CD на master
 # Тест CI/CD pipeline
 # Тест CI/CD pipeline
+# Проверка деплоя с настроенными секретами
