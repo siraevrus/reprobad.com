@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Проверяем существование таблицы config перед загрузкой данных
-        if (Schema::hasTable('config')) {
+        // Пропускаем в тестовом окружении, чтобы избежать ошибок подключения к БД
+        if (!app()->environment('testing') && Schema::hasTable('config')) {
             $configs = Config::all();
             foreach ($configs as $config) {
                 config([$config->key => $config->value]);
