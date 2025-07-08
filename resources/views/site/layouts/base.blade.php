@@ -2,11 +2,11 @@
 <html data-wf-page="673718a9aa664236cdc0b634" data-wf-site="673718a9aa664236cdc0b633">
 <head>
     <meta charset="utf-8">
-    
+
     @if(isset($resource) && isset($pageType))
-        <x-seo-meta 
-            :pageType="$pageType" 
-            :defaultTitle="$resource->title ?? ''"
+        <x-seo-meta
+            :pageType="$pageType"
+            :defaultTitle="$resource->seo_title ?? $resource->title"
             :defaultDescription="$resource->seo_description ?? ''"
         />
     @elseif(isset($resource))
@@ -26,7 +26,7 @@
         <meta content="Готовимся к беременности вместе" property="og:description">
         <meta property="og:type" content="website">
     @endif
-    
+
     <base href="/">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">

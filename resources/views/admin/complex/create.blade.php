@@ -9,6 +9,7 @@
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
 
+            {{--
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     @include('admin.components.image-input', ['title' => 'Фото товара 1', 'field' => 'image_left'])
@@ -21,8 +22,11 @@
                     @include('admin.components.text-input', ['title' => 'Якорь (алиас продукта)', 'field' => 'anchor_right'])
                 </div>
             </div>
+            --}}
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
+
+            <div>@include('admin.components.text-input', ['title' => 'Seo заголовок', 'field' => 'seo_title'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Подзаголовок', 'field' => 'subtitle'])</div>
 
