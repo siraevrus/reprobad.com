@@ -29,7 +29,7 @@ class EventController extends Controller
             });
         }
         
-        $resources = $resources->orderBy('sort', 'asc')->paginate(7);
+        $resources = $resources->orderBy('created_at', 'desc')->paginate(7);
         
         // Получаем категории с подсчетом количества событий
         $allEvents = Event::where('active', 1)->get();
