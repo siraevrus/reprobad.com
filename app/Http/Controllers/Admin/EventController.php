@@ -135,4 +135,58 @@ class EventController extends Controller
         session()->flash('message', 'Элементы на главной странице обновлены');
         return back();
     }
+
+    public function up(Request $request, $id): RedirectResponse
+    {
+        $this->initializeSortValues(); // Проверка и инициализация sort
+
+        $resource = Complex::findOrFail($id);
+        $resourceAbove = Complex::where('sort', '<', $resource->sort)
+            ->orderBy('sort', 'desc')
+            ->first();
+
+        if ($resourceAbove) {
+            $tempOrder = $resource->sort;
+            $resource->sort = $resourceAbove->sort;
+            $resourceAbove->sort = $tempOrder;
+            $resourceAbove->save();
+        }
+        $resource->save();
+        session()->flash('message', 'Порядок элементов обновлен');
+        return back();
+    }
+
+    public function down(Request $request, $id): RedirectResponse
+    {
+        $this->initializeSortValues(); // Проверка и инициализация sort
+
+        $resource = Event::findOrFail($id);
+        $resourceBelow = Event::where('sort', '>', $resource->sort)
+            ->orderBy('sort', 'asc')
+            ->first();
+
+        if ($resourceBelow) {
+            $tempOrder = $resource->sort;
+            $resource->sort = $resourceBelow->sort;
+            $resourceBelow->sort = $tempOrder;
+            $resourceBelow->save();
+        }
+        $resource->save();
+        session()->flash('message', 'Порядок элементов обновлен');
+        return back();
+    }
+
+    /**
+     * Инициализация значений sort, если у всех элементов они равны 0.
+     */
+    protected function initializeSortValues(): void
+    {
+        $products = Event::all();
+        if ($products->every(fn($product) => $product->sort === 0)) {
+            foreach ($products as $index => $product) {
+                $product->sort = $index + 1; // Уникальное значение для каждого элемента
+                $product->save();
+            }
+        }
+    }
 }

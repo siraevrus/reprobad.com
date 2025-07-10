@@ -43,12 +43,12 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/questions', QuestionController::class);
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
-    
+
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
     Route::post('/admin/file-manager', [FileManagerController::class, 'store'])->name('file-manager.store');
     Route::delete('/admin/file-manager/{filename}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
-    
+
     // SEO управление
     Route::get('/admin/seo', [SeoController::class, 'index'])->name('seo.index');
     Route::get('/admin/seo/create', [SeoController::class, 'create'])->name('seo.create');
@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/seo/{id}/edit', [SeoController::class, 'edit'])->name('seo.edit');
     Route::put('/admin/seo/{id}', [SeoController::class, 'update'])->name('seo.update');
     Route::delete('/admin/seo/{id}', [SeoController::class, 'destroy'])->name('seo.destroy');
-    
+
     Route::get('/admin/config', [ConfigController::class, 'edit'])->name('config.edit');
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
     Route::get('/admin/icons', [ArticleController::class, 'icons'])->name('icons');
@@ -75,9 +75,11 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
 
     Route::get('/admin/products/{alias}/up', [ProductController::class, 'up'])->name('products.up');
     Route::get('/admin/complex/{alias}/up', [ComplexController::class, 'up'])->name('complex.up');
+    Route::get('/admin/events/{alias}/up', [EventController::class, 'up'])->name('events.up');
 
     Route::get('/admin/products/{alias}/down', [ProductController::class, 'down'])->name('products.down');
     Route::get('/admin/complex/{alias}/down', [ComplexController::class, 'down'])->name('complex.down');
+    Route::get('/admin/events/{alias}/down', [EventController::class, 'down'])->name('events.down');
 
     Route::get('/admin/articles/{alias}/home', [ArticleController::class, 'home'])->name('articles.home');
     Route::get('/admin/events/{alias}/home', [EventController::class, 'home'])->name('events.home');
