@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('complex', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table) {
             $table->string('sort')->nullable();
         });
     }
