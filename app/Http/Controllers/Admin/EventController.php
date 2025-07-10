@@ -66,6 +66,7 @@ class EventController extends Controller
 
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');
+        InputService::uploadFile($request->logo, $resource, 'logo');
 
         return response()->json([
             'success' => true,
@@ -94,6 +95,7 @@ class EventController extends Controller
 
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');
+        InputService::uploadFile($request->logo, $resource, 'logo');
 
         return response()->json([
             'success' => true,
