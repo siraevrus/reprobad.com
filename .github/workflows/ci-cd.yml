@@ -44,10 +44,6 @@ jobs:
           git stash
           git pull origin master
           
-          # Установка зависимостей
-          echo "Установка зависимостей..."
-          composer install --no-dev --optimize-autoloader --no-interaction
-          
           # Проверка миграций перед запуском
           echo "Проверка миграций..."
           php artisan migrate:status
@@ -60,6 +56,7 @@ jobs:
           echo "Очистка кэша..."
           php artisan cache:clear
           php artisan config:clear
+          php artisan route:cache
           
           # Проверка что всё работает
           echo "Проверка приложения..."

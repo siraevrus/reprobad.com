@@ -2,7 +2,7 @@
     @csrf
     @method('DELETE')
 
-    @if(in_array($route, ['complex', 'products']))
+    @if(in_array($route, ['complex', 'products', 'events']))
     <a href="{{ route("admin.$route.up", $resource->id) }}" class="text-blue-500 hover:text-blue-700">
         <span class="material-icons">arrow_upward</span>
     </a>
