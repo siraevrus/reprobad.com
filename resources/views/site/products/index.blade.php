@@ -35,15 +35,16 @@
                                         <img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image">
                                     </div>
                                 </a>
-                                <div class="product-item-button-wrap">
+                                <div class="product-item-button-wrap" style="display: block">
                                     <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="button w-button">
                                         Подробнее —&gt;
                                     </a>
-                                </div>
-                                <div class="product-item-link" style="margin-top:20px">
-                                    <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                                        <img src="/images/apteka.jpg" alt="">
-                                    </a>
+
+                                    <div class="product-item-link" style="margin-top:20px">
+                                        <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
+                                            <img src="/images/apteka.jpg" alt="">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
