@@ -15,12 +15,12 @@ class ArticleController extends Controller
     public function index(Request $request): View
     {
         $resources = Article::where('active', 1);
-        
+
         // Фильтрация по категории
         if ($request->get('category')) {
             $resources = $resources->where('category', $request->get('category'));
         }
-        
+
         // Поиск
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
@@ -30,9 +30,9 @@ class ArticleController extends Controller
                   ->orWhere('content', 'like', '%' . $query . '%');
             });
         }
-        
+
         $resources = $resources->orderBy('created_at', 'desc')->paginate(7);
-        
+
         // Получаем категории с подсчетом количества статей
         $allArticles = Article::where('active', 1)->get();
         $categories = Article::where('active', 1)
@@ -46,13 +46,13 @@ class ArticleController extends Controller
                 ];
             })
             ->values();
-        
+
         $resource = (object)[
             'title' => 'Статьи',
             'description' => 'Статьи о подготовке к беременности'
         ];
         $pageType = 'Article';
-        
+
         return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType'));
     }
 
@@ -60,10 +60,10 @@ class ArticleController extends Controller
     {
         $resource = Article::where('alias', $alias)->where('active', 1)->firstOrFail();
         $other = Article::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
-        $events = Event::where('active', 1)->take(3)->get();
-        
+        $events = Event::where('active', 1)->take(2)->get();
+
         $pageType = 'Article';
-        
+
         return view('site.articles.show', compact('resource', 'other', 'events', 'pageType'));
     }
 
