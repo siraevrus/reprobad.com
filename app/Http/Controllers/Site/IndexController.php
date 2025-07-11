@@ -21,7 +21,7 @@ class IndexController extends Controller
             'home' => 1,
             'title' => 'Главная'
         ];
-        $resources = Article::active()->take(5)->get();
+        $resources = Article::active()->orderBy('create_at')->take(5)->get();
         $complexes = Complex::active()->get();
         $events = Event::active()->take(2)->get();
 
