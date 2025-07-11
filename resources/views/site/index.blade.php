@@ -13,6 +13,9 @@
                 @include('site.components.complex.item', ['item' => $complex])
             @endforeach
         </div>
+        <div style="display:flex;justify-content:center;margin-top:20px">
+            <img src="images/apteka.png" style="width:250px" alt="">
+        </div>
     </div>
 </section>
 
@@ -31,9 +34,6 @@
                     @include('site.components.articles.item', ['item' => $item])
                 @endif
             @endforeach
-        </div>
-        <div style="display:flex;justify-content:center;margin-top:20px">
-            <img src="images/apteka.png" style="width:250px" alt="">
         </div>
     </div>
 </section>
