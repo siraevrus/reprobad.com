@@ -23,7 +23,7 @@ class IndexController extends Controller
         ];
         $resources = Article::active()->orderBy('created_at', 'DESC')->take(5)->get();
         $complexes = Complex::active()->get();
-        $events = Event::active()->take(2)->get();
+        $events = Event::active()->orderBy('sort', 'desc')->take(2)->get();
 
         $d1 = DB::table('articles')
             ->select('id', 'title', 'home', DB::raw("'article' as type"))
