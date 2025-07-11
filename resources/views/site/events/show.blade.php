@@ -12,7 +12,7 @@
                 <div class="event-options">
                     <div class="event-place">
                         <div class="event-date">{{ $resource->dates }}</div>
-                        <div class="event-address">{{ $resource->address }}</div>
+                        <div class="event-address">{!! $resource->address !!}</div>
                     </div>
                     <div class="event-contacts">
                         @if(isset($resource->email) && $resource->email)
