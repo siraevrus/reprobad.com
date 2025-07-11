@@ -167,11 +167,9 @@
             <a href="articles" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
             <a href="events" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
         </div>
-        {{--
         @if(!isset($isHome))
-            <a href="#" class="navbar-buy-button w-button">Купить</a>
+            <a href="//www.eapteka.ru/search/?q=репро" class="navbar-buy-button w-button">Купить</a>
         @endif
-        --}}
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
                 <div class="menu-button-icon w-icon-nav-menu"></div>
