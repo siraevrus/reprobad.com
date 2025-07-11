@@ -142,8 +142,8 @@ class EventController extends Controller
     {
         $this->initializeSortValues(); // Проверка и инициализация sort
 
-        $resource = Complex::findOrFail($id);
-        $resourceAbove = Complex::where('sort', '<', $resource->sort)
+        $resource = Event::findOrFail($id);
+        $resourceAbove = Event::where('sort', '<', $resource->sort)
             ->orderBy('sort', 'desc')
             ->first();
 

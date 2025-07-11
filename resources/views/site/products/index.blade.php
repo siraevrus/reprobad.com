@@ -1,7 +1,7 @@
 @extends('site.layouts.base')
 
 @section('content')
-<!---->
+
     <section class="section">
         <div class="container">
             <div class="sistema-repro-heading products-page-heading">
@@ -53,6 +53,9 @@
                 @endforeach
             </div>
             <div class="spacer desktop-3-rem"></div>
+            <div style="display:flex;justify-content:center;margin-top:20px">
+                <img src="images/apteka.png" alt="">
+            </div>
         </div>
     </section>
 @endsection
