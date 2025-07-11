@@ -12,10 +12,10 @@ class ComplexController extends Controller
     public function index(): View
     {
         $resources = Complex::where('active', 1)->orderBy('sort', 'asc')->get();
-        
+
         $resource = null;
         $pageType = 'Complex';
-        
+
         return view('site.complex.index', compact('resources', 'resource', 'pageType'));
     }
 
@@ -23,10 +23,10 @@ class ComplexController extends Controller
     {
         $resource = Complex::where('alias', $alias)->where('active', 1)->firstOrFail();
         $articles = Article::where('active', 1)->take(3)->get();
-        $resources = Complex::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
-        
+        $resources = Complex::where('active', 1)->get();
+
         $pageType = 'Complex';
-        
+
         return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType'));
     }
 }
