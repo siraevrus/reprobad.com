@@ -42,7 +42,7 @@
 
                                     <div class="product-item-img" style="margin-top:20px">
                                         <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                                            <img src="/images/apteka.png" sytle="wudth:30rem" alt="">
+                                            <img src="/images/apteka.svg" sytle="wudth:30rem" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -55,7 +55,7 @@
             <div class="spacer desktop-3-rem"></div>
             <div style="display:flex;justify-content:center;margin-top:20px">
                 <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                    <img src="images/apteka.png" style="width:30rem" alt="">
+                    <img src="images/apteka.svg" style="width:30rem" alt="">
                 </a>
             </div>
         </div>

@@ -15,7 +15,7 @@
         </div>
         <div style="display:flex;justify-content:center;margin-top:20px">
             <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                <img src="images/apteka.png" style="width:30rem" alt="">
+                <img src="images/apteka.svg" style="width:30rem" alt="">
             </a>
         </div>
     </div>
