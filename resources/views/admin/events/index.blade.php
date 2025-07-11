@@ -11,6 +11,7 @@
                 <th class="py-3 px-6 text-left">Фото</th>
                 <th class="py-3 px-6 text-left">Заголовок</th>
                 <th class="py-3 px-6 text-left">Дата</th>
+                <th class="py-3 px-6 text-left">Порядок</th>
                 <th class="py-3 px-6 text-center">Действия</th>
             </tr>
             </thead>
@@ -23,6 +24,7 @@
                     </td>
                     <td class="py-3 px-6">{{ $resource->title }}</td>
                     <td class="py-3 px-6">{{ $resource->created_at }}</td>
+                    <td class="py-3 px-6">{{ $resource->sort }}</td>
                     <td class="py-3 px-6 text-center">
                         @include('admin.components.controls', ['route' => 'events', 'resource' => $resource])
                     </td>
