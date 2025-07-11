@@ -30,36 +30,32 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd /var/www/repro
-          
-          # Создание бэкапа перед деплоем
-          echo "Создание бэкапа..."
-          tar -czf backup-$(date +%Y%m%d-%H%M%S).tar.gz --exclude='storage/logs/*' --exclude='storage/framework/cache/*' .
-          
+
           # Проверка статуса приложения
           echo "Проверка статуса приложения..."
           php artisan --version
-          
+
           # Безопасный git pull
           echo "Получение изменений из git..."
           git stash
           git pull origin master
-          
+
           # Проверка миграций перед запуском
           echo "Проверка миграций..."
           php artisan migrate:status
-          
+
           # Безопасный запуск миграций
           echo "Запуск миграций..."
           php artisan migrate --force
-          
+
           # Очистка кэша
           echo "Очистка кэша..."
           php artisan cache:clear
           php artisan config:clear
           php artisan route:cache
-          
+
           # Проверка что всё работает
           echo "Проверка приложения..."
           php artisan route:list --compact
-          
-          echo "Деплой завершен успешно!" 
+
+          echo "Деплой завершен успешно!"
