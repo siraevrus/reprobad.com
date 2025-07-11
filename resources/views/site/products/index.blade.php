@@ -40,6 +40,11 @@
                                         Подробнее —&gt;
                                     </a>
                                 </div>
+                                <div class="product-item-link" style="margin-top:20px">
+                                    <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
+                                        <img src="/images/apteka.jpg" alt="">
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         @php $idx++ @endphp
