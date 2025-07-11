@@ -70,4 +70,9 @@ class Event extends Model
     {
         $query->where('active', 1);
     }
+
+    public function scopeSorted(Builder $query): void
+    {
+        $query->orderBy('sort', 'ASC');
+    }
 }

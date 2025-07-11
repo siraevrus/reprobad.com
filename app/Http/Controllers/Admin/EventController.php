@@ -32,7 +32,7 @@ class EventController extends Controller
 
     public function index(): View|JsonResponse
     {
-        $resources = Event::query()->paginate(env('PAGINATION_LIMIT', 20));
+        $resources = Event::sorted()->paginate(env('PAGINATION_LIMIT', 20));
 
         if(request()->ajax()) {
             return response()->json($resources);
