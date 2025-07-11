@@ -22,6 +22,7 @@ class ComplexController extends Controller
         'alias' => 'required|string|unique:complex,alias',
         'subtitle' => 'string|nullable',
         'content' => 'string|nullable',
+        'seo_title' => 'string|nullable',
         'image_left' => 'string|nullable',
         'image_right' => 'string|nullable',
         'title_left' => 'string|nullable',
