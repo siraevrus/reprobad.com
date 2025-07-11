@@ -6603,6 +6603,10 @@ figcaption {
     height: 1.15rem;
     margin-top: .2rem;
   }
+
+  .navbar-buy-button .w-button {
+      display: none;
+  }
 }
 
 
