@@ -60,7 +60,7 @@ class ArticleController extends Controller
     {
         $resource = Article::where('alias', $alias)->where('active', 1)->firstOrFail();
         $other = Article::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
-        $events = Event::where('active', 1)->take(2)->get();
+        $events = Event::where('active', 1)->orderBy('created_at', 'DESC')->take(2)->get();
 
         $pageType = 'Article';
 

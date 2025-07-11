@@ -57,7 +57,11 @@ class EventController extends Controller
     public function show($alias): View
     {
         $resource = Event::where('alias', $alias)->where('active', 1)->firstOrFail();
-        $other = Event::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
+        $other = Event::where('active', 1)
+            ->where('id', '!=', $resource->id)
+            ->orderBy('created_at', 'DESC')
+            ->take(2)
+            ->get();
 
         $pageType = 'Event';
 
