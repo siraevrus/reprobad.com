@@ -42,7 +42,7 @@
 
                                     <div class="product-item-img" style="margin-top:20px">
                                         <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                                            <img src="/images/apteka.jpg" alt="">
+                                            <img src="/images/apteka.png" alt="">
                                         </a>
                                     </div>
                                 </div>
