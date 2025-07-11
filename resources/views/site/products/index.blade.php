@@ -54,7 +54,7 @@
             </div>
             <div class="spacer desktop-3-rem"></div>
             <div style="display:flex;justify-content:center;margin-top:20px">
-                <img src="images/apteka.png" alt="">
+                <img src="images/apteka.png" style="width:250px" alt="">
             </div>
         </div>
     </section>

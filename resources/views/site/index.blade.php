@@ -32,6 +32,9 @@
                 @endif
             @endforeach
         </div>
+        <div style="display:flex;justify-content:center;margin-top:20px">
+            <img src="images/apteka.png" style="width:250px" alt="">
+        </div>
     </div>
 </section>
 
