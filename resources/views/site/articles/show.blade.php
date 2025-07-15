@@ -155,6 +155,24 @@
         }
     </style>
     <script>
+        const promoData = [
+            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner1.jpg' },
+            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner2.jpg' },
+            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner3.jpg' },
+            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner4.jpg' }
+        ];
+
+        let current = 0;
+        const container = document.querySelector('.side-promo a');
+        const img = container.querySelector('img');
+
+        setInterval(() => {
+            current = (current + 1) % promoData.length;
+            container.href = promoData[current].href;
+            img.src = promoData[current].img;
+        }, 4000);
+    </script>
+    <script>
         function app() {
             return {
                 form: {
