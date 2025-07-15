@@ -32,28 +32,44 @@ class EventController extends Controller
         $resources = $resources->orderBy('sort', 'desc')->paginate(7);
 
         $monthsOrder = [
-            'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+            'январь'   => 1,
+            'февраль'  => 2,
+            'март'     => 3,
+            'апрель'   => 4,
+            'май'      => 5,
+            'июнь'     => 6,
+            'июль'     => 7,
+            'август'   => 8,
+            'сентябрь' => 9,
+            'октябрь'  => 10,
+            'ноябрь'   => 11,
+            'декабрь'  => 12,
         ];
 
-        // Получаем все активные события
         $allEvents = Event::where('active', 1)->get();
 
-        // Формируем список уникальных категорий с подсчетом количества
         $categories = Event::where('active', 1)
             ->distinct()
             ->pluck('category')
             ->filter()
             ->map(function ($category) use ($allEvents) {
                 return [
-                    'name' => $category,
+                    'name'  => $category,
                     'count' => $allEvents->where('category', $category)->count()
                 ];
             })
             ->sortBy(function ($item) use ($monthsOrder) {
-                return array_search($item['name'], $monthsOrder);
+                $parts = explode(' ', mb_strtolower($item['name']));
+                $month = $parts[0] ?? '';
+                $year = (int) ($parts[1] ?? 0);
+
+                $monthNumber = $monthsOrder[$month] ?? 0;
+
+                // Сортируем по году, потом по месяцу
+                return $year * 100 + $monthNumber;
             })
             ->values();
+
 
 
         $resource = [
