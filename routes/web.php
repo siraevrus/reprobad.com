@@ -95,7 +95,7 @@ Route::get('/articles/{alias}', [SiteArticleController::class, 'show'])->name('s
 Route::get('/events', [SiteEventController::class, 'index'])->name('site.events.index');
 Route::get('/events/{alias}', [SiteEventController::class, 'show'])->name('site.events.show');
 Route::get('/products', [SiteProductController::class, 'index'])->name('site.products.index');
-Route::get('/products/{alias}', [SiteProductController::class, 'show'])->name('site.products.show');
+//Route::get('/products/{alias}', [SiteProductController::class, 'show'])->name('site.products.show');
 Route::get('/complex', [SiteComplexController::class, 'index'])->name('site.complex.index');
 Route::get('/complex/{alias}', [SiteComplexController::class, 'show'])->name('site.complex.show');
 Route::get('/text', [SiteTextController::class, 'index'])->name('site.text.index');
