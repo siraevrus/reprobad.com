@@ -22,7 +22,7 @@ class ComplexController extends Controller
     public function show($alias): View
     {
         $resource = Complex::where('alias', $alias)->where('active', 1)->firstOrFail();
-        $articles = Article::where('active', 1)->take(3)->get();
+        $articles = Article::where('active', 1)->take(5)->get();
         $resources = Complex::where('active', 1)->get();
 
         $pageType = 'Complex';
