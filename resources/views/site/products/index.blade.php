@@ -40,11 +40,13 @@
                                         Подробнее —&gt;
                                     </a>
 
+                                    @if($resource->link)
                                     <div class="product-item-img" style="margin-top:20px">
-                                        <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
+                                        <a href="{{ $resource->link }}" target="_blank">
                                             <img src="/images/apteka.svg" style="width:18rem;margin-top:1rem" alt="">
                                         </a>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
