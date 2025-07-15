@@ -58,17 +58,17 @@ class EventController extends Controller
                     'count' => $allEvents->where('category', $category)->count()
                 ];
             })
-            ->sortBy(function ($item) use ($monthsOrder) {
+            ->sortByDesc(function ($item) use ($monthsOrder) {
                 $parts = explode(' ', mb_strtolower($item['name']));
                 $month = $parts[0] ?? '';
                 $year = (int) ($parts[1] ?? 0);
 
                 $monthNumber = $monthsOrder[$month] ?? 0;
 
-                // Сортируем по году, потом по месяцу
                 return $year * 100 + $monthNumber;
             })
             ->values();
+
 
 
 
