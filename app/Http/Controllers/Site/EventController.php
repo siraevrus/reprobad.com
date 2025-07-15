@@ -31,8 +31,15 @@ class EventController extends Controller
 
         $resources = $resources->orderBy('sort', 'desc')->paginate(7);
 
-        // Получаем категории с подсчетом количества событий
+        $monthsOrder = [
+            'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ];
+
+        // Получаем все активные события
         $allEvents = Event::where('active', 1)->get();
+
+        // Формируем список уникальных категорий с подсчетом количества
         $categories = Event::where('active', 1)
             ->distinct()
             ->pluck('category')
@@ -43,7 +50,11 @@ class EventController extends Controller
                     'count' => $allEvents->where('category', $category)->count()
                 ];
             })
+            ->sortBy(function ($item) use ($monthsOrder) {
+                return array_search($item['name'], $monthsOrder);
+            })
             ->values();
+
 
         $resource = [
             'title' => 'События',

@@ -25,7 +25,7 @@
                     <div class="events-card-head">
                         <div class="events-card-date">{{ $resource->dates }} </div>
                         <div class="events-card-place">
-                            <div class="events-card-city">{{ $resource->address }}</div>
+                            <div class="events-card-city">{!! $resource->address !!}</div>
                         </div>
                     </div>
                     <div class="events-card-body">
