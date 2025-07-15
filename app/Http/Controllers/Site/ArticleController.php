@@ -58,9 +58,20 @@ class ArticleController extends Controller
 
     public function show($alias): View
     {
-        $resource = Article::where('alias', $alias)->where('active', 1)->firstOrFail();
-        $other = Article::where('active', 1)->where('id', '!=', $resource->id)->take(3)->get();
-        $events = Event::where('active', 1)->orderBy('created_at', 'DESC')->take(2)->get();
+        $resource = Article::where('alias', $alias)
+            ->where('active', 1)
+            ->firstOrFail();
+
+        $other = Article::where('active', 1)
+            ->where('id', '!=', $resource->id)
+            ->orderBy('created_at', 'DESC')
+            ->take(3)
+            ->get();
+
+        $events = Event::where('active', 1)
+            ->orderBy('created_at', 'DESC')
+            ->take(2)
+            ->get();
 
         $pageType = 'Article';
 
