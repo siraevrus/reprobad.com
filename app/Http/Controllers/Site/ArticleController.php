@@ -73,7 +73,7 @@ class ArticleController extends Controller
             ->take(2)
             ->get();
 
-        $pageType = 'Article';
+        $pageType = '';
 
         return view('site.articles.show', compact('resource', 'other', 'events', 'pageType'));
     }
