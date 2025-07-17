@@ -35,6 +35,7 @@ class ConfigController extends Controller
             'rutube' => 'string|nullable',
             'ok' => 'string|nullable',
             'vk' => 'string|nullable',
+            'dzen' => 'string|nullable',
         ]);
 
         foreach($validated as $key => $value) {

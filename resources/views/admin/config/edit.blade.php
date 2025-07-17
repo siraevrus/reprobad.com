@@ -69,6 +69,13 @@
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('vk') }}</div>
             @endif
         </div>
+        <div>
+            <label class="block font-semibold mb-2">Дзен</label>
+            <input type="text" value="{{ $config->dzen ?? '' }}" name="dzen" class="w-full p-2 border rounded" placeholder="">
+            @if($errors->has('dzen'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('dzen') }}</div>
+            @endif
+        </div>
 
         <!-- Кнопки -->
         <div class="flex justify-end gap-4">
