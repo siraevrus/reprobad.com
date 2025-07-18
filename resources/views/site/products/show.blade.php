@@ -246,8 +246,9 @@
         }
         .slider-main {
             position: relative;
-            margin-bottom: 20px;
+            margin: 0 auto 20px;
             height: 84%;
+            width: fit-content;
         }
         .slider-main img,
         .slider-main video {
@@ -286,7 +287,6 @@
             display: none;
         }
         .modal-content {
-            background: #fff;
             padding: 20px;
             width: 700px;
             max-width: 100%;
