@@ -205,7 +205,7 @@
     <script>
         @if($resource->products)
             @foreach($resource->products as $product)
-            const thumbsSwiper{{ $product->id }} = new Swiper('.swiper{{ $product->id }}-thumbs', {
+            const thumbsSwiper{{ $product->id }} = new Swiper('.swiper-thumbs{{ $product->id }}', {
                 spaceBetween: 10,
                 slidesPerView: 6,
                 watchSlidesProgress: true,
