@@ -45,7 +45,7 @@
                                 <div class="swiper-wrapper">
                                     @foreach($product->images as $image)
                                         <div class="swiper-slide">
-                                            <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
                                         </div>
                                     @endforeach
                                 </div>
@@ -56,7 +56,7 @@
                                 <div class="swiper-wrapper">
                                     @foreach($product->images as $image)
                                         <div class="swiper-slide">
-                                            <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
                                         </div>
                                     @endforeach
                                 </div>

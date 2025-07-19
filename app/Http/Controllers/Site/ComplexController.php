@@ -25,7 +25,7 @@ class ComplexController extends Controller
         $articles = Article::where('active', 1)->orderBy('created_at', 'desc')->take(5)->get();
         $resources = Complex::where('active', 1)->get();
 
-        $pageType = 'Complex';
+        $pageType = '';
 
         return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType'));
     }
