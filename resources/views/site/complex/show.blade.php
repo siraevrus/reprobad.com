@@ -54,7 +54,7 @@
                                     <div class="swiper-wrapper">
                                         @foreach($product->images as $image)
                                             <div class="swiper-slide">
-                                                <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
+                                                <img src="{{ $image['url'] }}" alt="">
                                             </div>
                                         @endforeach
                                     </div>
@@ -180,7 +180,6 @@
     <style>
         .swiper {
             width: 100%;
-            height: 300px;
             margin-bottom: 20px;
         }
         .swiper-thumbs {
