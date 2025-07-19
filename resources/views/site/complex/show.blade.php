@@ -185,8 +185,12 @@
         }
         .swiper-slide img {
             width: 100%;
-            height: auto;
             display: block;
+            object-fit: contain;
+            height: 100%;
+        }
+        .swiper-wrapper {
+            justify-content: center;
         }
         .swiper-thumbs {
             height: 100px;
