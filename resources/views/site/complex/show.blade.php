@@ -40,24 +40,22 @@
                         <p class="product-head-text"> </p>
 
                         @if($product->images)
-                            <div class="product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
-                                <div class="swiper main-swiper{{ $product->id }}">
-                                    <div class="swiper-wrapper">
-                                        @foreach($product->images as $image)
-                                            <div class="swiper-slide">
-                                                <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}"><img src="{{ $image['url'] }}" alt=""></a>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="swiper swiper-thumbs{{ $product->id }}">
-                                    <div class="swiper-wrapper">
-                                        @foreach($product->images as $image)
-                                            <div class="swiper-slide">
+                            <div class="slider-block product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
+                                <div class="main-slider main-slider{{ $product->id }}">
+                                    @foreach($product->images as $image)
+                                        <div class="">
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}">
                                                 <img src="{{ $image['url'] }}" alt="">
-                                            </div>
-                                        @endforeach
-                                    </div>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="thumbs-slider thumbs-slider{{ $product->id }}">
+                                    @foreach($product->images as $image)
+                                        <div class="">
+                                            <img src="{{ $image['url'] }}" alt="">
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         @else
@@ -175,34 +173,6 @@
 @section('scripts')
     <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.min.js" integrity="sha512-03Ucfdj4I8Afv+9P/c9zkF4sBBGlf68zzr/MV+ClrqVCBXWAsTEjIoGCMqxhUxv1DGivK7Bm1IQd8iC4v7X2bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <style>
-        .swiper {
-            width: 100%;
-            height: 300px;
-            margin-bottom: 20px;
-        }
-        .swiper-slide img {
-            width: 100%;
-            display: block;
-            object-fit: contain;
-            height: 100%;
-        }
-        .swiper-wrapper {
-            justify-content: center;
-        }
-        .swiper-thumbs {
-            height: 100px;
-        }
-        .swiper-thumbs .swiper-slide {
-            opacity: 0.4;
-            cursor: pointer;
-        }
-        .swiper-thumbs .swiper-slide-thumb-active {
-            opacity: 1;
-        }
-    </style>
     <style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
@@ -211,26 +181,72 @@
             .product-table-cell.active { display: block; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
+    <style>
+        .main-slider img {
+            height: 280px;
+            margin: auto;
+            display: block;
+        }
+        .thumbs-slider {
+            display: flex;
+            justify-content: center;
+        }
+        .thumbs-slider div {
+            padding: 10px;
+        }
+        .thumbs-slider img {
+            height: 80px;
+        }
+        .thumbs-slider div {
+            opacity: .5;
+            cursor: pointer;
+        }
+        .thumbs-slider .tns-nav-active {
+            opacity: 1;
+        }
+        [data-controls="prev"],
+        [data-controls="next"] {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            background: none;
+            z-index: 99;
+            font-size: 0;
+        }
+        [data-controls="next"] {
+            right: 0;
+        }
+        [data-controls="prev"]:after {
+            content: "<";
+            font-size: 40px;
+        }
+        [data-controls="next"]:after {
+            content: ">";
+            font-size: 40px;
+        }
+    </style>
     <script>
         @if($resource->products)
+
         @foreach($resource->products as $product)
-        const thumbsSwiper{{ $product->id }} = new Swiper('.swiper-thumbs{{ $product->id }}', {
-            spaceBetween: 10,
-            slidesPerView: 6,
-            watchSlidesProgress: true,
-            breakpoints: {
-                0: { slidesPerView: 3 },
-                768: { slidesPerView: 6 }
-            }
+
+        const mainSlider{{ $product->id }} = tns({
+            container: '.main-slider{{ $product->id }}',
+            items: 1,
+            controls: true,
+            navContainer: '.thumbs-slider{{ $product->id }}',
+            navAsThumbnails: true,
+            mouseDrag: true,
+            autoplay: false,
+            slideBy: 'page',
         });
-        const mainSwiper{{ $product->id }} = new Swiper('.main-swiper{{ $product->id }}', {
-            spaceBetween: 10,
-            thumbs: {
-                swiper: thumbsSwiper{{ $product->id }}
-            },
-            initialSlide: 0
-        });
+
         @endforeach
+
         @endif
+
     </script>
+
 @endsection

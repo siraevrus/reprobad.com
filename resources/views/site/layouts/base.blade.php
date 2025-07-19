@@ -180,6 +180,7 @@
                     </svg></div>
                 <div class="nav-menu-links">
                     <a href="products" class="nav-link hide-desktop">Продукты</a>
+                    <a href="about" class="nav-quick-link">Система РЕПРО</a>
                     <a href="events" class="nav-link hide-desktop">События</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="articles" class="nav-link hide-desktop">Статьи</a>
