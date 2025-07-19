@@ -40,32 +40,25 @@
                         <p class="product-head-text"> </p>
 
                         @if($product->images)
-                            <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
-                                <div class="slider-main">
-                                    <img @click="currentImage = slides[currentIndex].url;open = true" x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
-                                    <video :src="video" x-show="showVideo" controls></video>
+                            <!-- Main Slider -->
+                            <div class="swiper main-swiper">
+                                <div class="swiper-wrapper">
+                                    @foreach($product->iamges as $image)
+                                        <div class="swiper-slide">
+                                            <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
+                                        </div>
+                                    @endforeach
                                 </div>
+                            </div>
 
-                                <div class="modal" :class="{ 'active' : open }" @click="open = false">
-                                    <div class="modal-close" @click="open = false">&times;</div>
-                                    <div class="modal-content">
-                                        <img :src="currentImage" alt="">
-                                    </div>
-                                </div>
-
-                                <div class="slider-prev" @click="prevImage">
-                                    <
-                                </div>
-                                <div class="slider-next" @click="nextImage">
-                                    >
-                                </div>
-
-                                <div class="thumbnails">
-                                    <template x-for="(image, index) in slides" :key="index">
-                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
-                                    </template>
-
-                                    <img @click="handleShowVideo" src="images/icons8-play-video-100.png" x-show="video" alt="">
+                            <!-- Thumbs Slider -->
+                            <div class="swiper swiper-thumbs">
+                                <div class="swiper-wrapper">
+                                    @foreach($product->iamges as $image)
+                                        <div class="swiper-slide">
+                                            <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         @else
@@ -182,6 +175,26 @@
 
 @section('scripts')
     <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.min.js" integrity="sha512-03Ucfdj4I8Afv+9P/c9zkF4sBBGlf68zzr/MV+ClrqVCBXWAsTEjIoGCMqxhUxv1DGivK7Bm1IQd8iC4v7X2bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        .swiper {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+        .swiper-thumbs {
+            height: 100px;
+        }
+        .swiper-thumbs .swiper-slide {
+            opacity: 0.4;
+            cursor: pointer;
+        }
+        .swiper-thumbs .swiper-slide-thumb-active {
+            opacity: 1;
+        }
+    </style>
     <style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
@@ -193,127 +206,22 @@
     <script>
         @if($resource->products)
             @foreach($resource->products as $product)
-            function slider{{ $product->id }}() {
-                return {
-                    slides: @json($product->images),
-                    currentIndex: 0,
-                    showVideo: false,
-                    video: @json($product->video),
-                    currentImage: '',
-                    open: false,
-
-                    handleShowVideo() {
-                        this.showVideo = true;
-                    },
-                    setCurrentIndex(index) {
-                        this.currentIndex = index;
-                        this.showVideo = false;
-                    },
-                    prevImage() {
-                        this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
-                    },
-                    nextImage() {
-                        this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
-                    }
-                };
-            }
+            const thumbsSwiper = new Swiper('.swiper{{ $resource->id }}-thumbs', {
+                spaceBetween: 10,
+                slidesPerView: 6,
+                watchSlidesProgress: true,
+                breakpoints: {
+                    0: { slidesPerView: 3 },
+                    768: { slidesPerView: 6 }
+                }
+            });
+            const mainSwiper = new Swiper('.main-swiper{{ $resource->id }}', {
+                spaceBetween: 10,
+                thumbs: {
+                    swiper: thumbsSwiper
+                }
+            });
             @endforeach
         @endif
     </script>
-    <style>
-        .slider-container {
-            margin: 0 auto;
-            text-align: center;
-        }
-        .slider-prev,
-        .slider-next {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            height: 30px;
-            width: 30px;
-            border-radius: 100%;
-            color: #000;
-            cursor: pointer;
-            line-height: 160%;
-        }
-        .slider-prev {
-            left: 30px;
-        }
-        .slider-next {
-            right: 30px;
-        }
-        .slider-main {
-            position: relative;
-            margin-bottom: 20px;
-            width: fit-content;
-            height: 84%;
-        }
-        .slider-main img,
-        .slider-main video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        .thumbnails {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .thumbnails img {
-            width: 80px;
-            height: 60px;
-            object-fit: contain;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        .thumbnails img:hover {
-            transform: scale(1.1);
-        }
-        .thumbnails img.active {
-            border: 2px solid #007bff;
-        }
-        .modal {
-            position: fixed;
-            z-index: -1;
-            background: rgba(0,0,0,.4);
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            display: none;
-        }
-        .modal-content {
-            padding: 20px;
-            width: 700px;
-            max-width: 100%;
-            position: absolute;
-            margin: auto;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            overflow-y: scroll;
-            -webkit-overflow-scrolling: touch;
-            height: max-content;
-        }
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            color: #fff;
-            font-size: 60px;
-            cursor: pointer;
-            right: 20px;
-            height: 40px;
-            line-height: .55;
-        }
-        .modal.active {
-            display: block;
-            z-index: 100;
-        }
-    </style>
-
 @endsection
