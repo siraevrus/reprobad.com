@@ -217,7 +217,7 @@
             const mainSwiper{{ $product->id }} = new Swiper('.main-swiper{{ $product->id }}', {
                 spaceBetween: 10,
                 thumbs: {
-                    swiper: thumbsSwiper
+                    swiper: thumbsSwiper{{ $product->id }}
                 }
             });
             @endforeach
