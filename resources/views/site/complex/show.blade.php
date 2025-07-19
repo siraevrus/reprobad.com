@@ -40,25 +40,24 @@
                         <p class="product-head-text"> </p>
 
                         @if($product->images)
-                            <!-- Main Slider -->
-                            <div class="swiper main-swiper">
-                                <div class="swiper-wrapper">
-                                    @foreach($product->images as $image)
-                                        <div class="swiper-slide">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
-                                        </div>
-                                    @endforeach
+                            <div class="product-head-image">
+                                <div class="swiper main-swiper">
+                                    <div class="swiper-wrapper">
+                                        @foreach($product->images as $image)
+                                            <div class="swiper-slide">
+                                                <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-
-                            <!-- Thumbs Slider -->
-                            <div class="swiper swiper-thumbs">
-                                <div class="swiper-wrapper">
-                                    @foreach($product->images as $image)
-                                        <div class="swiper-slide">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
-                                        </div>
-                                    @endforeach
+                                <div class="swiper swiper-thumbs">
+                                    <div class="swiper-wrapper">
+                                        @foreach($product->images as $image)
+                                            <div class="swiper-slide">
+                                                <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image['url'] }}" alt=""></a>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         @else
