@@ -43,7 +43,7 @@
                             <!-- Main Slider -->
                             <div class="swiper main-swiper">
                                 <div class="swiper-wrapper">
-                                    @foreach($product->iamges as $image)
+                                    @foreach($product->images as $image)
                                         <div class="swiper-slide">
                                             <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
                                         </div>
@@ -54,7 +54,7 @@
                             <!-- Thumbs Slider -->
                             <div class="swiper swiper-thumbs">
                                 <div class="swiper-wrapper">
-                                    @foreach($product->iamges as $image)
+                                    @foreach($product->images as $image)
                                         <div class="swiper-slide">
                                             <a href="{{ $image->url }}" data-fslightbox="gallery{{ $resource->id }}"><img src="{{ $image->url }}" alt=""></a>
                                         </div>
