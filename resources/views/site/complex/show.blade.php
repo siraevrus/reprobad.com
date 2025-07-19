@@ -41,7 +41,7 @@
 
                         @if($product->images)
                             <div class="product-head-image">
-                                <div class="swiper main-swiper">
+                                <div class="swiper main-swiper{{ $product->id }}">
                                     <div class="swiper-wrapper">
                                         @foreach($product->images as $image)
                                             <div class="swiper-slide">
@@ -50,7 +50,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="swiper swiper-thumbs">
+                                <div class="swiper swiper-thumbs{{ $product->id }}">
                                     <div class="swiper-wrapper">
                                         @foreach($product->images as $image)
                                             <div class="swiper-slide">
