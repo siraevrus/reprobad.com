@@ -180,7 +180,13 @@
     <style>
         .swiper {
             width: 100%;
+            height: 300px;
             margin-bottom: 20px;
+        }
+        .swiper-slide img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
         .swiper-thumbs {
             height: 100px;
