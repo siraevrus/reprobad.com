@@ -214,6 +214,9 @@
             background: none;
             z-index: 99;
             font-size: 0;
+            margin: auto;
+            width: 100px;
+            height: 50px;
         }
         [data-controls="next"] {
             right: 0;

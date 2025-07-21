@@ -11,7 +11,7 @@ class SeoController extends Controller
     public function index()
     {
         $seoData = Seo::all();
-        
+
         return view('admin.seo.index', compact('seoData'));
     }
 
@@ -54,6 +54,7 @@ class SeoController extends Controller
         $pageTypes = [
             'Home' => 'Главная',
             'Article' => 'Статьи',
+            'About' => 'О нас',
             'Page' => 'Страницы',
             'Product' => 'Продукты',
             'Event' => 'События',
@@ -90,4 +91,4 @@ class SeoController extends Controller
         return redirect()->route('admin.seo.index')
             ->with('success', 'SEO данные успешно удалены');
     }
-} 
+}
