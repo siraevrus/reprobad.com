@@ -4237,6 +4237,11 @@ figcaption {
   display: block;
   position: absolute;
   inset: 2rem auto auto 0%;
+  opacity: 0;
+}
+
+.product-head-image.visible {
+    opacity: 1;
 }
 
 .product-head-image.right-side {

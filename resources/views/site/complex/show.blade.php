@@ -250,6 +250,12 @@
 
         @endif
 
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.product-head-image').forEach(el => {
+                el.classList.add('visible');
+            });
+        });
+
     </script>
 
 @endsection
