@@ -90,7 +90,7 @@ class EventController extends Controller
             ->take(2)
             ->get();
 
-        $pageType = 'Event';
+        $pageType = '';
 
         return view('site.events.show', compact('resource', 'other', 'pageType'));
     }
