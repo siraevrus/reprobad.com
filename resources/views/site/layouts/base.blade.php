@@ -183,7 +183,6 @@
                     <a href="events" class="nav-link hide-desktop">События</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="articles" class="nav-link hide-desktop">Статьи</a>
-                    {{-- <a href="map" class="nav-link">Где купить</a> --}}
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
@@ -194,11 +193,12 @@
         <nav role="navigation" class="nav-menu w-nav-menu">
             <div class="nav-menu-wrap">
                 <div class="nav-menu-links">
-                    <a href="products" class="nav-link hide-desktop">Продукты</a>
-                    <a href="events" class="nav-link hide-desktop">События</a>
                     <a href="about" class="nav-link hide-desktop">Система Репро</a>
+                    <a href="products" class="nav-link hide-desktop">Продукты</a>
                     <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
                     <a href="articles" class="nav-link hide-desktop">Статьи</a>
+                    <a href="events" class="nav-link hide-desktop">События</a>
+
                     <a href="map" class="nav-link">&nbsp;</a>
                     <div class="nav-link-divider"></div>
                     <a href="company" class="nav-link">О компании</a>
