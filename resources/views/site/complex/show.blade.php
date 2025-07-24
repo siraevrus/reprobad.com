@@ -229,6 +229,16 @@
             content: ">";
             font-size: 40px;
         }
+        @media (max-width: 600px) {
+            [data-controls="prev"],
+            [data-controls="next"] {
+                width: 2rem;
+                height: 3rem;
+                line-height: .4;
+                bottom: auto;
+                top: 33%;
+            }
+        }
     </style>
     <script>
         @if($resource->products)
