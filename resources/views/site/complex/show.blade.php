@@ -185,7 +185,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
     <style>
         .main-slider img {
-            max-height: 380px;
+            max-height: 20rem;
             margin: auto;
             display: block;
         }
