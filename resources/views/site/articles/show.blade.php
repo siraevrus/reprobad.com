@@ -121,7 +121,7 @@
 
                                 <div class="subscribe-success w-form-done" x-show="success">
                                     <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                                    <div>Ваш вопрос отправлен!</div>
+                                    <div>Вы подписаны!</div>
                                     <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                                 </div>
 
