@@ -158,7 +158,7 @@
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">
         <a href="/" aria-current="page" class="brand w-nav-brand w--current"><img src="images/lgog-gold.svg" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
-            <div>готовимся <br>к беременности <br>вместе</div>
+            <div>готовимся <br>к беременности <br>вместе!</div>
         </a>
         <div class="nav-desktop-links">
             <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">Система РЕПРО</a>
