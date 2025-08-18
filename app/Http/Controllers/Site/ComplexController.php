@@ -22,8 +22,8 @@ class ComplexController extends Controller
     public function show($alias): View
     {
         $resource = Complex::where('alias', $alias)->where('active', 1)->firstOrFail();
-        $articles = Article::where('active', 1)->orderBy('created_at', 'desc')->take(5)->get();
-        $resources = Complex::where('active', 1)->get();
+        $articles = Article::active()->orderBy('created_at', 'desc')->take(5)->get();
+        $resources = Complex::active()->get();
 
         $pageType = '';
 
