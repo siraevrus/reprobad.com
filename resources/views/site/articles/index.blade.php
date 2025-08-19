@@ -40,7 +40,7 @@
                     </div>
                 @endif
                 @foreach($resources as $idx => $item)
-                    @if(in_array($idx, [0,1]))
+                    @if(in_array($idx, [0,1,2,3,4,5]))
                         <div class="news-card">
                             <div class="news-card-head">
                                 <img src="{{ $item->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">

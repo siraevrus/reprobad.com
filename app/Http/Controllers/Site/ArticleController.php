@@ -31,7 +31,7 @@ class ArticleController extends Controller
             });
         }
 
-        $resources = $resources->orderBy('created_at', 'desc')->paginate(7);
+        $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
 
         // Получаем категории с подсчетом количества статей
         $allArticles = Article::where('active', 1)->get();
