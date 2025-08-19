@@ -31,7 +31,7 @@ class AdviseController extends Controller
             });
         }
 
-        $resources = $resources->orderBy('created_at', 'desc')->paginate(7);
+        $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
 
         // Получаем категории с подсчетом количества советов
         $allAdvises = Advise::where('active', 1)->get();
