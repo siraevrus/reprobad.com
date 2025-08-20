@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     @else
-                        @if($idx == 5)
+                        @if($idx == 9)
                             @include('site.components.subscribe-block')
                         @endif
                         @include('site.components.articles.item', ['item' => $item])
