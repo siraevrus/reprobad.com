@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::post('/admin/config', [ConfigController::class, 'update'])->name('config.update');
     Route::get('/admin/icons', [ArticleController::class, 'icons'])->name('icons');
 
+    Route::get('/admin/faq/{alias}/switch', [FaqController::class, 'switch'])->name('faq.switch');
     Route::get('/admin/articles/{alias}/switch', [ArticleController::class, 'switch'])->name('articles.switch');
     Route::get('/admin/pages/{alias}/switch', [PageController::class, 'switch'])->name('pages.switch');
     Route::get('/admin/events/{alias}/switch', [EventController::class, 'switch'])->name('events.switch');
