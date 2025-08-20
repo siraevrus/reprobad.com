@@ -24,24 +24,21 @@
                 <div class="article-content">
                     
                     <div class="article-accordion">
+                        @foreach($resources as $resource)
                         <div class="accordion-item">
                           <div class="accordion-header">
                             <button class="accordion-title accordion-toggle" aria-expanded="false" aria-controls="article-accordion-1">
-                              Пример подзаголовка с раскрытием
+                              {{ $resource->title }}
                             </button>
                             <button class="accordion-toggle" aria-expanded="false" aria-controls="article-accordion-1">
                               <img src="images/path_down.svg" alt="Раскрыть" class="accordion-arrow">
                             </button>
                           </div>
                           <div class="accordion-content" id="article-accordion-1">
-                            <p>Это пример текста, который раскрывается при нажатии на стрелку справа от подзаголовка.</p>
-                            <ul role="list">
-                              <li>Пункт списка №1</li>
-                              <li>Пункт списка №2</li>
-                              <li>Пункт списка №3</li>
-                            </ul>
+                            {!! $resource->content !!}
                           </div>
                         </div>
+                        @endforeach
                     </div>
 
                 </div>
