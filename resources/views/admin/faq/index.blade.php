@@ -1,7 +1,7 @@
 @extends('admin.layouts.base')
 
 @section('content')
-    @include('admin.components.header', ['title' => 'Список вопросов', 'route' => 'questions'])
+    @include('admin.components.header', ['title' => 'Список вопросов - ответов', 'route' => 'faq'])
 
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
@@ -20,7 +20,7 @@
                     <td class="py-3 px-6">{{ $resource->title }}</td>
                     <td class="py-3 px-6">{{ $resource->created_at }}</td>
                     <td class="py-3 px-6 text-center">
-                        @include('admin.components.controls', ['route' => 'questions', 'resource' => $resource])
+                        @include('admin.components.controls', ['route' => 'faq', 'resource' => $resource])
                     </td>
                 </tr>
             @endforeach

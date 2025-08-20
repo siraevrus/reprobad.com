@@ -43,7 +43,7 @@ class FaqController extends Controller
 
     public function edit(): View
     {
-        return view('admin.faq.edit');
+        return view('admin.faq.create');
     }
 
     /**
