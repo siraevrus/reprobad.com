@@ -25,6 +25,7 @@ class SeoController extends Controller
             'Event' => 'События',
             'Advise' => 'Советы',
             'Complex' => 'Комплексы',
+            'Faq' => 'Вопрос-ответ',
         ];
 
         return view('admin.seo.create', compact('pageTypes'));

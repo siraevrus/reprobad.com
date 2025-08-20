@@ -13,7 +13,7 @@ class FaqController extends Controller
     {
         $resources = Faq::where('active', 1)->get();
         $events = Event::where('active', 1)->take(2)->get();
-        $pageType = 'faq';
+        $pageType = 'Faq';
         $resource = (object)[
             'title' => 'Вопрос-ответ',
             'description' => 'Вопрос-ответ'
