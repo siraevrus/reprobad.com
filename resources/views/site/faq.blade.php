@@ -167,8 +167,8 @@
         font-size: inherit; 
         font-family: inherit; 
     }
-    .article-accordion .accordion-toggle { background: none; border: 0; padding: 0; margin: 0; line-height: 0; cursor: pointer; }
-    .article-accordion .accordion-arrow { width: 24px; height: 24px; transition: transform 0.2s ease; }
+    .article-accordion .accordion-toggle { display: flex; background: none; border: 0; padding: 0; margin: 0; line-height: 150%; cursor: pointer; }
+    .article-accordion .accordion-arrow { width: 1rem; height: 1rem; transition: transform 0.2s ease;flex: 0 0 1rem; }
     .article-accordion .accordion-content { display: none; padding-top: 0.5rem; }
     .article-accordion .accordion-item.open .accordion-content { display: block; }
     .article-accordion .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
