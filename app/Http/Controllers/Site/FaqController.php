@@ -10,7 +10,7 @@ class FaqController extends Controller
 {
     public function index(): View
     {
-        $resources = Faq::where('active', 1)->orderBy('sort', 'asc')->get();
+        $resources = Faq::where('active', 1)->get();
         $pageType = 'faq';
         $resource = (object)[
             'title' => 'Вопросы - ответы',
