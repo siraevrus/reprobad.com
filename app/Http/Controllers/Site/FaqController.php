@@ -17,6 +17,6 @@ class FaqController extends Controller
             'description' => 'Вопросы - ответы'
         ];
 
-        return view('site.faq.index', compact('resource', 'pageType'));
+        return view('site.faq', compact('resource', 'pageType', 'resources'));
     }
 }
