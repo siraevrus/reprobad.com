@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\StepController;
 use App\Http\Controllers\Admin\SubscribeController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Site\FormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\ArticleController as SiteArticleController;
@@ -28,6 +29,8 @@ use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
 use App\Http\Controllers\Site\PageController as SitePageController;
 use App\Http\Controllers\Site\MapController as SiteMapController;
+use App\Http\Controllers\Site\FaqController as SiteFaqController;
+
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
@@ -38,6 +41,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/products', ProductController::class);
     Route::resource('/admin/advises', AdviseController::class);
     Route::resource('/admin/users', UserController::class);
+    Route::resource('/admin/faq', FaqController::class);
     Route::resource('/admin/text', TextController::class);
     Route::resource('/admin/points', PointController::class);
     Route::resource('/admin/questions', QuestionController::class);
@@ -102,6 +106,7 @@ Route::get('/text', [SiteTextController::class, 'index'])->name('site.text.index
 Route::get('/text/{alias}', [SiteTextController::class, 'show'])->name('site.text.show');
 Route::get('/usefully-tips', [SiteAdviseController::class, 'index'])->name('site.advises.index');
 Route::get('/usefully-tips/{alias}', [SiteAdviseController::class, 'show'])->name('site.advises.show');
+Route::get('/faq', [SiteFaqController::class, 'index'])->name('site.faq.index');
 
 Route::get('/company', [SitePageController::class, 'company'])->name('site.text.company');
 Route::get('/privacy', [SitePageController::class, 'privacy'])->name('site.text.privacy');
