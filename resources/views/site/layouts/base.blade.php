@@ -188,7 +188,7 @@
                     <div class="nav-link-divider"></div>
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
-                    <a href="faq" class="nav-link">Вопросы - ответы</a>
+                    <a href="faq" class="nav-link">Вопрос-ответ</a>
                 </div>
             </nav>
         </div>
@@ -207,7 +207,7 @@
                     <div class="nav-link-divider"></div>
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
-                    <a href="faq" class="nav-link">Вопросы - ответы</a>
+                    <a href="faq" class="nav-link">Вопрос-ответ</a>
                 </div>
                 <div class="nav-family-line"><img src="images/nav-family-line.svg" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
                 <div class="nav-contacts">

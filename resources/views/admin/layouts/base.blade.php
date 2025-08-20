@@ -99,7 +99,7 @@
                 { href: '{{ route('admin.questions.index') }}', segment: 'questions', icon: 'help', text: 'Вопросы' },
                 { href: '{{ route('admin.points.index') }}', segment: 'points', icon: 'navigation', text: 'Точки' },
                 { href: '{{ route('admin.steps.index') }}', segment: 'steps', icon: 'stairs_2', text: 'Этапы подготовки' },
-                { href: '{{ route('admin.faq.index') }}', segment: 'faq', icon: 'help', text: 'Вопросы - ответы' },
+                { href: '{{ route('admin.faq.index') }}', segment: 'faq', icon: 'help', text: 'Вопрос-ответ' },
                 { href: '{{ route('admin.pages.index') }}', segment: 'pages', icon: 'pages', text: 'Страницы' },
                 { href: '{{ route('admin.subscribers.index') }}', segment: 'subscribers', icon: 'mail', text: 'Подписчики' },
                 { href: '#', segment: 'divider', icon: '', text: '' }, // Separator

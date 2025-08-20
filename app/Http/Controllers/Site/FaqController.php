@@ -15,8 +15,8 @@ class FaqController extends Controller
         $events = Event::where('active', 1)->take(2)->get();
         $pageType = 'faq';
         $resource = (object)[
-            'title' => 'Вопросы - ответы',
-            'description' => 'Вопросы - ответы'
+            'title' => 'Вопрос-ответ',
+            'description' => 'Вопрос-ответ'
         ];
 
         return view('site.faq', compact('resource', 'pageType', 'resources', 'events'));

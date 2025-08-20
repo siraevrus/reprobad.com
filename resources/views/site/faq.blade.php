@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </div>
-                <h1 class="article-h1"><strong>Вопросы - ответы</strong></h1>
+                <h1 class="article-h1"><strong>Вопрос-ответ</strong></h1>
             </div>
             <div class="article-wrap">
                 <div class="article-content">
