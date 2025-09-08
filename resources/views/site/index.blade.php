@@ -136,8 +136,8 @@
 </section>
 
 <!-- Lottie Animation Section -->
-<section class="lottie-animation-section" style="padding: 2rem 0; background: linear-gradient(135deg, #ff967b, #ff9a7e); display: flex; justify-content: center; align-items: center; margin-top: 2rem;">
-    <div id="lottie-animation" style="width: 100%; max-width: 600px; height: 400px; border: 2px solid red;"></div>
+<section class="lottie-animation-section" style="position: fixed;bottom: 50px;left: 20px;right: 20px;z-index: 1000;">
+    <div id="lottie-animation" style="width: 100%; max-width: 600px; height: 400px;"></div>
 </section>
 @endsection
 
@@ -145,71 +145,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM загружен, начинаем инициализацию Lottie...');
+    // Инициализация Lottie анимации
+    const animation = lottie.loadAnimation({
+        container: document.getElementById('lottie-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/images/repro-banner-desktop.json'
+    });
     
-    const container = document.getElementById('lottie-animation');
-    if (!container) {
-        console.error('Контейнер для Lottie анимации не найден!');
-        return;
-    }
+    // Обработка ошибок загрузки
+    animation.addEventListener('data_failed', function() {
+        console.error('Ошибка загрузки Lottie анимации');
+    });
     
-    console.log('Контейнер найден:', container);
-    
-    // Сначала проверим доступность файла
-    fetch('/images/repro-banner-desktop.json')
-        .then(response => {
-            console.log('Ответ сервера:', response.status, response.statusText);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('JSON загружен успешно:', data);
-            
-            // Инициализация Lottie анимации
-            const animation = lottie.loadAnimation({
-                container: container,
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: data,
-                rendererSettings: {
-                    preserveAspectRatio: 'xMidYMid meet'
-                }
-            });
-            
-            console.log('Lottie анимация создана:', animation);
-            
-            // Обработка ошибок загрузки
-            animation.addEventListener('data_failed', function(e) {
-                console.error('Ошибка загрузки Lottie анимации:', e);
-                container.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Ошибка загрузки анимации</div>';
-            });
-            
-            // Обработка успешной загрузки
-            animation.addEventListener('data_ready', function() {
-                console.log('Lottie анимация загружена успешно');
-                container.style.border = '2px solid green';
-            });
-            
-            // Обработка завершения анимации
-            animation.addEventListener('complete', function() {
-                console.log('Lottie анимация завершена');
-            });
-        })
-        .catch(error => {
-            console.error('Ошибка загрузки JSON:', error);
-            container.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Ошибка загрузки файла анимации: ' + error.message + '</div>';
-        });
-    
-    // Проверка через 5 секунд
-    setTimeout(function() {
-        if (container.children.length === 0) {
-            console.error('Анимация не загрузилась за 5 секунд');
-            container.innerHTML = '<div style="color: orange; text-align: center; padding: 20px;">Анимация загружается...</div>';
-        }
-    }, 5000);
+    // Обработка успешной загрузки
+    animation.addEventListener('data_ready', function() {
+        console.log('Lottie анимация загружена успешно');
+    });
 });
 </script>
 @endsection
