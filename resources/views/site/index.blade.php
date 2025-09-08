@@ -136,7 +136,7 @@
 </section>
 
 <!-- Lottie Animation Section -->
-<section class="lottie-animation-section" style="padding: 2rem 0; background: linear-gradient(135deg, #ff967b, #ff9a7e); display: flex; justify-content: center; align-items: center;">
+<section class="lottie-animation-section" style="position: fixed;bottom: 50px;left: 20px;right: 20px;z-index: 1000;">
     <div id="lottie-animation" style="width: 100%; max-width: 600px; height: 400px;"></div>
 </section>
 @endsection
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderer: 'svg',
         loop: true,
         autoplay: true,
-        path: '/images/banner-mob.json'
+        path: '/images/repro-banner-desktop.json'
     });
     
     // Обработка ошибок загрузки
