@@ -135,21 +135,20 @@
     </div>
 </section>
 
-<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<div
-    style="position: fixed;bottom: 50px;left: 20px;right: 20px;z-index: 1000;width: calc(100% - 40px)"
->
-    <dotlottie-wc 
-        src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
-        speed="1" 
-        style="width: 100%; aspect-ratio: 1440 / 120;" 
-        mode="forward" 
-        loop 
-        autoplay>
-    </dotlottie-wc>
-</div>
-
-
+<!-- Lottie Animation Section -->
+<section class="lottie-animation-section" style="padding: 2rem 0; background: linear-gradient(135deg, #ff967b, #ff9a7e); display: flex; justify-content: center; align-items: center; margin-top: 2rem;">
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
+    <div style="width: 100%; max-width: 1200px; padding: 0 20px;">
+        <dotlottie-wc 
+            src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
+            speed="1" 
+            style="width: 100%; aspect-ratio: 1440 / 120;" 
+            mode="forward" 
+            loop 
+            autoplay>
+        </dotlottie-wc>
+    </div>
+</section>
 
 @endsection
 
