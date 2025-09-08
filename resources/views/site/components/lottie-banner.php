@@ -43,6 +43,7 @@
         bottom:20px;
         left:20px;
         right:20px;
+        margin:auto;
         z-index:1000;
         width:calc(100% - 40px);
         opacity:0;
