@@ -135,34 +135,22 @@
     </div>
 </section>
 
-<!-- Lottie Animation Section -->
-<section class="lottie-animation-section" style="position: fixed;bottom: 50px;left: 20px;right: 20px;z-index: 1000;">
-    <div id="lottie-animation" style="width: 100%; max-width: 600px; height: 400px;"></div>
-</section>
+<script
+  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
+  type="module"
+></script>
+
+<dotlottie-wc
+  src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie"
+  style="width: 300px;height: 300px"
+  speed="1"
+  autoplay
+  loop
+></dotlottie-wc>
+
+
+
 @endsection
 
 @section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация Lottie анимации
-    const animation = lottie.loadAnimation({
-        container: document.getElementById('lottie-animation'),
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: '/images/repro-banner-desktop.json'
-    });
-    
-    // Обработка ошибок загрузки
-    animation.addEventListener('data_failed', function() {
-        console.error('Ошибка загрузки Lottie анимации');
-    });
-    
-    // Обработка успешной загрузки
-    animation.addEventListener('data_ready', function() {
-        console.log('Lottie анимация загружена успешно');
-    });
-});
-</script>
 @endsection
