@@ -136,7 +136,18 @@
 </section>
 
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<dotlottie-wc src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" speed="1" style="width: 100%; aspect-ratio: 1440 / 120;" mode="forward" loop autoplay></dotlottie-wc>
+<div
+    style="position: fixed;bottom: 50px;left: 20px;right: 20px;z-index: 1000;width: calc(100% - 40px)"
+>
+    <dotlottie-wc 
+        src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
+        speed="1" 
+        style="width: 100%; aspect-ratio: 1440 / 120;" 
+        mode="forward" 
+        loop 
+        autoplay>
+    </dotlottie-wc>
+</div>
 
 
 
