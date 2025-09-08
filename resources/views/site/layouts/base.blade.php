@@ -127,11 +127,6 @@
             .desktop-hyphen::after { content: ''; }
             .mobile-hyphen::after { content: '-'; }
         }
-        @if(isset($resource->color) && $resource->color)
-        .product-options-tab-content {
-            background: var(--p-bg-color) !important;
-        }
-        @endif
         .nav-quick-link.active {
             opacity: 1;
             color: var(--text);
@@ -139,6 +134,13 @@
             text-decoration: none;
         }
     </style>
+    @if(isset($resource->color) && $resource->color)
+    <style>
+        .product-options-tab-content {
+            background: var(--p-bg-color) !important;
+        }
+    </style>
+    @endif
 </div>
 @endif
 <style>
@@ -395,10 +397,12 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/98482244" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
+
+
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<div
+<a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank"
     id="lottie-banner"
-    style="position: fixed;bottom: 20px;left: 20px;right: 20px;z-index: 1000;width: calc(100% - 40px); opacity: 0; transition: opacity 0.3s ease;"
+    style="display:block;position:fixed;bottom:20px;left:20px;right:20px;z-index:1000;width:calc(100% - 40px);opacity:0;transition:opacity 0.3s ease;"
 >
     <dotlottie-wc 
         src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
@@ -408,8 +412,7 @@
         loop 
         autoplay>
     </dotlottie-wc>
-</div>
-
+</a>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const banner = document.getElementById('lottie-banner');
@@ -428,6 +431,5 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('resize', checkScroll);
 });
 </script>
-
 </body>
 </html>
