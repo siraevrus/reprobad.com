@@ -142,7 +142,6 @@
 
 <dotlottie-wc
   src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie"
-  style="width: 300px;height: 300px"
   speed="1"
   autoplay
   loop
