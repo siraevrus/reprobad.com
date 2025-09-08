@@ -135,40 +135,5 @@
     </div>
 </section>
 
-<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<div
-    id="lottie-banner"
-    style="position: fixed;bottom: 20px;left: 20px;right: 20px;z-index: 1000;width: calc(100% - 40px); opacity: 0; transition: opacity 0.3s ease;"
->
-    <dotlottie-wc 
-        src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
-        speed="1" 
-        style="width: 100%; aspect-ratio: 1440 / 120;" 
-        mode="forward" 
-        loop 
-        autoplay>
-    </dotlottie-wc>
-</div>
 
-@endsection
-
-@section('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.getElementById('lottie-banner');
-    function checkScroll() {
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
-        if (scrollTop >= 300) {
-            banner.style.opacity = '1';
-        } else {
-            banner.style.opacity = '0';
-        }
-    }
-    checkScroll();
-    window.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll);
-});
-</script>
 @endsection
