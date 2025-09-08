@@ -136,7 +136,7 @@
 </section>
 
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<dotlottie-wc src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" speed="1" style="width: 1440px; height: 120px" mode="forward" loop autoplay></dotlottie-wc>
+<dotlottie-wc src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" speed="1" style="width: 100%; height: 120px" mode="forward" loop autoplay></dotlottie-wc>
 
 
 
