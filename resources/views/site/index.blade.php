@@ -134,4 +134,35 @@
         --}}
     </div>
 </section>
+
+<!-- Lottie Animation Section -->
+<section class="lottie-animation-section" style="padding: 2rem 0; background: linear-gradient(135deg, #ff967b, #ff9a7e); display: flex; justify-content: center; align-items: center;">
+    <div id="lottie-animation" style="width: 100%; max-width: 600px; height: 400px;"></div>
+</section>
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Инициализация Lottie анимации
+    const animation = lottie.loadAnimation({
+        container: document.getElementById('lottie-animation'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/images/banner-mob.json'
+    });
+    
+    // Обработка ошибок загрузки
+    animation.addEventListener('data_failed', function() {
+        console.error('Ошибка загрузки Lottie анимации');
+    });
+    
+    // Обработка успешной загрузки
+    animation.addEventListener('data_ready', function() {
+        console.log('Lottie анимация загружена успешно');
+    });
+});
+</script>
 @endsection
