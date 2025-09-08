@@ -156,33 +156,18 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const banner = document.getElementById('lottie-banner');
-    
     function checkScroll() {
-        // Получаем высоту документа
         const documentHeight = document.documentElement.scrollHeight;
-        // Получаем текущую позицию скролла
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        // Получаем высоту окна
         const windowHeight = window.innerHeight;
-        
-        // Вычисляем расстояние до конца страницы
-        const distanceToBottom = documentHeight - (scrollTop + windowHeight);
-        
-        // Показываем баннер когда остается 300px до конца
-        if (distanceToBottom <= 300) {
+        if (scrollTop >= 300) {
             banner.style.opacity = '1';
         } else {
             banner.style.opacity = '0';
         }
     }
-    
-    // Проверяем при загрузке страницы
     checkScroll();
-    
-    // Проверяем при скролле
     window.addEventListener('scroll', checkScroll);
-    
-    // Проверяем при изменении размера окна
     window.addEventListener('resize', checkScroll);
 });
 </script>
