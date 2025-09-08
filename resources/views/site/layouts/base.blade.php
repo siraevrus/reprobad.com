@@ -413,19 +413,53 @@
         autoplay>
     </dotlottie-wc>
 </a>
+
+<a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank"
+    id="lottie-banner-mobile"
+    style="display:block;position:fixed;bottom:20px;left:20px;right:20px;z-index:1000;width:calc(100% - 40px);opacity:0;transition:opacity 0.3s ease;"
+>
+    <dotlottie-wc
+    src="https://lottie.host/c1dd3267-9b5c-4011-bcd5-51b3c7e01be1/qk8EQOxYwW.lottie"
+    style="width: 100%; aspect-ratio: 312 / 175;"
+    speed="1"
+    autoplay
+    loop
+    ></dotlottie-wc>
+</a>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const banner = document.getElementById('lottie-banner');
+    const bannerDesktop = document.getElementById('lottie-banner');
+    const bannerMobile = document.getElementById('lottie-banner-mobile');
+    
     function checkScroll() {
         const documentHeight = document.documentElement.scrollHeight;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
-        if (scrollTop >= 300) {
-            banner.style.opacity = '1';
+        
+        // Вычисляем расстояние до конца страницы
+        const distanceToBottom = documentHeight - (scrollTop + windowHeight);
+        
+        // Показываем баннер когда остается 300px до конца
+        const shouldShow = distanceToBottom <= 300;
+        
+        // Определяем размер экрана
+        const isMobile = window.innerWidth <= 768;
+        
+        if (shouldShow) {
+            if (isMobile) {
+                bannerMobile.style.opacity = '1';
+                bannerDesktop.style.opacity = '0';
+            } else {
+                bannerDesktop.style.opacity = '1';
+                bannerMobile.style.opacity = '0';
+            }
         } else {
-            banner.style.opacity = '0';
+            bannerDesktop.style.opacity = '0';
+            bannerMobile.style.opacity = '0';
         }
     }
+    
     checkScroll();
     window.addEventListener('scroll', checkScroll);
     window.addEventListener('resize', checkScroll);
