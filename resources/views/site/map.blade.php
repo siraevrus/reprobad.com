@@ -65,7 +65,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=546d45df-62e8-423a-ac02-6d7a0919c168" type="text/javascript"></script>
     <script>
         ymaps.ready(function() {
             var map = new ymaps.Map('map', {
