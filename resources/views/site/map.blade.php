@@ -124,41 +124,87 @@
                 return urlParams.get('search') || ''; // Если параметр не найден, возвращаем пустую строку
             }
 
-            // Получаем значение search из URL и фильтруем маркеры
+            // Получаем значение search из URL и центрируем карту
             var searchQuery = getSearchParam();
             if (searchQuery) {
-                var lowerCaseQuery = searchQuery.toLowerCase();
-
-                // Удаляем все маркеры
-                map.geoObjects.removeAll();
-                mapPlacemarks = [];
-
-                // Фильтруем маркеры и добавляем только те, которые соответствуют запросу
-                placemarks.forEach(function(placemark) {
-                    if (placemark.title.toLowerCase().includes(lowerCaseQuery) || placemark.address.toLowerCase().includes(lowerCaseQuery)) {
-                        addPlacemark(placemark);
-                    }
-                });
-
                 // Заполняем поле поиска значением из URL
                 document.querySelector('.map-search').value = searchQuery;
-            }
-
-            // Фильтрация маркеров по запросу в поле ввода
-            var searchInput = document.querySelector('.map-search');
-            searchInput.addEventListener('input', function() {
-                var query = searchInput.value.toLowerCase();
-
-                // Удаляем все маркеры
-                map.geoObjects.removeAll();
-                mapPlacemarks = [];
-
-                // Фильтруем маркеры и добавляем только те, которые соответствуют запросу
-                placemarks.forEach(function(placemark) {
-                    if (placemark.title.toLowerCase().includes(query) || placemark.address.toLowerCase().includes(query)) {
-                        addPlacemark(placemark);
+                
+                // Используем геокодер для поиска адреса из URL
+                ymaps.geocode(searchQuery, {
+                    results: 1
+                }).then(function(res) {
+                    if (res.geoObjects.getLength() > 0) {
+                        var firstGeoObject = res.geoObjects.get(0);
+                        var coords = firstGeoObject.geometry.getCoordinates();
+                        
+                        // Центрируем карту на найденном адресе и приближаем
+                        map.setCenter(coords, 15);
+                        
+                        // Добавляем маркер на найденный адрес
+                        var searchPlacemark = new ymaps.Placemark(coords, {
+                            hintContent: firstGeoObject.getAddressLine(),
+                            balloonContent: firstGeoObject.getAddressLine()
+                        }, {
+                            preset: 'islands#redDotIcon'
+                        });
+                        
+                        map.geoObjects.add(searchPlacemark);
+                        window.searchPlacemark = searchPlacemark;
                     }
                 });
+            }
+
+            // Поиск и центрирование карты по адресу
+            var searchInput = document.querySelector('.map-search');
+            var searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                var query = searchInput.value.trim();
+                
+                // Очищаем предыдущий таймаут
+                clearTimeout(searchTimeout);
+                
+                // Добавляем небольшую задержку для оптимизации
+                searchTimeout = setTimeout(function() {
+                    if (query.length >= 3) {
+                        // Используем геокодер Яндекса для поиска адреса
+                        ymaps.geocode(query, {
+                            results: 1
+                        }).then(function(res) {
+                            if (res.geoObjects.getLength() > 0) {
+                                var firstGeoObject = res.geoObjects.get(0);
+                                var coords = firstGeoObject.geometry.getCoordinates();
+                                
+                                // Центрируем карту на найденном адресе и приближаем
+                                map.setCenter(coords, 15);
+                                
+                                // Добавляем маркер на найденный адрес
+                                var searchPlacemark = new ymaps.Placemark(coords, {
+                                    hintContent: firstGeoObject.getAddressLine(),
+                                    balloonContent: firstGeoObject.getAddressLine()
+                                }, {
+                                    preset: 'islands#redDotIcon'
+                                });
+                                
+                                // Удаляем предыдущий маркер поиска если есть
+                                if (window.searchPlacemark) {
+                                    map.geoObjects.remove(window.searchPlacemark);
+                                }
+                                
+                                // Добавляем новый маркер поиска
+                                map.geoObjects.add(searchPlacemark);
+                                window.searchPlacemark = searchPlacemark;
+                            }
+                        });
+                    } else if (query.length === 0) {
+                        // Если поле пустое, удаляем маркер поиска
+                        if (window.searchPlacemark) {
+                            map.geoObjects.remove(window.searchPlacemark);
+                            window.searchPlacemark = null;
+                        }
+                    }
+                }, 500); // Задержка 500мс
             });
         });
     </script>
