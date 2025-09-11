@@ -23,7 +23,7 @@
                     <div class="place-title" id="place-title">Аптека при клинике «Доктор Озон»</div>
                     <div class="place-subtitle" id="place-subtitle">на Бульваре Дм. Донского</div>
                     <div class="place-address" id="place-address">г. Москва, ул. Старокачаловская, д. 6</div>
-                    <div class="place-metro-wrap"><img src="images/M.svg" loading="lazy" width="14" alt="" class="metro-logo">
+                    
                         <div class="place-metro" id="place-metro">Бульвар Дмитрия Донского, Улица Старокачаловская</div>
                     </div>
                     <div class="place-text" id="place-text">В медцентре «Доктор Озон» клиенты могут получить медицинское обслуживание по таким профилям, как кардиология, терапия, маммология, эндокринология, трихология, отоларингология, косметология, офтальмология.</div>
