@@ -128,35 +128,14 @@
                 return urlParams.get('search') || ''; // Если параметр не найден, возвращаем пустую строку
             }
 
-            // Получаем значение search из URL и центрируем карту
+            // Получаем значение search из URL и ищем среди маркеров
             var searchQuery = getSearchParam();
             if (searchQuery) {
                 // Заполняем поле поиска значением из URL
                 document.querySelector('.map-search').value = searchQuery;
                 
-                // Используем геокодер для поиска адреса из URL
-                ymaps.geocode(searchQuery, {
-                    results: 1
-                }).then(function(res) {
-                    if (res.geoObjects.getLength() > 0) {
-                        var firstGeoObject = res.geoObjects.get(0);
-                        var coords = firstGeoObject.geometry.getCoordinates();
-                        
-                        // Центрируем карту на найденном адресе и приближаем
-                        map.setCenter(coords, 15);
-                        
-                        // Добавляем маркер на найденный адрес
-                        var searchPlacemark = new ymaps.Placemark(coords, {
-                            hintContent: firstGeoObject.getAddressLine(),
-                            balloonContent: firstGeoObject.getAddressLine()
-                        }, {
-                            preset: 'islands#redDotIcon'
-                        });
-                        
-                        map.geoObjects.add(searchPlacemark);
-                        window.searchPlacemark = searchPlacemark;
-                    }
-                });
+                // Ищем среди существующих маркеров
+                searchInExistingMarkers(searchQuery);
             }
 
             // Поиск и центрирование карты по адресу
@@ -170,45 +149,66 @@
             
             var searchTimeout;
             
-            // Функция альтернативного поиска
-            function tryAlternativeSearch(query) {
-                console.log('Пробуем альтернативный поиск для:', query);
+            // Функция поиска по существующим маркерам
+            function searchInExistingMarkers(query) {
+                console.log('Ищем среди существующих маркеров:', query);
                 
-                // Простой поиск по названию города
-                var cityQuery = query.split(',')[0].trim();
-                console.log('Ищем город:', cityQuery);
+                var foundMarkers = [];
+                var lowerQuery = query.toLowerCase();
                 
-                ymaps.geocode(cityQuery, {
-                    results: 1
-                }).then(function(res) {
-                    if (res.geoObjects.getLength() > 0) {
-                        var firstGeoObject = res.geoObjects.get(0);
-                        var coords = firstGeoObject.geometry.getCoordinates();
-                        console.log('Найден город:', firstGeoObject.getAddressLine(), coords);
-                        
-                        // Центрируем карту на найденном городе
-                        map.setCenter(coords, 12);
-                        
-                        // Добавляем маркер
-                        var searchPlacemark = new ymaps.Placemark(coords, {
-                            hintContent: 'Поиск: ' + query,
-                            balloonContent: 'Найден: ' + firstGeoObject.getAddressLine()
-                        }, {
-                            preset: 'islands#redDotIcon'
-                        });
-                        
-                        if (window.searchPlacemark) {
-                            map.geoObjects.remove(window.searchPlacemark);
-                        }
-                        
-                        map.geoObjects.add(searchPlacemark);
-                        window.searchPlacemark = searchPlacemark;
-                    } else {
-                        console.log('Город не найден');
+                // Ищем среди существующих маркеров
+                placemarks.forEach(function(placemark) {
+                    if (placemark.title.toLowerCase().includes(lowerQuery) || 
+                        placemark.address.toLowerCase().includes(lowerQuery) ||
+                        placemark.subtitle.toLowerCase().includes(lowerQuery)) {
+                        foundMarkers.push(placemark);
                     }
-                }).catch(function(error) {
-                    console.error('Ошибка альтернативного поиска:', error);
                 });
+                
+                if (foundMarkers.length > 0) {
+                    console.log('Найдено маркеров:', foundMarkers.length);
+                    
+                    // Берем первый найденный маркер
+                    var foundPlacemark = foundMarkers[0];
+                    var coords = foundPlacemark.coordinates;
+                    
+                    // Центрируем карту на найденном маркере
+                    map.setCenter(coords, 15);
+                    
+                    // Добавляем маркер поиска
+                    var searchPlacemark = new ymaps.Placemark(coords, {
+                        hintContent: 'Найдено: ' + foundPlacemark.title,
+                        balloonContent: foundPlacemark.title + '<br>' + foundPlacemark.address
+                    }, {
+                        preset: 'islands#redDotIcon'
+                    });
+                    
+                    if (window.searchPlacemark) {
+                        map.geoObjects.remove(window.searchPlacemark);
+                    }
+                    
+                    map.geoObjects.add(searchPlacemark);
+                    window.searchPlacemark = searchPlacemark;
+                    
+                    // Показываем информацию о найденном месте
+                    document.getElementById('place-title').innerText = foundPlacemark.title;
+                    document.getElementById('place-subtitle').innerText = foundPlacemark.subtitle;
+                    document.getElementById('place-address').innerText = foundPlacemark.address;
+                    document.getElementById('place-metro').innerText = foundPlacemark.metro;
+                    document.getElementById('place-text').innerText = foundPlacemark.text;
+                    document.getElementById('place-phone').innerText = foundPlacemark.phone;
+                    document.getElementById('place-time').innerText = foundPlacemark.time;
+                    document.getElementById('place-site').setAttribute('href', foundPlacemark.site);
+                    document.getElementById('place-logo').setAttribute('src', foundPlacemark.image);
+                    
+                    // Показываем карточку с информацией
+                    document.getElementById('map-info').style.display = 'block';
+                    
+                } else {
+                    console.log('Среди существующих маркеров не найдено');
+                    // Показываем сообщение пользователю
+                    alert('Адрес не найден среди аптек. Попробуйте другой запрос.');
+                }
             }
             
             searchInput.addEventListener('input', function() {
@@ -220,61 +220,22 @@
                 
                 // Добавляем небольшую задержку для оптимизации
                 searchTimeout = setTimeout(function() {
-                    if (query.length >= 3) {
-                        console.log('Начинаем геокодирование для:', query);
+                    if (query.length >= 2) {
+                        console.log('Начинаем поиск для:', query);
                         
-                        // Используем геокодер Яндекса для поиска адреса
-                        ymaps.geocode(query, {
-                            results: 1,
-                            boundedBy: map.getBounds()
-                        }).then(function(res) {
-                            console.log('Результат геокодирования:', res);
-                            
-                            if (res.geoObjects.getLength() > 0) {
-                                var firstGeoObject = res.geoObjects.get(0);
-                                var coords = firstGeoObject.geometry.getCoordinates();
-                                console.log('Найденные координаты:', coords);
-                                
-                                // Центрируем карту на найденном адресе и приближаем
-                                map.setCenter(coords, 15);
-                                
-                                // Добавляем маркер на найденный адрес
-                                var searchPlacemark = new ymaps.Placemark(coords, {
-                                    hintContent: firstGeoObject.getAddressLine(),
-                                    balloonContent: firstGeoObject.getAddressLine()
-                                }, {
-                                    preset: 'islands#redDotIcon'
-                                });
-                                
-                                // Удаляем предыдущий маркер поиска если есть
-                                if (window.searchPlacemark) {
-                                    map.geoObjects.remove(window.searchPlacemark);
-                                }
-                                
-                                // Добавляем новый маркер поиска
-                                map.geoObjects.add(searchPlacemark);
-                                window.searchPlacemark = searchPlacemark;
-                                
-                                console.log('Карта центрирована на:', firstGeoObject.getAddressLine());
-                            } else {
-                                console.log('Адрес не найден');
-                                // Попробуем альтернативный поиск
-                                tryAlternativeSearch(query);
-                            }
-                        }).catch(function(error) {
-                            console.error('Ошибка геокодирования:', error);
-                            // Попробуем альтернативный поиск
-                            tryAlternativeSearch(query);
-                        });
+                        // Ищем среди существующих маркеров
+                        searchInExistingMarkers(query);
+                        
                     } else if (query.length === 0) {
                         console.log('Очищаем поиск');
-                        // Если поле пустое, удаляем маркер поиска
+                        // Если поле пустое, удаляем маркер поиска и скрываем карточку
                         if (window.searchPlacemark) {
                             map.geoObjects.remove(window.searchPlacemark);
                             window.searchPlacemark = null;
                         }
+                        document.getElementById('map-info').style.display = 'none';
                     }
-                }, 500); // Задержка 500мс
+                }, 300); // Уменьшили задержку
             });
         });
     </script>
