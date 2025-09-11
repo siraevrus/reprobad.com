@@ -65,14 +65,18 @@
 @endsection
 
 @section('scripts')
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=546d45df-62e8-423a-ac02-6d7a0919c168" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=546d45df-62e8-423a-ac02-6d7a0919c168" type="text/javascript"></script>
     <script>
         ymaps.ready(function() {
+            console.log('Yandex Maps готов');
+            
             var map = new ymaps.Map('map', {
                 center: [55.7558, 37.6176], // координаты центра карты
                 zoom: 10,
                 controls: ['zoomControl', 'typeSelector', 'fullscreenControl']
             });
+            
+            console.log('Карта создана:', map);
 
             // Пример маркеров с информацией
             var placemarks = {!! $resources !!};
@@ -157,10 +161,18 @@
 
             // Поиск и центрирование карты по адресу
             var searchInput = document.querySelector('.map-search');
+            console.log('Поле поиска найдено:', searchInput);
+            
+            if (!searchInput) {
+                console.error('Поле поиска не найдено!');
+                return;
+            }
+            
             var searchTimeout;
             
             searchInput.addEventListener('input', function() {
                 var query = searchInput.value.trim();
+                console.log('Поиск:', query);
                 
                 // Очищаем предыдущий таймаут
                 clearTimeout(searchTimeout);
@@ -168,13 +180,18 @@
                 // Добавляем небольшую задержку для оптимизации
                 searchTimeout = setTimeout(function() {
                     if (query.length >= 3) {
+                        console.log('Начинаем геокодирование для:', query);
+                        
                         // Используем геокодер Яндекса для поиска адреса
                         ymaps.geocode(query, {
                             results: 1
                         }).then(function(res) {
+                            console.log('Результат геокодирования:', res);
+                            
                             if (res.geoObjects.getLength() > 0) {
                                 var firstGeoObject = res.geoObjects.get(0);
                                 var coords = firstGeoObject.geometry.getCoordinates();
+                                console.log('Найденные координаты:', coords);
                                 
                                 // Центрируем карту на найденном адресе и приближаем
                                 map.setCenter(coords, 15);
@@ -195,9 +212,16 @@
                                 // Добавляем новый маркер поиска
                                 map.geoObjects.add(searchPlacemark);
                                 window.searchPlacemark = searchPlacemark;
+                                
+                                console.log('Карта центрирована на:', firstGeoObject.getAddressLine());
+                            } else {
+                                console.log('Адрес не найден');
                             }
+                        }).catch(function(error) {
+                            console.error('Ошибка геокодирования:', error);
                         });
                     } else if (query.length === 0) {
+                        console.log('Очищаем поиск');
                         // Если поле пустое, удаляем маркер поиска
                         if (window.searchPlacemark) {
                             map.geoObjects.remove(window.searchPlacemark);
