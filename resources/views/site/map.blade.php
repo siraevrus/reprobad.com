@@ -152,15 +152,18 @@
             // Функция поиска по существующим маркерам
             function searchInExistingMarkers(query) {
                 console.log('Ищем среди существующих маркеров:', query);
+                console.log('Доступные маркеры:', placemarks);
                 
                 var foundMarkers = [];
                 var lowerQuery = query.toLowerCase();
                 
                 // Ищем среди существующих маркеров
                 placemarks.forEach(function(placemark) {
-                    if (placemark.title.toLowerCase().includes(lowerQuery) || 
-                        placemark.address.toLowerCase().includes(lowerQuery) ||
-                        placemark.subtitle.toLowerCase().includes(lowerQuery)) {
+                    var titleMatch = placemark.title && placemark.title.toLowerCase().includes(lowerQuery);
+                    var addressMatch = placemark.address && placemark.address.toLowerCase().includes(lowerQuery);
+                    var subtitleMatch = placemark.subtitle && placemark.subtitle.toLowerCase().includes(lowerQuery);
+                    
+                    if (titleMatch || addressMatch || subtitleMatch) {
                         foundMarkers.push(placemark);
                     }
                 });
@@ -191,15 +194,27 @@
                     window.searchPlacemark = searchPlacemark;
                     
                     // Показываем информацию о найденном месте
-                    document.getElementById('place-title').innerText = foundPlacemark.title;
-                    document.getElementById('place-subtitle').innerText = foundPlacemark.subtitle;
-                    document.getElementById('place-address').innerText = foundPlacemark.address;
-                    document.getElementById('place-metro').innerText = foundPlacemark.metro;
-                    document.getElementById('place-text').innerText = foundPlacemark.text;
-                    document.getElementById('place-phone').innerText = foundPlacemark.phone;
-                    document.getElementById('place-time').innerText = foundPlacemark.time;
-                    document.getElementById('place-site').setAttribute('href', foundPlacemark.site);
-                    document.getElementById('place-logo').setAttribute('src', foundPlacemark.image);
+                    document.getElementById('place-title').innerText = foundPlacemark.title || '';
+                    document.getElementById('place-subtitle').innerText = foundPlacemark.subtitle || '';
+                    document.getElementById('place-address').innerText = foundPlacemark.address || '';
+                    document.getElementById('place-metro').innerText = foundPlacemark.metro || '';
+                    document.getElementById('place-text').innerText = foundPlacemark.text || '';
+                    document.getElementById('place-phone').innerText = foundPlacemark.phone || '';
+                    document.getElementById('place-time').innerText = foundPlacemark.time || '';
+                    
+                    if (foundPlacemark.site) {
+                        document.getElementById('place-site').setAttribute('href', foundPlacemark.site);
+                        document.getElementById('place-site').style.display = 'block';
+                    } else {
+                        document.getElementById('place-site').style.display = 'none';
+                    }
+                    
+                    if (foundPlacemark.image) {
+                        document.getElementById('place-logo').setAttribute('src', foundPlacemark.image);
+                        document.getElementById('place-logo').style.display = 'block';
+                    } else {
+                        document.getElementById('place-logo').style.display = 'none';
+                    }
                     
                     // Показываем карточку с информацией
                     document.getElementById('map-info').style.display = 'block';
