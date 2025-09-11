@@ -65,7 +65,7 @@
 @endsection
 
 @section('scripts')
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=546d45df-62e8-423a-ac02-6d7a0919c168" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script>
         ymaps.ready(function() {
             console.log('Yandex Maps готов');
@@ -170,6 +170,47 @@
             
             var searchTimeout;
             
+            // Функция альтернативного поиска
+            function tryAlternativeSearch(query) {
+                console.log('Пробуем альтернативный поиск для:', query);
+                
+                // Простой поиск по названию города
+                var cityQuery = query.split(',')[0].trim();
+                console.log('Ищем город:', cityQuery);
+                
+                ymaps.geocode(cityQuery, {
+                    results: 1
+                }).then(function(res) {
+                    if (res.geoObjects.getLength() > 0) {
+                        var firstGeoObject = res.geoObjects.get(0);
+                        var coords = firstGeoObject.geometry.getCoordinates();
+                        console.log('Найден город:', firstGeoObject.getAddressLine(), coords);
+                        
+                        // Центрируем карту на найденном городе
+                        map.setCenter(coords, 12);
+                        
+                        // Добавляем маркер
+                        var searchPlacemark = new ymaps.Placemark(coords, {
+                            hintContent: 'Поиск: ' + query,
+                            balloonContent: 'Найден: ' + firstGeoObject.getAddressLine()
+                        }, {
+                            preset: 'islands#redDotIcon'
+                        });
+                        
+                        if (window.searchPlacemark) {
+                            map.geoObjects.remove(window.searchPlacemark);
+                        }
+                        
+                        map.geoObjects.add(searchPlacemark);
+                        window.searchPlacemark = searchPlacemark;
+                    } else {
+                        console.log('Город не найден');
+                    }
+                }).catch(function(error) {
+                    console.error('Ошибка альтернативного поиска:', error);
+                });
+            }
+            
             searchInput.addEventListener('input', function() {
                 var query = searchInput.value.trim();
                 console.log('Поиск:', query);
@@ -184,7 +225,8 @@
                         
                         // Используем геокодер Яндекса для поиска адреса
                         ymaps.geocode(query, {
-                            results: 1
+                            results: 1,
+                            boundedBy: map.getBounds()
                         }).then(function(res) {
                             console.log('Результат геокодирования:', res);
                             
@@ -216,9 +258,13 @@
                                 console.log('Карта центрирована на:', firstGeoObject.getAddressLine());
                             } else {
                                 console.log('Адрес не найден');
+                                // Попробуем альтернативный поиск
+                                tryAlternativeSearch(query);
                             }
                         }).catch(function(error) {
                             console.error('Ошибка геокодирования:', error);
+                            // Попробуем альтернативный поиск
+                            tryAlternativeSearch(query);
                         });
                     } else if (query.length === 0) {
                         console.log('Очищаем поиск');
