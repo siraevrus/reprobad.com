@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <div class="map-wrap">
+            <div class="map-wrap" style="flex-direction: column;">
                 <div id="map" class="map-container"></div>
                 <div class="map-info-overlay"></div>
                 <div id="map-info" class="map-info" style="display: none;">
