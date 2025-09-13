@@ -148,9 +148,29 @@
             }
             
             var searchTimeout;
+            var lastSearchQuery = '';
+            
+            // Debounce функция для предотвращения спама API
+            function debounce(func, delay) {
+                return function() {
+                    var context = this;
+                    var args = arguments;
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(function() {
+                        func.apply(context, args);
+                    }, delay);
+                };
+            }
             
             // Функция поиска по существующим маркерам
             function searchInExistingMarkers(query) {
+                // Проверяем, не тот ли же запрос мы уже обрабатывали
+                if (query === lastSearchQuery) {
+                    console.log('Запрос уже обработан:', query);
+                    return;
+                }
+                
+                lastSearchQuery = query;
                 console.log('Ищем среди существующих маркеров:', query);
                 console.log('Доступные маркеры:', placemarks);
                 
@@ -226,31 +246,29 @@
                 }
             }
             
+            // Создаем debounced версию функции поиска
+            var debouncedSearch = debounce(function(query) {
+                if (query.length >= 2) {
+                    console.log('Начинаем поиск для:', query);
+                    searchInExistingMarkers(query);
+                } else if (query.length === 0) {
+                    console.log('Очищаем поиск');
+                    lastSearchQuery = '';
+                    // Если поле пустое, удаляем маркер поиска и скрываем карточку
+                    if (window.searchPlacemark) {
+                        map.geoObjects.remove(window.searchPlacemark);
+                        window.searchPlacemark = null;
+                    }
+                    document.getElementById('map-info').style.display = 'none';
+                }
+            }, 500); // Увеличили задержку до 500ms для лучшего debounce
+            
             searchInput.addEventListener('input', function() {
                 var query = searchInput.value.trim();
-                console.log('Поиск:', query);
+                console.log('Поиск (input):', query);
                 
-                // Очищаем предыдущий таймаут
-                clearTimeout(searchTimeout);
-                
-                // Добавляем небольшую задержку для оптимизации
-                searchTimeout = setTimeout(function() {
-                    if (query.length >= 2) {
-                        console.log('Начинаем поиск для:', query);
-                        
-                        // Ищем среди существующих маркеров
-                        searchInExistingMarkers(query);
-                        
-                    } else if (query.length === 0) {
-                        console.log('Очищаем поиск');
-                        // Если поле пустое, удаляем маркер поиска и скрываем карточку
-                        if (window.searchPlacemark) {
-                            map.geoObjects.remove(window.searchPlacemark);
-                            window.searchPlacemark = null;
-                        }
-                        document.getElementById('map-info').style.display = 'none';
-                    }
-                }, 300); // Уменьшили задержку
+                // Используем debounced функцию
+                debouncedSearch(query);
             });
         });
     </script>
