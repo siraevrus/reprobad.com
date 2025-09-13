@@ -261,7 +261,7 @@
                     }
                     document.getElementById('map-info').style.display = 'none';
                 }
-            }, 500); // Увеличили задержку до 500ms для лучшего debounce
+            }, 1000); // Увеличили задержку до 500ms для лучшего debounce
             
             searchInput.addEventListener('input', function() {
                 var query = searchInput.value.trim();
