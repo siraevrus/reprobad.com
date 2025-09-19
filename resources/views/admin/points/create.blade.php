@@ -22,6 +22,8 @@
                 <div>@include('admin.components.text-input', ['title' => 'Метро', 'field' => 'metro'])</div>
             </div>
 
+            <div>@include('admin.components.text-input', ['title' => 'Город', 'field' => 'city'])</div>
+
             <div>@include('admin.components.text-input', ['title' => 'Адрес сайта', 'field' => 'site'])</div>
 
             <div class="grid grid-cols-3 gap-4">

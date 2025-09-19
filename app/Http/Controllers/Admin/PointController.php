@@ -26,6 +26,7 @@ class PointController extends Controller
         'phone' => 'string|nullable',
         'days' => 'string|nullable',
         'time' => 'string|nullable',
+        'city' => 'string|nullable',
         'site' => 'url|nullable',
         'active' => 'boolean|required',
     ];

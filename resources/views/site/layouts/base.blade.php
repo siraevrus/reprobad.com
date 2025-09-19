@@ -34,6 +34,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+    @yield('head')
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
