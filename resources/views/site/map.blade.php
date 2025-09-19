@@ -4,7 +4,7 @@
 <style>
     /* Базовые стили для карты */
     #map {
-        height: 500px !important;
+        height: 650px !important;
         width: 100% !important;
         min-height: 400px;
     }
