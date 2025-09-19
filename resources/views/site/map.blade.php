@@ -37,9 +37,9 @@
         visibility: visible !important;
     }
 
-    .map-section {
+    /* .map-section {
         background: #e6eff2;
-    }
+    } */
     
     /* Стили для правильного переключения вкладок */
     .w-tab-pane {
@@ -216,6 +216,7 @@
             </div>
         </div>
     </section>
+    <div class="page-background blue"></div>
 @endsection
 
 @section('scripts')
