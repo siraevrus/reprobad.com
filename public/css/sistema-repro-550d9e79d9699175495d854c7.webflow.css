@@ -3188,7 +3188,7 @@ figcaption {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 40.5rem;
+  max-width: 100%;
   display: flex;
   position: relative;
 }
