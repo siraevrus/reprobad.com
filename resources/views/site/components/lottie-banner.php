@@ -18,7 +18,7 @@
 >
     <dotlottie-wc
         src="https://lottie.host/c1dd3267-9b5c-4011-bcd5-51b3c7e01be1/qk8EQOxYwW.lottie"
-        style="width:312px;margin:auto"
+        style="margin:auto"
         speed="1"
         autoplay
         loop
