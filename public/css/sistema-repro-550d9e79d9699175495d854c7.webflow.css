@@ -4240,6 +4240,15 @@ figcaption {
   overflow: hidden;
 }
 
+.main-slider {
+  display: flex;
+  overflow: hidden;
+}
+
+.main-slider div {
+  flex: 0 0 100%;
+}
+
 .product-head-image.right-side {
   left: auto;
   right: 0;
