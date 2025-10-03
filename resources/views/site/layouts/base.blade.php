@@ -193,6 +193,7 @@
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
                     <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <a href="map" class="nav-link">Карта</a>
                 </div>
             </nav>
         </div>
@@ -212,6 +213,7 @@
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
                     <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <a href="map" class="nav-link">Карта</a>
                 </div>
                 <div class="nav-family-line"><img src="images/nav-family-line.svg" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
                 <div class="nav-contacts">
