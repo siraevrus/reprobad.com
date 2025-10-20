@@ -68,20 +68,6 @@
     .modal .map-search {
         width: calc(100% - 40px);
         margin: 0 20px 15px 20px;
-        padding: 12px 16px;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 16px;
-        outline: none;
-        transition: border-color 0.2s ease;
-        background: #fff;
-    }
-    .modal .map-search:focus {
-        border-color: var(--mandarin, #f97316);
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-    }
-    .modal .map-search::placeholder {
-        color: #9ca3af;
     }
     .modal.show {
         display: flex;
