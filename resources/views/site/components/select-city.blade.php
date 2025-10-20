@@ -1,10 +1,15 @@
 @php
-    $cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();    
-    if(request()->get('city')) {
+    $cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();   
+
+    if(request()->get('city') && in_array(request()->get('city'), $cities)) {
+
         session()->put('city', request()->get('city'));
         return redirect()->to(request()->url());
-    } else {
+
+    } elseif(session()->get('city')) {
+
         $selectedCity = session()->get('city') ?? '';
+        
     }
 @endphp
 
