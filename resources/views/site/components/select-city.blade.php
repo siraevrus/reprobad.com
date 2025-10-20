@@ -1,6 +1,11 @@
 @php
     $cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();    
-    $selectedCity = session()->get('city') ?? '';
+    if(request()->get('city')) {
+        session()->set('city', request()->get('city'));
+        return redirect()->to(request()->url());
+    } else {
+        $selectedCity = session()->get('city') ?? '';
+    }
 @endphp
 
 <div id="select-city" class="modal">
