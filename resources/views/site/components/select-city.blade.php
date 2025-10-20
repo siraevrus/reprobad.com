@@ -95,7 +95,7 @@
         flex: 1;
         overflow-y: auto;
         padding: 8px 20px;
-        max-height: calc(70vh - 150px);
+        max-height: calc(70vh - 230px);
     }
     .modal-content label input {
         display: none;
