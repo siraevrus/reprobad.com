@@ -15,7 +15,6 @@
         if($selectedCity != '') {
             session()->put('city', $selectedCity);
             
-            // Записываем статистику выбора города
             app(\App\Services\CityStatsService::class)->recordCitySelection($selectedCity);
             
             return;
@@ -34,6 +33,7 @@
             Выберите ваш город
         </div>
         <div class="modal-content">
+            <input name="search" placeholder="Ваш адрес" class="map-search">
             <div class="cities-list">
                 @foreach($cities as $city)
                     <label for="city-{{ $loop->index }}">
@@ -41,6 +41,9 @@
                         <span>{{ $city }}</span>
                     </label>
                 @endforeach
+                <div id="no-results" class="no-results" style="display: none;">
+                    <p>Город не найден</p>
+                </div>
             </div>
             <button class="button short-event-button w-button" id="select-city-btn" disabled>
                 Выбрать
@@ -60,6 +63,24 @@
         justify-content: center;
         align-items: center;
         background-color: rgb(0, 0, 0, .6);
+    }
+    .modal .map-search {
+        width: calc(100% - 40px);
+        margin: 0 20px 15px 20px;
+        padding: 12px 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.2s ease;
+        background: #fff;
+    }
+    .modal .map-search:focus {
+        border-color: var(--mandarin, #f97316);
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    }
+    .modal .map-search::placeholder {
+        color: #9ca3af;
     }
     .modal.show {
         display: flex;
@@ -87,7 +108,7 @@
         flex: 1;
         overflow-y: auto;
         padding: 8px 20px;
-        max-height: calc(70vh - 80px);
+        max-height: calc(70vh - 150px);
     }
     .modal-content label input {
         display: none;
@@ -124,6 +145,12 @@
         opacity: 0.5;
         cursor: not-allowed;
     }
+    .no-results {
+        padding: 20px;
+        text-align: center;
+        color: #6b7280;
+        font-style: italic;
+    }
     .modal-content .cities-list::-webkit-scrollbar {
         width: 6px;
     }
@@ -157,24 +184,54 @@
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('select-city');
     const selectBtn = document.getElementById('select-city-btn');
-    const cityInputs = document.querySelectorAll('input[name="city"]');
+    const searchInput = document.querySelector('.map-search');
+    const citiesList = document.querySelector('.cities-list');
+    let allCityLabels = Array.from(document.querySelectorAll('.cities-list label'));
 
-    // Открыть модалку сразу, если город не выбран
     @if($selectedCity == '')
         modal.classList.add('show');
     @endif
 
-    // Обработка выбора города
-    cityInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            if (this.checked) {
+    function filterCities(searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        let visibleCount = 0;
+        
+        allCityLabels.forEach(label => {
+            const cityName = label.querySelector('span').textContent.toLowerCase();
+            const isVisible = cityName.includes(term);
+            
+            label.style.display = isVisible ? 'block' : 'none';
+            if (isVisible) visibleCount++;
+        });
+
+        const noResults = document.getElementById('no-results');
+        if (visibleCount === 0 && term.length > 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+
+        const checkedInput = document.querySelector('input[name="city"]:checked');
+        if (checkedInput) {
+            checkedInput.checked = false;
+            selectBtn.disabled = true;
+            selectBtn.style.opacity = '0.5';
+        }
+    }
+
+    searchInput.addEventListener('input', function() {
+        filterCities(this.value);
+    });
+
+    document.addEventListener('change', function(e) {
+        if (e.target.name === 'city') {
+            if (e.target.checked) {
                 selectBtn.disabled = false;
                 selectBtn.style.opacity = '1';
             }
-        });
+        }
     });
 
-    // Обработка клика по кнопке "Выбрать"
     selectBtn.addEventListener('click', function() {
         const selectedCity = document.querySelector('input[name="city"]:checked');
         if (selectedCity) {
@@ -184,10 +241,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Закрытие при клике по фону (оверлею)
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.classList.remove('show');
+        }
+    });
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            searchInput.value = '';
+            filterCities('');
         }
     });
 });
