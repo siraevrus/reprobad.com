@@ -28,7 +28,6 @@
         z-index: 10000;
         justify-content: center;
         align-items: center;
-        display: flex;
     }
     .modal.show {
         display: flex;
