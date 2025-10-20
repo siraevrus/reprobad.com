@@ -33,7 +33,7 @@
             Выберите ваш город
         </div>
         <div class="modal-content">
-            <input name="search" placeholder="Ваш адрес" class="map-search">
+            <input name="search" placeholder="Поиск города" class="map-search">
             <div class="cities-list">
                 @foreach($cities as $city)
                     <label for="city-{{ $loop->index }}">
