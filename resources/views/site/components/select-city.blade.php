@@ -1,10 +1,20 @@
 @php
     $cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();   
+    $selectedCity = '';
 
-    if(request()->get('city') && in_array(request()->get('city'), $cities)) {
+    if(request()->get('city')) {
 
-        session()->put('city', request()->get('city'));
-        return redirect()->to(request()->url());
+        foreach($cities as $city) {
+            if($city == request()->get('city')) {
+                $selectedCity = $city;
+                break;
+            }
+        }
+
+        if($selectedCity != '') {
+            session()->put('city', $selectedCity);
+            return;
+        }
 
     } elseif(session()->get('city')) {
 
@@ -145,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cityInputs = document.querySelectorAll('input[name="city"]');
 
     // Открыть модалку сразу, если город не выбран
-    @if(!isset($selectedCity))
+    @if($selectedCity == '')
         modal.classList.add('show');
     @endif
 
