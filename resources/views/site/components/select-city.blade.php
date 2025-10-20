@@ -21,9 +21,15 @@
         <div class="modal-content">
             <div class="cities-list">
                 @foreach($cities as $city)
-                    <a href="{{ request()->url() }}?city={{ $city }}">{{ $city }}</a>
+                    <label for="city-{{ $loop->index }}">
+                        <input type="radio" name="city" value="{{ $city }}" id="city-{{ $loop->index }}">
+                        <span>{{ $city }}</span>
+                    </label>
                 @endforeach
             </div>
+            <button class="button short-event-button w-button" id="select-city-btn" disabled>
+                Выбрать
+            </button>
         </div>
     </div>
 </div>
@@ -68,19 +74,40 @@
         padding: 8px 20px;
         max-height: calc(70vh - 80px);
     }
-    .modal-content a {
+    .modal-content label input {
+        display: none;
+    }
+    .modal-content label {
         display: block;
         padding: 12px 24px;
         color: #333;
         text-decoration: none;
         font-size: 16px;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border-radius: 6px;
+        margin: 2px 0;
     }
-    .modal-content a:hover {
-        color: #007bff;
+    .modal-content label:hover {
+        background-color: #f8f9fa;
+        color: var(--mandarin);
     }
-    .modal-content a:last-child {
-        border-bottom: none;
+    .modal-content label input:checked + span {
+        color: var(--mandarin);
+        font-weight: 600;
+    }
+    .modal-content label:has(input:checked) {
+        background-color: #fff3e0;
+        color: var(--mandarin);
+    }
+    .modal-content button {
+        width: calc(100% - 40px);
+        margin: 20px;
+        transition: all 0.2s ease;
+    }
+    .modal-content button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
     .modal-content .cities-list::-webkit-scrollbar {
         width: 6px;
@@ -114,11 +141,33 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('select-city');
+    const selectBtn = document.getElementById('select-city-btn');
+    const cityInputs = document.querySelectorAll('input[name="city"]');
 
     // Открыть модалку сразу, если город не выбран
     @if($selectedCity === '')
         modal.classList.add('show');
     @endif
+
+    // Обработка выбора города
+    cityInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (this.checked) {
+                selectBtn.disabled = false;
+                selectBtn.style.opacity = '1';
+            }
+        });
+    });
+
+    // Обработка клика по кнопке "Выбрать"
+    selectBtn.addEventListener('click', function() {
+        const selectedCity = document.querySelector('input[name="city"]:checked');
+        if (selectedCity) {
+            const cityValue = selectedCity.value;
+            const currentUrl = window.location.href.split('?')[0];
+            window.location.href = currentUrl + '?city=' + encodeURIComponent(cityValue);
+        }
+    });
 
     // Закрытие при клике по фону (оверлею)
     modal.addEventListener('click', function(e) {
