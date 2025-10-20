@@ -53,11 +53,15 @@
     #lottie-banner-mobile .close {
         position: absolute;
         top: -50px;
-        right: 30px;
+        right: 15px;
         font-size: 40px;
         height: 40px;
         width: 40px;
         cursor: pointer;
+        line-height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
     #lottie-banner .close img,
     #lottie-banner-mobile .close img {
