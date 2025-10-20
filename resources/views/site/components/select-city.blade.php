@@ -154,7 +154,6 @@
     }
     @media (max-width: 480px) {
         .modal-content {
-            width: 95%;
             max-height: 80vh;
         }
         .modal-title {
@@ -164,6 +163,11 @@
         .modal-content a {
             padding: 10px 20px;
             font-size: 15px;
+        }
+        .modal-content button {
+            margin-left: 20px;
+            background-color: var(--mandarin);
+            color: #fff;
         }
     }
 </style>
