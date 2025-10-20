@@ -28,6 +28,7 @@
         z-index: 10000;
         justify-content: center;
         align-items: center;
+        background-color: rgb(0, 0, 0, .6);
     }
     .modal.show {
         display: flex;
@@ -48,14 +49,13 @@
         font-size: 18px;
         font-weight: 600;
         color: #333;
-        border-bottom: 1px solid #e5e5e5;
         margin: 0;
         flex-shrink: 0;
     }
     .modal-content .cities-list {
         flex: 1;
         overflow-y: auto;
-        padding: 8px 0;
+        padding: 8px 20px;
         max-height: calc(70vh - 80px);
     }
     .modal-content a {
@@ -65,10 +65,8 @@
         text-decoration: none;
         font-size: 16px;
         transition: background-color 0.2s ease;
-        border-bottom: 1px solid #f5f5f5;
     }
     .modal-content a:hover {
-        background-color: #f8f9fa;
         color: #007bff;
     }
     .modal-content a:last-child {
@@ -103,3 +101,20 @@
         }
     }
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('select-city');
+
+    // Открыть модалку сразу, если город не выбран
+    @if($selectedCity === '')
+        modal.classList.add('show');
+    @endif
+
+    // Закрытие при клике по фону (оверлею)
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('show');
+        }
+    });
+});
+</script>
