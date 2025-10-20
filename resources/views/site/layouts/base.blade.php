@@ -401,6 +401,7 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/98482244" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
+@include('site.components.select-city')
 @include('site.components.lottie-banner')
 </body>
 </html>
