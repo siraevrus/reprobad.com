@@ -1,12 +1,12 @@
 @php
     //$cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();   
-    $cities = explode(PHP_EOL, file_get_contents(storage_path('app/public/cities.txt')));
+    $cities = explode(PHP_EOL, file_get_contents(public_path('cities.txt')));
     $selectedCity = '';
 
     if(request()->get('city')) {
 
         foreach($cities as $city) {
-            if($city == request()->get('city')) {
+            if(trim($city) == trim(request()->get('city'))) {
                 $selectedCity = $city;
                 break;
             }
