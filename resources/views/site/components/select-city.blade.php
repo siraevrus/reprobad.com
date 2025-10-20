@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cityInputs = document.querySelectorAll('input[name="city"]');
 
     // Открыть модалку сразу, если город не выбран
-    @if($selectedCity === '')
+    @if(!isset($selectedCity))
         modal.classList.add('show');
     @endif
 
