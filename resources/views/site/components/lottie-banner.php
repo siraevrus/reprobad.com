@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function hideBanners() {
         bannerDesktop.style.opacity = '0';
         bannerMobile.style.opacity = '0';
+        window.closedBanner = true;
     }
     
     closeDesktop.addEventListener('click', function(e) {
@@ -101,6 +102,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     function checkScroll() {
+        if(window.closedBanner) return;
+
         const documentHeight = document.documentElement.scrollHeight;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const windowHeight = window.innerHeight;
