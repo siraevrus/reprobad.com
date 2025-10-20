@@ -1,7 +1,7 @@
 @php
     $cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();    
     if(request()->get('city')) {
-        session()->set('city', request()->get('city'));
+        session()->put('city', request()->get('city'));
         return redirect()->to(request()->url());
     } else {
         $selectedCity = session()->get('city') ?? '';
