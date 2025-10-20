@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Event;
 use App\Models\Page;
 use App\Models\Product;
+use App\Services\CityStatsService;
 use Illuminate\View\View;
 
 class IndexController extends Controller
@@ -19,6 +20,12 @@ class IndexController extends Controller
         $advises = Advise::query()->count();
         $products = Product::query()->count();
         $events = Event::query()->count();
-        return view('admin.index', compact('articles', 'pages', 'advises', 'products', 'events'));
+        
+        // Получаем статистику выбора городов
+        $cityStatsService = app(CityStatsService::class);
+        $cityStats = $cityStatsService->getStatsSorted();
+        $totalCitySelections = $cityStatsService->getTotalSelections();
+        
+        return view('admin.index', compact('articles', 'pages', 'advises', 'products', 'events', 'cityStats', 'totalCitySelections'));
     }
 }

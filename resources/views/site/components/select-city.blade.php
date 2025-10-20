@@ -13,6 +13,10 @@
 
         if($selectedCity != '') {
             session()->put('city', $selectedCity);
+            
+            // Записываем статистику выбора города
+            app(\App\Services\CityStatsService::class)->recordCitySelection($selectedCity);
+            
             return;
         }
 
