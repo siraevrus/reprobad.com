@@ -1,6 +1,7 @@
 @php
     //$cities = App\Models\Point::active()->get()->pluck('city')->unique()->sort()->values();   
     $cities = explode(PHP_EOL, file_get_contents(public_path('cities.txt')));
+    $cities = array_unique($cities);
     $selectedCity = '';
 
     if(request()->get('city')) {
