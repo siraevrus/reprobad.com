@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const citiesList = document.querySelector('.cities-list');
     let allCityLabels = Array.from(document.querySelectorAll('.cities-list label'));
 
-    if(localStorage.getValue('cityModalShowed') == null) {
+    if(localStorage.getItem('cityModalShowed') == null) {
         modal.classList.add('show');
     }
 
-    localStorage.setValue('cityModalShowed', 1);
+    localStorage.setItem('cityModalShowed', 1);
 
     function filterCities(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
