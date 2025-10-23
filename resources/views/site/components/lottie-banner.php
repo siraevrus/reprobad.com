@@ -42,7 +42,7 @@
     #lottie-banner,
     #lottie-banner-mobile {
         position: fixed;
-        bottom: 20px;
+        bottom: 60px;
         left: 0;
         right: 0;
         margin: auto;
