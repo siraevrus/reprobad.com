@@ -330,7 +330,9 @@
     <div class="bad-wrap">
         <div class="bad-container">
             <div class="bad-text"></div>
-            <a href="#" class="bad-close w-inline-block"><img src="images/bad-close.svg" loading="lazy" alt="" class="bad-close-image"></a>
+            <a href="#" class="bad-close w-inline-block">
+                <img src="images/bad-close.svg" loading="lazy" alt="" class="bad-close-image">
+            </a>
         </div>
     </div>
     <div class="cookies-banner">
@@ -403,5 +405,20 @@
 
 @include('site.components.select-city')
 @include('site.components.lottie-banner')
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Скрытие блока bad-wrap при клике на кнопку закрытия
+    const badCloseBtn = document.querySelector('.bad-close.w-inline-block');
+    const badWrap = document.querySelector('.bad-wrap');
+    
+    if (badCloseBtn && badWrap) {
+        badCloseBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            badWrap.style.display = 'none';
+        });
+    }
+});
+</script>
 </body>
 </html>

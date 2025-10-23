@@ -179,9 +179,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const citiesList = document.querySelector('.cities-list');
     let allCityLabels = Array.from(document.querySelectorAll('.cities-list label'));
 
-    @if($selectedCity == '')
+    if(localStorage.getValue('cityModalShowed') == null) {
         modal.classList.add('show');
-    @endif
+    }
+
+    localStorage.setValue('cityModalShowed', 1);
 
     function filterCities(searchTerm) {
         const term = searchTerm.toLowerCase().trim();
