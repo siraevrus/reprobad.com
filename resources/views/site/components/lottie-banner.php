@@ -112,15 +112,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (shouldShow) {
             if (isMobile) {
-                bannerMobile.style.opacity = '1';
-                bannerDesktop.style.opacity = '0';
+                bannerMobile.style.display = 'block';
+                bannerDesktop.style.display = 'none';
             } else {
-                bannerDesktop.style.opacity = '1';
-                bannerMobile.style.opacity = '0';
+                bannerDesktop.style.display = 'block';
+                bannerMobile.style.display = 'none';
             }
         } else {
-            bannerDesktop.style.opacity = '0';
-            bannerMobile.style.opacity = '0';
+            bannerDesktop.style.display = 'none';
+            bannerMobile.style.display = 'none';
         }
     }
     

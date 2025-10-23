@@ -409,7 +409,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Скрытие блока bad-wrap при клике на кнопку закрытия
-    const badCloseBtn = document.querySelector('.bad-close.w-inline-block');
+    const badCloseBtn = document.querySelector('.bad-close');
     const badWrap = document.querySelector('.bad-wrap');
     
     if (badCloseBtn && badWrap) {
