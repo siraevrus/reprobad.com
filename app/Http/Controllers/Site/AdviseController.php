@@ -61,7 +61,7 @@ class AdviseController extends Controller
         $resource = Advise::where('alias', $alias)->where('active', 1)->firstOrFail();
         $events = Event::where('active', 1)->take(2)->get();
 
-        $pageType = 'Advise';
+        $pageType = '';
 
         return view('site.advises.show', compact('resource', 'events', 'pageType'));
     }
