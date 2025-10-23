@@ -32,8 +32,6 @@
     #lottie-banner-mobile {
         z-index: 1000;
         width: calc(100% - 40px);
-        opacity: 0;
-        transition: opacity 0.3s ease;
     }
     #lottie-banner {
         display: block;
