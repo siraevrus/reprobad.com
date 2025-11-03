@@ -4237,6 +4237,7 @@ figcaption {
   position: absolute;
   inset: 2rem auto auto 0%;
   overflow: hidden;
+  min-height: 30rem;
 }
 
 .product-head-image.right-side {
