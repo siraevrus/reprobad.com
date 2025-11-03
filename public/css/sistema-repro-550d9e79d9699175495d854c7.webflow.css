@@ -6523,6 +6523,7 @@ figcaption {
     margin-left: -3rem;
     margin-right: -3rem;
     position: static;
+    aspect-ratio: inherit;
   }
 
   .product-head-image.right-side {
