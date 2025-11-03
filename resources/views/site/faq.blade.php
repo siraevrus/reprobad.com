@@ -151,10 +151,24 @@
 
 @section('scripts')
     <style>
-    /* Accordion in article page */
-    .article-accordion { margin: 1.5rem 0; padding: 0; }
-    .article-accordion .accordion-item { border: none; border-radius: 0.75rem; padding: 0.75rem 0; background-color: var(--white, #fff); }
-    .article-accordion .accordion-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .article-accordion { 
+        margin: 1.5rem 0; 
+        padding: 0; 
+    }
+    .article-accordion .accordion-item { 
+        border: none; 
+        border-radius: 0.75rem; 
+        padding: 0.75rem 3rem 0.75rem 1rem; 
+        background-color: var(--white, #fff);
+        position: relative; 
+    }
+    .article-accordion .accordion-header { 
+        display: flex; 
+        align-items: center; 
+        justify-content: space-between; 
+        gap: 1rem; 
+        position: relative; 
+    }
     .article-accordion .accordion-title { 
         color: #8577B7; 
         font-weight: 600; 
@@ -165,13 +179,44 @@
         cursor: pointer; 
         text-align: left; 
         font-size: inherit; 
-        font-family: inherit; 
+        font-family: inherit;
+        position: relative; 
     }
-    .article-accordion .accordion-toggle { display: flex; background: none; border: 0; padding: 0; margin: 0; line-height: 150%; cursor: pointer; }
-    .article-accordion .accordion-arrow { width: 1rem; height: 1rem; transition: transform 0.2s ease;flex: 0 0 1rem; }
-    .article-accordion .accordion-content { display: none; padding-top: 0.5rem; }
-    .article-accordion .accordion-item.open .accordion-content { display: block; }
-    .article-accordion .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+    .article-accordion .accordion-toggle { 
+        display: flex; 
+        background: none; 
+        border: 0; 
+        padding: 0; 
+        margin: 0; 
+        line-height: 150%; cursor: pointer; 
+        position: relative; 
+    }
+    .article-accordion .accordion-arrow { 
+        width: 1rem; 
+        height: 1rem; 
+        transition: transform 0.2s ease;
+        flex: 0 0 1rem;
+        position: absolute;
+        right: 1rem;
+        top: 0;bottom: 0;margin: auto; 
+    }
+    .article-accordion .accordion-content { 
+        display: none; 
+        padding-top: 0.5rem; 
+    }
+    .article-accordion .accordion-item.open .accordion-content { 
+        display: block;
+     }
+    .article-accordion .accordion-item.open .accordion-arrow { 
+        transform: rotate(180deg);
+    }
+
+    @media screen and (max-width: 767px) {
+        .article-accordion .accordion-item {
+            font-size: .8rem;
+            margin-bottom: 1rem;
+        }
+    }
     </style>
     <script type="text/javascript">
         (function() {
