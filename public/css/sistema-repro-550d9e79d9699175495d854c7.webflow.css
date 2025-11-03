@@ -4199,7 +4199,6 @@ figcaption {
   align-items: stretch;
   width: 100%;
   max-width: 32rem;
-  min-height: 34rem;
   margin-left: auto;
   display: flex;
 }
@@ -4231,7 +4230,7 @@ figcaption {
 }
 
 .product-head-image {
-  aspect-ratio: 7 / 6;
+  aspect-ratio: 9 / 6;
   width: 100%;
   max-width: 43.75rem;
   display: block;
