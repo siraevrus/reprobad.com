@@ -4796,6 +4796,13 @@ figcaption {
   text-decoration: none;
 }
 
+.slider-block {
+  opacity: 0;
+}
+.slider-block.visible {
+  opacity: 1;
+}
+
 @media screen and (max-width: 767px) {
   body {
     padding-top: 3.5rem;
@@ -6777,6 +6784,16 @@ figcaption {
     padding-top: 2rem;
     padding-bottom: 1rem;
     display: flex;
+  }
+
+  .thumbs-slider img {
+    object-fit: contain;
+    height: 80px;
+  }
+
+  .thumbs-slider {
+    flex-wrap: wrap;
+    gap: .5rem;
   }
 
   .contacts-link {
