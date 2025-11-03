@@ -4,7 +4,7 @@
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
         <dotlottie-wc 
-            src="https://lottie.host/d479cfd5-9ee2-4029-8c33-89d45691b62d/weUkdnuK0x.lottie" 
+            src="images/weUkdnuK0x.lottie" 
             speed="1" 
             style="width:100%;aspect-ratio:1440 / 120;" 
             mode="forward" 
@@ -18,7 +18,7 @@
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
         <dotlottie-wc
-            src="https://lottie.host/c1dd3267-9b5c-4011-bcd5-51b3c7e01be1/qk8EQOxYwW.lottie"
+            src="images/qk8EQOxYwW.lottie"
             style="margin:auto"
             speed="1"
             autoplay
