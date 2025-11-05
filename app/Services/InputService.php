@@ -21,7 +21,10 @@ class InputService
 
         if(!is_string($fileBase64) || empty($fileBase64)) return false;
 
-        list($metaData, $fileBase64) = explode('base64,', $fileBase64);
+        $exploded = explode('base64,', $fileBase64);
+        if(count($exploded) < 2) return false;
+        
+        list($metaData, $fileBase64) = $exploded;
         preg_match('/data:(.*?);/', $metaData, $matches);
         $mimeType = $matches[1] ?? 'application/octet-stream';
         $extension = explode('/', $mimeType)[1];
