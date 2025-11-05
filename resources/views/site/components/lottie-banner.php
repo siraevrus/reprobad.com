@@ -33,6 +33,10 @@
         z-index: 1000;
         width: calc(100% - 40px);
     }
+    #lottie-banner a:hover,
+    #lottie-banner-mobile a:hover {
+        opacity: 1 !important;
+    }
     #lottie-banner {
         display: block;
     }
