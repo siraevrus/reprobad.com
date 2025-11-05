@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('points', function (Blueprint $table) {
             $table->text('seo_title')->nullable();
             $table->text('seo_description')->nullable();
         });
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('points', function (Blueprint $table) {
             $table->dropColumn('seo_title');
             $table->dropColumn('seo_description');
         });
