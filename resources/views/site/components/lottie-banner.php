@@ -6,7 +6,7 @@
         <dotlottie-wc 
             src="images/weUkdnuK0x.lottie" 
             speed="1" 
-            style="width:100%;" 
+            style="width:100%;aspect-ratio:2826 / 1413;" 
             mode="forward" 
             loop 
             autoplay>
