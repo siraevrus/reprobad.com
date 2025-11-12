@@ -7,7 +7,7 @@
             id="lottie-desktop"
             src="images/weUkdnuK0x.lottie" 
             speed="1" 
-            style="position: absolute;top: 50%;left: 0;width: 100%;transform: translateY(-50%);" 
+            style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" 
             mode="forward" 
             loop 
             autoplay>
@@ -41,7 +41,7 @@
     }
     #lottie-banner a {
         display: block;
-        overflow: hidden;
+        overflow: visible;
         aspect-ratio: 1440/120;
         width: 100%;
         position: relative;
