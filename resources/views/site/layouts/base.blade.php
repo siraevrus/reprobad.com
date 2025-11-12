@@ -48,6 +48,10 @@
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
     <link href="images/webclip.jpg" rel="apple-touch-icon">
+    <!-- Preload Lottie banner files for faster loading -->
+    <link rel="preload" href="images/weUkdnuK0x.lottie" as="fetch" crossorigin>
+    <link rel="preload" href="images/qk8EQOxYwW.lottie" as="fetch" crossorigin>
+    <link rel="preload" href="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" as="script">
     <style>
         :focus-visible { outline: var(--mandarin) auto 1px; }
         .bad-wrap { position: fixed; visibility: hidden; }
@@ -97,7 +101,7 @@
             position: absolute;
             display: inline;
             content: ' ';
-            left: 0.05em;
+            left: 0.03em;
             top: 0em;
             background-color: currentColor;
             visibility: visible;
@@ -128,6 +132,12 @@
             .w-richtext figure { --figure-width: calc(100% + 2rem); }
             .desktop-hyphen::after { content: ''; }
             .mobile-hyphen::after { content: '-'; }
+            .items-wrap .card,
+            .items-wrap .news-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex-basis: 100% !important;
+            }
         }
         .nav-quick-link.active {
             opacity: 1;

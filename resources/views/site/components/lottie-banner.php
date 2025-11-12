@@ -1,9 +1,10 @@
 
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
-<div id="lottie-banner">
+<div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
         <dotlottie-wc 
+            id="lottie-desktop"
             src="images/weUkdnuK0x.lottie" 
             speed="1" 
             style="position: absolute;top: 50%;left: 0;width: 100%;transform: translateY(-50%);" 
@@ -14,10 +15,11 @@
     </a>
 </div>
 
-<div id="lottie-banner-mobile">
+<div id="lottie-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
         <dotlottie-wc
+            id="lottie-mobile"
             src="images/qk8EQOxYwW.lottie"
             style="margin:auto"
             speed="1"
@@ -37,9 +39,6 @@
     #lottie-banner-mobile a:hover {
         opacity: 1 !important;
     }
-    #lottie-banner {
-        display: block;
-    }
     #lottie-banner a {
         display: block;
         overflow: hidden;
@@ -47,16 +46,18 @@
         width: 100%;
         position: relative;
     }
-    #lottie-banner-mobile {
-        display: none;
+    #lottie-banner-mobile a {
+        display: block;
+        width: 100%;
+        position: relative;
     }
     #lottie-banner,
     #lottie-banner-mobile {
         position: fixed;
-        bottom: 60px;
         left: 0;
         right: 0;
         margin: auto;
+        transition: bottom 0.3s ease, visibility 0.3s ease;
     }
     #lottie-banner .close,
     #lottie-banner-mobile .close {
@@ -79,15 +80,22 @@
     }
     @media (max-width: 768px) {
         #lottie-banner {
-            display: none;
-        }
-        #lottie-banner-mobile {
-            display: block;
+            visibility: hidden !important;
+            bottom: -200px !important;
         }
     }
 </style>
 
 <script>
+// Начинаем загрузку Lottie файлов сразу при загрузке страницы
+(function() {
+    // Предзагружаем файлы через fetch для кеширования
+    if (typeof fetch !== 'undefined') {
+        fetch('images/weUkdnuK0x.lottie', { method: 'HEAD' }).catch(() => {});
+        fetch('images/qk8EQOxYwW.lottie', { method: 'HEAD' }).catch(() => {});
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', function() {
     const bannerDesktop = document.getElementById('lottie-banner');
     const bannerMobile = document.getElementById('lottie-banner-mobile');
@@ -113,23 +121,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkScroll() {
         if(window.closedBanner) return;
 
-        const documentHeight = document.documentElement.scrollHeight;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const windowHeight = window.innerHeight;
         const shouldShow = scrollTop >= 1000;
         const isMobile = window.innerWidth <= 768;
         
         if (shouldShow) {
             if (isMobile) {
-                bannerMobile.style.display = 'block';
-                bannerDesktop.style.display = 'none';
+                bannerMobile.style.visibility = 'visible';
+                bannerMobile.style.bottom = '60px';
+                bannerDesktop.style.visibility = 'hidden';
+                bannerDesktop.style.bottom = '-200px';
             } else {
-                bannerDesktop.style.display = 'block';
-                bannerMobile.style.display = 'none';
+                bannerDesktop.style.visibility = 'visible';
+                bannerDesktop.style.bottom = '60px';
+                bannerMobile.style.visibility = 'hidden';
+                bannerMobile.style.bottom = '-200px';
             }
         } else {
-            bannerDesktop.style.display = 'none';
-            bannerMobile.style.display = 'none';
+            bannerDesktop.style.visibility = 'hidden';
+            bannerDesktop.style.bottom = '-200px';
+            bannerMobile.style.visibility = 'hidden';
+            bannerMobile.style.bottom = '-200px';
         }
     }
     
