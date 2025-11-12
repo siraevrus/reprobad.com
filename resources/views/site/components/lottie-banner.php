@@ -6,7 +6,7 @@
         <dotlottie-wc 
             src="images/weUkdnuK0x.lottie" 
             speed="1" 
-            style="width:100%;aspect-ratio:1440 / 120;" 
+            style="position: relative;top: 50%;left: 0;width: 100%;transform: translateY(-50%);" 
             mode="forward" 
             loop 
             autoplay>
@@ -39,6 +39,13 @@
     }
     #lottie-banner {
         display: block;
+    }
+    #lottie-banner a {
+        display: block;
+        overflow: hidden;
+        aspect-ratio: 1440/120;
+        width: 100%;
+        position: relative;
     }
     #lottie-banner-mobile {
         display: none;
