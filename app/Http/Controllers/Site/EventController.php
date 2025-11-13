@@ -12,10 +12,11 @@ class EventController extends Controller
 {
     public function index(Request $request): View
     {
-        // Исключаем большие поля (content, images) из запроса для оптимизации памяти
-        // Важно: поля content и images НЕ загружаются, что значительно снижает потребление памяти
+        // Исключаем большие поля (content, images, image, logo) из запроса для оптимизации памяти
+        // Поля image и logo содержат base64-данные размером до 9.6 МБ, что вызывает ошибки памяти
+        // Эти поля загружаются только на странице детального просмотра (show)
         $resources = Event::where('active', 1)
-            ->select('id', 'title', 'description', 'image', 'logo', 'dates', 'address', 'alias', 'sort', 'created_at', 'category');
+            ->select('id', 'title', 'description', 'dates', 'address', 'alias', 'sort', 'created_at', 'category');
 
         // Фильтрация по категории
         if ($request->get('category')) {

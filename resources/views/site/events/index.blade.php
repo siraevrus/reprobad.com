@@ -30,9 +30,8 @@
                     </div>
                     <div class="events-card-body">
                         <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-title">{{ $resource->title }}</a>
-                        @if($resource->image)
-                        <img src="{{ $resource->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 27vw" srcset="{{ $resource->logo }} 500w, {{ $resource->image }} 800w, {{ $resource->image }} 1080w, {{ $resource->image }} 1440w" class="events-card-image">
-                        @endif
+                        {{-- Изображения исключены из запроса для оптимизации памяти (содержат base64 до 9.6 МБ) --}}
+                        {{-- Изображения загружаются только на странице детального просмотра --}}
                         <div class="events-card-text">{!! $resource->description !!}</div>
                         {{-- <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-button w-button">Подробнее —&gt;</a> --}}
                     </div>
