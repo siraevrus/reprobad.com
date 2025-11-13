@@ -29,7 +29,10 @@ class EventController extends Controller
             });
         }
 
-        $resources = $resources->orderBy('sort', 'desc')->paginate(7);
+        // Исключаем большие поля (content, images) из запроса для оптимизации памяти
+        $resources = $resources->select('id', 'title', 'description', 'image', 'logo', 'dates', 'address', 'alias', 'sort', 'created_at')
+            ->orderBy('sort', 'desc')
+            ->paginate(7);
 
         $monthsOrder = [
             'январь'   => 1,
@@ -46,16 +49,16 @@ class EventController extends Controller
             'декабрь'  => 12,
         ];
 
-        $allEvents = Event::where('active', 1)->get();
-
+        // Оптимизация: получаем категории и их количество через группировку в БД, без загрузки всех событий
         $categories = Event::where('active', 1)
-            ->distinct()
-            ->pluck('category')
-            ->filter()
-            ->map(function ($category) use ($allEvents) {
+            ->selectRaw('category, COUNT(*) as count')
+            ->whereNotNull('category')
+            ->groupBy('category')
+            ->get()
+            ->map(function ($item) {
                 return [
-                    'name'  => $category,
-                    'count' => $allEvents->where('category', $category)->count()
+                    'name'  => $item->category,
+                    'count' => $item->count
                 ];
             })
             ->sortByDesc(function ($item) use ($monthsOrder) {
