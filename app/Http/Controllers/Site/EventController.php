@@ -12,27 +12,25 @@ class EventController extends Controller
 {
     public function index(Request $request): View
     {
-        $resources = Event::where('active', 1);
+        // Исключаем большие поля (content, images) из запроса для оптимизации памяти
+        $resources = Event::where('active', 1)
+            ->select('id', 'title', 'description', 'image', 'logo', 'dates', 'address', 'alias', 'sort', 'created_at', 'category');
 
         // Фильтрация по категории
         if ($request->get('category')) {
             $resources = $resources->where('category', $request->get('category'));
         }
 
-        // Поиск
+        // Поиск - используем только поля, которые есть в select
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
             $resources = $resources->where(function($q) use ($query) {
                 $q->where('title', 'like', '%' . $query . '%')
-                  ->orWhere('description', 'like', '%' . $query . '%')
-                  ->orWhere('content', 'like', '%' . $query . '%');
+                  ->orWhere('description', 'like', '%' . $query . '%');
             });
         }
 
-        // Исключаем большие поля (content, images) из запроса для оптимизации памяти
-        $resources = $resources->select('id', 'title', 'description', 'image', 'logo', 'dates', 'address', 'alias', 'sort', 'created_at')
-            ->orderBy('sort', 'desc')
-            ->paginate(7);
+        $resources = $resources->orderBy('sort', 'desc')->paginate(7);
 
         $monthsOrder = [
             'январь'   => 1,
@@ -50,15 +48,17 @@ class EventController extends Controller
         ];
 
         // Оптимизация: получаем категории и их количество через группировку в БД, без загрузки всех событий
+        // Используем только поле category для минимизации данных
         $categories = Event::where('active', 1)
             ->selectRaw('category, COUNT(*) as count')
             ->whereNotNull('category')
             ->groupBy('category')
+            ->orderBy('category', 'desc') // Предварительная сортировка в БД
             ->get()
             ->map(function ($item) {
                 return [
                     'name'  => $item->category,
-                    'count' => $item->count
+                    'count' => (int)$item->count
                 ];
             })
             ->sortByDesc(function ($item) use ($monthsOrder) {
