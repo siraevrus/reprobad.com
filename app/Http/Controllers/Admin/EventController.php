@@ -34,7 +34,10 @@ class EventController extends Controller
 
     public function index(): View|JsonResponse
     {
-        $resources = Event::sorted()->paginate(env('PAGINATION_LIMIT', 20));
+        // Загружаем только нужные поля, исключая большие (content, images)
+        $resources = Event::sorted()
+            ->select('id', 'title', 'image', 'created_at', 'sort', 'active', 'home', 'alias')
+            ->paginate(env('PAGINATION_LIMIT', 20));
 
         if(request()->ajax()) {
             return response()->json($resources);
@@ -185,12 +188,20 @@ class EventController extends Controller
      */
     protected function initializeSortValues(): void
     {
-        $products = Event::all();
-        if ($products->every(fn($product) => $product->sort === 0)) {
-            foreach ($products as $index => $product) {
-                $product->sort = $index + 1; // Уникальное значение для каждого элемента
-                $product->save();
-            }
+        // Проверяем только количество элементов с sort = 0, без загрузки всех данных
+        $countWithZeroSort = Event::where('sort', 0)->count();
+        $totalCount = Event::count();
+        
+        if ($countWithZeroSort === $totalCount && $totalCount > 0) {
+            // Используем chunk для обработки больших объемов данных по частям
+            $index = 0;
+            Event::orderBy('id')->chunk(100, function ($events) use (&$index) {
+                foreach ($events as $event) {
+                    $event->sort = $index + 1;
+                    $event->save();
+                    $index++;
+                }
+            });
         }
     }
 }
