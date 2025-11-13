@@ -34,9 +34,10 @@ class EventController extends Controller
 
     public function index(): View|JsonResponse
     {
-        // Загружаем только нужные поля, исключая большие (content, images)
+        // Загружаем только нужные поля, исключая большие (content, images, image, logo)
+        // Поля image и logo содержат base64-данные размером до 9.6 МБ, что вызывает ошибки памяти
         $resources = Event::sorted()
-            ->select('id', 'title', 'image', 'created_at', 'sort', 'active', 'home', 'alias')
+            ->select('id', 'title', 'created_at', 'sort', 'active', 'home', 'alias')
             ->paginate(env('PAGINATION_LIMIT', 20));
 
         if(request()->ajax()) {
