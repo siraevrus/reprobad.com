@@ -181,13 +181,32 @@
 @endsection
 
 @section('scripts')
-    <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script>
+    {{-- Временно отключаем внешний скрипт, так как он конфликтует с нашим кодом --}}
+    {{-- <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script> --}}
     <style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
         @media screen and (max-width:767px) {
             .product-table-cell:not(:first-child) { display: none; }
             .product-table-cell.active { display: block; }
+        }
+        /* Исправление проблемы с кликабельностью кнопок */
+        .product-body {
+            position: relative;
+            z-index: 10;
+        }
+        .product-options {
+            position: relative;
+            z-index: 10;
+        }
+        .product-options-tab {
+            position: relative;
+            z-index: 11;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+        .product-head-image {
+            pointer-events: none;
         }
     </style>
     <script>
@@ -315,5 +334,157 @@
             z-index: 100;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обработчик для кнопок вкладок продукта
+            function initProductTabs() {
+                // Проверяем наличие элементов
+                const tabs = document.querySelectorAll('.product-options-tab');
+                if (tabs.length === 0) {
+                    console.log('Кнопки вкладок не найдены, повторная попытка через 100мс');
+                    setTimeout(initProductTabs, 100);
+                    return;
+                }
+                
+                if (typeof $ !== 'undefined') {
+                    // Удаляем все старые обработчики
+                    $('.product-options-tab').off('click tap');
+                    
+                    // Добавляем обработчики напрямую к элементам (не через делегирование)
+                    $('.product-options-tab').each(function() {
+                        const $tab = $(this);
+                        
+                        // Удаляем старые обработчики
+                        $tab.off('click tap');
+                        
+                        // Добавляем новый обработчик
+                        $tab.on('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            
+                            const $clickedTab = $(this);
+                            const needClose = $clickedTab.hasClass('active');
+                            const $wrap = $clickedTab.closest('.product-body');
+                            
+                            if (!$wrap.length) {
+                                console.log('Не найден .product-body');
+                                return false;
+                            }
+                            
+                            // Убираем активный класс со всех кнопок и контента
+                            $wrap.find('.product-options-tab, .product-options-tab-content').removeClass('active');
+                            
+                            // Если кнопка уже была активна, просто закрываем
+                            if (needClose) return false;
+                            
+                            // Находим следующий элемент контента после кнопки
+                            const $nextContent = $clickedTab.next('.product-options-tab-content');
+                            
+                            if ($nextContent.length) {
+                                $clickedTab.addClass('active');
+                                $nextContent.addClass('active');
+                            } else {
+                                // Fallback: используем индекс
+                                const $tabs = $wrap.find('.product-options-tab');
+                                const $tabsContent = $wrap.find('.product-options-tab-content');
+                                const index = $tabs.index($clickedTab);
+                                
+                                if (index >= 0 && index < $tabsContent.length) {
+                                    $clickedTab.addClass('active');
+                                    $tabsContent.eq(index).addClass('active');
+                                }
+                            }
+                            
+                            return false;
+                        });
+                    });
+                    
+                    // Активируем первую вкладку по умолчанию
+                    $('.product-body').each(function() {
+                        const $wrap = $(this);
+                        const $firstTab = $wrap.find('.product-options-tab').first();
+                        const $firstContent = $wrap.find('.product-options-tab-content').first();
+                        if ($firstTab.length && $firstContent.length) {
+                            $firstTab.addClass('active');
+                            $firstContent.addClass('active');
+                        }
+                    });
+                } else {
+                    // Fallback на vanilla JS
+                    document.querySelectorAll('.product-options-tab').forEach(function(tab) {
+                        // Удаляем старые обработчики
+                        const newTab = tab.cloneNode(true);
+                        tab.parentNode.replaceChild(newTab, tab);
+                        
+                        newTab.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const productBody = this.closest('.product-body');
+                            if (!productBody) return;
+                            
+                            const needClose = this.classList.contains('active');
+                            const tabs = Array.from(productBody.querySelectorAll('.product-options-tab'));
+                            const tabsContent = Array.from(productBody.querySelectorAll('.product-options-tab-content'));
+                            
+                            tabs.forEach(function(t) { t.classList.remove('active'); });
+                            tabsContent.forEach(function(c) { c.classList.remove('active'); });
+                            
+                            if (needClose) return;
+                            
+                            // Находим следующий элемент контента после кнопки
+                            let nextElement = this.nextElementSibling;
+                            while (nextElement && !nextElement.classList.contains('product-options-tab-content')) {
+                                nextElement = nextElement.nextElementSibling;
+                            }
+                            
+                            if (nextElement && nextElement.classList.contains('product-options-tab-content')) {
+                                this.classList.add('active');
+                                nextElement.classList.add('active');
+                            } else {
+                                // Fallback: используем индекс
+                                const index = tabs.indexOf(this);
+                                if (index >= 0 && index < tabsContent.length) {
+                                    this.classList.add('active');
+                                    tabsContent[index].classList.add('active');
+                                }
+                            }
+                        });
+                    });
+                    
+                    document.querySelectorAll('.product-body').forEach(function(productBody) {
+                        const firstTab = productBody.querySelector('.product-options-tab');
+                        const tabsContent = Array.from(productBody.querySelectorAll('.product-options-tab-content'));
+                        if (firstTab && tabsContent.length > 0) {
+                            firstTab.classList.add('active');
+                            tabsContent[0].classList.add('active');
+                        }
+                    });
+                }
+            }
+            
+            // Выполняем после полной загрузки страницы
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(initProductTabs, 300);
+                });
+            } else {
+                setTimeout(initProductTabs, 300);
+            }
+            
+            // Также выполняем после загрузки Webflow, если он есть
+            if (typeof Webflow !== 'undefined') {
+                Webflow.push(function() {
+                    setTimeout(initProductTabs, 100);
+                });
+            }
+            
+            // Дополнительная проверка после полной загрузки
+            window.addEventListener('load', function() {
+                setTimeout(initProductTabs, 500);
+            });
+        });
+    </script>
 
 @endsection

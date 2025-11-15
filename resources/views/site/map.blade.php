@@ -274,17 +274,17 @@
         }
         
         function handleTabClick(e) {
+            // Обрабатываем только click события (на мобильных ждем реальный клик после touchstart)
+            if (e.type !== 'click') {
+                return;
+            }
+
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
             
             var targetTab = this.getAttribute('data-w-tab');
             console.log('Клик по вкладке:', targetTab, 'Тип события:', e.type);
-            
-            // Обрабатываем только click события
-            if (e.type !== 'click') {
-                return;
-            }
             
             if (!targetTab) {
                 console.warn('Не найден атрибут data-w-tab');
@@ -334,8 +334,27 @@
                 setTimeout(function() {
                     console.log('Обновляем размер карты');
                     window.mapInstance.container.fitToViewport();
+                    ensureMapVisibility();
                 }, 400);
+            } else if (targetTab === 'Карта') {
+                ensureMapVisibility();
             }
+        }
+
+        function ensureMapVisibility() {
+            var mapElement = document.getElementById('map');
+            if (!mapElement) return;
+
+            var desiredHeight = window.innerWidth < 768 ? Math.max(window.innerHeight * 0.65, 360) : 600;
+            mapElement.style.minHeight = desiredHeight + 'px';
+            mapElement.style.height = desiredHeight + 'px';
+            mapElement.style.width = '100%';
+
+            // Чтобы на мобильных карта была видна сразу
+            mapElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
         
         // Множественная инициализация

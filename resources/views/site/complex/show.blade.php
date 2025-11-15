@@ -171,7 +171,8 @@
 @endsection
 
 @section('scripts')
-    <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script>
+    {{-- Временно отключаем внешний скрипт, так как он конфликтует с нашим кодом --}}
+    {{-- <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.min.js" integrity="sha512-03Ucfdj4I8Afv+9P/c9zkF4sBBGlf68zzr/MV+ClrqVCBXWAsTEjIoGCMqxhUxv1DGivK7Bm1IQd8iC4v7X2bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         .product-options-tab-content { display: none; }
@@ -179,6 +180,30 @@
         @media screen and (max-width:767px) {
             .product-table-cell:not(:first-child) { display: none; }
             .product-table-cell.active { display: block; }
+        }
+        /* Исправление проблемы с кликабельностью кнопок */
+        .product-body {
+            position: relative;
+            z-index: 10;
+        }
+        .product-options {
+            position: relative;
+            z-index: 10;
+        }
+        .product-options-tab {
+            position: relative;
+            z-index: 11;
+            pointer-events: auto !important;
+            cursor: pointer !important;
+        }
+        .product-head-image {
+            pointer-events: none;
+        }
+        .product-head-image .slider-block,
+        .product-head-image .main-slider,
+        .product-head-image [data-controls],
+        .product-head-image .tns-controls {
+            pointer-events: auto;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css" />
@@ -217,17 +242,33 @@
             margin: auto;
             width: 100px;
             height: 50px;
+            cursor: pointer;
+            pointer-events: auto;
         }
         [data-controls="next"] {
             right: 0;
         }
         [data-controls="prev"]:after {
-            content: "<";
-            font-size: 40px;
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/left-arrow.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
         }
         [data-controls="next"]:after {
-            content: ">";
-            font-size: 40px;
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-image: url('/images/right-arrow.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            pointer-events: none;
         }
         @media (max-width: 600px) {
             [data-controls="prev"],
@@ -263,6 +304,155 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.product-head-image').forEach(el => {
                 el.classList.add('visible');
+            });
+
+            // Обработчик для кнопок вкладок продукта
+            function initProductTabs() {
+                // Проверяем наличие элементов
+                const tabs = document.querySelectorAll('.product-options-tab');
+                if (tabs.length === 0) {
+                    console.log('Кнопки вкладок не найдены, повторная попытка через 100мс');
+                    setTimeout(initProductTabs, 100);
+                    return;
+                }
+                
+                if (typeof $ !== 'undefined') {
+                    // Удаляем все старые обработчики
+                    $('.product-options-tab').off('click tap');
+                    
+                    // Добавляем обработчики напрямую к элементам (не через делегирование)
+                    $('.product-options-tab').each(function() {
+                        const $tab = $(this);
+                        
+                        // Удаляем старые обработчики
+                        $tab.off('click tap');
+                        
+                        // Добавляем новый обработчик
+                        $tab.on('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            
+                            const $clickedTab = $(this);
+                            const needClose = $clickedTab.hasClass('active');
+                            const $wrap = $clickedTab.closest('.product-body');
+                            
+                            if (!$wrap.length) {
+                                console.log('Не найден .product-body');
+                                return false;
+                            }
+                            
+                            // Убираем активный класс со всех кнопок и контента
+                            $wrap.find('.product-options-tab, .product-options-tab-content').removeClass('active');
+                            
+                            // Если кнопка уже была активна, просто закрываем
+                            if (needClose) return false;
+                            
+                            // Находим следующий элемент контента после кнопки
+                            const $nextContent = $clickedTab.next('.product-options-tab-content');
+                            
+                            if ($nextContent.length) {
+                                $clickedTab.addClass('active');
+                                $nextContent.addClass('active');
+                            } else {
+                                // Fallback: используем индекс
+                                const $tabs = $wrap.find('.product-options-tab');
+                                const $tabsContent = $wrap.find('.product-options-tab-content');
+                                const index = $tabs.index($clickedTab);
+                                
+                                if (index >= 0 && index < $tabsContent.length) {
+                                    $clickedTab.addClass('active');
+                                    $tabsContent.eq(index).addClass('active');
+                                }
+                            }
+                            
+                            return false;
+                        });
+                    });
+                    
+                    // Активируем первую вкладку по умолчанию
+                    $('.product-body').each(function() {
+                        const $wrap = $(this);
+                        const $firstTab = $wrap.find('.product-options-tab').first();
+                        const $firstContent = $wrap.find('.product-options-tab-content').first();
+                        if ($firstTab.length && $firstContent.length) {
+                            $firstTab.addClass('active');
+                            $firstContent.addClass('active');
+                        }
+                    });
+                } else {
+                    // Fallback на vanilla JS
+                    document.querySelectorAll('.product-options-tab').forEach(function(tab) {
+                        // Удаляем старые обработчики
+                        const newTab = tab.cloneNode(true);
+                        tab.parentNode.replaceChild(newTab, tab);
+                        
+                        newTab.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const productBody = this.closest('.product-body');
+                            if (!productBody) return;
+                            
+                            const needClose = this.classList.contains('active');
+                            const tabs = Array.from(productBody.querySelectorAll('.product-options-tab'));
+                            const tabsContent = Array.from(productBody.querySelectorAll('.product-options-tab-content'));
+                            
+                            tabs.forEach(function(t) { t.classList.remove('active'); });
+                            tabsContent.forEach(function(c) { c.classList.remove('active'); });
+                            
+                            if (needClose) return;
+                            
+                            // Находим следующий элемент контента после кнопки
+                            let nextElement = this.nextElementSibling;
+                            while (nextElement && !nextElement.classList.contains('product-options-tab-content')) {
+                                nextElement = nextElement.nextElementSibling;
+                            }
+                            
+                            if (nextElement && nextElement.classList.contains('product-options-tab-content')) {
+                                this.classList.add('active');
+                                nextElement.classList.add('active');
+                            } else {
+                                // Fallback: используем индекс
+                                const index = tabs.indexOf(this);
+                                if (index >= 0 && index < tabsContent.length) {
+                                    this.classList.add('active');
+                                    tabsContent[index].classList.add('active');
+                                }
+                            }
+                        });
+                    });
+                    
+                    document.querySelectorAll('.product-body').forEach(function(productBody) {
+                        const firstTab = productBody.querySelector('.product-options-tab');
+                        const tabsContent = Array.from(productBody.querySelectorAll('.product-options-tab-content'));
+                        if (firstTab && tabsContent.length > 0) {
+                            firstTab.classList.add('active');
+                            tabsContent[0].classList.add('active');
+                        }
+                    });
+                }
+            }
+            
+            // Выполняем после полной загрузки страницы
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(initProductTabs, 300);
+                });
+            } else {
+                setTimeout(initProductTabs, 300);
+            }
+            
+            // Также выполняем после загрузки Webflow, если он есть
+            if (typeof Webflow !== 'undefined') {
+                Webflow.push(function() {
+                    setTimeout(initProductTabs, 100);
+                });
+            }
+            
+            // Дополнительная проверка после полной загрузки
+            window.addEventListener('load', function() {
+                setTimeout(initProductTabs, 500);
             });
         });
 
