@@ -2,7 +2,7 @@
 <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
-    <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
+    <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
         <dotlottie-wc 
             id="lottie-desktop"
             src="images/weUkdnuK0x.lottie" 
@@ -17,7 +17,7 @@
 
 <div id="lottie-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
-    <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank">
+    <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
         <dotlottie-wc
             id="lottie-mobile"
             src="images/qk8EQOxYwW.lottie"
