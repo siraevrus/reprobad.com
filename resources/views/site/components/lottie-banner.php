@@ -116,7 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function hideBanners() {
         bannerDesktop.style.opacity = '0';
+        bannerDesktop.style.visibility = 'hidden';
+        bannerDesktop.style.bottom = '-200px';
         bannerMobile.style.opacity = '0';
+        bannerMobile.style.visibility = 'hidden';
+        bannerMobile.style.bottom = '-200px';
         window.closedBanner = true;
     }
     
