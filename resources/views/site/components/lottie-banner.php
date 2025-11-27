@@ -69,6 +69,10 @@
     }
     #lottie-banner .close,
     #lottie-banner-mobile .close {
+        pointer-events: auto;
+    }
+    #lottie-banner .close,
+    #lottie-banner-mobile .close {
         position: absolute;
         top: -50px;
         right: 15px;
