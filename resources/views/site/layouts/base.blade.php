@@ -182,7 +182,7 @@
             <a href="events" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
         </div>
         @if(!isset($isHome))
-            <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_top_button&utm_campaign=eapteka" class="navbar-buy-button w-button">Купить</a>
+            <a href="https://www.eapteka.ru/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_top_button&utm_campaign=eapteka" class="navbar-buy-button w-button">Купить</a>
         @endif
         <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
             <div class="nav-dropdown-toggle w-dropdown-toggle">
