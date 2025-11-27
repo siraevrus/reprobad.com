@@ -39,17 +39,25 @@
     #lottie-banner-mobile a:hover {
         opacity: 1 !important;
     }
+    #lottie-banner {
+        pointer-events: none;
+    }
+    #lottie-banner-mobile {
+        pointer-events: none;
+    }
     #lottie-banner a {
         display: block;
         overflow: visible;
         aspect-ratio: 1440/120;
         width: 100%;
         position: relative;
+        pointer-events: auto;
     }
     #lottie-banner-mobile a {
         display: block;
         width: 100%;
         position: relative;
+        pointer-events: auto;
     }
     #lottie-banner,
     #lottie-banner-mobile {
