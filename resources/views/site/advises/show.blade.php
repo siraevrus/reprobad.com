@@ -40,6 +40,28 @@
                         @endif
                         {!! $resource->content ?? '' !!}
                     </div>
+                    <div class="article-actions" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e5e5; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+                        <div class="article-like" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <button type="button" 
+                                    id="like-button" 
+                                    data-advise-alias="{{ $resource->alias }}"
+                                    style="background: none; border: none; cursor: pointer; padding: 0.5rem; display: flex; align-items: center; gap: 0.5rem; transition: transform 0.2s;"
+                                    onmouseover="this.style.transform='scale(1.1)'"
+                                    onmouseout="this.style.transform='scale(1)'">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="like-icon">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+                                          fill="none" 
+                                          stroke="#999" 
+                                          stroke-width="2"
+                                          style="transition: all 0.2s;"/>
+                                </svg>
+                                <span id="like-count" style="font-size: 1rem; color: #333; font-weight: 500;">{{ $resource->likes_count ?? 0 }}</span>
+                            </button>
+                        </div>
+                        <div class="article-share" style="flex: 1;">
+                            <div class="ya-share2" data-theme="white" data-size="l" data-shape="round" data-services="vkontakte,telegram,odnoklassniki"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="side">
                     <div class="side-promo">
@@ -149,48 +171,97 @@
 @endsection
 
 @section('scripts')
-<style>
-    .input-error {
-        border: 1px solid red;
-    }
-</style>
-<script>
-    function app() {
-        return {
-            form: {
-                email: '',
-                agree: 1
-            },
-            errors: {
+    <script src="https://yastatic.net/share2/share.js"></script>
+    <style>
+        .input-error {
+            border: 1px solid red;
+        }
+    </style>
+    <script>
+        function app() {
+            return {
+                form: {
+                    email: '',
+                    agree: 1
+                },
+                errors: {
 
-            },
-            success: false,
+                },
+                success: false,
 
-            async submit() {
-                try {
-                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                    const response = await fetch('/forms/subscribe', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': token
-                        },
-                        body: JSON.stringify(this.form)
-                    });
+                async submit() {
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const response = await fetch('/forms/subscribe', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(this.form)
+                        });
 
-                    const data = await response.json();
-                    if (data.success) {
-                        this.errors = {};
-                        this.success = true;
-                    } else {
-                        this.errors = data.errors;
+                        const data = await response.json();
+                        if (data.success) {
+                            this.errors = {};
+                            this.success = true;
+                        } else {
+                            this.errors = data.errors;
+                        }
                     }
-                }
-                catch (e) {
-                    console.log(e)
+                    catch (e) {
+                        console.log(e)
+                    }
                 }
             }
         }
-    }
-</script>
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButton = document.getElementById('like-button');
+            const likeIcon = document.getElementById('like-icon');
+            const likeCount = document.getElementById('like-count');
+            let isLiked = false;
+
+            if (likeButton) {
+                likeButton.addEventListener('click', async function() {
+                    if (isLiked) {
+                        return; // Предотвращаем повторные клики
+                    }
+
+                    const adviseAlias = likeButton.getAttribute('data-advise-alias');
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    try {
+                        const response = await fetch(`/usefully-tips/${adviseAlias}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            isLiked = true;
+                            likeCount.textContent = data.likes_count;
+                            
+                            // Анимация иконки - заливка красным
+                            const path = likeIcon.querySelector('path');
+                            path.style.fill = '#e74c3c';
+                            path.style.stroke = '#e74c3c';
+                            
+                            // Анимация кнопки
+                            likeButton.style.transform = 'scale(1.2)';
+                            setTimeout(() => {
+                                likeButton.style.transform = 'scale(1)';
+                            }, 200);
+                        }
+                    } catch (e) {
+                        console.error('Ошибка при отправке лайка:', e);
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

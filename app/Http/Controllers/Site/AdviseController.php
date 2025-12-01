@@ -123,4 +123,18 @@ class AdviseController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function like($alias): JsonResponse
+    {
+        $advise = Advise::where('alias', $alias)
+            ->where('active', 1)
+            ->firstOrFail();
+
+        $advise->increment('likes_count');
+
+        return response()->json([
+            'success' => true,
+            'likes_count' => $advise->fresh()->likes_count
+        ]);
+    }
 }
