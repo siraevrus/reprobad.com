@@ -41,7 +41,7 @@
                         {!! $resource->content ?? '' !!}
                     </div>
                     <div class="article-share" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e5e5;">
-                        <div class="ya-share2" data-curtain data-services="vkontakte,telegram,whatsapp"></div>
+                        <div class="ya-share2" data-theme="white" data-size="m" data-services="vkontakte,telegram,odnoklassniki"></div>
                     </div>
                 </div>
                 <div class="side">
