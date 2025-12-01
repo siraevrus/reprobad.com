@@ -36,6 +36,11 @@
         opacity: 1 !important;
         visibility: visible !important;
     }
+    .map-info-overlay {
+        display: none !important;
+        pointer-events: none !important;
+        background: transparent !important;
+    }
 
     /* .map-section {
         background: #e6eff2;
