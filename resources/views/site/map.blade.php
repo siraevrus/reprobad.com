@@ -227,8 +227,6 @@
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script>
         // Первоначальная реализация переключения вкладок (усиленная)
-        var lastTouchTime = 0;
-
         function initTabSwitching() {
             console.log('Инициализируем переключение вкладок (усиленная версия)');
             
@@ -275,15 +273,24 @@
             });
         }
         
-        function activateTab(linkElement) {
-            var targetTab = linkElement.getAttribute('data-w-tab');
-            console.log('Активация вкладки:', targetTab);
+        function handleTabClick(e) {
+            // Обрабатываем только click события (на мобильных ждем реальный клик после touchstart)
+            if (e.type !== 'click') {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            var targetTab = this.getAttribute('data-w-tab');
+            console.log('Клик по вкладке:', targetTab, 'Тип события:', e.type);
             
             if (!targetTab) {
                 console.warn('Не найден атрибут data-w-tab');
                 return;
             }
-
+            
             // Получаем все вкладки и панели
             var allTabLinks = document.querySelectorAll('.map-tabs-link, a[data-w-tab], .w-tab-link');
             var allTabPanes = document.querySelectorAll('.w-tab-pane, [data-w-tab].w-tab-pane');
@@ -302,7 +309,7 @@
             });
             
             // Активируем текущую ссылку
-            linkElement.classList.add('w--current');
+            this.classList.add('w--current');
             
             // Показываем целевую панель с правильными стилями
             var targetPane = document.querySelector('[data-w-tab="' + targetTab + '"].w-tab-pane');
@@ -331,28 +338,6 @@
                 }, 400);
             } else if (targetTab === 'Карта') {
                 ensureMapVisibility();
-            }
-        }
-
-        function handleTabClick(e) {
-            if (e.type === 'touchstart') {
-                lastTouchTime = Date.now();
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                activateTab(this);
-                return;
-            }
-
-            if (e.type === 'click') {
-                if (Date.now() - lastTouchTime < 500) {
-                    console.log('Пропускаем дублирующий click после touch');
-                    return;
-                }
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                activateTab(this);
             }
         }
 
