@@ -274,8 +274,8 @@
         }
         
         function handleTabClick(e) {
-            // Обрабатываем только click события (на мобильных ждем реальный клик после touchstart)
-            if (e.type !== 'click') {
+            // Обрабатываем click и touchstart (для мобильных), все остальные события игнорируем
+            if (e.type !== 'click' && e.type !== 'touchstart') {
                 return;
             }
 
