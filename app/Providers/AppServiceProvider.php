@@ -25,8 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Проверяем существование таблицы config перед загрузкой данных
-        // Пропускаем в тестовом окружении, чтобы избежать ошибок подключения к БД
+        // Проверяем существование таблицы config перед загрузкой данных.
+        // В случае ошибок подключения к БД (например, при отсутствии настроек/миграций)
+        // просто пропускаем инициализацию, чтобы не ломать запуск приложения локально.
         try {
             if (!app()->environment('testing') && Schema::hasTable('config')) {
                 $configs = Config::all();
@@ -35,10 +36,9 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
         } catch (\Exception $e) {
-            // Игнорируем ошибки подключения к БД в тестовом окружении
-            if (!app()->environment('testing')) {
-                throw $e;
-            }
+            // Игнорируем любые ошибки подключения к БД на этапе бута приложения.
+            // При необходимости можно добавить логирование:
+            // logger()->warning('Config bootstrap failed', ['exception' => $e]);
         }
 
         //Paginator::useTailwind();

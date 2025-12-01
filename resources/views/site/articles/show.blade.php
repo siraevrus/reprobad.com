@@ -40,6 +40,9 @@
                         @endif
                         {!! $resource->content ?? '' !!}
                     </div>
+                    <div class="article-share" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e5e5;">
+                        <div class="ya-share2" data-curtain data-services="vkontakte,telegram,whatsapp"></div>
+                    </div>
                 </div>
                 <div class="side">
                     <div class="side-promo">
@@ -149,6 +152,7 @@
 @endsection
 
 @section('scripts')
+    <script src="https://yastatic.net/share2/share.js"></script>
     <style>
         .input-error {
             border: 1px solid red;
