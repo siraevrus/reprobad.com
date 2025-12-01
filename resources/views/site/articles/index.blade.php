@@ -8,7 +8,7 @@
                 @if(!request()->get('query'))
                     <h1 class="inner-h1"><strong>Статьи </strong>о совместной подготовке <br>к успешному зачатию, беременности <br>и улучшению здоровья</h1>
                 @else
-                    <h1 class="inner-h1"><strong>Найдено</strong> {{ $resources->count() }} материал(ов)</h1>
+                    <h1 class="inner-h1"><strong>Найдено</strong> {{ $resources->total() }} материал(ов)</h1>
                 @endif
                 <form action="{{ route('site.articles.index') }}" class="search w-form">
                     <input class="search-input w-input" value="{{ request()->get('query') }}" autocomplete="off" maxlength="256" name="query" placeholder="Искать статью…" type="search" id="search" required="">
@@ -47,11 +47,11 @@
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
-                                <a href="{{ route('site.articles.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
+                                <a href="{{ route($item->route_name ?? 'site.articles.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
                                 <div class="news-card-text">{!! $item->description !!}</div>
                             </div>
                             <div class="news-card-footer">
-                                <a href="{{ route('site.articles.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
+                                <a href="{{ route($item->route_name ?? 'site.articles.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
                                 <div class="card-date-time">
                                     <div class="card-date">{{ $item->published_at }}</div>
                                     <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="" class="clock-icon">

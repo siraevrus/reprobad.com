@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Models\Advise;
 use App\Models\Event;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,24 +15,63 @@ class ArticleController extends Controller
 {
     public function index(Request $request): View
     {
-        $resources = Article::where('active', 1);
-
-        // Фильтрация по категории
-        if ($request->get('category')) {
-            $resources = $resources->where('category', $request->get('category'));
-        }
-
-        // Поиск
+        // Если есть поисковый запрос, ищем в обоих разделах
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
-            $resources = $resources->where(function($q) use ($query) {
-                $q->where('title', 'like', '%' . $query . '%')
-                  ->orWhere('description', 'like', '%' . $query . '%')
-                  ->orWhere('content', 'like', '%' . $query . '%');
-            });
-        }
+            
+            // Поиск в статьях
+            $articles = Article::where('active', 1)
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'like', '%' . $query . '%')
+                      ->orWhere('description', 'like', '%' . $query . '%')
+                      ->orWhere('content', 'like', '%' . $query . '%');
+                })
+                ->get()
+                ->map(function($item) {
+                    $item->type = 'article';
+                    $item->route_name = 'site.articles.show';
+                    return $item;
+                });
+            
+            // Поиск в советах
+            $advises = Advise::where('active', 1)
+                ->where(function($q) use ($query) {
+                    $q->where('title', 'like', '%' . $query . '%')
+                      ->orWhere('description', 'like', '%' . $query . '%')
+                      ->orWhere('content', 'like', '%' . $query . '%');
+                })
+                ->get()
+                ->map(function($item) {
+                    $item->type = 'advise';
+                    $item->route_name = 'site.advises.show';
+                    return $item;
+                });
+            
+            // Объединяем результаты
+            $allResources = $articles->concat($advises)
+                ->sortByDesc('created_at')
+                ->values();
+            
+            // Ручная пагинация
+            $page = $request->get('page', 1);
+            $perPage = 11;
+            $currentPage = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
+            $items = $allResources->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            $resources = new \Illuminate\Pagination\LengthAwarePaginator($items, $allResources->count(), $perPage, $currentPage, [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]);
+        } else {
+            // Обычный режим - только статьи
+            $resources = Article::where('active', 1);
 
-        $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
+            // Фильтрация по категории
+            if ($request->get('category')) {
+                $resources = $resources->where('category', $request->get('category'));
+            }
+
+            $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
+        }
 
         // Получаем категории с подсчетом количества статей
         $allArticles = Article::where('active', 1)->get();

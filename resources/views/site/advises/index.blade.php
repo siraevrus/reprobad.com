@@ -8,7 +8,7 @@
                 @if(!request()->get('query'))
                     <h1 class="inner-h1"><strong>Советы</strong> о совместной подготовке к успешному зачатию, беременности и улучшении здоровья</h1>
                 @else
-                    <h1 class="inner-h1"><strong>Найдено</strong> {{ $resources->count() }} материал(ов)</h1>
+                    <h1 class="inner-h1"><strong>Найдено</strong> {{ $resources->total() }} материал(ов)</h1>
                 @endif
 
                 <form action="{{ route('site.advises.index') }}" class="search w-form">
@@ -45,14 +45,14 @@
                         <div class="news-card">
                             <div class="news-card-head">
                                 <img src="{{ $item->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
-                                <img src="{{ $item->ico->image ?? '' }}" loading="lazy" alt="" class="news-card-icon">
+                                <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
-                                <a href="{{ route('site.advises.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
+                                <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
                                 <div class="news-card-text">{!! $item->description ?? '' !!}</div>
                             </div>
                             <div class="news-card-footer">
-                                <a href="{{ route('site.advises.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
+                                <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
                                 <div class="card-date-time">
                                     <div class="card-date">{{ $item->published_at }}</div>
                                     <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="" class="clock-icon">
@@ -72,7 +72,7 @@
                                 </div>
                             @endif
                             <div class="card-body">
-                                <a href="{{ route('site.advises.show', $item->alias) }}" class="card-title">{{ $item->title }}</a>
+                                <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="card-title">{{ $item->title }}</a>
                                 <div class="card-text">{!! $item->description !!}</div>
                             </div>
                             <div class="card-footer">
@@ -80,7 +80,7 @@
                                 <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="" class="clock-icon">
                                     <div>{{ $item->time }}</div>
                                 </div>
-                                <a href="{{ route('site.advises.show', $item->alias) }}" class="card-link w-inline-block">
+                                <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="card-link w-inline-block">
                                     <div class="text-block">Читать</div>
                                     <div class="card-link-arrow">—&gt;</div>
                                 </a>
