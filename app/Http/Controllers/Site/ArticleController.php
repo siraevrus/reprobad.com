@@ -97,4 +97,18 @@ class ArticleController extends Controller
             'success' => true
         ]);
     }
+
+    public function like($alias): JsonResponse
+    {
+        $article = Article::where('alias', $alias)
+            ->where('active', 1)
+            ->firstOrFail();
+
+        $article->increment('likes_count');
+
+        return response()->json([
+            'success' => true,
+            'likes_count' => $article->fresh()->likes_count
+        ]);
+    }
 }
