@@ -20,7 +20,13 @@ class MapController extends Controller
             ->pluck('city')
             ->sort()
             ->values();
+        
+        $resource = (object)[
+            'title' => 'Карта',
+            'description' => 'Карта',
+        ];
+        $pageType = 'Map';
             
-        return view('site.map', compact('resources', 'cities'));
+        return view('site.map', compact('resources', 'cities', 'resource', 'pageType'));
     }
 }
