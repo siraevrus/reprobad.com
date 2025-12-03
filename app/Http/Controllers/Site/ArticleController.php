@@ -120,20 +120,34 @@ class ArticleController extends Controller
             })
             ->values();
 
-        // Формируем динамические SEO данные при фильтрации по категории
+        // Формируем динамические SEO данные при фильтрации по категории и пагинации
         $category = $request->get('category');
         $forceDynamic = false;
+        $currentPage = $resources->currentPage();
+        $lastPage = $resources->lastPage();
+        
+        // Проверяем, есть ли пагинация (не первая страница или больше одной страницы)
+        $hasPagination = $currentPage > 1 || $lastPage > 1;
+        
         if ($category && !$request->get('query')) {
             // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
+            $title = 'Статьи по теме: ' . $decodedCategory;
+            if ($hasPagination) {
+                $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
+            }
             $resource = (object)[
-                'title' => 'Статьи по теме: ' . $decodedCategory,
+                'title' => $title,
                 'description' => 'Статьи о совместной подготовке к беременности: ' . $decodedCategory
             ];
             $forceDynamic = true; // Принудительно используем динамические значения
         } else {
+            $title = 'Статьи и советы';
+            if ($hasPagination) {
+                $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
+            }
             $resource = (object)[
-                'title' => 'Статьи',
+                'title' => $title,
                 'description' => 'Статьи о подготовке к беременности'
             ];
         }

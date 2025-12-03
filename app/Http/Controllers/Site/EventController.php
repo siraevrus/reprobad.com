@@ -77,20 +77,34 @@ class EventController extends Controller
 
 
 
-        // Формируем динамические SEO данные при фильтрации по категории
+        // Формируем динамические SEO данные при фильтрации по категории и пагинации
         $category = $request->get('category');
         $forceDynamic = false;
+        $currentPage = $resources->currentPage();
+        $lastPage = $resources->lastPage();
+        
+        // Проверяем, есть ли пагинация (не первая страница или больше одной страницы)
+        $hasPagination = $currentPage > 1 || $lastPage > 1;
+        
         if ($category) {
             // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
+            $title = 'События и мероприятия: ' . $decodedCategory;
+            if ($hasPagination) {
+                $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
+            }
             $resource = (object)[
-                'title' => 'События и мероприятия: ' . $decodedCategory,
+                'title' => $title,
                 'description' => 'События и мероприятия посвященные теме репродуктологии: ' . $decodedCategory
             ];
             $forceDynamic = true; // Принудительно используем динамические значения
         } else {
+            $title = 'События и мероприятия';
+            if ($hasPagination) {
+                $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
+            }
             $resource = (object)[
-                'title' => 'События',
+                'title' => $title,
                 'description' => 'События о подготовке к беременности'
             ];
         }
