@@ -126,8 +126,8 @@ class ArticleController extends Controller
         $currentPage = $resources->currentPage();
         $lastPage = $resources->lastPage();
         
-        // Проверяем, есть ли пагинация (не первая страница или больше одной страницы)
-        $hasPagination = $currentPage > 1 || $lastPage > 1;
+        // Проверяем, есть ли пагинация (только если не первая страница)
+        $hasPagination = $currentPage > 1;
         
         if ($category && !$request->get('query')) {
             // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
@@ -145,6 +145,7 @@ class ArticleController extends Controller
             $title = 'Статьи и советы';
             if ($hasPagination) {
                 $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
+                $forceDynamic = true; // При пагинации используем динамические значения
             }
             $resource = (object)[
                 'title' => $title,
