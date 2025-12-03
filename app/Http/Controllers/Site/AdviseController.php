@@ -120,16 +120,29 @@ class AdviseController extends Controller
             })
             ->values();
 
-        $resource = (object)[
-            'title' => 'Полезные советы',
-            'description' => 'Полезные советы по подготовке к беременности'
-        ];
+        // Формируем динамические SEO данные при фильтрации по категории
+        $category = $request->get('category');
+        $forceDynamic = false;
+        if ($category && !$request->get('query')) {
+            // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
+            $decodedCategory = urldecode($category);
+            $resource = (object)[
+                'title' => 'Советы по теме: ' . $decodedCategory,
+                'description' => 'Советы о совместной подготовке к беременности: ' . $decodedCategory
+            ];
+            $forceDynamic = true; // Принудительно используем динамические значения
+        } else {
+            $resource = (object)[
+                'title' => 'Полезные советы',
+                'description' => 'Полезные советы по подготовке к беременности'
+            ];
+        }
         $pageType = 'Advise';
 
         // Передаем похожие по категориям в шаблон
         $similarByCategory = isset($similarByCategory) ? $similarByCategory : collect();
 
-        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory'));
+        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory', 'forceDynamic'));
     }
 
     public function show($alias): View
