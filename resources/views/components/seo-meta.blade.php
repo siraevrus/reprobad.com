@@ -5,51 +5,38 @@
     // При forceDynamic переопределяем только title и description динамическими значениями
     // keywords и og_image остаются из SEO таблицы
     if ($forceDynamic) {
-        $seoData['title'] = null;
-        $seoData['description'] = null;
-        $seoData['og_title'] = null;
-        $seoData['og_description'] = null;
+        // Используем динамические значения вместо данных из таблицы
+        $finalTitle = $defaultTitle;
+        $finalDescription = $defaultDescription;
+        $finalOgTitle = $defaultTitle;
+        $finalOgDescription = $defaultDescription;
+    } else {
+        // Используем данные из таблицы или fallback на динамические
+        $finalTitle = $seoData['title'] ?? $defaultTitle;
+        $finalDescription = $seoData['description'] ?? $defaultDescription;
+        $finalOgTitle = $seoData['og_title'] ?? $seoData['title'] ?? $defaultTitle;
+        $finalOgDescription = $seoData['og_description'] ?? $seoData['description'] ?? $defaultDescription;
     }
 @endphp
 
-@if($forceDynamic && $defaultTitle)
-    <title>{{ $defaultTitle }}</title>
-@elseif($seoData['title'])
-    <title>{{ $seoData['title'] }}</title>
-@elseif($defaultTitle)
-    <title>{{ $defaultTitle }}</title>
+@if($finalTitle)
+    <title>{{ $finalTitle }}</title>
 @endif
 
-@if($forceDynamic && $defaultDescription)
-    <meta name="description" content="{{ $defaultDescription }}">
-@elseif($seoData['description'])
-    <meta name="description" content="{{ $seoData['description'] }}">
-@elseif($defaultDescription)
-    <meta name="description" content="{{ $defaultDescription }}">
+@if($finalDescription)
+    <meta name="description" content="{{ $finalDescription }}">
 @endif
 
 @if($seoData['keywords'])
     <meta name="keywords" content="{{ $seoData['keywords'] }}">
 @endif
 
-@if($forceDynamic && $defaultTitle)
-    <meta property="og:title" content="{{ $defaultTitle }}">
-@elseif($seoData['og_title'])
-    <meta property="og:title" content="{{ $seoData['og_title'] }}">
-@elseif($seoData['title'])
-    <meta property="og:title" content="{{ $seoData['title'] }}">
-@elseif($defaultTitle)
-    <meta property="og:title" content="{{ $defaultTitle }}">
+@if($finalOgTitle)
+    <meta property="og:title" content="{{ $finalOgTitle }}">
 @endif
 
-@if($forceDynamic && $defaultDescription)
-    <meta property="og:description" content="{{ $defaultDescription }}">
-@elseif($seoData['og_description'])
-    <meta property="og:description" content="{{ $seoData['og_description'] }}">
-@elseif($seoData['description'])
-    <meta property="og:description" content="{{ $seoData['description'] }}">
-@elseif($defaultDescription)
-    <meta property="og:description" content="{{ $defaultDescription }}">
+@if($finalOgDescription)
+    <meta property="og:description" content="{{ $finalOgDescription }}">
 @endif
 
 @if($seoData['og_image'])

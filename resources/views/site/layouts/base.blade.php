@@ -7,7 +7,7 @@
         <x-seo-meta
             :pageType="$pageType"
             :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
-            :defaultDescription="$resource->seo_description ?? ''"
+            :defaultDescription="$resource->seo_description ?? $resource->description ?? ''"
             :forceDynamic="$forceDynamic ?? false"
         />
     @elseif(isset($resource))
