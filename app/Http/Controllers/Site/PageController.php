@@ -31,10 +31,11 @@ class PageController extends Controller
 
     public function contacts(): View
     {
-        $resource = [
+        $resource = (object)[
             'title' => 'Контакты',
             'description' => 'Контакты',
         ];
-        return view('site.contacts', compact('resource'));
+        $pageType = 'Contacts';
+        return view('site.contacts', compact('resource', 'pageType'));
     }
 }
