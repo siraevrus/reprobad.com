@@ -20,20 +20,20 @@
                 </div>
             </div>
             <div class="items-wrap gap-0">
-                @foreach($resources as $resource)
+                @foreach($resources as $event)
                 <div class="events-card">
                     <div class="events-card-head">
-                        <div class="events-card-date">{{ $resource->dates }} </div>
+                        <div class="events-card-date">{{ $event->dates }} </div>
                         <div class="events-card-place">
-                            <div class="events-card-city">{!! $resource->address !!}</div>
+                            <div class="events-card-city">{!! $event->address !!}</div>
                         </div>
                     </div>
                     <div class="events-card-body">
-                        <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-title">{{ $resource->title }}</a>
+                        <a href="{{ route('site.events.show', $event->alias) }}" class="events-card-title">{{ $event->title }}</a>
                         {{-- Изображения исключены из запроса для оптимизации памяти (содержат base64 до 9.6 МБ) --}}
                         {{-- Изображения загружаются только на странице детального просмотра --}}
-                        <div class="events-card-text">{!! $resource->description !!}</div>
-                        {{-- <a href="{{ route('site.events.show', $resource->alias) }}" class="events-card-button w-button">Подробнее —&gt;</a> --}}
+                        <div class="events-card-text">{!! $event->description !!}</div>
+                        {{-- <a href="{{ route('site.events.show', $event->alias) }}" class="events-card-button w-button">Подробнее —&gt;</a> --}}
                     </div>
                 </div>
                 @endforeach
