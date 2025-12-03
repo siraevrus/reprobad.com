@@ -72,7 +72,7 @@ class AdviseController extends Controller
             // Объединяем результаты по категориям (отдельно для блока "Похожие")
             $similarByCategory = $articlesByCategory->concat($advisesByCategory)
                 ->sortByDesc('created_at')
-                ->take(6)
+                ->take(2)
                 ->values();
             
             // Объединяем все результаты поиска (текст + категории, исключая дубликаты по alias)
