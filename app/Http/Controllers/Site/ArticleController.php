@@ -120,16 +120,29 @@ class ArticleController extends Controller
             })
             ->values();
 
-        $resource = (object)[
-            'title' => 'Статьи',
-            'description' => 'Статьи о подготовке к беременности'
-        ];
+        // Формируем динамические SEO данные при фильтрации по категории
+        $category = $request->get('category');
+        $forceDynamic = false;
+        if ($category && !$request->get('query')) {
+            // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
+            $decodedCategory = urldecode($category);
+            $resource = (object)[
+                'title' => 'Статьи по теме: ' . $decodedCategory,
+                'description' => 'Статьи о совместной подготовке к беременности: ' . $decodedCategory
+            ];
+            $forceDynamic = true; // Принудительно используем динамические значения
+        } else {
+            $resource = (object)[
+                'title' => 'Статьи',
+                'description' => 'Статьи о подготовке к беременности'
+            ];
+        }
         $pageType = 'Article';
 
         // Передаем похожие по категориям в шаблон
         $similarByCategory = isset($similarByCategory) ? $similarByCategory : collect();
 
-        return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory'));
+        return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory', 'forceDynamic'));
     }
 
     public function show($alias): View
