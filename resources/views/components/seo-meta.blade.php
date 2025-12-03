@@ -1,10 +1,13 @@
 @props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'forceDynamic' => false])
 
 @php
+    // Принудительно приводим forceDynamic к булевому типу
+    $forceDynamic = (bool) $forceDynamic;
+    
     $seoData = \App\Services\SeoService::getMetaTags($pageType);
     // При forceDynamic переопределяем только title и description динамическими значениями
     // keywords и og_image остаются из SEO таблицы
-    if ($forceDynamic) {
+    if ($forceDynamic && !empty($defaultTitle)) {
         // Используем динамические значения вместо данных из таблицы
         $finalTitle = $defaultTitle;
         $finalDescription = $defaultDescription;

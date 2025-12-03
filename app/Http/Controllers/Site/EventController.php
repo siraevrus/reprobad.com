@@ -81,6 +81,7 @@ class EventController extends Controller
         $category = $request->get('category');
         $forceDynamic = false;
         if ($category) {
+            // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
             $resource = (object)[
                 'title' => 'События и мероприятия: ' . $decodedCategory,
