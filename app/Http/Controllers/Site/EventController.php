@@ -77,13 +77,25 @@ class EventController extends Controller
 
 
 
-        $resource = [
-            'title' => 'События',
-            'description' => 'События о подготовке к беременности'
-        ];
+        // Формируем динамические SEO данные при фильтрации по категории
+        $category = $request->get('category');
+        $forceDynamic = false;
+        if ($category) {
+            $decodedCategory = urldecode($category);
+            $resource = (object)[
+                'title' => 'События и мероприятия: ' . $decodedCategory,
+                'description' => 'События и мероприятия посвященные теме репродуктологии: ' . $decodedCategory
+            ];
+            $forceDynamic = true; // Принудительно используем динамические значения
+        } else {
+            $resource = (object)[
+                'title' => 'События',
+                'description' => 'События о подготовке к беременности'
+            ];
+        }
         $pageType = 'Event';
 
-        return view('site.events.index', compact('resources', 'categories', 'resource', 'pageType'));
+        return view('site.events.index', compact('resources', 'categories', 'resource', 'pageType', 'forceDynamic'));
     }
 
     public function show($alias): View

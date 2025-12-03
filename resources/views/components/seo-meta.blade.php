@@ -1,16 +1,28 @@
-@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null])
+@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'forceDynamic' => false])
 
 @php
     $seoData = \App\Services\SeoService::getMetaTags($pageType);
+    // При forceDynamic переопределяем только title и description динамическими значениями
+    // keywords и og_image остаются из SEO таблицы
+    if ($forceDynamic) {
+        $seoData['title'] = null;
+        $seoData['description'] = null;
+        $seoData['og_title'] = null;
+        $seoData['og_description'] = null;
+    }
 @endphp
 
-@if($seoData['title'])
+@if($forceDynamic && $defaultTitle)
+    <title>{{ $defaultTitle }}</title>
+@elseif($seoData['title'])
     <title>{{ $seoData['title'] }}</title>
 @elseif($defaultTitle)
     <title>{{ $defaultTitle }}</title>
 @endif
 
-@if($seoData['description'])
+@if($forceDynamic && $defaultDescription)
+    <meta name="description" content="{{ $defaultDescription }}">
+@elseif($seoData['description'])
     <meta name="description" content="{{ $seoData['description'] }}">
 @elseif($defaultDescription)
     <meta name="description" content="{{ $defaultDescription }}">
@@ -20,7 +32,9 @@
     <meta name="keywords" content="{{ $seoData['keywords'] }}">
 @endif
 
-@if($seoData['og_title'])
+@if($forceDynamic && $defaultTitle)
+    <meta property="og:title" content="{{ $defaultTitle }}">
+@elseif($seoData['og_title'])
     <meta property="og:title" content="{{ $seoData['og_title'] }}">
 @elseif($seoData['title'])
     <meta property="og:title" content="{{ $seoData['title'] }}">
@@ -28,7 +42,9 @@
     <meta property="og:title" content="{{ $defaultTitle }}">
 @endif
 
-@if($seoData['og_description'])
+@if($forceDynamic && $defaultDescription)
+    <meta property="og:description" content="{{ $defaultDescription }}">
+@elseif($seoData['og_description'])
     <meta property="og:description" content="{{ $seoData['og_description'] }}">
 @elseif($seoData['description'])
     <meta property="og:description" content="{{ $seoData['description'] }}">

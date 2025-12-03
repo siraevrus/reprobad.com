@@ -8,6 +8,7 @@
             :pageType="$pageType"
             :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? ''"
+            :forceDynamic="$forceDynamic ?? false"
         />
     @elseif(isset($resource))
         <title>{{ isset($resource->title) ? strip_tags($resource->title) : '' }}</title>
