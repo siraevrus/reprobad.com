@@ -13,7 +13,8 @@ class PageController extends Controller
     public function company(): View
     {
         $resource = Page::active()->find(1);
-        return view('site.company', compact('resource'));
+        $pageType = 'Company';
+        return view('site.company', compact('resource', 'pageType'));
     }
 
     public function privacy(): View

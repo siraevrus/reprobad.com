@@ -28,6 +28,7 @@ class SeoController extends Controller
             'Faq' => 'Вопрос-ответ',
             'Contacts' => 'Контакты',
             'Map' => 'Карта',
+            'Company' => 'Компания',
         ];
 
         return view('admin.seo.create', compact('pageTypes'));
@@ -65,6 +66,7 @@ class SeoController extends Controller
             'Complex' => 'Комплексы',
             'Contacts' => 'Контакты',
             'Map' => 'Карта',
+            'Company' => 'Компания',
         ];
 
         return view('admin.seo.edit', compact('seo', 'pageTypes'));
