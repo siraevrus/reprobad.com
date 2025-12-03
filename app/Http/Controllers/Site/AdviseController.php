@@ -19,7 +19,7 @@ class AdviseController extends Controller
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
             
-            // Поиск в статьях
+            // Поиск в статьях по тексту
             $articles = Article::where('active', 1)
                 ->where(function($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
@@ -33,7 +33,7 @@ class AdviseController extends Controller
                     return $item;
                 });
             
-            // Поиск в советах
+            // Поиск в советах по тексту
             $advises = Advise::where('active', 1)
                 ->where(function($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
@@ -47,8 +47,41 @@ class AdviseController extends Controller
                     return $item;
                 });
             
-            // Объединяем результаты
+            // Поиск по категориям в статьях
+            $articlesByCategory = Article::where('active', 1)
+                ->whereNotNull('category')
+                ->where('category', 'like', '%' . $query . '%')
+                ->get()
+                ->map(function($item) {
+                    $item->type = 'article';
+                    $item->route_name = 'site.articles.show';
+                    return $item;
+                });
+            
+            // Поиск по категориям в советах
+            $advisesByCategory = Advise::where('active', 1)
+                ->whereNotNull('category')
+                ->where('category', 'like', '%' . $query . '%')
+                ->get()
+                ->map(function($item) {
+                    $item->type = 'advise';
+                    $item->route_name = 'site.advises.show';
+                    return $item;
+                });
+            
+            // Объединяем результаты по категориям (отдельно для блока "Похожие")
+            $similarByCategory = $articlesByCategory->concat($advisesByCategory)
+                ->sortByDesc('created_at')
+                ->take(6)
+                ->values();
+            
+            // Объединяем все результаты поиска (текст + категории, исключая дубликаты по alias)
             $allResources = $articles->concat($advises)
+                ->concat($articlesByCategory)
+                ->concat($advisesByCategory)
+                ->unique(function($item) {
+                    return $item->type . '_' . $item->alias;
+                })
                 ->sortByDesc('created_at')
                 ->values();
             
@@ -93,7 +126,10 @@ class AdviseController extends Controller
         ];
         $pageType = 'Advise';
 
-        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType'));
+        // Передаем похожие по категориям в шаблон
+        $similarByCategory = isset($similarByCategory) ? $similarByCategory : collect();
+
+        return view('site.advises.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory'));
     }
 
     public function show($alias): View
