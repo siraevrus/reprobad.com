@@ -172,50 +172,50 @@
 
 @section('scripts')
     <script src="https://yastatic.net/share2/share.js"></script>
-    <style>
-        .input-error {
-            border: 1px solid red;
-        }
-    </style>
-    <script>
-        function app() {
-            return {
-                form: {
-                    email: '',
-                    agree: 1
-                },
-                errors: {
+<style>
+    .input-error {
+        border: 1px solid red;
+    }
+</style>
+<script>
+    function app() {
+        return {
+            form: {
+                email: '',
+                agree: 1
+            },
+            errors: {
 
-                },
-                success: false,
+            },
+            success: false,
 
-                async submit() {
-                    try {
-                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                        const response = await fetch('/forms/subscribe', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': token
-                            },
-                            body: JSON.stringify(this.form)
-                        });
+            async submit() {
+                try {
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const response = await fetch('/forms/subscribe', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify(this.form)
+                    });
 
-                        const data = await response.json();
-                        if (data.success) {
-                            this.errors = {};
-                            this.success = true;
-                        } else {
-                            this.errors = data.errors;
-                        }
+                    const data = await response.json();
+                    if (data.success) {
+                        this.errors = {};
+                        this.success = true;
+                    } else {
+                        this.errors = data.errors;
                     }
-                    catch (e) {
-                        console.log(e)
-                    }
+                }
+                catch (e) {
+                    console.log(e)
                 }
             }
         }
-    </script>
+    }
+</script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const likeButton = document.getElementById('like-button');
