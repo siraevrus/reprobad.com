@@ -117,6 +117,12 @@
         .tags::-webkit-scrollbar { display: none; }
         .tags { -ms-overflow-style: none;   scrollbar-width: none; }
         .events-card:last-child { border-bottom: none; }
+        .events-card:last-child { border-bottom: none; }
+        .events-card-image,
+        .events-card-image-wrapper,
+        .events-card-img {
+            display: none !important;
+        }
         .white-cards .card, .white-cards .socials-card { background-color: var(--white); }
         input[name="search"]::placeholder { color: rgba(78, 81, 92, 0.4); }
         .step-item:hover .step-item-overlay { opacity: 0 !important; }
