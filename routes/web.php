@@ -117,6 +117,7 @@ Route::get('/map', [SiteMapController::class, 'index'])->name('site.map');
 
 Route::post('/forms/feedback', [FormController::class, 'feedback'])->name('site.form.feedback');
 Route::post('/forms/subscribe', [FormController::class, 'subscribe'])->name('site.form.subscribe');
+Route::post('/forms/city', [FormController::class, 'setCity'])->name('site.form.city');
 Route::post('/articles/{alias}/like', [SiteArticleController::class, 'like'])->name('site.articles.like');
 Route::post('/usefully-tips/{alias}/like', [SiteAdviseController::class, 'like'])->name('site.advises.like');
 

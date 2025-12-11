@@ -4,8 +4,8 @@
     $cities = array_unique($cities);
     $selectedCity = '';
 
+    // Обработка параметра ?city= для обратной совместимости (без редиректа)
     if(request()->get('city')) {
-
         foreach($cities as $city) {
             if(trim($city) == trim(request()->get('city'))) {
                 $selectedCity = $city;
@@ -15,16 +15,14 @@
 
         if($selectedCity != '') {
             session()->put('city', $selectedCity);
-            
             app(\App\Services\CityStatsService::class)->recordCitySelection($selectedCity);
-            
-            return;
+            // Не делаем return, чтобы страница продолжала загружаться
         }
+    }
 
-    } elseif(session()->get('city')) {
-
+    // Если город не был передан в URL, берем из сессии
+    if($selectedCity == '' && session()->get('city')) {
         $selectedCity = session()->get('city') ?? '';
-        
     }
 @endphp
 
@@ -229,10 +227,47 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedCity = document.querySelector('input[name="city"]:checked');
         if (selectedCity) {
             const cityValue = selectedCity.value;
-            const currentUrl = window.location.href.split('?')[0];
-            window.location.href = currentUrl + '?city=' + encodeURIComponent(cityValue);
+            
+            // Отправляем AJAX запрос для сохранения города
+            fetch('/forms/city', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                },
+                body: JSON.stringify({
+                    city: cityValue
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Убираем параметр ?city= из URL без перезагрузки страницы
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('city');
+                    window.history.replaceState({}, '', url.toString());
+                    
+                    // Закрываем модальное окно
+                    modal.classList.remove('show');
+                } else {
+                    console.error('Ошибка сохранения города:', data.errors);
+                    alert('Произошла ошибка при сохранении города');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка запроса:', error);
+                alert('Произошла ошибка при сохранении города');
+            });
         }
     });
+
+    // Убираем параметр ?city= из URL при загрузке страницы (если он есть)
+    if (window.location.search.includes('city=')) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('city');
+        window.history.replaceState({}, '', url.toString());
+    }
 
     modal.addEventListener('click', function(e) {
         if (e.target === modal) {
