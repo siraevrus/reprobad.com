@@ -120,8 +120,9 @@ class ArticleController extends Controller
             })
             ->values();
 
-        // Формируем динамические SEO данные при фильтрации по категории и пагинации
+        // Формируем динамические SEO данные при фильтрации по категории, поиске и пагинации
         $category = $request->get('category');
+        $searchQuery = $request->get('query');
         $forceDynamic = false;
         $currentPage = $resources->currentPage();
         $lastPage = $resources->lastPage();
@@ -129,7 +130,18 @@ class ArticleController extends Controller
         // Проверяем, есть ли пагинация (только если не первая страница)
         $hasPagination = $currentPage > 1;
         
-        if ($category && !$request->get('query')) {
+        // Если есть поисковый запрос
+        if ($searchQuery) {
+            $decodedQuery = urldecode($searchQuery);
+            $totalCount = isset($allResources) ? $allResources->count() : $resources->total();
+            $title = 'Статьи и советы: поиск "' . $decodedQuery . '"';
+            $description = 'Статьи о совместной подготовке к успешному зачатию, беременности и улучшению здоровья - найдено "' . $totalCount . '" материалов';
+            $resource = (object)[
+                'title' => $title,
+                'description' => $description
+            ];
+            $forceDynamic = true;
+        } elseif ($category && !$searchQuery) {
             // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
             $title = 'Статьи по теме: ' . $decodedCategory;
