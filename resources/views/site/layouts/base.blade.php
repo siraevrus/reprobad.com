@@ -422,6 +422,7 @@
 
 @include('site.components.select-city')
 @include('site.components.lottie-banner')
+@include('site.components.bot')
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

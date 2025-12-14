@@ -121,3 +121,8 @@ Route::post('/forms/city', [FormController::class, 'setCity'])->name('site.form.
 Route::post('/articles/{alias}/like', [SiteArticleController::class, 'like'])->name('site.articles.like');
 Route::post('/usefully-tips/{alias}/like', [SiteAdviseController::class, 'like'])->name('site.advises.like');
 
+// Чат-бот на сайте
+use App\Http\Controllers\Site\BotController;
+Route::post('/bot/ask', [BotController::class, 'ask'])->name('site.bot.ask');
+Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name('site.bot.clearHistory');
+
