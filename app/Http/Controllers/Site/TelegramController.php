@@ -38,9 +38,15 @@ class TelegramController extends Controller
 
             $this->sendChatAction($chatId, 'typing');
 
+            Log::info('Telegram: Processing message', ['chat_id' => $chatId, 'message' => $messageText]);
+
             $response = $this->botService->handle($messageText, (string)$chatId, 'telegram');
 
+            Log::info('Telegram: BotService response', ['response' => $response]);
+
             $reply = $this->botService->markdownToHtml($response['llm_answer'] ?? '❌ Ошибка генерации ответа');
+
+            Log::info('Telegram: Sending reply', ['chat_id' => $chatId, 'reply_length' => strlen($reply)]);
 
             $this->sendMessage($chatId, $reply);
 
@@ -64,7 +70,7 @@ class TelegramController extends Controller
      */
     protected function sendMessage(int $chatId, string $text): void
     {
-        $botToken = '8384124270:AAFC6InbJbYG3FwrQ4nas5qHAYNeBcvu_6g';
+        $botToken = config('services.telegram.bot_token');
         
         if (!$botToken) {
             Log::error('Telegram bot token not configured');
