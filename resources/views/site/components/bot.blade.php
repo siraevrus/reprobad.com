@@ -1,5 +1,4 @@
 <style>
-    ._orientationRight__YgP8p.wrap__TWjd8 { display: none !important }
     .chat-container { position: fixed;bottom: 60px;right: 20px;width: 360px;max-width: 100%;max-height: 500px;background: #fff;border-radius: 12px;box-shadow: 0 4px 12px rgba(0,0,0,0.2);display: flex;flex-direction: column;overflow: hidden;font-size: 14px;z-index: 9999; }
     .chat-header { background: #ff4146;color: white;padding: 12px;font-weight: bold;position: relative; }
     .chat-header button.close-btn { position: absolute;top: 8px;right: 12px;background: transparent;border: none;color: white;font-size: 18px;cursor: pointer; }
@@ -51,9 +50,6 @@
     <div class="chat-input">
         <input type="text" id="messageInput" placeholder="Напишите сообщение..." />
         <button onclick="sendMessage()">Отправить</button>
-    </div>
-    <div class="chat-dev">
-        Создано в <a href="//интернеткухня.рф" target="_blank">интернеткухня.рф</a>
     </div>
 
     <audio id="chatSound" src="/chat-pop.mp3" preload="auto"></audio>
