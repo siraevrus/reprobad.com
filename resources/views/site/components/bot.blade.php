@@ -1,13 +1,13 @@
 <style>
     .chat-container { position: fixed;bottom: 60px;right: 20px;width: 360px;max-width: 100%;max-height: 500px;background: #fff;border-radius: 12px;box-shadow: 0 4px 12px rgba(0,0,0,0.2);display: flex;flex-direction: column;overflow: hidden;font-size: 14px;z-index: 9999; }
-    .chat-header { background: #ff4146;color: white;padding: 12px;font-weight: bold;position: relative; }
+    .chat-header { background: var(--mandarin);color: white;padding: 12px;font-weight: bold;position: relative; }
     .chat-header button.close-btn { position: absolute;top: 8px;right: 12px;background: transparent;border: none;color: white;font-size: 18px;cursor: pointer; }
     .chat-header button.clear-btn { position: absolute;top: 8px;right: 40px;background: transparent;border: none;color: white;font-size: 14px;cursor: pointer;opacity: 0.8; }
     .chat-header button.clear-btn:hover { opacity: 1; }
     .chat-messages { flex: 1;padding: 10px;overflow-y: auto; }
     .chat-input { display: flex;border-top: 1px solid #ddd; }
-    .chat-input input { flex: 1;padding: 10px;outline: none;height: 44px; }
-    .chat-input button { background: #ff4146;color: white;border: none;padding: 10px 16px;cursor: pointer; }
+    .chat-input input { flex: 1;padding: 10px;outline: none;height: 44px;border: none;border-radius: 0; }
+    .chat-input button { background: var(--mandarin);color: white;border: none;padding: 10px 16px;cursor: pointer; }
     .chat-oper { text-align: center;margin-top: 10px;margin-bottom: 10px; }
     .chat-dev { margin-top: 15px;text-align: center;margin-bottom: 15px;font-size: 12px; }
     .chat-dev a { color: blue; }
@@ -19,7 +19,7 @@
     .message ul, .message ol { padding-left: 20px;margin-top: 10px;margin-bottom: 10px; }
     .message br { display: none; }
     .message strong { font-weight: 500; }
-    #openChatBtn { position: fixed;bottom: 60px;right: 20px;background: #ff4146;color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;display: none;z-index: 90; }
+    #openChatBtn { position: fixed;bottom: 60px;right: 20px;background: var(--mandarin);color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;display: none;z-index: 90; }
     #openChatBtn::before { content: "";position: absolute;top: 50%;left: 50%;width: 120%;height: 120%;background: rgba(79, 70, 229, 0.5);border-radius: 10px;transform: translate(-50%, -50%) scale(1);opacity: 0;animation: waveEffect 2.5s infinite;pointer-events: none;z-index: -1; }
     @keyframes waveEffect {
         0% { transform: translate(-50%, -50%) scale(0.7);opacity: 0.6; }
