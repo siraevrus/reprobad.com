@@ -79,14 +79,55 @@ class TelegramController extends Controller
 
         $apiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";
 
-        try {
-            Http::timeout(10)->post($apiUrl, [
-                'chat_id' => $chatId,
-                'text' => $text,
-                'parse_mode' => 'HTML',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Failed to send Telegram message: ' . $e->getMessage());
+        // Telegram лимит 4096 символов
+        $maxLength = 4000; // Оставляем запас для HTML тегов
+        
+        if (strlen($text) > $maxLength) {
+            // Разбиваем длинное сообщение на части
+            $messages = [];
+            $current = '';
+            $paragraphs = explode("\n\n", $text);
+            
+            foreach ($paragraphs as $paragraph) {
+                if (strlen($current . "\n\n" . $paragraph) > $maxLength && !empty($current)) {
+                    $messages[] = trim($current);
+                    $current = $paragraph;
+                } else {
+                    $current .= ($current ? "\n\n" : '') . $paragraph;
+                }
+            }
+            
+            if (!empty($current)) {
+                $messages[] = trim($current);
+            }
+            
+            // Отправляем по частям
+            foreach ($messages as $index => $message) {
+                if ($index > 0) {
+                    usleep(500000); // 0.5 секунды между сообщениями
+                }
+                
+                try {
+                    Http::timeout(10)->post($apiUrl, [
+                        'chat_id' => $chatId,
+                        'text' => $message,
+                        'parse_mode' => 'HTML',
+                    ]);
+                    Log::info('Telegram: Message part sent', ['part' => $index + 1, 'total' => count($messages)]);
+                } catch (\Exception $e) {
+                    Log::error('Failed to send Telegram message part: ' . $e->getMessage());
+                }
+            }
+        } else {
+            try {
+                Http::timeout(10)->post($apiUrl, [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                    'parse_mode' => 'HTML',
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Failed to send Telegram message: ' . $e->getMessage());
+            }
         }
     }
 
