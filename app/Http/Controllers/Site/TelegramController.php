@@ -135,23 +135,39 @@ class TelegramController extends Controller
                 }
                 
                 try {
-                    Http::timeout(10)->post($apiUrl, [
+                    $response = Http::timeout(10)->post($apiUrl, [
                         'chat_id' => $chatId,
                         'text' => $message,
                         'parse_mode' => 'HTML',
                     ]);
-                    Log::info('Telegram: Message part sent', ['part' => $index + 1, 'total' => count($messages), 'length' => strlen($message)]);
+                    
+                    if ($response->successful()) {
+                        Log::info('Telegram: Message part sent', ['part' => $index + 1, 'total' => count($messages), 'length' => strlen($message)]);
+                    } else {
+                        Log::error('Telegram API rejected message', [
+                            'part' => $index + 1,
+                            'status' => $response->status(),
+                            'error' => $response->json()
+                        ]);
+                    }
                 } catch (\Exception $e) {
                     Log::error('Failed to send Telegram message part: ' . $e->getMessage());
                 }
             }
         } else {
             try {
-                Http::timeout(10)->post($apiUrl, [
+                $response = Http::timeout(10)->post($apiUrl, [
                     'chat_id' => $chatId,
                     'text' => $text,
                     'parse_mode' => 'HTML',
                 ]);
+                
+                if (!$response->successful()) {
+                    Log::error('Telegram API rejected message', [
+                        'status' => $response->status(),
+                        'error' => $response->json()
+                    ]);
+                }
             } catch (\Exception $e) {
                 Log::error('Failed to send Telegram message: ' . $e->getMessage());
             }
