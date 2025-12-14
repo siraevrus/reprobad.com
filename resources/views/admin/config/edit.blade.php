@@ -83,6 +83,13 @@
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('system_prompt') }}</div>
             @endif
         </div>
+        <div>
+            <label class="block font-semibold mb-2">Сообщение приветствия</label>
+            <textarea name="bot_welcome_message" rows="50" class="w-full p-2 border rounded">{{ $config->bot_welcome_message ?? '' }}</textarea>
+            @if($errors->has('bot_welcome_message'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('bot_welcome_message') }}</div>
+            @endif
+        </div>
 
         <!-- Кнопки -->
         <div class="flex justify-end gap-4">
