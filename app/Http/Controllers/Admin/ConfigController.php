@@ -36,6 +36,7 @@ class ConfigController extends Controller
             'ok' => 'string|nullable',
             'vk' => 'string|nullable',
             'dzen' => 'string|nullable',
+            'system_prompt' => 'string|nullable',
         ]);
 
         foreach($validated as $key => $value) {
