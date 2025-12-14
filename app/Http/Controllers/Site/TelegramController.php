@@ -70,7 +70,7 @@ class TelegramController extends Controller
      */
     protected function sendMessage(int $chatId, string $text): void
     {
-        $botToken = config('services.telegram.bot_token');
+        $botToken = env('TELEGRAM_BOT_TOKEN');
         
         if (!$botToken) {
             Log::error('Telegram bot token not configured');
