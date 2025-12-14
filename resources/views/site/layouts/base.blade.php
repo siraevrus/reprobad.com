@@ -422,7 +422,13 @@
 
 @include('site.components.select-city')
 @include('site.components.lottie-banner')
+
+
+@if(request()->get('bot') == 'true')
+
 @include('site.components.bot')
+
+@endif
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
