@@ -86,20 +86,47 @@ class TelegramController extends Controller
             // Разбиваем длинное сообщение на части
             $messages = [];
             $current = '';
+            
+            // Сначала пробуем разбить по абзацам
             $paragraphs = explode("\n\n", $text);
             
             foreach ($paragraphs as $paragraph) {
-                if (strlen($current . "\n\n" . $paragraph) > $maxLength && !empty($current)) {
-                    $messages[] = trim($current);
-                    $current = $paragraph;
+                $testLength = strlen($current) + strlen($paragraph) + 2; // +2 для \n\n
+                
+                if ($testLength > $maxLength) {
+                    // Если текущий буфер не пуст, сохраняем его
+                    if (!empty(trim($current))) {
+                        $messages[] = trim($current);
+                        $current = '';
+                    }
+                    
+                    // Если сам абзац длиннее лимита, разбиваем его построчно
+                    if (strlen($paragraph) > $maxLength) {
+                        $lines = explode("\n", $paragraph);
+                        foreach ($lines as $line) {
+                            if (strlen($current) + strlen($line) + 1 > $maxLength) {
+                                if (!empty(trim($current))) {
+                                    $messages[] = trim($current);
+                                }
+                                $current = $line;
+                            } else {
+                                $current .= ($current ? "\n" : '') . $line;
+                            }
+                        }
+                    } else {
+                        $current = $paragraph;
+                    }
                 } else {
                     $current .= ($current ? "\n\n" : '') . $paragraph;
                 }
             }
             
-            if (!empty($current)) {
+            // Добавляем остаток
+            if (!empty(trim($current))) {
                 $messages[] = trim($current);
             }
+            
+            Log::info('Telegram: Splitting message', ['parts' => count($messages), 'original_length' => strlen($text)]);
             
             // Отправляем по частям
             foreach ($messages as $index => $message) {
@@ -113,7 +140,7 @@ class TelegramController extends Controller
                         'text' => $message,
                         'parse_mode' => 'HTML',
                     ]);
-                    Log::info('Telegram: Message part sent', ['part' => $index + 1, 'total' => count($messages)]);
+                    Log::info('Telegram: Message part sent', ['part' => $index + 1, 'total' => count($messages), 'length' => strlen($message)]);
                 } catch (\Exception $e) {
                     Log::error('Failed to send Telegram message part: ' . $e->getMessage());
                 }
