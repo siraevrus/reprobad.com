@@ -78,7 +78,7 @@
         </div>
         <div>
             <label class="block font-semibold mb-2">Системный промпт</label>
-            <textarea name="system_prompt" class="w-full p-2 border rounded">{{ $config->system_prompt ?? '' }}</textarea>
+            <textarea name="system_prompt" rows="50" class="w-full p-2 border rounded">{{ $config->system_prompt ?? '' }}</textarea>
             @if($errors->has('system_prompt'))
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('system_prompt') }}</div>
             @endif
