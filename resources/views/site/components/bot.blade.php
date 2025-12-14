@@ -36,7 +36,6 @@
 <div class="chat-container" id="chatContainer">
     <div class="chat-header">
         ИИ-консультант
-        <button class="clear-btn" id="clearHistoryBtn" title="Очистить историю">🔄</button>
         <button class="close-btn" id="closeChatBtn" title="Закрыть чат">×</button>
     </div>
     <div class="chat-messages" id="chat">
