@@ -11,7 +11,14 @@
     .chat-oper { text-align: center;margin-top: 10px;margin-bottom: 10px; }
     .chat-dev { margin-top: 15px;text-align: center;margin-bottom: 15px;font-size: 12px; }
     .chat-dev a { color: blue; }
-    .message { margin-bottom: 8px;padding: 8px 12px;border-radius: 8px;line-height: 1.4;white-space: pre-line;word-wrap: break-word; }
+    .message { font-size: 14px;margin-bottom: 8px;padding: 8px 12px;border-radius: 8px;line-height: 1.4;white-space: pre-line;word-wrap: break-word; }
+    .message p { margin-bottom: 5px; }
+    .message h1 { font-size: 20px; }
+    .message h2 { font-size: 18px; }
+    .message h3 { font-size: 16px; }
+    .message h4 { font-size: 14px; }
+    .message h5 { font-size: 12px; }
+    .message h6 { font-size: 10px; }
     .message.user { background: #e0e7ff;text-align: right;margin-left: 30px; }
     .message.bot { background: #f3f4f6;align-self: flex-start;text-align: left;margin-right: 30px; }
     .typing { font-style: italic;color: #999;margin-bottom: 6px; }
