@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\SubscribeController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ChatHistoryController;
 use App\Http\Controllers\Site\FormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\ArticleController as SiteArticleController;
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/questions', QuestionController::class);
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
+    Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
 
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
