@@ -55,8 +55,8 @@
                         </div>
                     </td>
                     <td class="py-3 px-6">
-                        <div class="max-w-2xl whitespace-pre-wrap break-words">
-                            {{ $resource->bot_response }}
+                        <div class="max-w-md truncate" title="{{ $resource->bot_response }}">
+                            {{ Str::limit($resource->bot_response, 100) }}
                         </div>
                     </td>
                     <td class="py-3 px-6">{{ $resource->created_at->format('d.m.Y H:i') }}</td>
