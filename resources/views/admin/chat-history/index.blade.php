@@ -5,11 +5,11 @@
         <h1 class="text-2xl font-semibold text-gray-800">История запросов пользователей</h1>
     </div>
 
-    <!-- Фильтр по источнику -->
+    <!-- Фильтры -->
     <div class="mb-6 bg-white border border-gray-200 rounded-lg p-4">
-        <form method="GET" action="{{ route('admin.chat-history.index') }}" class="flex items-center gap-4">
-            <label for="source" class="text-sm font-medium text-gray-700">Фильтр по источнику:</label>
-            <select name="source" id="source" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <form method="GET" action="{{ route('admin.chat-history.index') }}" class="flex items-center gap-4 flex-wrap">
+            <label for="source" class="text-sm font-medium text-gray-700">Источник:</label>
+            <select name="source" id="source" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">Все источники</option>
                 @foreach($sources as $sourceOption)
                     <option value="{{ $sourceOption }}" {{ $source === $sourceOption ? 'selected' : '' }}>
@@ -17,7 +17,16 @@
                     </option>
                 @endforeach
             </select>
-            @if($source)
+
+            <label for="user_id" class="text-sm font-medium text-gray-700 ml-4">User ID:</label>
+            <input type="text" name="user_id" id="user_id" value="{{ $userId ?? '' }}" placeholder="Введите User ID" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 inline-flex items-center gap-1">
+                <span class="material-icons">search</span>
+                <span>Применить</span>
+            </button>
+
+            @if($source || $userId)
                 <a href="{{ route('admin.chat-history.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 inline-flex items-center gap-1">
                     <span class="material-icons">clear</span>
                     <span>Сбросить</span>

@@ -20,6 +20,12 @@ class ChatHistoryController extends Controller
             $query->where('source', $source);
         }
 
+        // Фильтр по User ID
+        $userId = $request->get('user_id');
+        if ($userId) {
+            $query->where('user_id', $userId);
+        }
+
         $resources = $query->orderBy('created_at', 'desc')
             ->paginate(env('PAGINATION_LIMIT', 20))
             ->appends($request->query());
@@ -32,7 +38,7 @@ class ChatHistoryController extends Controller
             ->sort()
             ->values();
 
-        return view('admin.chat-history.index', compact('resources', 'sources', 'source'));
+        return view('admin.chat-history.index', compact('resources', 'sources', 'source', 'userId'));
     }
 
     public function show($id): View
