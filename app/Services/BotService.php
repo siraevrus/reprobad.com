@@ -18,7 +18,7 @@ class BotService {
 
     public function __construct()
     {
-        $this->ragVersion  = '180693d5-c042-41bb-8a8f-74422a829438';
+        $this->ragVersion  = env('BOT_RAG_VERSION');
         $this->kbUrl       = 'https://f680f317-34d6-4e97-b33a-3517420876fc.managed-rag.inference.cloud.ru/api/v2/retrieve_generate';
         $this->model       = "t-tech/T-pro-it-2.0";
         $this->setSysPromt();
