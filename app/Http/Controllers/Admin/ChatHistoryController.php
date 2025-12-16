@@ -5,17 +5,34 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChatHistory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ChatHistoryController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $resources = ChatHistory::query()
-            ->orderBy('created_at', 'desc')
-            ->paginate(env('PAGINATION_LIMIT', 20));
+        $query = ChatHistory::query();
 
-        return view('admin.chat-history.index', compact('resources'));
+        // Фильтр по источнику
+        $source = $request->get('source');
+        if ($source) {
+            $query->where('source', $source);
+        }
+
+        $resources = $query->orderBy('created_at', 'desc')
+            ->paginate(env('PAGINATION_LIMIT', 20))
+            ->appends($request->query());
+
+        // Получаем список уникальных источников для фильтра
+        $sources = ChatHistory::query()
+            ->distinct()
+            ->pluck('source')
+            ->filter()
+            ->sort()
+            ->values();
+
+        return view('admin.chat-history.index', compact('resources', 'sources', 'source'));
     }
 
     public function show($id): View

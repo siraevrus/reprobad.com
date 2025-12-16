@@ -1,9 +1,31 @@
 @extends('admin.layouts.base')
 
 @section('content')
-    <div class="flex justify-between">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-6">История запросов пользователей</h1>
+    <div class="flex justify-between mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">История запросов пользователей</h1>
     </div>
+
+    <!-- Фильтр по источнику -->
+    <div class="mb-6 bg-white border border-gray-200 rounded-lg p-4">
+        <form method="GET" action="{{ route('admin.chat-history.index') }}" class="flex items-center gap-4">
+            <label for="source" class="text-sm font-medium text-gray-700">Фильтр по источнику:</label>
+            <select name="source" id="source" onchange="this.form.submit()" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Все источники</option>
+                @foreach($sources as $sourceOption)
+                    <option value="{{ $sourceOption }}" {{ $source === $sourceOption ? 'selected' : '' }}>
+                        {{ $sourceOption }}
+                    </option>
+                @endforeach
+            </select>
+            @if($source)
+                <a href="{{ route('admin.chat-history.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 inline-flex items-center gap-1">
+                    <span class="material-icons">clear</span>
+                    <span>Сбросить</span>
+                </a>
+            @endif
+        </form>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
             <thead>
