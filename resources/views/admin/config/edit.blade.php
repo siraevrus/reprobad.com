@@ -97,7 +97,6 @@
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('ai_model') }}</div>
             @endif
         </div>
-        "t-tech/T-pro-it-2.0"
 
         <!-- Кнопки -->
         <div class="flex justify-end gap-4">
