@@ -90,6 +90,14 @@
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('bot_welcome_message') }}</div>
             @endif
         </div>
+        <div>
+            <label class="block font-semibold mb-2">AI модель</label>
+            <input name="ai_model" class="w-full p-2 border rounded" value="{{ $config->ai_model ?? '' }}">
+            @if($errors->has('ai_model'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('ai_model') }}</div>
+            @endif
+        </div>
+        "t-tech/T-pro-it-2.0"
 
         <!-- Кнопки -->
         <div class="flex justify-end gap-4">
