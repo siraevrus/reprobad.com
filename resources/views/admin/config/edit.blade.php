@@ -92,7 +92,7 @@
         </div>
         <div>
             <label class="block font-semibold mb-2">RAG версия</label>
-            <input name="ai_model" class="w-full p-2 border rounded" value="{{ $config->rag_version ?? '' }}">
+            <input name="rag_version" class="w-full p-2 border rounded" value="{{ $config->rag_version ?? '' }}">
             @if($errors->has('rag_version'))
                 <div class="text-red-500 text-xs mt-1">{{ $errors->first('rag_version') }}</div>
             @endif
