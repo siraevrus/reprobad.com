@@ -18,10 +18,13 @@ class BotService {
 
     public function __construct()
     {
-        $this->ragVersion  = Config::where('key', 'rag_version')->first()->value;
+        $configs = Config::whereIn('key', ['rag_version', 'ai_model', 'system_prompt'])
+            ->pluck('value', 'key');
+        
+        $this->ragVersion  = $configs->get('rag_version');
         $this->kbUrl       = 'https://f680f317-34d6-4e97-b33a-3517420876fc.managed-rag.inference.cloud.ru/api/v2/retrieve_generate';
-        $this->model       = Config::where('key', 'ai_model')->first()->value;
-        $this->systemPrompt = Config::where('key', 'system_prompt')->first()->value;
+        $this->model       = $configs->get('ai_model');
+        $this->systemPrompt = $configs->get('system_prompt');
     }
 
     /**
