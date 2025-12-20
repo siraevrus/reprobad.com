@@ -44,7 +44,13 @@ class TelegramController extends Controller
 
             Log::info('Telegram: BotService response', ['response' => $response]);
 
-            $reply = $this->botService->markdownToHtml($response['llm_answer'] ?? '❌ Ошибка генерации ответа');
+            if (!is_array($response) || !isset($response['llm_answer'])) {
+                Log::error('Telegram: Invalid response from BotService', ['response' => $response]);
+                $this->sendMessage($chatId, '❌ Ошибка генерации ответа. Попробуйте позже.');
+                return response()->json(['status' => 'error', 'message' => 'Invalid response from BotService'], 500);
+            }
+
+            $reply = $this->botService->markdownToTelegramHtml($response['llm_answer']);
 
             Log::info('Telegram: Sending reply', ['chat_id' => $chatId, 'reply_length' => strlen($reply)]);
 

@@ -181,4 +181,43 @@ class BotService {
 
         return $text;
     }
+
+    /**
+     * Конвертация markdown в HTML для Telegram (поддерживает только ограниченный набор тегов)
+     */
+    function markdownToTelegramHtml($text) {
+        $text = preg_replace("/(\r?\n){2,}/", "\n", $text);
+        
+        // Экранируем спецсимволы HTML
+        $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+
+        // Заголовки заменяем на жирный текст
+        $text = preg_replace('/^### (.+)$/m', '<b>$1</b>', $text);
+        $text = preg_replace('/^## (.+)$/m', '<b>$1</b>', $text);
+        $text = preg_replace('/^# (.+)$/m', '<b>$1</b>', $text);
+
+        // Жирный **bold** -> <b>
+        $text = preg_replace('/\*\*(.*?)\*\*/s', '<b>$1</b>', $text);
+
+        // Курсив *italic* -> <i>
+        $text = preg_replace('/(?<!\*)\*(?!\*)(.*?)\*(?!\*)/s', '<i>$1</i>', $text);
+
+        // Код `code` -> <code>
+        $text = preg_replace('/`([^`]+)`/', '<code>$1</code>', $text);
+
+        // Ссылки [текст](url) -> <a>
+        $text = preg_replace('/\[(.*?)\]\((.*?)\)/', '<a href="$2">$1</a>', $text);
+
+        // Списки: заменяем на простой текст с символами
+        $text = preg_replace_callback('/(?:^|\n)- (.+)(?:\n- .+)*/', function ($matches) {
+            $items = explode("\n", trim($matches[0]));
+            $list = "";
+            foreach ($items as $item) {
+                $list .= "• " . preg_replace('/^- /', '', trim($item)) . "\n";
+            }
+            return "\n" . trim($list);
+        }, $text);
+
+        return $text;
+    }
 }
