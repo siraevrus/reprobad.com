@@ -128,6 +128,16 @@ class BotService {
                     'user_message' => $query,
                     'bot_response' => $result['llm_answer'],
                 ]);
+
+                // Автоочистка истории: оставляем только последние 20 записей для пользователя
+                $deleted = ChatHistory::autoCleanUserHistory($userId, $source, 20);
+                if ($deleted > 0) {
+                    Log::info('Chat history auto-cleaned', [
+                        'user_id' => $userId,
+                        'source' => $source,
+                        'deleted' => $deleted
+                    ]);
+                }
             } catch (\Exception $e) {
                 Log::error('Failed to save chat history: ' . $e->getMessage());
             }
