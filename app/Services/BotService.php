@@ -21,13 +21,7 @@ class BotService {
         $this->ragVersion  = Config::where('key', 'rag_version')->first()->value;
         $this->kbUrl       = 'https://f680f317-34d6-4e97-b33a-3517420876fc.managed-rag.inference.cloud.ru/api/v2/retrieve_generate';
         $this->model       = Config::where('key', 'ai_model')->first()->value;
-        $this->setSysPromt();
-    }
-    
-    protected function setSysPromt()
-    {
         $this->systemPrompt = Config::where('key', 'system_prompt')->first()->value;
-        return true;
     }
 
     /**
