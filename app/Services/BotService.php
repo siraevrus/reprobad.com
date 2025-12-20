@@ -18,7 +18,7 @@ class BotService {
 
     public function __construct()
     {
-        $this->ragVersion  = env('BOT_RAG_VERSION');
+        $this->ragVersion  = Config::where('key', 'rag_version')->first()->value;
         $this->kbUrl       = 'https://f680f317-34d6-4e97-b33a-3517420876fc.managed-rag.inference.cloud.ru/api/v2/retrieve_generate';
         $this->model       = "t-tech/T-pro-it-2.0";
         $this->setSysPromt();
