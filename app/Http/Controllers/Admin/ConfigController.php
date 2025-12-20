@@ -37,6 +37,8 @@ class ConfigController extends Controller
             'dzen' => 'string|nullable',
             'system_prompt' => 'string|nullable',
             'bot_welcome_message' => 'string|nullable',
+            'ai_model' => 'string|nullable',
+            'rag_version' => 'string|nullable',
         ]);
 
         foreach($validated as $key => $value) {
