@@ -40,8 +40,8 @@ class BotController extends Controller
             // Обрабатываем запрос через BotService с историей
             $response = $this->botService->handle($message, $userId, 'web');
 
-            // Проверяем наличие ответа
-            if (!isset($response['llm_answer'])) {
+            // Проверяем наличие ответа (новый формат API)
+            if (!isset($response['choices'][0]['message']['content'])) {
                 Log::error('Bot service returned no answer', ['response' => $response]);
                 return response()->json([
                     'reply' => 'Извините, сервис временно недоступен. Попробуйте позже.'
@@ -49,7 +49,7 @@ class BotController extends Controller
             }
 
             // Конвертируем markdown в HTML
-            $htmlAnswer = $this->botService->markdownToHtml($response['llm_answer']);
+            $htmlAnswer = $this->botService->markdownToHtml($response['choices'][0]['message']['content']);
 
             // Возвращаем ответ в формате, ожидаемом фронтендом
             return response()->json([
