@@ -32,6 +32,8 @@
 
             <div>@include('admin.components.textarea-input', ['title' => 'Содержание', 'field' => 'content'])</div>
 
+            <div>@include('admin.components.textarea-input', ['title' => 'AI контент (Markdown)', 'field' => 'ai_content', 'no_editor' => true, 'rows' => 15])</div>
+
             <div>@include('admin.components.textarea-input', ['title' => 'Состав', 'field' => 'includes'])</div>
 
             <div>@include('admin.components.textarea-input', ['title' => 'Применение', 'field' => 'usage'])</div>

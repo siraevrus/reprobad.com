@@ -36,6 +36,7 @@ class ProductController extends Controller
         'title_right' => 'string|nullable',
         'complex_id' => 'integer|nullable',
         'seo_description' => 'string|nullable|max:255',
+        'ai_content' => 'string|nullable',
     ];
 
     public function index(): View|JsonResponse
