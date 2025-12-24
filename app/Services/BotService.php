@@ -54,7 +54,7 @@ class BotService {
 
     /**
      * Морфологический поиск продуктов по запросу
-     * Ищет в полях: title, description, content, includes, usage
+     * Ищет в полях: title и ai_content
      * Использует поиск по словам с учетом разных форм
      */
     protected function searchProducts($query)
@@ -99,7 +99,7 @@ class BotService {
             return collect();
         }
 
-        // Ищем продукты, где слова встречаются в полях
+        // Ищем продукты, где слова встречаются в полях title и ai_content
         // Используем OR для каждого слова, но приоритет отдаем продуктам с большим количеством совпадений
         $products = Product::active()
             ->where(function ($q) use ($words) {
@@ -107,10 +107,7 @@ class BotService {
                     $searchTerm = '%' . $word . '%';
                     $q->orWhere(function ($subQuery) use ($searchTerm) {
                         $subQuery->where('title', 'LIKE', $searchTerm)
-                            ->orWhere('description', 'LIKE', $searchTerm)
-                            ->orWhere('content', 'LIKE', $searchTerm)
-                            ->orWhere('includes', 'LIKE', $searchTerm)
-                            ->orWhere('usage', 'LIKE', $searchTerm);
+                            ->orWhere('ai_content', 'LIKE', $searchTerm);
                     });
                 }
             })
@@ -120,10 +117,7 @@ class BotService {
                 $product->relevance_score = 0;
                 $searchFields = [
                     $product->title,
-                    $product->description,
-                    $product->content,
-                    $product->includes,
-                    $product->usage
+                    $product->ai_content
                 ];
                 
                 foreach ($words as $word) {
@@ -157,20 +151,11 @@ class BotService {
         foreach ($products as $product) {
             $text .= "Продукт: " . ($product->title ?? 'Без названия') . "\n";
             
-            if (!empty($product->description)) {
-                $text .= "Описание: " . strip_tags($product->description) . "\n";
-            }
-            
-            if (!empty($product->content)) {
-                $text .= "Содержание: " . strip_tags($product->content) . "\n";
-            }
-            
-            if (!empty($product->includes)) {
-                $text .= "Состав: " . strip_tags($product->includes) . "\n";
-            }
-            
-            if (!empty($product->usage)) {
-                $text .= "Применение: " . strip_tags($product->usage) . "\n";
+            // Используем ai_content если он есть, иначе только название
+            if (!empty($product->ai_content)) {
+                // Убираем HTML теги, но оставляем markdown форматирование
+                $aiContent = strip_tags($product->ai_content);
+                $text .= $aiContent . "\n";
             }
             
             $text .= "\n---\n\n";
