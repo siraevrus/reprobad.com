@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Config;
 use App\Models\ChatHistory;
 use App\Models\Product;
+use App\Models\BotRateLimit;
 
 class BotService {
     protected $keyId;
@@ -194,12 +195,51 @@ class BotService {
     }
 
     /**
+     * Проверка лимита сообщений по IP (20 сообщений в день)
+     */
+    protected function checkRateLimit($ipAddress)
+    {
+        $today = now()->toDateString();
+        $limit = 20;
+        
+        $rateLimit = BotRateLimit::firstOrCreate(
+            [
+                'ip_address' => $ipAddress,
+                'date' => $today
+            ],
+            ['count' => 0]
+        );
+        
+        if ($rateLimit->count >= $limit) {
+            return false; // Лимит превышен
+        }
+        
+        // Увеличиваем счетчик
+        $rateLimit->increment('count');
+        
+        return true; // Лимит не превышен
+    }
+
+    /**
      * Основной обработчик (чат с RAG и памятью)
      */
-    public function handle($query, $userId = null, $source = 'web')
+    public function handle($query, $userId = null, $source = 'web', $ipAddress = null)
     {
         if (!$query) {
             return json_encode(['error' => 'Пустой запрос']);
+        }
+
+        // Проверка лимита по IP (только для веб, не для telegram)
+        if ($source === 'web' && $ipAddress) {
+            if (!$this->checkRateLimit($ipAddress)) {
+                return [
+                    'choices' => [[
+                        'message' => [
+                            'content' => 'Бот принимает витамины, обратитесь чуть позднее'
+                        ]
+                    ]]
+                ];
+            }
         }
 
         // Получаем историю для пользователя

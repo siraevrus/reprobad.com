@@ -38,7 +38,7 @@ class BotController extends Controller
             ]);
 
             // Обрабатываем запрос через BotService с историей
-            $response = $this->botService->handle($message, $userId, 'web');
+            $response = $this->botService->handle($message, $userId, 'web', $request->ip());
 
             // Проверяем наличие ответа (новый формат API)
             if (!isset($response['choices'][0]['message']['content'])) {
