@@ -27,7 +27,28 @@ class InputService
         list($metaData, $fileBase64) = $exploded;
         preg_match('/data:(.*?);/', $metaData, $matches);
         $mimeType = $matches[1] ?? 'application/octet-stream';
-        $extension = explode('/', $mimeType)[1];
+        
+        // Маппинг MIME типов к расширениям
+        $mimeToExtension = [
+            'image/svg+xml' => 'svg',
+            'image/jpeg' => 'jpg',
+            'image/jpg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+            'application/pdf' => 'pdf',
+        ];
+        
+        // Если есть в маппинге - используем его, иначе извлекаем из MIME типа
+        if (isset($mimeToExtension[$mimeType])) {
+            $extension = $mimeToExtension[$mimeType];
+        } else {
+            $extension = explode('/', $mimeType)[1];
+            // Убираем все после + (например, svg+xml -> svg)
+            if (str_contains($extension, '+')) {
+                $extension = explode('+', $extension)[0];
+            }
+        }
 
         $class_name = strtolower(class_basename($resource));
         $path = $class_name . '/' . $resource->id . '/' . uniqid() . '.' . $extension;
