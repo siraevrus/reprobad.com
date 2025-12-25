@@ -75,6 +75,10 @@ class ProductController extends Controller
         $resource = Product::query()
             ->create($validated);
 
+        // Обработка изображений через InputService
+        InputService::uploadFile($request->image, $resource, 'image');
+        InputService::uploadFile($request->photo, $resource, 'photo');
+        InputService::uploadFile($request->logo, $resource, 'logo');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->video, $resource, 'video');
 
@@ -105,6 +109,10 @@ class ProductController extends Controller
         $resource->fill($validated);
         $resource->save();
 
+        // Обработка изображений через InputService
+        InputService::uploadFile($request->image, $resource, 'image');
+        InputService::uploadFile($request->photo, $resource, 'photo');
+        InputService::uploadFile($request->logo, $resource, 'logo');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->video, $resource, 'video');
 
