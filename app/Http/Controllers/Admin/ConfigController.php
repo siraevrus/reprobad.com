@@ -38,7 +38,9 @@ class ConfigController extends Controller
             'system_prompt' => 'string|nullable',
             'bot_welcome_message' => 'string|nullable',
             'ai_model' => 'string|nullable',
-            'rag_version' => 'string|nullable',
+            'max_tokens' => 'integer|nullable',
+            'temperature' => 'numeric|nullable|min:0|max:2',
+            'top_p' => 'numeric|nullable|min:0|max:1',
         ]);
 
         foreach($validated as $key => $value) {

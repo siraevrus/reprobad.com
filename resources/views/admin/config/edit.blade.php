@@ -91,17 +91,31 @@
             @endif
         </div>
         <div>
-            <label class="block font-semibold mb-2">RAG версия</label>
-            <input name="rag_version" class="w-full p-2 border rounded" value="{{ $config->rag_version ?? '' }}">
-            @if($errors->has('rag_version'))
-                <div class="text-red-500 text-xs mt-1">{{ $errors->first('rag_version') }}</div>
+            <label class="block font-semibold mb-2">AI модель</label>
+            <input name="ai_model" class="w-full p-2 border rounded" value="{{ $config->ai_model ?? '' }}" placeholder="deepseek-v3.2">
+            @if($errors->has('ai_model'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('ai_model') }}</div>
             @endif
         </div>
         <div>
-            <label class="block font-semibold mb-2">AI модель</label>
-            <input name="ai_model" class="w-full p-2 border rounded" value="{{ $config->ai_model ?? '' }}">
-            @if($errors->has('ai_model'))
-                <div class="text-red-500 text-xs mt-1">{{ $errors->first('ai_model') }}</div>
+            <label class="block font-semibold mb-2">Max Tokens (максимум токенов в ответе)</label>
+            <input type="number" name="max_tokens" class="w-full p-2 border rounded" value="{{ $config->max_tokens ?? '1000' }}" min="1" max="4000">
+            @if($errors->has('max_tokens'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('max_tokens') }}</div>
+            @endif
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Temperature (креативность: 0-2, рекомендуемое 0.6-0.8)</label>
+            <input type="number" step="0.1" name="temperature" class="w-full p-2 border rounded" value="{{ $config->temperature ?? '0.8' }}" min="0" max="2">
+            @if($errors->has('temperature'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('temperature') }}</div>
+            @endif
+        </div>
+        <div>
+            <label class="block font-semibold mb-2">Top P (разнообразие: 0-1, рекомендуемое 0.9)</label>
+            <input type="number" step="0.1" name="top_p" class="w-full p-2 border rounded" value="{{ $config->top_p ?? '0.9' }}" min="0" max="1">
+            @if($errors->has('top_p'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('top_p') }}</div>
             @endif
         </div>
 

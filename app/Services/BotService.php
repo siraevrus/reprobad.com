@@ -12,20 +12,24 @@ class BotService {
     protected $secret;
     protected $projectId;
     protected $kbUrl;
-    protected $ragVersion;
     protected $systemPrompt;
     protected $model;
+    protected $maxTokens;
+    protected $temperature;
+    protected $topP;
     protected $historyLimit = 3; // Количество сообщений в контексте
 
     public function __construct()
     {
-        $configs = Config::whereIn('key', ['rag_version', 'ai_model', 'system_prompt'])
+        $configs = Config::whereIn('key', ['ai_model', 'system_prompt', 'max_tokens', 'temperature', 'top_p'])
             ->pluck('value', 'key');
         
-        $this->ragVersion  = $configs->get('rag_version');
         $this->kbUrl       = 'https://api.hydraai.ru/v1/chat/completions';
-        $this->model       = $configs->get('ai_model');
+        $this->model       = $configs->get('ai_model') ?? 'deepseek-v3.2';
         $this->systemPrompt = $configs->get('system_prompt');
+        $this->maxTokens   = (int)($configs->get('max_tokens') ?? 1000);
+        $this->temperature = (float)($configs->get('temperature') ?? 0.8);
+        $this->topP        = (float)($configs->get('top_p') ?? 0.9);
     }
 
     /**
@@ -239,14 +243,14 @@ class BotService {
         );
         
         $data = [
-            "model" => "deepseek-v3.2",
+            "model" => $this->model,
             'messages' => [
                 ['role' => 'system', 'content' => $enhancedSystemPrompt],
                 ['role' => 'user', 'content' => $contextualQuery],
             ],
-            "max_tokens" => 2000,
-            "temperature" => 0.8,
-            "top_p" => 0.9,
+            "max_tokens" => $this->maxTokens,
+            "temperature" => $this->temperature,
+            "top_p" => $this->topP,
             "stream" => false
         ];
 
