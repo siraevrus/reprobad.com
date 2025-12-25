@@ -235,7 +235,7 @@ class BotService {
             $contextualQuery = $historyContext . $query;
         }
 
-        $apikey = "sk-hydra-ai-9Wa_xIkc31KS5__PlVJxvAXBiaeWM6rXbkjj+vtpCkajhU-_VMq8JyUQJ2XiUN2+";
+        $apikey = env('AI_TOKEN');
         
         $headers = array(
             "Authorization: Bearer $apikey",
