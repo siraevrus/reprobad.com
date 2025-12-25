@@ -15,7 +15,7 @@ class BotService {
     protected $ragVersion;
     protected $systemPrompt;
     protected $model;
-    protected $historyLimit = 10; // Количество сообщений в контексте
+    protected $historyLimit = 3; // Количество сообщений в контексте
 
     public function __construct()
     {
@@ -265,8 +265,8 @@ class BotService {
                     'bot_response' => $result['choices'][0]['message']['content'],
                 ]);
 
-                // Автоочистка истории: оставляем только последние 20 записей для пользователя
-                $deleted = ChatHistory::autoCleanUserHistory($userId, $source, 20);
+                // Автоочистка истории: оставляем только последние 3 записи для пользователя
+                $deleted = ChatHistory::autoCleanUserHistory($userId, $source, 3);
                 if ($deleted > 0) {
                     Log::info('Chat history auto-cleaned', [
                         'user_id' => $userId,
