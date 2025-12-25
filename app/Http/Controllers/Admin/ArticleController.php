@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Event;
 use App\Services\ImageService;
+use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -61,9 +62,11 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['image']) $validated['image'] = ImageService::resize($validated['image']);
-
         $resource = Article::query()->create($validated);
+        
+        InputService::uploadFile($request->image, $resource, 'image');
+        InputService::uploadFile($request->icon, $resource, 'icon');
+        
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -86,12 +89,12 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
-        if($validated['image'] && strpos($validated['image'], 'data') !== false)
-            $validated['image'] = ImageService::resize($validated['image'], 'jpg', 'articles');
-
         $resource = Article::query()->findOrFail($id);
         $resource->fill($validated);
         $resource->save();
+
+        InputService::uploadFile($request->image, $resource, 'image');
+        InputService::uploadFile($request->icon, $resource, 'icon');
 
         return response()->json([
             'success' => true,

@@ -70,6 +70,7 @@ class EventController extends Controller
         $resource = Event::query()
             ->create($validator->validated());
 
+        InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');
         InputService::uploadFile($request->logo, $resource, 'logo');
@@ -99,6 +100,7 @@ class EventController extends Controller
         $resource->fill($validator->validated());
         $resource->save();
 
+        InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');
         InputService::uploadFile($request->logo, $resource, 'logo');

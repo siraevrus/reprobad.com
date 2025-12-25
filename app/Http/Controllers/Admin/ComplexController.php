@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Complex;
 use App\Models\Product;
 use App\Services\ImageService;
+use App\Services\InputService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -71,6 +72,9 @@ class ComplexController extends Controller
         $resource = Complex::query()
             ->create($validated);
 
+        InputService::uploadFile($request->image_left, $resource, 'image_left');
+        InputService::uploadFile($request->image_right, $resource, 'image_right');
+
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -97,6 +101,9 @@ class ComplexController extends Controller
         $resource = Complex::query()->findOrFail($id);
         $resource->fill($validated);
         $resource->save();
+
+        InputService::uploadFile($request->image_left, $resource, 'image_left');
+        InputService::uploadFile($request->image_right, $resource, 'image_right');
 
         return response()->json([
             'success' => true,

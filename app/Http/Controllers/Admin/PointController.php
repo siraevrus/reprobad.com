@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Point;
+use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -84,6 +85,9 @@ class PointController extends Controller
 
         $resource = Point::query()
             ->create($validated);
+        
+        InputService::uploadFile($request->image, $resource, 'image');
+        
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -128,6 +132,8 @@ class PointController extends Controller
 
         $resource->fill($validated);
         $resource->save();
+
+        InputService::uploadFile($request->image, $resource, 'image');
 
         return response()->json([
             'success' => true,

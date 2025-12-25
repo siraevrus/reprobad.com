@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Advise;
 use App\Models\Article;
 use App\Models\Question;
+use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -75,6 +76,9 @@ class QuestionController extends Controller
 
         $resource = Question::query()
             ->create($validated);
+        
+        InputService::uploadFile($request->icon, $resource, 'icon');
+        
         return response()->json([
             'success' => true,
             'resource' => $resource
@@ -112,6 +116,8 @@ class QuestionController extends Controller
         $resource = Question::query()->findOrFail($id);
         $resource->fill($validated);
         $resource->save();
+
+        InputService::uploadFile($request->icon, $resource, 'icon');
 
         return response()->json([
             'success' => true,
