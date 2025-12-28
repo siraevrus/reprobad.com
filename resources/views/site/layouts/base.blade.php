@@ -145,6 +145,12 @@
                 max-width: 100% !important;
                 flex-basis: 100% !important;
             }
+            .white-cards .card {
+                margin-bottom: 1rem !important;
+            }
+            .white-cards .card:last-child {
+                margin-bottom: 0 !important;
+            }
         }
         .nav-quick-link.active {
             opacity: 1;

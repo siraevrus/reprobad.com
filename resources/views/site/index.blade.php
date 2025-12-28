@@ -28,14 +28,10 @@
             <a href="{{ route('site.advises.index') }}" class="more-purple-button w-button">все <span class="only-mobile-text">советы и статьи </span>—&gt;</a>
         </div>
         <div class="items-wrap white-cards">
-            @foreach($resources as $idx => $item)
-                @if($idx == 3)
-                    @include('site.components.subscribe-block')
-                    @include('site.components.articles.item', ['item' => $item])
-                @else
-                    @include('site.components.articles.item', ['item' => $item])
-                @endif
+            @foreach($resources as $item)
+                @include('site.components.articles.item', ['item' => $item])
             @endforeach
+            @include('site.components.subscribe-block')
         </div>
     </div>
 </section>
