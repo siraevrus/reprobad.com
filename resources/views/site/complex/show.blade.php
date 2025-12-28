@@ -205,6 +205,16 @@
         .product-head-image .tns-controls {
             pointer-events: auto;
         }
+        /* Опускаем изображения продуктов в верхнем блоке на 23px */
+        .hero-products .sache-image-element,
+        .hero-products .bottle-image-element {
+            margin-top: 23px;
+        }
+        /* Опускаем правое изображение еще на 20px */
+        .hero-products > a:nth-child(2) .sache-image-element,
+        .hero-products > a:nth-child(2) .bottle-image-element {
+            margin-top: 43px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
