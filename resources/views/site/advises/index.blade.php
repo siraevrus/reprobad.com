@@ -62,9 +62,6 @@
                             </div>
                         </div>
                     @else
-                        @if($idx == 9)
-                            @include('site.components.subscribe-block')
-                        @endif
                         <div class="card">
                             @if(isset($item->icon))
                                 <div class="card-head">
@@ -88,6 +85,7 @@
                         </div>
                     @endif
                 @endforeach
+                @include('site.components.subscribe-block')
             </div>
             <div class="spacer desktop-3-rem"></div>
             <div class="pages-wrap">

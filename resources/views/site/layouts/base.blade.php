@@ -151,6 +151,24 @@
             .white-cards .card:last-child {
                 margin-bottom: 0 !important;
             }
+            .items-wrap .card {
+                margin-bottom: 1rem !important;
+            }
+            .items-wrap .card:last-child {
+                margin-bottom: 0 !important;
+            }
+            .items-wrap .news-card {
+                margin-bottom: 1rem !important;
+            }
+            .items-wrap .news-card:last-child {
+                margin-bottom: 0 !important;
+            }
+            .items-wrap .events-card {
+                margin-bottom: 1rem !important;
+            }
+            .items-wrap .events-card:last-child {
+                margin-bottom: 0 !important;
+            }
         }
         .nav-quick-link.active {
             opacity: 1;

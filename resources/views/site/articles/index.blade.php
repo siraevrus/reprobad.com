@@ -61,12 +61,10 @@
                             </div>
                         </div>
                     @else
-                        @if($idx == 9)
-                            @include('site.components.subscribe-block')
-                        @endif
                         @include('site.components.articles.item', ['item' => $item])
                     @endif
                 @endforeach
+                @include('site.components.subscribe-block')
             </div>
             <div class="spacer desktop-3-rem"></div>
             <div class="pages-wrap">
