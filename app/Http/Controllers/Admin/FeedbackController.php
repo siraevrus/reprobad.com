@@ -38,7 +38,7 @@ class FeedbackController extends Controller
     {
         $resource = Feedback::query()->findOrFail($id);
         $resource->delete();
-        return back();
+        return redirect()->route('admin.feedbacks.index')->with('message', 'Вопрос успешно удален');
     }
 }
 
