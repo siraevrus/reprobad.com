@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
     Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('/admin/feedbacks', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy']);
 
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');

@@ -25,7 +25,6 @@ class DefaultMail extends Mailable
     {
         return $this->markdown('mail.default')
             ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
-            ->to(env('MAIL_TO_ADDRESS'))
             ->subject('Новая заявка на сайте Repro')
             ->with([
                 'email' => $this->message['email'],

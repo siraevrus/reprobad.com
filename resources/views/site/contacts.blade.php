@@ -84,7 +84,7 @@
 
                     <div class="success-message w-form-done" style="margin-top: 20px;" x-show="success">
                         <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                        <div>Вы подписаны!</div>
+                        <div>Вопрос отправлен</div>
                         <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
                     </div>
 

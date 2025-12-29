@@ -74,13 +74,13 @@
                                         </span>
                                     </label>
                                 </div>
-                                <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить">
+                                <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Отправить" :disabled="isSubmitting">
                             </form>
 
-                            <div x-show="successFeedback" class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success">
+                            <div x-show="successFeedback" x-cloak class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success">
                                 <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
-                                <div>Вы подписаны!</div>
-                                <a href="#" class="close-popup-button w-inline-block">
+                                <div>Вопрос отправлен</div>
+                                <a href="#" class="close-popup-button w-inline-block" @click.prevent="successFeedback = false; formFeedback = {name: '', email: '', phone: '', message: '', agree: true}; errorsFeedback = {};">
                                     <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
                                 </a>
                             </div>
@@ -158,6 +158,9 @@
         .input-error {
             border: 1px solid red;
         }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
     <script>
         function app() {
@@ -167,7 +170,7 @@
                     email: '',
                     phone: '',
                     message: '',
-                    agree: 1
+                    agree: true
                 },
                 formSubscribe: {
                     email: '',
@@ -177,29 +180,83 @@
                 errorsSubscribe: {},
                 successFeedback: false,
                 successSubscribe: false,
+                isSubmitting: false,
 
                 async feedbackForm() {
+                    // Предотвращаем двойную отправку
+                    if (this.isSubmitting) {
+                        return;
+                    }
+                    
+                    this.isSubmitting = true;
+                    this.errorsFeedback = {};
+                    
                     try {
-                        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                        
+                        if (!token) {
+                            throw new Error('CSRF токен не найден');
+                        }
+                        
+                        // Преобразуем agree в правильный формат для валидации (checkbox возвращает true/false)
+                        const formData = {
+                            name: this.formFeedback.name?.trim() || '',
+                            email: this.formFeedback.email?.trim() || '',
+                            phone: this.formFeedback.phone?.trim() || '',
+                            message: this.formFeedback.message?.trim() || '',
+                            agree: this.formFeedback.agree ? 1 : 0
+                        };
+                        
+                        console.log('Отправка формы:', formData);
+                        
                         const response = await fetch('/forms/feedback', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': token
+                                'X-CSRF-TOKEN': token,
+                                'Accept': 'application/json'
                             },
-                            body: JSON.stringify(this.formFeedback)
+                            body: JSON.stringify(formData)
                         });
 
-                        const data = await response.json();
-                        if (data.success) {
+                        console.log('Ответ сервера:', response.status, response.statusText);
+                        
+                        let data;
+                        try {
+                            data = await response.json();
+                            console.log('Данные ответа:', data);
+                        } catch (e) {
+                            console.error('Ошибка парсинга JSON:', e);
+                            throw new Error('Неверный формат ответа от сервера');
+                        }
+                        
+                        if (response.ok && data.success) {
+                            console.log('Успешная отправка, показываем сообщение');
                             this.errorsFeedback = {};
                             this.successFeedback = true;
+                            // Очищаем форму после успешной отправки
+                            this.formFeedback = {
+                                name: '',
+                                email: '',
+                                phone: '',
+                                message: '',
+                                agree: 1
+                            };
                         } else {
-                            this.errorsFeedback = data.errors;
+                            console.log('Ошибки валидации:', data.errors);
+                            this.errorsFeedback = data.errors || {};
+                            this.successFeedback = false;
                         }
                     }
                     catch (e) {
-                        console.log(e)
+                        console.error('Ошибка при отправке формы:', e);
+                        this.errorsFeedback = { 
+                            general: [e.message || 'Произошла ошибка при отправке формы. Попробуйте еще раз.'] 
+                        };
+                        this.successFeedback = false;
+                    }
+                    finally {
+                        this.isSubmitting = false;
                     }
                 },
 

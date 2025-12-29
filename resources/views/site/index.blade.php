@@ -29,7 +29,7 @@
         </div>
         <div class="items-wrap white-cards">
             @foreach($resources as $item)
-                @include('site.components.articles.item', ['item' => $item])
+                    @include('site.components.articles.item', ['item' => $item])
             @endforeach
             @include('site.components.subscribe-block')
         </div>

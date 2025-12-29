@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Mail\DefaultMail;
+use App\Models\Feedback;
 use App\Models\Subscribe;
 use App\Services\CityStatsService;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +33,16 @@ class FormController extends Controller
             'email' => $request->get('email'),
         ]);
 
-        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
+        // Отправляем email только если указан получатель
+        $mailTo = env('MAIL_TO') ?? env('MAIL_TO_ADDRESS');
+        if ($mailTo) {
+            try {
+                Mail::to($mailTo)->send(new DefaultMail($validator->validated()));
+            } catch (\Exception $e) {
+                // Логируем ошибку, но не прерываем выполнение
+                \Log::error('Ошибка отправки email: ' . $e->getMessage());
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -47,10 +57,18 @@ class FormController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'required|string',
+            'phone' => 'nullable|string',
             'message' => 'required|string',
-            'agree' => 'accepted|required'
+            'agree' => 'required'
         ]);
+        
+        // Проверяем, что согласие дано (может быть 1, true, "1", "true" и т.д.)
+        if ($request->has('agree') && !in_array($request->get('agree'), [1, '1', true, 'true', 'on', 'yes'], true)) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['agree' => ['Необходимо дать согласие на обработку персональных данных']]
+            ], 422);
+        }
 
         if ($validator->fails()) {
             return response()->json([
@@ -59,7 +77,26 @@ class FormController extends Controller
             ], 422);
         }
 
-        Mail::to(env('MAIL_TO'))->send(new DefaultMail($validator->validated()));
+        $validated = $validator->validated();
+        
+        // Сохраняем вопрос в базу данных
+        Feedback::query()->create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'message' => $validated['message'],
+        ]);
+
+        // Отправляем email только если указан получатель
+        $mailTo = env('MAIL_TO') ?? env('MAIL_TO_ADDRESS');
+        if ($mailTo) {
+            try {
+                Mail::to($mailTo)->send(new DefaultMail($validated));
+            } catch (\Exception $e) {
+                // Логируем ошибку, но не прерываем выполнение
+                \Log::error('Ошибка отправки email: ' . $e->getMessage());
+            }
+        }
 
         return response()->json([
             'success' => true,
