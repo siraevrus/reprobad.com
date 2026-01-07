@@ -127,6 +127,13 @@
         .w-richtext th {
             font-size: clamp(12px, 1rem, 1rem);
         }
+        /* Гарантируем минимальный размер шрифта 12px для подзаголовков статей в мобильной версии */
+        @media screen and (max-width: 767px) {
+            .news-card-text,
+            .card-text {
+                font-size: clamp(12px, 0.875rem, 1rem);
+            }
+        }
         .card-title { color: var(--p-first-color); }
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; }
