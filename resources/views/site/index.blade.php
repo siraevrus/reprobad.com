@@ -1,5 +1,25 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Система РЕПРО",
+  "description": "Программа для нормализации дисбалансов при планировании беременности",
+  "url": "{{ config('app.url') }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ config('app.url') }}/articles?query={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+@endsection
+
 @section('content')
 <section class="section">
     <div class="container">

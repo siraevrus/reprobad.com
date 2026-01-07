@@ -1,5 +1,32 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@id": "{{ config('app.url') }}",
+        "name": "Главная"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@id": "{{ route('site.text.about') }}",
+        "name": "{{ strip_tags($resource->title ?? 'О системе') }}"
+      }
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
     @foreach($resource->content as $block)
         @if($block['type'] == 'block13' && !$block['hide'])

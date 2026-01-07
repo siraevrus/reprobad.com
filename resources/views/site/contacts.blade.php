@@ -1,5 +1,32 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@id": "{{ config('app.url') }}",
+        "name": "Главная"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@id": "{{ route('site.text.contacts') }}",
+        "name": "Контакты"
+      }
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
     <section class="section contacts-form-section">
         <div class="container contacts-form-container"><img sizes="100vw" srcset="images/m1-p-500.webp 500w, images/m1-p-800.webp 800w, images/m1-p-1080.webp 1080w, images/m1.webp 1440w" alt="" src="images/m1.webp" loading="lazy" class="contacts-bg">
