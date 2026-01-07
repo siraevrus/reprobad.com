@@ -453,7 +453,17 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/98482244" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
-@include('site.components.select-city')
+@php
+    // Определяем, является ли страница внутренним разделом
+    // Выбор города показываем только на главной странице и странице карты
+    $isHomePage = request()->is('/');
+    $isMapPage = request()->is('map');
+    $showCitySelect = $isHomePage || $isMapPage;
+@endphp
+
+@if($showCitySelect)
+    @include('site.components.select-city')
+@endif
 @include('site.components.lottie-banner')
 
 
