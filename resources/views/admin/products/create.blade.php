@@ -10,7 +10,10 @@
             @csrf
 
             <div class="grid grid-cols-2 gap-2">
-                <div>@include('admin.components.image-input', ['title' => 'Обложка', 'field' => 'image'])</div>
+                <div>
+                    @include('admin.components.image-input', ['title' => 'Обложка', 'field' => 'image'])
+                    @include('admin.components.text-input', ['title' => 'Alt текст для обложки', 'field' => 'image_alt'])
+                </div>
                 <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'photo'])</div>
             </div>
 

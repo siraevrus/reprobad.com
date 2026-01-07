@@ -32,7 +32,7 @@
                                 </p>
                                 <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="product-item-link w-inline-block">
                                     <div class="sache-image-element">
-                                        <img src="{{ $resource->image }}" loading="lazy" alt="" class="sache-image">
+                                        <img src="{{ $resource->image }}" loading="lazy" alt="{{ $resource->image_alt ?? $resource->title }}" class="sache-image">
                                     </div>
                                 </a>
                                 <div class="product-item-button-wrap" style="display: block">

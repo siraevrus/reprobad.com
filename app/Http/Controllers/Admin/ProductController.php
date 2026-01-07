@@ -20,6 +20,7 @@ class ProductController extends Controller
         'alias' => 'required|unique:articles,alias|max:255',
         'description' => 'nullable',
         'image' => 'string|nullable',
+        'image_alt' => 'string|nullable',
         'logo' => 'string|nullable',
         'includes' => 'string|nullable',
         'link' => 'string|nullable',
