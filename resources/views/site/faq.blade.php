@@ -2,23 +2,26 @@
 
 @section('head')
 @if($resources && $resources->count() > 0)
+@php
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => []
+    ];
+    
+    foreach ($resources as $resource) {
+        $faqSchema['mainEntity'][] = [
+            '@type' => 'Question',
+            'name' => strip_tags($resource->title),
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => strip_tags($resource->content)
+            ]
+        ];
+    }
+@endphp
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    @foreach($resources as $idx => $resource)
-    {
-      "@type": "Question",
-      "name": "{{ addslashes(strip_tags($resource->title)) }}",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "{{ addslashes(strip_tags($resource->content)) }}"
-      }
-    }@if(!$loop->last),@endif
-    @endforeach
-  ]
-}
+{!! json_encode($faqSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endif
 @endsection
