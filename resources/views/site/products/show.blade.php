@@ -1,5 +1,27 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ strip_tags($resource->title) }}",
+  "description": "{{ strip_tags($resource->description ?? $resource->subtitle ?? '') }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "Система РЕПРО"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.eapteka.ru/search/?q=репро",
+    "availability": "https://schema.org/InStock"
+  }@if($resource->image),
+  "image": "{{ str_starts_with($resource->image, 'http') ? $resource->image : (config('app.url') . '/' . ltrim($resource->image, '/')) }}"
+  @endif
+}
+</script>
+@endsection
+
 @section('content')
     <section class="section product-hero-section product-section-clip">
         <div class="container product-hero-container {{ $resource->color }}">

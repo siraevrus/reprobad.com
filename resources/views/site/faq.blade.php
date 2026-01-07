@@ -1,5 +1,26 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    @foreach($resources as $idx => $resource)
+    {
+      "@type": "Question",
+      "name": "{{ strip_tags($resource->title) }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ strip_tags($resource->content) }}"
+      }
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+@endsection
+
 @section('content')
     <section class="section article-section">
         <div class="container">

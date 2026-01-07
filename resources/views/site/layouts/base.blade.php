@@ -56,6 +56,62 @@
 
     @yield('head')
 
+    {{-- Organization Schema - глобальная разметка компании --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Система РЕПРО",
+      "description": "Программа для нормализации дисбалансов при планировании беременности",
+      "url": "{{ config('app.url') }}",
+      "logo": "{{ config('app.url') }}/images/lgog-gold.svg",
+      "contactPoint": [
+        @if(config('phone'))
+        {
+          "@type": "ContactPoint",
+          "telephone": "{{ str_replace([' ', '(', ')', '-'], '', config('phone')) }}",
+          "contactType": "Customer Support",
+          "email": "{{ config('email') ?? '' }}"
+        }@if(config('phone2') || config('email2')),@endif
+        @endif
+        @if(config('phone2'))
+        {
+          "@type": "ContactPoint",
+          "telephone": "{{ str_replace([' ', '(', ')', '-'], '', config('phone2')) }}",
+          "contactType": "Customer Service"
+        }@if(config('email2')),@endif
+        @endif
+        @if(config('email2'))
+        {
+          "@type": "ContactPoint",
+          "email": "{{ config('email2') }}",
+          "contactType": "Media Inquiries"
+        }
+        @endif
+      ]@if(config('address')),
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ config('address') }}"
+      }@endif
+      @php
+        $socialLinks = array_filter([
+          config('vk'),
+          config('ok'),
+          config('telegram'),
+          config('rutube'),
+          config('dzen')
+        ]);
+      @endphp
+      @if(count($socialLinks) > 0),
+      "sameAs": [
+        @foreach($socialLinks as $idx => $link)
+        "{{ $link }}"@if(!$loop->last),@endif
+        @endforeach
+      ]
+      @endif
+    }
+    </script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
