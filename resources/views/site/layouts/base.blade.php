@@ -57,59 +57,68 @@
     @yield('head')
 
     {{-- Organization Schema - глобальная разметка компании --}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Система РЕПРО",
-      "description": "Программа для нормализации дисбалансов при планировании беременности",
-      "url": "{{ config('app.url') }}",
-      "logo": "{{ config('app.url') }}/images/lgog-gold.svg",
-      "contactPoint": [
-        @if(config('phone'))
-        {
-          "@type": "ContactPoint",
-          "telephone": "{{ str_replace([' ', '(', ')', '-'], '', config('phone')) }}",
-          "contactType": "Customer Support",
-          "email": "{{ config('email') ?? '' }}"
-        }@if(config('phone2') || config('email2')),@endif
-        @endif
-        @if(config('phone2'))
-        {
-          "@type": "ContactPoint",
-          "telephone": "{{ str_replace([' ', '(', ')', '-'], '', config('phone2')) }}",
-          "contactType": "Customer Service"
-        }@if(config('email2')),@endif
-        @endif
-        @if(config('email2'))
-        {
-          "@type": "ContactPoint",
-          "email": "{{ config('email2') }}",
-          "contactType": "Media Inquiries"
+    @php
+        $contactPoints = [];
+        if (config('phone')) {
+            $contactPoint = [
+                '@type' => 'ContactPoint',
+                'telephone' => str_replace([' ', '(', ')', '-'], '', config('phone')),
+                'contactType' => 'Customer Support'
+            ];
+            if (config('email')) {
+                $contactPoint['email'] = config('email');
+            }
+            $contactPoints[] = $contactPoint;
         }
-        @endif
-      ]@if(config('address')),
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "{{ config('address') }}"
-      }@endif
-      @php
+        if (config('phone2')) {
+            $contactPoints[] = [
+                '@type' => 'ContactPoint',
+                'telephone' => str_replace([' ', '(', ')', '-'], '', config('phone2')),
+                'contactType' => 'Customer Service'
+            ];
+        }
+        if (config('email2')) {
+            $contactPoints[] = [
+                '@type' => 'ContactPoint',
+                'email' => config('email2'),
+                'contactType' => 'Media Inquiries'
+            ];
+        }
+        
+        $organization = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'Система РЕПРО',
+            'description' => 'Программа для нормализации дисбалансов при планировании беременности',
+            'url' => config('app.url'),
+            'logo' => config('app.url') . '/images/lgog-gold.svg'
+        ];
+        
+        if (count($contactPoints) > 0) {
+            $organization['contactPoint'] = $contactPoints;
+        }
+        
+        if (config('address')) {
+            $organization['address'] = [
+                '@type' => 'PostalAddress',
+                'streetAddress' => config('address')
+            ];
+        }
+        
         $socialLinks = array_filter([
-          config('vk'),
-          config('ok'),
-          config('telegram'),
-          config('rutube'),
-          config('dzen')
+            config('vk'),
+            config('ok'),
+            config('telegram'),
+            config('rutube'),
+            config('dzen')
         ]);
-      @endphp
-      @if(count($socialLinks) > 0),
-      "sameAs": [
-        @foreach($socialLinks as $idx => $link)
-        "{{ $link }}"@if(!$loop->last),@endif
-        @endforeach
-      ]
-      @endif
-    }
+        
+        if (count($socialLinks) > 0) {
+            $organization['sameAs'] = array_values($socialLinks);
+        }
+    @endphp
+    <script type="application/ld+json">
+    {!! json_encode($organization, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
