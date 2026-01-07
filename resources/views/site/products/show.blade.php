@@ -1,24 +1,31 @@
 @extends('site.layouts.base')
 
 @section('head')
+@php
+    $productSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => strip_tags($resource->title),
+        'description' => strip_tags($resource->description ?? $resource->subtitle ?? ''),
+        'brand' => [
+            '@type' => 'Brand',
+            'name' => 'Система РЕПРО'
+        ],
+        'offers' => [
+            '@type' => 'Offer',
+            'url' => 'https://www.eapteka.ru/search/?q=репро',
+            'availability' => 'https://schema.org/InStock'
+        ]
+    ];
+    
+    if ($resource->image) {
+        $productSchema['image'] = str_starts_with($resource->image, 'http') 
+            ? $resource->image 
+            : (config('app.url') . '/' . ltrim($resource->image, '/'));
+    }
+@endphp
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "{{ strip_tags($resource->title) }}",
-  "description": "{{ strip_tags($resource->description ?? $resource->subtitle ?? '') }}",
-  "brand": {
-    "@type": "Brand",
-    "name": "Система РЕПРО"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://www.eapteka.ru/search/?q=репро",
-    "availability": "https://schema.org/InStock"
-  }@if($resource->image),
-  "image": "{{ str_starts_with($resource->image, 'http') ? $resource->image : (config('app.url') . '/' . ltrim($resource->image, '/')) }}"
-  @endif
-}
+{!! json_encode($productSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
