@@ -1,5 +1,40 @@
 @extends('site.layouts.base')
 
+@section('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@id": "{{ config('app.url') }}",
+        "name": "Главная"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@id": "{{ route('site.advises.index') }}",
+        "name": "Полезные советы"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@id": "{{ route('site.advises.show', $resource->alias) }}",
+        "name": "{{ strip_tags($resource->title) }}"
+      }
+    }
+  ]
+}
+</script>
+@endsection
+
 @section('content')
     <section class="section article-section">
         <div class="container">
