@@ -85,7 +85,9 @@
                         </div>
                     @endif
                 @endforeach
-                @include('site.components.subscribe-block')
+                @if(!request()->get('query') || $resources->count() > 0)
+                    @include('site.components.subscribe-block')
+                @endif
             </div>
             <div class="spacer desktop-3-rem"></div>
             <div class="pages-wrap">
