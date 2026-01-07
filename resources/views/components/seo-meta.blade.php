@@ -51,6 +51,12 @@
         $ogImage = $resource->image ?? $resource->logo ?? null;
     }
     
+    // Проверяем, является ли изображение base64 (data:image/...)
+    // Если да, используем дефолтное изображение вместо base64 для оптимизации
+    if ($ogImage && str_starts_with($ogImage, 'data:image')) {
+        $ogImage = null;
+    }
+    
     // Если все еще нет изображения, используем дефолтное
     if (!$ogImage) {
         $ogImage = config('app.url') . '/images/lgog-gold.svg';

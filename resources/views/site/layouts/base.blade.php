@@ -18,10 +18,18 @@
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
         @php
             $ogImage = $resource->image ?? $resource->logo ?? null;
+            
+            // Проверяем, является ли изображение base64 (data:image/...)
+            // Если да, используем дефолтное изображение вместо base64 для оптимизации
+            if ($ogImage && str_starts_with($ogImage, 'data:image')) {
+                $ogImage = null;
+            }
+            
             // Если нет изображения, используем дефолтное изображение сайта
             if (!$ogImage) {
                 $ogImage = config('app.url') . '/images/lgog-gold.svg';
             }
+            
             $ogImageUrl = str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'));
         @endphp
         <meta property="og:image" content="{{ $ogImageUrl }}">
