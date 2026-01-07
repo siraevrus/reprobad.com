@@ -5,13 +5,13 @@
         <div class="step-products">
             <a href="{{ route('site.complex.show', $item->alias) }}#{{ $item->anchor_left }}" class="step-product-left w-inline-block">
                 <div class="sache-image-element">
-                    <img src="{{ $item->image_left }}" loading="lazy" alt="" class="sache-image">
+                    <img src="{{ $item->image_left }}" loading="lazy" alt="{{ $item->alt_left ?? $item->title }}" class="sache-image">
                 </div>
                 <div class="step-product-shadow"></div>
             </a>
             <a href="{{ route('site.complex.show', $item->alias) }}#{{ $item->anchor_right }}" class="step-product-right w-inline-block">
                 <div class="sache-image-element">
-                    <img src="{{ $item->image_right }}" loading="lazy" alt="" class="sache-image">
+                    <img src="{{ $item->image_right }}" loading="lazy" alt="{{ $item->alt_right ?? $item->title }}" class="sache-image">
                 </div>
                 <div class="step-product-shadow gipokortizol"></div>
             </a>

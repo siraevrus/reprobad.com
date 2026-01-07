@@ -14,13 +14,13 @@
                 --}}
                 <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
-                        <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                        <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="{{ $resource->alt_left ?? $resource->title }}" class="sache-image"></div>
                     </a>
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_right }}" class="{{ $resource->title_right }} w-inline-block">
                         @if($resource->id == 1)
-                            <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
+                            <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="{{ $resource->alt_right ?? $resource->title }}" loading="lazy" class="bottle-image"></div>
                         @else
-                            <div class="sache-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="sache-image"></div>
+                            <div class="sache-image-element"><img src="{{ $resource->image_right }}" alt="{{ $resource->alt_right ?? $resource->title }}" loading="lazy" class="sache-image"></div>
                         @endif
                     </a>
                 </div>
@@ -149,12 +149,12 @@
                                 <div class="step-products">
                                     <a href="{{ route('site.complex.show', $complex->alias) }}#first" class="step-product-left w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $complex->image_left }}" loading="lazy" alt="" class="sache-image"></div>
+                                            <img src="{{ $complex->image_left }}" loading="lazy" alt="{{ $complex->alt_left ?? $complex->title }}" class="sache-image"></div>
                                         <div class="step-product-shadow"></div>
                                     </a>
                                     <a href="{{ route('site.complex.show', $complex->alias) }}#second" class="step-product-right w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $complex->image_right }}" loading="lazy" alt="" class="sache-image"></div>
+                                            <img src="{{ $complex->image_right }}" loading="lazy" alt="{{ $complex->alt_right ?? $complex->title }}" class="sache-image"></div>
                                         <div class="step-product-shadow gipokortizol"></div>
                                     </a>
                                 </div>
