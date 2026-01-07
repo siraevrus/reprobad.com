@@ -8,6 +8,7 @@
             :pageType="$pageType"
             :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? $resource->description ?? ''"
+            :resource="$resource"
             :forceDynamic="$forceDynamic ?? false"
         />
     @elseif(isset($resource))

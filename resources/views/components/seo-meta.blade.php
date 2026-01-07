@@ -1,4 +1,4 @@
-@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'forceDynamic' => false])
+@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'resource' => null, 'forceDynamic' => false])
 
 @php
     // Принудительно приводим forceDynamic к булевому типу
@@ -42,9 +42,24 @@
     <meta property="og:description" content="{{ $finalOgDescription }}">
 @endif
 
-@if($seoData['og_image'])
-    <meta property="og:image" content="{{ $seoData['og_image'] }}">
-@endif
+@php
+    // Определяем изображение для og:image
+    $ogImage = $seoData['og_image'] ?? null;
+    
+    // Если нет изображения в SEO данных, используем изображение из ресурса
+    if (!$ogImage && $resource) {
+        $ogImage = $resource->image ?? $resource->logo ?? null;
+    }
+    
+    // Если все еще нет изображения, используем дефолтное
+    if (!$ogImage) {
+        $ogImage = config('app.url') . '/images/lgog-gold.svg';
+    }
+    
+    // Формируем полный URL
+    $ogImageUrl = str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'));
+@endphp
+<meta property="og:image" content="{{ $ogImageUrl }}">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ request()->url() }}">
