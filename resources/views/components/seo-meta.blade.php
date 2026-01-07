@@ -47,4 +47,5 @@
 @endif
 
 <meta property="og:type" content="website">
+<meta property="og:url" content="{{ request()->url() }}">
 <meta property="og:site_name" content="{{ config('app.name') }}"> 
