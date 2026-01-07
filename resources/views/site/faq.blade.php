@@ -1,6 +1,7 @@
 @extends('site.layouts.base')
 
 @section('head')
+@if($resources && $resources->count() > 0)
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -9,16 +10,17 @@
     @foreach($resources as $idx => $resource)
     {
       "@type": "Question",
-      "name": "{{ strip_tags($resource->title) }}",
+      "name": "{{ addslashes(strip_tags($resource->title)) }}",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ strip_tags($resource->content) }}"
+        "text": "{{ addslashes(strip_tags($resource->content)) }}"
       }
     }@if(!$loop->last),@endif
     @endforeach
   ]
 }
 </script>
+@endif
 @endsection
 
 @section('content')
