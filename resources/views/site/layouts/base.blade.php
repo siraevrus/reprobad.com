@@ -17,20 +17,18 @@
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
         @php
             $ogImage = $resource->image ?? $resource->logo ?? null;
-            if ($ogImage) {
-                $ogImageUrl = str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'));
+            // Если нет изображения, используем дефолтное изображение сайта
+            if (!$ogImage) {
+                $ogImage = config('app.url') . '/images/lgog-gold.svg';
             }
+            $ogImageUrl = str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'));
         @endphp
-        @if(!empty($ogImage))
         <meta property="og:image" content="{{ $ogImageUrl }}">
-        @endif
         <meta property="og:url" content="{{ request()->url() }}">
         <meta property="og:type" content="website">
         <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
-        @if(!empty($ogImage))
         <meta property="twitter:image" content="{{ $ogImageUrl }}">
-        @endif
     @else
         <title>РЕПРО АПОТЕКА • REPRO APOTHEKA</title>
         <meta content="Готовимся к беременности вместе" name="description">
