@@ -114,9 +114,9 @@
         .w-richtext figure img { border-radius: 1rem; }
         .w-richtext figure { --figure-width: 100%; width: var(--figure-width); max-width: var(--figure-width); }
         .w-richtext figure div, .w-richtext figure img { width: 100% !important; !important; max-width: 100% !important; }
-        /* Гарантируем минимальный размер шрифта 12px для текста статей (требование Яндекс Вебмастера) */
+        /* Гарантируем минимальный размер шрифта 13px для текста статей (требование Яндекс Вебмастера) */
         .w-richtext {
-            font-size: clamp(12px, 1rem, 1rem);
+            font-size: clamp(13px, 1rem, 1rem);
         }
         
         .w-richtext p,
@@ -125,13 +125,13 @@
         .w-richtext div,
         .w-richtext td,
         .w-richtext th {
-            font-size: clamp(12px, 1rem, 1rem);
+            font-size: clamp(13px, 1rem, 1rem);
         }
-        /* Гарантируем минимальный размер шрифта 12px для подзаголовков статей в мобильной версии */
+        /* Гарантируем минимальный размер шрифта 13px для подзаголовков статей в мобильной версии */
         @media screen and (max-width: 767px) {
             .news-card-text,
             .card-text {
-                font-size: clamp(12px, 0.875rem, 1rem);
+                font-size: clamp(13px, 0.875rem, 1rem);
             }
         }
         .card-title { color: var(--p-first-color); }
