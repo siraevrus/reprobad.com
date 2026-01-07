@@ -10,12 +10,24 @@
     ];
     
     foreach ($resources as $resource) {
+        // Конвертируем HTML в текст с сохранением структуры
+        $answerText = $resource->content ?? '';
+        // Заменяем HTML теги на пробелы и переносы строк для читаемости
+        $answerText = preg_replace('/<br\s*\/?>/i', "\n", $answerText);
+        $answerText = preg_replace('/<\/p>/i', "\n\n", $answerText);
+        $answerText = preg_replace('/<p[^>]*>/i', '', $answerText);
+        $answerText = preg_replace('/<\/li>/i', "\n", $answerText);
+        $answerText = preg_replace('/<li[^>]*>/i', '• ', $answerText);
+        $answerText = preg_replace('/<[^>]+>/', '', $answerText); // Удаляем все остальные HTML теги
+        $answerText = html_entity_decode($answerText, ENT_QUOTES | ENT_HTML5, 'UTF-8'); // Декодируем HTML сущности
+        $answerText = trim($answerText); // Убираем лишние пробелы
+        
         $faqSchema['mainEntity'][] = [
             '@type' => 'Question',
             'name' => strip_tags($resource->title),
             'acceptedAnswer' => [
                 '@type' => 'Answer',
-                'text' => strip_tags($resource->content)
+                'text' => $answerText
             ]
         ];
     }
