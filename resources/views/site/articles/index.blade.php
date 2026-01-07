@@ -31,7 +31,7 @@
                 </div>
                 @endif
 
-                <a href="#" class="mobile-search-button w-inline-block"><img src="images/Search.svg" loading="lazy" alt="" class="mobile-search-button-icon"></a>
+                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="images/Search.svg" loading="lazy" alt="" class="mobile-search-button-icon"></a>
             </div>
             <div class="items-wrap">
                 @if(!$resources->count())
@@ -103,4 +103,30 @@
             @endif
         </div>
     </section>
+@endsection
+
+@section('scripts')
+<script>
+    function toggleMobileSearch() {
+        const searchForm = document.querySelector('.items-head .search');
+        const mobileButton = document.querySelector('.mobile-search-button');
+        
+        if (searchForm) {
+            if (searchForm.style.display === 'block' || searchForm.classList.contains('mobile-search-active')) {
+                searchForm.style.display = 'none';
+                searchForm.classList.remove('mobile-search-active');
+            } else {
+                searchForm.style.display = 'block';
+                searchForm.classList.add('mobile-search-active');
+                // Фокусируемся на поле ввода
+                const searchInput = searchForm.querySelector('.search-input');
+                if (searchInput) {
+                    setTimeout(() => {
+                        searchInput.focus();
+                    }, 100);
+                }
+            }
+        }
+    }
+</script>
 @endsection

@@ -114,6 +114,15 @@
         }
         .search-input:focus ~ .search-icon, .search-input:not(:placeholder-shown)  ~ .search-icon { opacity: 1; }
         .search-input:not(:placeholder-shown)  ~ .search-button { display: block; }
+        /* Показ формы поиска в мобильной версии */
+        @media screen and (max-width: 767px) {
+            .search.mobile-search-active {
+                display: block !important;
+                order: -1;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+        }
         .tags::-webkit-scrollbar { display: none; }
         .tags { -ms-overflow-style: none;   scrollbar-width: none; }
         .events-card:last-child { border-bottom: none; }
