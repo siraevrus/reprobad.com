@@ -64,10 +64,15 @@
                         @include('site.components.articles.item', ['item' => $item])
                     @endif
                 @endforeach
-                @if(!request()->get('query') || $resources->count() > 0)
+                @if((!request()->get('query') || $resources->count() > 0) && $resources->count() > 1)
                     @include('site.components.subscribe-block')
                 @endif
             </div>
+            @if(request()->get('query') && $resources->count() == 1)
+                <div style="margin-top: 2rem;">
+                    @include('site.components.subscribe-block')
+                </div>
+            @endif
             <div class="spacer desktop-3-rem"></div>
             <div class="pages-wrap">
                 <div class="pages">
