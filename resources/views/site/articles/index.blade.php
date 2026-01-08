@@ -64,11 +64,15 @@
                         @include('site.components.articles.item', ['item' => $item])
                     @endif
                 @endforeach
-                @if((!request()->get('query') || $resources->count() > 0) && $resources->count() > 1)
+                @php
+                    $articlesCount = $resources->count();
+                    $isEvenCount = $articlesCount > 0 && $articlesCount % 2 == 0;
+                @endphp
+                @if((!request()->get('query') || $articlesCount > 0) && $isEvenCount)
                     @include('site.components.subscribe-block')
                 @endif
             </div>
-            @if(request()->get('query') && $resources->count() == 1)
+            @if((!request()->get('query') || $articlesCount > 0) && !$isEvenCount && $articlesCount > 0)
                 <div style="margin-top: 2rem;">
                     @include('site.components.subscribe-block')
                 </div>
