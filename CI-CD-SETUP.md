@@ -232,6 +232,38 @@ rm -rf vendor/
 composer install
 ```
 
+### Настройка Laravel Scheduler (Cron)
+
+Для автоматической работы планировщика Laravel (например, генерация sitemap.xml) необходимо настроить cron job на сервере:
+
+```bash
+# На сервере откройте crontab
+crontab -e
+
+# Добавьте следующую строку (замените /var/www/repro на путь к вашему проекту)
+* * * * * cd /var/www/repro && php artisan schedule:run >> /dev/null 2>&1
+```
+
+**Важно:**
+- Эта команда должна запускаться каждую минуту
+- Laravel сам определит, какие задачи нужно выполнить в данный момент
+- В проекте настроена автоматическая генерация sitemap.xml раз в сутки через `Schedule::command('sitemap:generate')->daily()`
+
+**Альтернатива:** Sitemap.xml также генерируется автоматически при каждом деплое через GitHub Actions, поэтому cron не является обязательным для работы sitemap.
+
+**Проверка работы планировщика:**
+
+```bash
+# Проверка списка запланированных задач
+php artisan schedule:list
+
+# Ручной запуск планировщика (для тестирования)
+php artisan schedule:run
+
+# Ручная генерация sitemap
+php artisan sitemap:generate
+```
+
 ## Дополнительные настройки
 
 ### Code Coverage

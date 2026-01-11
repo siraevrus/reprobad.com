@@ -55,6 +55,10 @@ jobs:
           php artisan view:clear
           php artisan route:cache
 
+          # Генерация sitemap.xml
+          echo "Генерация sitemap.xml..."
+          php artisan sitemap:generate
+
           # Проверка что всё работает
           echo "Проверка приложения..."
           php artisan route:list --compact
