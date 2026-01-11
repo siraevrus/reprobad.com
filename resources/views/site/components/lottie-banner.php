@@ -99,15 +99,6 @@
 </style>
 
 <script>
-// Начинаем загрузку Lottie файлов сразу при загрузке страницы
-(function() {
-    // Предзагружаем файлы через fetch для кеширования
-    if (typeof fetch !== 'undefined') {
-        fetch('images/weUkdnuK0x.lottie', { method: 'HEAD' }).catch(() => {});
-        fetch('images/qk8EQOxYwW.lottie', { method: 'HEAD' }).catch(() => {});
-    }
-})();
-
 document.addEventListener('DOMContentLoaded', function() {
     const bannerDesktop = document.getElementById('lottie-banner');
     const bannerMobile = document.getElementById('lottie-banner-mobile');
