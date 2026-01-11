@@ -218,6 +218,11 @@
         }
         .search-input:focus ~ .search-icon, .search-input:not(:placeholder-shown)  ~ .search-icon { opacity: 1; }
         .search-input:not(:placeholder-shown)  ~ .search-button { display: block; }
+        /* Увеличение расстояния между телефоном и email в футере */
+        .footer-email {
+            margin-top: 10px;
+            display: block;
+        }
         /* Показ формы поиска в мобильной версии */
         @media screen and (max-width: 767px) {
             .search.mobile-search-active {
