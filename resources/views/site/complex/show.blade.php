@@ -283,6 +283,12 @@
             height: 50px;
             cursor: pointer;
             pointer-events: auto;
+            transition: transform 0.15s ease-in-out;
+        }
+        /* Анимация уменьшения при нажатии */
+        [data-controls="prev"]:active,
+        [data-controls="next"]:active {
+            transform: scale(0.85);
         }
         [data-controls="next"] {
             right: 0;
@@ -339,6 +345,34 @@
         @endforeach
 
         @endif
+
+        // Добавляем анимацию уменьшения при клике на кнопки навигации слайдера
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('[data-controls="prev"], [data-controls="next"]');
+            
+            navButtons.forEach(function(button) {
+                button.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.85)';
+                });
+                
+                button.addEventListener('mouseup', function() {
+                    this.style.transform = 'scale(1)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+                
+                // Для touch устройств
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.85)';
+                });
+                
+                button.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.product-head-image').forEach(el => {
