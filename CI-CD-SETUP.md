@@ -262,7 +262,17 @@ php artisan schedule:run
 
 # Ручная генерация sitemap
 php artisan sitemap:generate
+
+# Проверка настроен ли cron (используйте скрипт check-cron.sh)
+./check-cron.sh
+
+# Или проверка вручную:
+crontab -l | grep schedule:run
 ```
+
+**Автоматическая проверка при деплое:**
+
+При каждом деплое через GitHub Actions автоматически проверяется, настроен ли cron для Laravel Scheduler. Если cron не настроен, в логах деплоя будет предупреждение с инструкциями по настройке.
 
 ## Дополнительные настройки
 

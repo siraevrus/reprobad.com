@@ -59,6 +59,19 @@ jobs:
           echo "Генерация sitemap.xml..."
           php artisan sitemap:generate
 
+          # Проверка настроек cron для Laravel Scheduler
+          echo "Проверка настроек cron..."
+          CRON_CHECK=$(crontab -l 2>/dev/null | grep -c "schedule:run" || echo "0")
+          if [ "$CRON_CHECK" -eq "0" ]; then
+            echo "⚠️  ВНИМАНИЕ: Laravel Scheduler (cron) не настроен!"
+            echo "   Для настройки выполните на сервере:"
+            echo "   crontab -e"
+            echo "   Добавьте: * * * * * cd /var/www/repro && php artisan schedule:run >> /dev/null 2>&1"
+          else
+            echo "✅ Laravel Scheduler (cron) настроен корректно"
+            crontab -l 2>/dev/null | grep "schedule:run"
+          fi
+
           # Проверка что всё работает
           echo "Проверка приложения..."
           php artisan route:list --compact
