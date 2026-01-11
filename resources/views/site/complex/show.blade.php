@@ -298,7 +298,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            background-image: url('/images/left-arrow.png');
+            background-image: url('/images/left-arrow.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -309,7 +309,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            background-image: url('/images/right-arrow.png');
+            background-image: url('/images/right-arrow.svg');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
