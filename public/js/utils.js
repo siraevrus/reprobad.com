@@ -12,14 +12,6 @@ const variables = {
     action: '',
     url: '',
     loading: false,
-    cropperModal: {
-        show: false,
-        imageUrl: '',
-        field: '',
-        cropper: null,
-        targetWidth: 1280,
-        targetHeight: 853
-    },
 
     initVariables() {
         this.route = location.pathname.split('/')[2];
@@ -95,6 +87,15 @@ const userIsNotActive = {
 }
 
 const imageUpload = {
+    cropperModal: {
+        show: false,
+        imageUrl: '',
+        field: '',
+        cropper: null,
+        targetWidth: 1280,
+        targetHeight: 853
+    },
+    
     uploadImage(event, field) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -109,6 +110,61 @@ const imageUpload = {
     },
     
     openImageCropper(event, field, targetWidth = 1280, targetHeight = 853) {
+        console.log('openImageCropper called', field, targetWidth, targetHeight);
+        const file = event.target.files[0];
+        if (!file) {
+            console.log('No file selected');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            console.log('File loaded, setting cropperModal');
+            this.cropperModal.imageUrl = e.target.result;
+            this.cropperModal.field = field;
+            this.cropperModal.show = true;
+            this.cropperModal.targetWidth = targetWidth;
+            this.cropperModal.targetHeight = targetHeight;
+            
+            // Ждем, пока DOM обновится
+            this.$nextTick(() => {
+                const imageElement = document.getElementById(`cropper-image-${field}`);
+                console.log('Image element:', imageElement);
+                if (imageElement) {
+                    // Уничтожаем предыдущий cropper, если он существует
+                    if (this.cropperModal.cropper) {
+                        this.cropperModal.cropper.destroy();
+                    }
+                    
+                    // Проверяем наличие Cropper
+                    if (typeof Cropper === 'undefined') {
+                        console.error('Cropper.js is not loaded!');
+                        alert('Ошибка: библиотека Cropper.js не загружена. Пожалуйста, обновите страницу.');
+                        return;
+                    }
+                    
+                    // Инициализируем новый cropper
+                    this.cropperModal.cropper = new Cropper(imageElement, {
+                        aspectRatio: targetWidth / targetHeight,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                        background: false,
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                    });
+                    console.log('Cropper initialized');
+                } else {
+                    console.error('Image element not found:', `cropper-image-${field}`);
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+        event.target.value = '';
+    },
         const file = event.target.files[0];
         if (!file) return;
         

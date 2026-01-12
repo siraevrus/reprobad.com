@@ -27,6 +27,9 @@
 
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
 <!-- Контейнер -->

@@ -28,8 +28,10 @@
 </label>
 
 <!-- Модальное окно для обрезки изображения -->
-<div x-show="cropperModal.show && cropperModal.field === '{{ $field }}'" 
+<div x-show="cropperModal && cropperModal.show && cropperModal.field === '{{ $field }}'" 
+     x-cloak
      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+     style="display: none;"
      @click.self="closeCropper()">
     <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
@@ -37,8 +39,8 @@
             <button @click="closeCropper()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
         </div>
         
-        <div class="mb-4">
-            <img :src="cropperModal.imageUrl" id="cropper-image-{{ $field }}" class="max-w-full">
+        <div class="mb-4" style="max-height: 60vh; overflow: auto;">
+            <img :src="cropperModal.imageUrl" id="cropper-image-{{ $field }}" style="max-width: 100%; display: block;">
         </div>
         
         <div class="flex justify-end space-x-2">
