@@ -12,6 +12,14 @@ const variables = {
     action: '',
     url: '',
     loading: false,
+    cropperModal: {
+        show: false,
+        imageUrl: '',
+        field: '',
+        cropper: null,
+        targetWidth: 1280,
+        targetHeight: 853
+    },
 
     initVariables() {
         this.route = location.pathname.split('/')[2];
@@ -87,15 +95,6 @@ const userIsNotActive = {
 }
 
 const imageUpload = {
-    cropperModal: {
-        show: false,
-        imageUrl: '',
-        field: '',
-        cropper: null,
-        targetWidth: 1280,
-        targetHeight: 853
-    },
-    
     uploadImage(event, field) {
         const reader = new FileReader();
         reader.onload = () => {

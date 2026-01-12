@@ -1,3 +1,13 @@
+<style>
+    .cropper-modal {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    .cropper-view-box,
+    .cropper-face {
+        border-radius: 0 !important;
+    }
+</style>
+
 <label class="block font-semibold mb-2">{{ $title }}</label>
 
 <!-- Превью загруженного изображения -->
