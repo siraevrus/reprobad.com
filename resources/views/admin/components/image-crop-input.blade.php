@@ -10,6 +10,9 @@
 
 <label class="block font-semibold mb-2">{{ $title }}</label>
 
+<!-- Отладочная информация -->
+<div x-data="{ test: 'Alpine работает!' }" x-text="test" class="text-xs text-gray-400 mb-2"></div>
+
 <!-- Превью загруженного изображения -->
 <div x-show="form.{{ $field }}" class="mb-4">
     <img :src="form.{{ $field }}" alt="Изображение" class="max-w-full max-h-[300px] border rounded">
@@ -19,13 +22,20 @@
 </div>
 
 <!-- Кнопка загрузки -->
-<label
-    x-show="!form.{{ $field }}"
-    class="block w-full h-[220px] border-2 border-dashed border-gray-300 rounded flex items-center text-center justify-center mb-2 cursor-pointer hover:border-blue-400 transition"
->
-    <p>Перетащите изображение сюда <br>или нажмите для загрузки <br><span class="text-sm text-gray-500">(рекомендуемый размер: {{ $width ?? 1280 }}×{{ $height ?? 853 }})</span></p>
-    <input type="file" @change="openImageCropper($event, '{{ $field }}', {{ $width ?? 1280 }}, {{ $height ?? 853 }})" accept="image/*" class="hidden">
-</label>
+<div x-show="!form.{{ $field }}" class="mb-2">
+    <label
+        for="file-input-{{ $field }}"
+        class="block w-full h-[220px] border-2 border-dashed border-gray-300 rounded flex items-center text-center justify-center cursor-pointer hover:border-blue-400 transition"
+    >
+        <p>Перетащите изображение сюда <br>или нажмите для загрузки <br><span class="text-sm text-gray-500">(рекомендуемый размер: {{ $width ?? 1280 }}×{{ $height ?? 853 }})</span></p>
+    </label>
+    <input 
+        type="file" 
+        id="file-input-{{ $field }}"
+        @change="(e) => { console.log('File input changed!', e.target.files); openImageCropper(e, '{{ $field }}', {{ $width ?? 1280 }}, {{ $height ?? 853 }}); }" 
+        accept="image/*" 
+        class="hidden">
+</div>
 
 <!-- Модальное окно для обрезки изображения -->
 <div x-show="cropperModal && cropperModal.show && cropperModal.field === '{{ $field }}'" 
