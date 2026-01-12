@@ -87,6 +87,15 @@ const userIsNotActive = {
 }
 
 const imageUpload = {
+    cropperModal: {
+        show: false,
+        imageUrl: '',
+        field: '',
+        cropper: null,
+        targetWidth: 1280,
+        targetHeight: 853
+    },
+    
     uploadImage(event, field) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -95,8 +104,77 @@ const imageUpload = {
         reader.readAsDataURL(event.target.files[0]);
         event.target.value = '';
     },
+    
     removeImage(field) {
         this.form[field] = null;
+    },
+    
+    openImageCropper(event, field, targetWidth = 1280, targetHeight = 853) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.cropperModal.imageUrl = e.target.result;
+            this.cropperModal.field = field;
+            this.cropperModal.show = true;
+            this.cropperModal.targetWidth = targetWidth;
+            this.cropperModal.targetHeight = targetHeight;
+            
+            // Ждем, пока DOM обновится
+            this.$nextTick(() => {
+                const imageElement = document.getElementById(`cropper-image-${field}`);
+                if (imageElement) {
+                    // Уничтожаем предыдущий cropper, если он существует
+                    if (this.cropperModal.cropper) {
+                        this.cropperModal.cropper.destroy();
+                    }
+                    
+                    // Инициализируем новый cropper
+                    this.cropperModal.cropper = new Cropper(imageElement, {
+                        aspectRatio: targetWidth / targetHeight,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                        background: false,
+                        guides: true,
+                        center: true,
+                        highlight: true,
+                        cropBoxMovable: true,
+                        cropBoxResizable: true,
+                    });
+                }
+            });
+        };
+        reader.readAsDataURL(file);
+        event.target.value = '';
+    },
+    
+    closeCropper() {
+        if (this.cropperModal.cropper) {
+            this.cropperModal.cropper.destroy();
+            this.cropperModal.cropper = null;
+        }
+        this.cropperModal.show = false;
+        this.cropperModal.imageUrl = '';
+        this.cropperModal.field = '';
+    },
+    
+    cropAndSaveImage(field) {
+        if (!this.cropperModal.cropper) return;
+        
+        const canvas = this.cropperModal.cropper.getCroppedCanvas({
+            width: this.cropperModal.targetWidth,
+            height: this.cropperModal.targetHeight,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        });
+        
+        if (canvas) {
+            const croppedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
+            this.form[field] = croppedImageUrl;
+            this.closeCropper();
+        }
     },
 }
 

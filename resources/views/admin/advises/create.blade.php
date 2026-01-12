@@ -9,7 +9,7 @@
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
 
-            <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])</div>
+            <div>@include('admin.components.image-crop-input', ['title' => 'Фото', 'field' => 'image', 'width' => 1280, 'height' => 853])</div>
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
             <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
