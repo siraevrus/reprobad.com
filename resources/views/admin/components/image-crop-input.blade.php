@@ -11,14 +11,40 @@
 <label class="block font-semibold mb-2">{{ $title }}</label>
 
 <!-- Отладочная информация -->
-<div x-data="{ test: 'Alpine работает!' }" x-text="test" class="text-xs text-gray-400 mb-2"></div>
+<div class="text-xs text-gray-400 mb-2">
+    <div x-data="{ test: 'Alpine работает!' }" x-text="test"></div>
+    <div x-init="console.log('Проверка методов:', { hasOpenImageCropper: typeof openImageCropper !== 'undefined', hasCropperModal: typeof cropperModal !== 'undefined' });"></div>
+</div>
 
 <!-- Превью загруженного изображения -->
 <div x-show="form.{{ $field }}" class="mb-4">
     <img :src="form.{{ $field }}" alt="Изображение" class="max-w-full max-h-[300px] border rounded">
-    <button @click.prevent="removeImage('{{ $field }}')" class="mt-2 py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600">
-        Удалить изображение
-    </button>
+    <div class="mt-2 flex gap-2">
+        <label for="file-input-replace-{{ $field }}" class="py-1 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
+            Заменить изображение
+        </label>
+        <input 
+            type="file" 
+            id="file-input-replace-{{ $field }}"
+            @change="(e) => { 
+                console.log('=== REPLACE FILE INPUT CHANGED ===');
+                console.log('Event:', e);
+                console.log('Files:', e.target.files);
+                console.log('openImageCropper type:', typeof openImageCropper);
+                if (typeof openImageCropper === 'function') {
+                    console.log('Вызываю openImageCropper...');
+                    openImageCropper(e, '{{ $field }}', {{ $width ?? 1280 }}, {{ $height ?? 853 }});
+                } else {
+                    console.error('openImageCropper не найден!');
+                    alert('Ошибка: метод openImageCropper не найден. Проверьте консоль.');
+                }
+            }" 
+            accept="image/*" 
+            class="hidden">
+        <button @click.prevent="removeImage('{{ $field }}')" class="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600">
+            Удалить изображение
+        </button>
+    </div>
 </div>
 
 <!-- Кнопка загрузки -->
@@ -32,7 +58,20 @@
     <input 
         type="file" 
         id="file-input-{{ $field }}"
-        @change="(e) => { console.log('File input changed!', e.target.files); openImageCropper(e, '{{ $field }}', {{ $width ?? 1280 }}, {{ $height ?? 853 }}); }" 
+        @change="(e) => { 
+            console.log('=== FILE INPUT CHANGED ===');
+            console.log('Event:', e);
+            console.log('Files:', e.target.files);
+            console.log('openImageCropper type:', typeof openImageCropper);
+            console.log('this:', this);
+            if (typeof openImageCropper === 'function') {
+                console.log('Вызываю openImageCropper...');
+                openImageCropper(e, '{{ $field }}', {{ $width ?? 1280 }}, {{ $height ?? 853 }});
+            } else {
+                console.error('openImageCropper не найден!');
+                alert('Ошибка: метод openImageCropper не найден. Проверьте консоль.');
+            }
+        }" 
         accept="image/*" 
         class="hidden">
 </div>
