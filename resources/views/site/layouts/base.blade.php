@@ -149,6 +149,16 @@
         .questions-slider { overflow: visible; }
         .swiper-button-disabled { opacity: 0; pointer-events: none; }
         .swiper-3d .swiper-slide-shadow { background: rgba(244,187,174,0.25); }
+        
+        /* Исправление мелких шрифтов для мобильных устройств (Яндекс Вебмастер) */
+        @media screen and (max-width: 767px) {
+            .r-farm-footer,
+            .page-link-dots,
+            .contacts-link-label,
+            .nav-contacts-legal {
+                font-size: 0.75rem !important; /* 12px минимум */
+            }
+        }
     </style>
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
