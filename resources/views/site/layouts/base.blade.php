@@ -159,6 +159,20 @@
                 font-size: 0.75rem !important; /* 12px минимум */
             }
         }
+        
+        /* Блок подписки всегда справа в items-wrap */
+        .subscribe-block-wrapper {
+            flex: 1 1 auto;
+            min-width: min(27rem, 33.3333%);
+            max-width: 100%;
+        }
+        
+        @media screen and (max-width: 767px) {
+            .subscribe-block-wrapper {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+        }
     </style>
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">

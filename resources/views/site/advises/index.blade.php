@@ -87,17 +87,13 @@
                 @endforeach
                 @php
                     $advisesCount = $resources->count();
-                    $isEvenCount = $advisesCount > 0 && $advisesCount % 2 == 0;
                 @endphp
-                @if((!request()->get('query') || $advisesCount > 0) && $isEvenCount)
-                    @include('site.components.subscribe-block')
+                @if((!request()->get('query') || $advisesCount > 0) && $advisesCount > 0)
+                    <div class="subscribe-block-wrapper">
+                        @include('site.components.subscribe-block')
+                    </div>
                 @endif
             </div>
-            @if((!request()->get('query') || $advisesCount > 0) && !$isEvenCount && $advisesCount > 0)
-                <div style="margin-top: 2rem;">
-                    @include('site.components.subscribe-block')
-                </div>
-            @endif
             <div class="spacer desktop-3-rem"></div>
             <div class="pages-wrap">
                 <div class="pages">
