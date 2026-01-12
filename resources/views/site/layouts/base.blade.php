@@ -159,6 +159,31 @@
                 font-size: 0.75rem !important; /* 12px минимум */
             }
         }
+        
+        /* Фиксированные размеры изображений в карточках статей и советов */
+        .news-card-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+        }
+        
+        @media screen and (max-width: 991px) {
+            .news-card-image {
+                height: 280px;
+            }
+        }
+        
+        @media screen and (max-width: 767px) {
+            .news-card-image {
+                height: 240px;
+            }
+        }
+        
+        @media screen and (max-width: 479px) {
+            .news-card-image {
+                height: 200px;
+            }
+        }
     </style>
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
