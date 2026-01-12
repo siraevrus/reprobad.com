@@ -166,45 +166,6 @@ const imageUpload = {
         reader.readAsDataURL(file);
         event.target.value = '';
     },
-        const file = event.target.files[0];
-        if (!file) return;
-        
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            this.cropperModal.imageUrl = e.target.result;
-            this.cropperModal.field = field;
-            this.cropperModal.show = true;
-            this.cropperModal.targetWidth = targetWidth;
-            this.cropperModal.targetHeight = targetHeight;
-            
-            // Ждем, пока DOM обновится
-            this.$nextTick(() => {
-                const imageElement = document.getElementById(`cropper-image-${field}`);
-                if (imageElement) {
-                    // Уничтожаем предыдущий cropper, если он существует
-                    if (this.cropperModal.cropper) {
-                        this.cropperModal.cropper.destroy();
-                    }
-                    
-                    // Инициализируем новый cropper
-                    this.cropperModal.cropper = new Cropper(imageElement, {
-                        aspectRatio: targetWidth / targetHeight,
-                        viewMode: 1,
-                        autoCropArea: 1,
-                        responsive: true,
-                        background: false,
-                        guides: true,
-                        center: true,
-                        highlight: true,
-                        cropBoxMovable: true,
-                        cropBoxResizable: true,
-                    });
-                }
-            });
-        };
-        reader.readAsDataURL(file);
-        event.target.value = '';
-    },
     
     closeCropper() {
         if (this.cropperModal.cropper) {

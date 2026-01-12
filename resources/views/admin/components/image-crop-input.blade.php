@@ -30,8 +30,8 @@
 <!-- Модальное окно для обрезки изображения -->
 <div x-show="cropperModal && cropperModal.show && cropperModal.field === '{{ $field }}'" 
      x-cloak
-     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-     style="display: none;"
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+     style="z-index: 9999; display: none;"
      @click.self="closeCropper()">
     <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
