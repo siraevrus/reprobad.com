@@ -45,6 +45,7 @@ const initializeEditor = {
 
             tinymce.init({
                 selector: `#${element.id}`, // Используем уникальный ID
+                license_key: 'gpl', // Согласие с условиями GPL лицензии
                 height: 300,
                 menubar: false,
                 language: 'ru',
