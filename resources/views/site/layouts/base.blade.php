@@ -152,11 +152,42 @@
         
         /* Исправление мелких шрифтов для мобильных устройств (Яндекс Вебмастер) */
         @media screen and (max-width: 767px) {
-            .r-farm-footer,
-            .page-link-dots,
-            .contacts-link-label,
+            /* Гарантируем минимум 12px для всех мелких элементов */
+            .article-options,
+            .article-date,
+            .article-read-time {
+                font-size: clamp(12px, 0.875rem, 1rem) !important;
+            }
+            
+            .r-farm-footer {
+                font-size: clamp(12px, 0.625rem, 0.875rem) !important;
+            }
+            
+            .contacts-link-label {
+                font-size: clamp(12px, 0.625rem, 0.875rem) !important;
+            }
+            
+            .page-link-dots {
+                font-size: clamp(12px, 0.6rem, 0.875rem) !important;
+            }
+            
             .nav-contacts-legal {
-                font-size: 0.75rem !important; /* 12px минимум */
+                font-size: clamp(12px, 0.6875rem, 0.875rem) !important;
+            }
+            
+            .brand {
+                font-size: clamp(12px, 0.5rem, 0.75rem) !important;
+            }
+            
+            /* Также исправляем элементы в карточках */
+            .card-date-time,
+            .card-date,
+            .card-read {
+                font-size: clamp(12px, 0.75rem, 0.875rem) !important;
+            }
+            
+            .card-footer {
+                font-size: clamp(12px, 0.75rem, 0.875rem) !important;
             }
         }
         
