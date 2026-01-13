@@ -197,6 +197,11 @@
             align-items: stretch;
         }
         
+        /* Отступ между полем Email и чекбоксом согласия в форме подписки */
+        .subscribe-form .text-field {
+            margin-bottom: 15px !important;
+        }
+        
         @media screen and (max-width: 767px) {
             .items-wrap .news-card {
                 max-width: 100% !important;
