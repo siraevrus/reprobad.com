@@ -177,16 +177,24 @@
             flex: 0 0 calc(33.333% - 0.67rem);
             width: calc(33.333% - 0.67rem);
             max-width: calc(33.333% - 0.67rem);
-            align-self: flex-start;
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
         }
         
         /* Социальная карточка внутри блока подписки */
         .subscribe-block-wrapper .socials-card {
             width: 100% !important;
             max-width: 100% !important;
-            height: 100%;
+            flex: 1 1 auto;
             display: flex;
             flex-direction: column;
+            min-height: 100%;
+        }
+        
+        /* Убеждаемся, что карточки в одном ряду имеют одинаковую высоту */
+        .items-wrap {
+            align-items: stretch;
         }
         
         @media screen and (max-width: 767px) {
