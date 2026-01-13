@@ -160,17 +160,40 @@
             }
         }
         
-        /* Блок подписки всегда справа в items-wrap */
+        /* Большие карточки (news-card) остаются по 50% (2 в ряд) */
+        .items-wrap .news-card {
+            max-width: calc(50% - 0.5rem) !important;
+        }
+        
+        /* Маленькие карточки (card) и блок подписки по 33% (3 в ряд) */
+        .items-wrap .card {
+            width: calc(33.333% - 0.67rem) !important;
+            max-width: calc(33.333% - 0.67rem) !important;
+        }
+        
+        /* Блок подписки по 33% (3 в ряд с маленькими карточками) */
         .subscribe-block-wrapper {
-            flex: 1 1 auto;
-            min-width: min(27rem, 33.3333%);
-            max-width: 100%;
+            flex: 0 0 calc(33.333% - 0.67rem);
+            width: calc(33.333% - 0.67rem);
+            max-width: calc(33.333% - 0.67rem);
+            align-self: flex-start;
         }
         
         @media screen and (max-width: 767px) {
+            .items-wrap .news-card {
+                max-width: 100% !important;
+            }
+            
+            .items-wrap .card {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            
             .subscribe-block-wrapper {
                 flex: 1 1 100%;
+                width: 100%;
                 min-width: 100%;
+                max-width: 100%;
             }
         }
     </style>
