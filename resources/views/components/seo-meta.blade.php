@@ -21,13 +21,19 @@
         $finalOgDescription = $seoData['og_description'] ?? $seoData['description'] ?? $defaultDescription;
     }
     
-    // Добавляем выбранный город в конец title, если город выбран
+    // Добавляем выбранный город в конец title и description, если город выбран
     $selectedCity = session()->get('city');
     if ($selectedCity && !empty($selectedCity) && $finalTitle) {
         $finalTitle = $finalTitle . ': ' . trim($selectedCity);
     }
     if ($selectedCity && !empty($selectedCity) && $finalOgTitle) {
         $finalOgTitle = $finalOgTitle . ': ' . trim($selectedCity);
+    }
+    if ($selectedCity && !empty($selectedCity) && $finalDescription) {
+        $finalDescription = $finalDescription . ': ' . trim($selectedCity);
+    }
+    if ($selectedCity && !empty($selectedCity) && $finalOgDescription) {
+        $finalOgDescription = $finalOgDescription . ': ' . trim($selectedCity);
     }
 @endphp
 

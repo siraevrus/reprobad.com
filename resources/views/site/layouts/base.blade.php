@@ -14,15 +14,19 @@
     @elseif(isset($resource))
         @php
             $resourceTitle = isset($resource->title) ? strip_tags($resource->title) : '';
+            $resourceDescription = isset($resource->seo_description) ? strip_tags($resource->seo_description) : '';
             $selectedCity = session()->get('city');
             if ($selectedCity && !empty($selectedCity) && $resourceTitle) {
                 $resourceTitle = $resourceTitle . ': ' . trim($selectedCity);
             }
+            if ($selectedCity && !empty($selectedCity) && $resourceDescription) {
+                $resourceDescription = $resourceDescription . ': ' . trim($selectedCity);
+            }
         @endphp
         <title>{{ $resourceTitle }}</title>
-        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" name="description">
+        <meta content="{{ $resourceDescription }}" name="description">
         <meta content="{{ $resourceTitle }}" property="og:title">
-        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
+        <meta content="{{ $resourceDescription }}" property="og:description">
         @php
             $ogImage = $resource->image ?? $resource->logo ?? null;
             
@@ -43,20 +47,22 @@
         <meta property="og:url" content="{{ request()->url() }}">
         <meta property="og:type" content="website">
         <meta content="{{ $resourceTitle }}" property="twitter:title">
-        <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
+        <meta content="{{ $resourceDescription }}" property="twitter:description">
         <meta property="twitter:image" content="{{ $ogImageUrl }}">
     @else
         @php
             $defaultTitle = 'РЕПРО АПОТЕКА • REPRO APOTHEKA';
+            $defaultDescription = 'Готовимся к беременности вместе';
             $selectedCity = session()->get('city');
             if ($selectedCity && !empty($selectedCity)) {
                 $defaultTitle = $defaultTitle . ': ' . trim($selectedCity);
+                $defaultDescription = $defaultDescription . ': ' . trim($selectedCity);
             }
         @endphp
         <title>{{ $defaultTitle }}</title>
-        <meta content="Готовимся к беременности вместе" name="description">
+        <meta content="{{ $defaultDescription }}" name="description">
         <meta content="{{ $defaultTitle }}" property="og:title">
-        <meta content="Готовимся к беременности вместе" property="og:description">
+        <meta content="{{ $defaultDescription }}" property="og:description">
         <meta property="og:url" content="{{ request()->url() }}">
         <meta property="og:type" content="website">
     @endif
