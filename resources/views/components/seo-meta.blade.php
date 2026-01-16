@@ -20,6 +20,15 @@
         $finalOgTitle = $seoData['og_title'] ?? $seoData['title'] ?? $defaultTitle;
         $finalOgDescription = $seoData['og_description'] ?? $seoData['description'] ?? $defaultDescription;
     }
+    
+    // Добавляем выбранный город в конец title, если город выбран
+    $selectedCity = session()->get('city');
+    if ($selectedCity && !empty($selectedCity) && $finalTitle) {
+        $finalTitle = $finalTitle . ': ' . trim($selectedCity);
+    }
+    if ($selectedCity && !empty($selectedCity) && $finalOgTitle) {
+        $finalOgTitle = $finalOgTitle . ': ' . trim($selectedCity);
+    }
 @endphp
 
 @if($finalTitle)

@@ -12,9 +12,16 @@
             :forceDynamic="$forceDynamic ?? false"
         />
     @elseif(isset($resource))
-        <title>{{ isset($resource->title) ? strip_tags($resource->title) : '' }}</title>
+        @php
+            $resourceTitle = isset($resource->title) ? strip_tags($resource->title) : '';
+            $selectedCity = session()->get('city');
+            if ($selectedCity && !empty($selectedCity) && $resourceTitle) {
+                $resourceTitle = $resourceTitle . ': ' . trim($selectedCity);
+            }
+        @endphp
+        <title>{{ $resourceTitle }}</title>
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" name="description">
-        <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="og:title">
+        <meta content="{{ $resourceTitle }}" property="og:title">
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="og:description">
         @php
             $ogImage = $resource->image ?? $resource->logo ?? null;
@@ -35,13 +42,20 @@
         <meta property="og:image" content="{{ $ogImageUrl }}">
         <meta property="og:url" content="{{ request()->url() }}">
         <meta property="og:type" content="website">
-        <meta content="{{ isset($resource->title) ? strip_tags($resource->title) : '' }}" property="twitter:title">
+        <meta content="{{ $resourceTitle }}" property="twitter:title">
         <meta content="{{ isset($resource->seo_description) ? strip_tags($resource->seo_description) : '' }}" property="twitter:description">
         <meta property="twitter:image" content="{{ $ogImageUrl }}">
     @else
-        <title>РЕПРО АПОТЕКА • REPRO APOTHEKA</title>
+        @php
+            $defaultTitle = 'РЕПРО АПОТЕКА • REPRO APOTHEKA';
+            $selectedCity = session()->get('city');
+            if ($selectedCity && !empty($selectedCity)) {
+                $defaultTitle = $defaultTitle . ': ' . trim($selectedCity);
+            }
+        @endphp
+        <title>{{ $defaultTitle }}</title>
         <meta content="Готовимся к беременности вместе" name="description">
-        <meta content="РЕПРО АПОТЕКА • REPRO APOTHEKA" property="og:title">
+        <meta content="{{ $defaultTitle }}" property="og:title">
         <meta content="Готовимся к беременности вместе" property="og:description">
         <meta property="og:url" content="{{ request()->url() }}">
         <meta property="og:type" content="website">
