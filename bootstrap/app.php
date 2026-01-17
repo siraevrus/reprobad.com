@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //$middleware->append(Authenticate::class);
         $middleware->append(\App\Http\Middleware\StaticCacheHeaders::class);
+        $middleware->validateCsrfTokens(except: [
+            '/bot/ask',
+            '/bot/clear-history',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
