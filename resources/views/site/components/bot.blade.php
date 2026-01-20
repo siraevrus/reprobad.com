@@ -42,7 +42,7 @@
 
 <div class="chat-container" id="chatContainer">
     <div class="chat-header">
-        ИИ-консультант
+        ИИ-консультант РЕПРО
         <button class="close-btn" id="closeChatBtn" title="Закрыть чат">×</button>
     </div>
     <div class="chat-messages" id="chat">
