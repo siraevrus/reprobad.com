@@ -1,2 +1,13 @@
 User-agent: *
+
 Disallow:
+
+Host: reprobad.com
+
+Sitemap: https://reprobad.com/sitemap.xml
+
+
+
+# Указываем оба параметра в одной директиве
+
+Clean-param: city&erid
