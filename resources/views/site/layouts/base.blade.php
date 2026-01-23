@@ -319,6 +319,8 @@
             }
         }
     </style>
+    {{-- Preload для оптимизации загрузки (кеширование должно быть настроено на сервере raketadesign.ru) --}}
+    <link rel="preload" href="https://files.raketadesign.ru/files/sistema-repro/head.js" as="script">
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
     {{-- Swiper CSS загружаем асинхронно для оптимизации --}}
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -713,6 +715,8 @@
 {{-- JavaScript файлы загружаем с defer для оптимизации --}}
 <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+{{-- Preload для оптимизации загрузки (кеширование должно быть настроено на сервере raketadesign.ru) --}}
+<link rel="preload" href="https://files.raketadesign.ru/files/sistema-repro/home.js" as="script">
 <script src="https://files.raketadesign.ru/files/sistema-repro/home.js" type="text/javascript" defer></script>
 {{-- Webflow.js загружаем лениво после полной загрузки страницы для уменьшения принудительной компоновки --}}
 <script>
