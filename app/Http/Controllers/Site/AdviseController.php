@@ -175,7 +175,10 @@ class AdviseController extends Controller
     public function show($alias): View
     {
         $resource = Advise::where('alias', $alias)->where('active', 1)->firstOrFail();
-        $events = Event::where('active', 1)->take(2)->get();
+        $events = Event::where('active', 1)
+            ->orderBy('created_at', 'DESC')
+            ->take(2)
+            ->get();
 
         $pageType = '';
 

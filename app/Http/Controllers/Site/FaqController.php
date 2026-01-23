@@ -12,7 +12,10 @@ class FaqController extends Controller
     public function index(): View
     {
         $resources = Faq::where('active', 1)->get();
-        $events = Event::where('active', 1)->take(2)->get();
+        $events = Event::where('active', 1)
+            ->orderBy('created_at', 'DESC')
+            ->take(2)
+            ->get();
         $pageType = 'Faq';
         $resource = (object)[
             'title' => 'Вопрос-ответ',
