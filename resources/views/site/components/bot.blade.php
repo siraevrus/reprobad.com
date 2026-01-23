@@ -58,7 +58,7 @@
         <button onclick="sendMessage()">Отправить</button>
     </div>
 
-    <audio id="chatSound" src="/chat-pop.mp3" preload="auto"></audio>
+    <audio id="chatSound" preload="none"></audio>
 </div>
 
 <button id="openChatBtn" title="Открыть чат">ИИ-консультант</button>
@@ -81,7 +81,9 @@
 
         if(sender == 'bot') {
             const sound = document.getElementById('chatSound');
-            if (sound) sound.play().catch(() => {});
+            if (sound && sound.src) {
+                sound.play().catch(() => {});
+            }
         }
     }
 
