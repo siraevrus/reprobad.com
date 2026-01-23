@@ -416,7 +416,7 @@
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; margin-left: -0.15em; }
         .o-span.about-o {
-            margin-left: 0.2em;
+            margin-left: 0.17em;
         }
         .o-span::after {
             position: absolute;
