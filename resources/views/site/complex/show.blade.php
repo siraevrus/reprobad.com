@@ -267,6 +267,9 @@
             cursor: pointer;
             opacity: .5;
             transition: opacity 0.2s ease;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 10;
         }
         .thumbs-slider a:hover {
             opacity: .8;
@@ -274,9 +277,13 @@
         .thumbs-slider img {
             height: 80px;
             display: block;
+            pointer-events: none;
         }
         .thumbs-slider .tns-nav-active a {
             opacity: 1;
+        }
+        .thumbs-slider div {
+            pointer-events: auto !important;
         }
         [data-controls="prev"],
         [data-controls="next"] {
@@ -380,6 +387,29 @@
                     this.style.transform = 'scale(1)';
                 });
             });
+            
+            // Обработчик кликов на миниатюры для открытия галереи
+            @if($resource->products)
+            @foreach($resource->products as $product)
+            const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} a[data-fslightbox]');
+            thumbs{{ $product->id }}.forEach(function(thumb, index) {
+                thumb.addEventListener('click', function(e) {
+                    // Открываем галерею fslightbox
+                    if (typeof refreshFsLightbox !== 'undefined') {
+                        refreshFsLightbox();
+                    }
+                    // Находим соответствующее изображение в main-slider и открываем его
+                    const mainSliderLinks = document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]');
+                    if (mainSliderLinks[index]) {
+                        mainSliderLinks[index].click();
+                    } else {
+                        // Fallback: кликаем на текущую миниатюру
+                        this.click();
+                    }
+                });
+            });
+            @endforeach
+            @endif
         });
 
         document.addEventListener('DOMContentLoaded', function() {
