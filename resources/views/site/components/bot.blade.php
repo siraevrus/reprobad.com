@@ -58,7 +58,6 @@
         <button onclick="sendMessage()">Отправить</button>
     </div>
 
-    <audio id="chatSound" preload="none"></audio>
 </div>
 
 <button id="openChatBtn" title="Открыть чат">ИИ-консультант</button>
@@ -78,13 +77,6 @@
         div.innerHTML = text;
         chat.appendChild(div);
         chat.scrollTop = chat.scrollHeight;
-
-        if(sender == 'bot') {
-            const sound = document.getElementById('chatSound');
-            if (sound && sound.src) {
-                sound.play().catch(() => {});
-            }
-        }
     }
 
     let typingDiv = null;
