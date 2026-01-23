@@ -201,6 +201,16 @@
         .bad-wrap { position: fixed; visibility: hidden; }
         .search-input:placeholder-shown ~ .search-button { display: none; }
         .cookies-banner { display: none; }
+        /* Глобальное исправление проблемы с появлением page-background поверх контента при загрузке */
+        .page-background {
+            z-index: -1 !important;
+            pointer-events: none !important;
+            opacity: 0 !important;
+            transition: opacity 0.2s ease-in !important;
+        }
+        body.loaded .page-background {
+            opacity: 1 !important;
+        }
         .step-item.blue { background-image: radial-gradient(circle at 0 0, #4e8eaa, #5694ae 20%, #c4f2f5) }
         .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6) }
         .step-item.green { background-image: radial-gradient(circle at 0 0, #839f6a, #8fab77 20%, #ddface) }
@@ -831,9 +841,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Скрываем page-background до полной загрузки страницы (глобально для всех страниц)
+    function initPageBackground() {
+        const pageBg = document.querySelector('.page-background');
+        if (pageBg) {
+            pageBg.style.opacity = '0';
+            // Показываем после небольшой задержки, чтобы контент успел загрузиться
+            setTimeout(function() {
+                if (document.body) {
+                    document.body.classList.add('loaded');
+                }
+            }, 100);
+        } else {
+            // Если page-background нет, все равно добавляем класс loaded
+            setTimeout(function() {
+                if (document.body) {
+                    document.body.classList.add('loaded');
+                }
+            }, 50);
+        }
+    }
+    
     // Выполняем при загрузке и при изменении размера окна
     updateBrandTextVisibility();
     window.addEventListener('resize', updateBrandTextVisibility);
+    
+    // Инициализируем скрытие page-background
+    initPageBackground();
 });
 </script>
 </body>
