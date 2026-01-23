@@ -852,49 +852,70 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Гарантируем, что только один вариант текста логотипа виден
+    // Используем кеширование и requestAnimationFrame для оптимизации
+    let cachedWindowWidth = null;
+    let resizeTimeout = null;
+    
     function updateBrandTextVisibility() {
-        const isMobile = window.innerWidth <= 767;
+        // Кешируем значение ширины окна, чтобы избежать повторных чтений
+        if (cachedWindowWidth === null) {
+            cachedWindowWidth = window.innerWidth;
+        }
+        
+        const isMobile = cachedWindowWidth <= 767;
         const brandDesktop = document.querySelector('.brand-text-desktop');
         const brandMobile = document.querySelector('.brand-text-mobile');
         
         if (brandDesktop && brandMobile) {
-            if (isMobile) {
-                brandDesktop.style.display = 'none';
-                brandMobile.style.display = 'block';
-            } else {
-                brandDesktop.style.display = 'block';
-                brandMobile.style.display = 'none';
-            }
+            // Используем requestAnimationFrame для батчинга изменений DOM
+            requestAnimationFrame(function() {
+                if (isMobile) {
+                    brandDesktop.style.display = 'none';
+                    brandMobile.style.display = 'block';
+                } else {
+                    brandDesktop.style.display = 'block';
+                    brandMobile.style.display = 'none';
+                }
+            });
         }
     }
     
     // Скрываем page-background до полной загрузки страницы (глобально для всех страниц)
     function hidePageBackground(element) {
         if (element) {
-            element.style.opacity = '0';
-            element.style.visibility = 'hidden';
+            // Используем requestAnimationFrame для батчинга изменений стилей
+            requestAnimationFrame(function() {
+                element.style.opacity = '0';
+                element.style.visibility = 'hidden';
+            });
         }
     }
     
     function initPageBackground() {
         // Скрываем все существующие элементы page-background
         const pageBgs = document.querySelectorAll('.page-background');
-        pageBgs.forEach(hidePageBackground);
+        // Батчим все изменения в один requestAnimationFrame
+        requestAnimationFrame(function() {
+            pageBgs.forEach(hidePageBackground);
+        });
         
         // Отслеживаем динамически добавляемые элементы
         const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                mutation.addedNodes.forEach(function(node) {
-                    if (node.nodeType === 1) { // Element node
-                        if (node.classList && node.classList.contains('page-background')) {
-                            hidePageBackground(node);
+            // Батчим обработку мутаций
+            requestAnimationFrame(function() {
+                mutations.forEach(function(mutation) {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === 1) { // Element node
+                            if (node.classList && node.classList.contains('page-background')) {
+                                hidePageBackground(node);
+                            }
+                            // Проверяем дочерние элементы
+                            const childBgs = node.querySelectorAll && node.querySelectorAll('.page-background');
+                            if (childBgs) {
+                                childBgs.forEach(hidePageBackground);
+                            }
                         }
-                        // Проверяем дочерние элементы
-                        const childBgs = node.querySelectorAll && node.querySelectorAll('.page-background');
-                        if (childBgs) {
-                            childBgs.forEach(hidePageBackground);
-                        }
-                    }
+                    });
                 });
             });
         });
@@ -908,14 +929,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Показываем после небольшой задержки, чтобы контент успел загрузиться
         setTimeout(function() {
             if (document.body) {
-                document.body.classList.add('loaded');
+                requestAnimationFrame(function() {
+                    document.body.classList.add('loaded');
+                });
             }
         }, 150);
     }
     
-    // Выполняем при загрузке и при изменении размера окна
+    // Выполняем при загрузке
     updateBrandTextVisibility();
-    window.addEventListener('resize', updateBrandTextVisibility);
+    
+    // Оптимизированный обработчик resize с debounce
+    window.addEventListener('resize', function() {
+        // Сбрасываем кеш при изменении размера
+        cachedWindowWidth = null;
+        
+        // Debounce для уменьшения количества вызовов
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            requestAnimationFrame(updateBrandTextVisibility);
+        }, 150);
+    }, { passive: true });
     
     // Инициализируем скрытие page-background
     initPageBackground();
