@@ -150,9 +150,13 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- Критический CSS - загружаем синхронно --}}
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
-    <link href="css/webflow.css" rel="stylesheet" type="text/css">
-    <link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css">
+    {{-- Некритичные CSS загружаем асинхронно для оптимизации --}}
+    <link rel="preload" href="css/webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="css/webflow.css" rel="stylesheet" type="text/css"></noscript>
+    <link rel="preload" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css"></noscript>
     {{-- Webfont загружаем асинхронно для оптимизации --}}
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
     <script type="text/javascript">
