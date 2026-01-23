@@ -82,7 +82,9 @@
                                 <div class="thumbs-slider thumbs-slider{{ $product->id }}">
                                     @foreach($product->images as $image)
                                         <div class="">
-                                            <img src="{{ $image['url'] }}" alt="">
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" style="cursor: pointer;">
+                                                <img src="{{ $image['url'] }}" alt="">
+                                            </a>
                                         </div>
                                     @endforeach
                                 </div>
@@ -260,14 +262,20 @@
         .thumbs-slider div {
             padding: 10px;
         }
+        .thumbs-slider a {
+            display: block;
+            cursor: pointer;
+            opacity: .5;
+            transition: opacity 0.2s ease;
+        }
+        .thumbs-slider a:hover {
+            opacity: .8;
+        }
         .thumbs-slider img {
             height: 80px;
+            display: block;
         }
-        .thumbs-slider div {
-            opacity: .5;
-            cursor: pointer;
-        }
-        .thumbs-slider .tns-nav-active {
+        .thumbs-slider .tns-nav-active a {
             opacity: 1;
         }
         [data-controls="prev"],
