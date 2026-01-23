@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>r-arr</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="r-arr">
+            <rect id="Rectangle" fill-opacity="0" fill="#FFFFFF" transform="translate(8, 8) scale(-1, 1) translate(-8, -8)" x="0" y="0" width="16" height="16"></rect>
+            <path d="M5.5950856,0.369970382 C5.11580578,-0.123323461 4.33873967,-0.123323461 3.85945986,0.369970382 C3.38018005,0.863264224 3.38018005,1.66305157 3.85945986,2.15634541 L9.53736364,8 L3.85945986,13.8436546 C3.41013504,14.3061176 3.38205223,15.0379596 3.77521145,15.534095 L3.85945986,15.6300296 C4.33873967,16.1233235 5.11580578,16.1233235 5.5950856,15.6300296 L12.1405401,8.89318751 C12.61982,8.39989367 12.61982,7.60010633 12.1405401,7.10681249 L5.5950856,0.369970382 Z" id="Path" fill="#4E515C" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

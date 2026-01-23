@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\ChatHistoryController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Site\FormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\ArticleController as SiteArticleController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\Site\TextController as SiteTextController;
 use App\Http\Controllers\Site\PageController as SitePageController;
 use App\Http\Controllers\Site\MapController as SiteMapController;
 use App\Http\Controllers\Site\FaqController as SiteFaqController;
+use App\Http\Controllers\Site\MenuController as SiteMenuController;
 
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
@@ -48,6 +50,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/questions', QuestionController::class);
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
+    Route::resource('/admin/menus', MenuController::class);
     Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/feedbacks', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy']);
 
@@ -80,6 +83,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin/points/{alias}/switch', [PointController::class, 'switch'])->name('points.switch');
     Route::get('/admin/questions/{alias}/switch', [QuestionController::class, 'switch'])->name('questions.switch');
     Route::get('/admin/steps/{alias}/switch', [StepController::class, 'switch'])->name('steps.switch');
+    Route::get('/admin/menus/{id}/switch', [MenuController::class, 'switch'])->name('menus.switch');
 
     Route::get('/admin/products/{alias}/up', [ProductController::class, 'up'])->name('products.up');
     Route::get('/admin/complex/{alias}/up', [ComplexController::class, 'up'])->name('complex.up');
@@ -111,6 +115,8 @@ Route::get('/text/{alias}', [SiteTextController::class, 'show'])->name('site.tex
 Route::get('/usefully-tips', [SiteAdviseController::class, 'index'])->name('site.advises.index');
 Route::get('/usefully-tips/{alias}', [SiteAdviseController::class, 'show'])->name('site.advises.show');
 Route::get('/faq', [SiteFaqController::class, 'index'])->name('site.faq.index');
+Route::get('/menu', [SiteMenuController::class, 'index'])->name('site.menus.index');
+Route::get('/menu/{alias}', [SiteMenuController::class, 'show'])->name('site.menus.show');
 
 Route::get('/company', [SitePageController::class, 'company'])->name('site.text.company');
 Route::get('/privacy', [SitePageController::class, 'privacy'])->name('site.text.privacy');

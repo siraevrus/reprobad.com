@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="11px" height="11px" viewBox="0 0 11 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Shape</title>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="040-Articles" transform="translate(-216, -1318)" fill="#4E515C" fill-rule="nonzero">
+            <g id="Group" transform="translate(56, 1061)">
+                <g id="Group-41" transform="translate(24, 250)">
+                    <g id="Group-32" transform="translate(136, 5)">
+                        <path d="M5.4945,2 C8.536,2 11,4.464 11,7.5 C11,10.536 8.536,13 5.4945,13 C2.4585,13 0,10.536 0,7.5 C0,4.464 2.4585,2 5.4945,2 Z M5.5,3.1 C3.069,3.1 1.1,5.069 1.1,7.5 C1.1,9.931 3.069,11.9 5.5,11.9 C7.931,11.9 9.9,9.931 9.9,7.5 C9.9,5.069 7.931,3.1 5.5,3.1 Z M6.0225,4.5025 L6.0225,7.49656332 L8.59172816,9.02097203 L7.92088129,10.1211609 L4.7025,8.19013212 L4.7025,4.5025 L6.0225,4.5025 Z" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -28,6 +28,11 @@
         <span>страница</span>
     </a>
 
+    <a href="{{ route('admin.menus.create') }}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-5 items-center inline-flex gap-1">
+        <span class="material-icons">restaurant</span>
+        <span>меню</span>
+    </a>
+
     <a href="{{ route('admin.file-manager.index') }}" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 mb-5 items-center inline-flex gap-1">
         <span class="material-icons">folder</span>
         <span>файловый менеджер</span>
@@ -67,6 +72,10 @@
         <tr class="text-gray-600 text-sm leading-normal b-gray-600 border-b">
             <td class="py-3 px-6 text-left">Всего советов</td>
             <td class="py-3 px-6 text-left font-extrabold">{{ $advises }}</td>
+        </tr>
+        <tr class="text-gray-600 text-sm leading-normal b-gray-600 border-b">
+            <td class="py-3 px-6 text-left">Всего меню</td>
+            <td class="py-3 px-6 text-left font-extrabold">{{ $menus }}</td>
         </tr>
         <tr class="text-gray-600 text-sm leading-normal">
             <td class="py-3 px-6 text-left">Всего выборов городов</td>
