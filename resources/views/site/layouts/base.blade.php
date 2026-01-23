@@ -415,6 +415,9 @@
         .card-title { color: var(--p-first-color); }
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; margin-left: -0.15em; }
+        .o-span.about-o {
+            margin-left: 0.2em;
+        }
         .o-span::after {
             position: absolute;
             display: inline;
