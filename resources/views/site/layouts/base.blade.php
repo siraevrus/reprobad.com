@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://files.raketadesign.ru" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
 
     @if(isset($resource) && isset($pageType))
         <x-seo-meta

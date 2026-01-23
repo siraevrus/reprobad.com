@@ -1,5 +1,5 @@
 
-<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js" type="module"></script>
+{{-- Lottie скрипт загружаем лениво только когда баннер нужен --}}
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
@@ -100,6 +100,21 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    let lottieLoaded = false;
+    
+    // Ленивая загрузка Lottie скрипта только когда баннер нужен
+    function loadLottieScript() {
+        if (lottieLoaded) return;
+        lottieLoaded = true;
+        
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js';
+        script.type = 'module';
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+    
     const bannerDesktop = document.getElementById('lottie-banner');
     const bannerMobile = document.getElementById('lottie-banner-mobile');
     const closeDesktop = bannerDesktop.querySelector('.close');
@@ -133,6 +148,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const isMobile = window.innerWidth <= 768;
         
         if (shouldShow) {
+            // Загружаем Lottie скрипт только когда баннер должен показаться
+            loadLottieScript();
+            
             if (isMobile) {
                 bannerMobile.style.visibility = 'visible';
                 bannerMobile.style.bottom = '60px';
