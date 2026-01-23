@@ -27,8 +27,7 @@
 <script>
     // Гарантируем правильное отображение при загрузке страницы
     (function() {
-        // Скрываем page-background до загрузки
-        document.addEventListener('DOMContentLoaded', function() {
+        function initPageBackground() {
             const pageBg = document.querySelector('.page-background');
             if (pageBg) {
                 pageBg.style.opacity = '0';
@@ -36,21 +35,17 @@
             
             // Показываем после небольшой задержки, чтобы контент успел загрузиться
             setTimeout(function() {
-                document.body.classList.add('loaded');
-            }, 50);
-        });
-        
-        // Также обрабатываем случай, когда DOM уже загружен
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(function() {
+                if (document.body) {
                     document.body.classList.add('loaded');
-                }, 50);
-            });
-        } else {
-            setTimeout(function() {
-                document.body.classList.add('loaded');
+                }
             }, 50);
+        }
+        
+        // Обрабатываем случай, когда DOM уже загружен
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageBackground);
+        } else {
+            initPageBackground();
         }
     })();
 </script>
