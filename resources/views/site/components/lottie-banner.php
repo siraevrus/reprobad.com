@@ -95,6 +95,11 @@
             visibility: hidden !important;
             bottom: -200px !important;
         }
+        #lottie-banner-mobile {
+            display: none !important;
+            visibility: hidden !important;
+            bottom: -200px !important;
+        }
     }
 </style>
 
@@ -147,21 +152,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const shouldShow = scrollTop >= 1000;
         const isMobile = window.innerWidth <= 768;
         
+        // На мобильной версии баннер не показываем
+        if (isMobile) {
+            bannerDesktop.style.visibility = 'hidden';
+            bannerDesktop.style.bottom = '-200px';
+            bannerMobile.style.visibility = 'hidden';
+            bannerMobile.style.bottom = '-200px';
+            return;
+        }
+        
         if (shouldShow) {
             // Загружаем Lottie скрипт только когда баннер должен показаться
             loadLottieScript();
             
-            if (isMobile) {
-                bannerMobile.style.visibility = 'visible';
-                bannerMobile.style.bottom = '60px';
-                bannerDesktop.style.visibility = 'hidden';
-                bannerDesktop.style.bottom = '-200px';
-            } else {
-                bannerDesktop.style.visibility = 'visible';
-                bannerDesktop.style.bottom = '60px';
-                bannerMobile.style.visibility = 'hidden';
-                bannerMobile.style.bottom = '-200px';
-            }
+            bannerDesktop.style.visibility = 'visible';
+            bannerDesktop.style.bottom = '60px';
+            bannerMobile.style.visibility = 'hidden';
+            bannerMobile.style.bottom = '-200px';
         } else {
             bannerDesktop.style.visibility = 'hidden';
             bannerDesktop.style.bottom = '-200px';
