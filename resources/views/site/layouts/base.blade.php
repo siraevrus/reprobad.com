@@ -167,7 +167,7 @@
         .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
         .navbar{position:relative;z-index:1}
         /* Критическое скрытие page-background для предотвращения мигания при загрузке */
-        .page-background{opacity:0!important;z-index:-1!important;pointer-events:none!important}
+        .page-background{opacity:0!important;visibility:hidden!important;z-index:-1!important;pointer-events:none!important}
     </style>
     {{-- Остальной normalize.css загружаем асинхронно --}}
     <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -197,6 +197,28 @@
         })();
     </script>
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+    <script>
+    // Критический скрипт для мгновенного скрытия page-background при загрузке
+    (function() {
+        function hidePageBg() {
+            var pageBgs = document.querySelectorAll('.page-background');
+            for (var i = 0; i < pageBgs.length; i++) {
+                pageBgs[i].style.opacity = '0';
+                pageBgs[i].style.visibility = 'hidden';
+            }
+        }
+        // Выполняем сразу, если DOM уже готов
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', hidePageBg);
+        } else {
+            hidePageBg();
+        }
+        // Также выполняем с небольшой задержкой для перехвата динамически добавляемых элементов
+        setTimeout(hidePageBg, 0);
+        setTimeout(hidePageBg, 10);
+        setTimeout(hidePageBg, 50);
+    })();
+    </script>
     <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
     <link href="images/webclip.jpg" rel="apple-touch-icon">
     <style>
@@ -209,10 +231,12 @@
             z-index: -1 !important;
             pointer-events: none !important;
             opacity: 0 !important;
-            transition: opacity 0.2s ease-in !important;
+            visibility: hidden !important;
+            transition: opacity 0.2s ease-in, visibility 0.2s ease-in !important;
         }
         body.loaded .page-background {
             opacity: 1 !important;
+            visibility: visible !important;
         }
         .step-item.blue { background-image: radial-gradient(circle at 0 0, #4e8eaa, #5694ae 20%, #c4f2f5) }
         .step-item.purple { background-image: radial-gradient(circle at 0 0, #9f99de, #a6a0e1 27%, #dedbf6) }
@@ -845,24 +869,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Скрываем page-background до полной загрузки страницы (глобально для всех страниц)
-    function initPageBackground() {
-        const pageBg = document.querySelector('.page-background');
-        if (pageBg) {
-            pageBg.style.opacity = '0';
-            // Показываем после небольшой задержки, чтобы контент успел загрузиться
-            setTimeout(function() {
-                if (document.body) {
-                    document.body.classList.add('loaded');
-                }
-            }, 100);
-        } else {
-            // Если page-background нет, все равно добавляем класс loaded
-            setTimeout(function() {
-                if (document.body) {
-                    document.body.classList.add('loaded');
-                }
-            }, 50);
+    function hidePageBackground(element) {
+        if (element) {
+            element.style.opacity = '0';
+            element.style.visibility = 'hidden';
         }
+    }
+    
+    function initPageBackground() {
+        // Скрываем все существующие элементы page-background
+        const pageBgs = document.querySelectorAll('.page-background');
+        pageBgs.forEach(hidePageBackground);
+        
+        // Отслеживаем динамически добавляемые элементы
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { // Element node
+                        if (node.classList && node.classList.contains('page-background')) {
+                            hidePageBackground(node);
+                        }
+                        // Проверяем дочерние элементы
+                        const childBgs = node.querySelectorAll && node.querySelectorAll('.page-background');
+                        if (childBgs) {
+                            childBgs.forEach(hidePageBackground);
+                        }
+                    }
+                });
+            });
+        });
+        
+        // Начинаем наблюдение за изменениями в DOM
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        // Показываем после небольшой задержки, чтобы контент успел загрузиться
+        setTimeout(function() {
+            if (document.body) {
+                document.body.classList.add('loaded');
+            }
+        }, 150);
     }
     
     // Выполняем при загрузке и при изменении размера окна
