@@ -27,19 +27,24 @@
 <script>
     // Гарантируем правильное отображение при загрузке страницы
     (function() {
-        function initPageBackground() {
-            const pageBg = document.querySelector('.page-background');
-            if (pageBg) {
+    function initPageBackground() {
+        const pageBg = document.querySelector('.page-background');
+        if (pageBg) {
+            // Используем requestAnimationFrame для батчинга изменений стилей
+            requestAnimationFrame(function() {
                 pageBg.style.opacity = '0';
-            }
-            
-            // Показываем после небольшой задержки, чтобы контент успел загрузиться
-            setTimeout(function() {
-                if (document.body) {
-                    document.body.classList.add('loaded');
-                }
-            }, 50);
+            });
         }
+        
+        // Показываем после небольшой задержки, чтобы контент успел загрузиться
+        setTimeout(function() {
+            if (document.body) {
+                requestAnimationFrame(function() {
+                    document.body.classList.add('loaded');
+                });
+            }
+        }, 50);
+    }
         
         // Обрабатываем случай, когда DOM уже загружен
         if (document.readyState === 'loading') {
@@ -170,20 +175,23 @@
         const mobileButton = document.querySelector('.mobile-search-button');
         
         if (searchForm) {
-            if (searchForm.style.display === 'block' || searchForm.classList.contains('mobile-search-active')) {
-                searchForm.style.display = 'none';
-                searchForm.classList.remove('mobile-search-active');
-            } else {
-                searchForm.style.display = 'block';
-                searchForm.classList.add('mobile-search-active');
-                // Фокусируемся на поле ввода
-                const searchInput = searchForm.querySelector('.search-input');
-                if (searchInput) {
-                    setTimeout(() => {
-                        searchInput.focus();
-                    }, 100);
+            // Используем requestAnimationFrame для батчинга изменений DOM
+            requestAnimationFrame(function() {
+                if (searchForm.style.display === 'block' || searchForm.classList.contains('mobile-search-active')) {
+                    searchForm.style.display = 'none';
+                    searchForm.classList.remove('mobile-search-active');
+                } else {
+                    searchForm.style.display = 'block';
+                    searchForm.classList.add('mobile-search-active');
+                    // Фокусируемся на поле ввода
+                    const searchInput = searchForm.querySelector('.search-input');
+                    if (searchInput) {
+                        setTimeout(() => {
+                            searchInput.focus();
+                        }, 100);
+                    }
                 }
-            }
+            });
         }
     }
 </script>
