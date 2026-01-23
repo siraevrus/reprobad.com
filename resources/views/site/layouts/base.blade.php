@@ -163,7 +163,9 @@
         a{background-color:transparent}
         a:active,a:hover{outline:0}
         img{border:0}
-    </style>
+        /* Критические стили для navbar-background - загружаем сразу для предотвращения FOUC */
+        .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
+        .navbar{position:relative;z-index:1}    </style>
     {{-- Остальной normalize.css загружаем асинхронно --}}
     <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
