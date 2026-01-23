@@ -1,5 +1,61 @@
 @extends('site.layouts.base')
 
+@section('head')
+<style>
+    /* Исправление проблемы с появлением page-background поверх контента при переходах */
+    .page-background {
+        z-index: -1 !important;
+        pointer-events: none !important;
+    }
+    
+    /* Гарантируем, что контент всегда поверх фона */
+    .section.inner-section {
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Скрываем page-background до полной загрузки страницы */
+    .page-background {
+        opacity: 0;
+        transition: opacity 0.1s ease-in;
+    }
+    
+    body.loaded .page-background {
+        opacity: 1;
+    }
+</style>
+<script>
+    // Гарантируем правильное отображение при загрузке страницы
+    (function() {
+        // Скрываем page-background до загрузки
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageBg = document.querySelector('.page-background');
+            if (pageBg) {
+                pageBg.style.opacity = '0';
+            }
+            
+            // Показываем после небольшой задержки, чтобы контент успел загрузиться
+            setTimeout(function() {
+                document.body.classList.add('loaded');
+            }, 50);
+        });
+        
+        // Также обрабатываем случай, когда DOM уже загружен
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    document.body.classList.add('loaded');
+                }, 50);
+            });
+        } else {
+            setTimeout(function() {
+                document.body.classList.add('loaded');
+            }, 50);
+        }
+    })();
+</script>
+@endsection
+
 @section('content')
     <div class="page-background"></div>
     <section class="section inner-section">
