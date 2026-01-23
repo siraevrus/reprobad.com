@@ -813,6 +813,27 @@ document.addEventListener('DOMContentLoaded', function() {
             badWrap.style.display = 'none';
         });
     }
+    
+    // Гарантируем, что только один вариант текста логотипа виден
+    function updateBrandTextVisibility() {
+        const isMobile = window.innerWidth <= 767;
+        const brandDesktop = document.querySelector('.brand-text-desktop');
+        const brandMobile = document.querySelector('.brand-text-mobile');
+        
+        if (brandDesktop && brandMobile) {
+            if (isMobile) {
+                brandDesktop.style.display = 'none';
+                brandMobile.style.display = 'block';
+            } else {
+                brandDesktop.style.display = 'block';
+                brandMobile.style.display = 'none';
+            }
+        }
+    }
+    
+    // Выполняем при загрузке и при изменении размера окна
+    updateBrandTextVisibility();
+    window.addEventListener('resize', updateBrandTextVisibility);
 });
 </script>
 </body>
