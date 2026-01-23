@@ -1,5 +1,3 @@
-
-{{-- Lottie скрипт загружаем лениво только когда баннер нужен --}}
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" /></div>
     <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
