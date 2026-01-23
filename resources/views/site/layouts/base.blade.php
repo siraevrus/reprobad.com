@@ -3,6 +3,13 @@
 <head>
     <meta charset="utf-8">
 
+    {{-- Preconnect для внешних CDN - оптимизация загрузки --}}
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://d3e54v103j8qbb.cloudfront.net" crossorigin>
+    <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+
     @if(isset($resource) && isset($pageType))
         <x-seo-meta
             :pageType="$pageType"
@@ -146,10 +153,25 @@
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
     <link href="css/webflow.css" rel="stylesheet" type="text/css">
     <link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
-    <script type="text/javascript">WebFont.load({  google: {    families: ["Inter:regular,500,700:cyrillic,latin","Raleway:regular,500,600,700:cyrillic,latin"]  }});</script>
+    {{-- Webfont загружаем асинхронно для оптимизации --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
+    <script type="text/javascript">
+        // Загружаем шрифты после загрузки скрипта
+        (function() {
+            function loadWebFont() {
+                if (typeof WebFont !== 'undefined') {
+                    WebFont.load({  google: {    families: ["Inter:regular,500,700:cyrillic,latin","Raleway:regular,500,600,700:cyrillic,latin"]  }});
+                } else {
+                    setTimeout(loadWebFont, 50);
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadWebFont);
+            } else {
+                loadWebFont();
+            }
+        })();
+    </script>
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
     <link href="images/webclip.jpg" rel="apple-touch-icon">
@@ -278,7 +300,15 @@
         }
     </style>
     <script async="" src="https://files.raketadesign.ru/files/sistema-repro/head.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    {{-- Swiper CSS загружаем асинхронно для оптимизации --}}
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    </noscript>
+    <script>
+        // Fallback для браузеров без поддержки onload в preload
+        !function(e){"use strict";var t=function(t,n,r){function o(){if(i){i=!1;for(var e in a)a[e].rel="stylesheet",a[e].onload=null}if("undefined"!=typeof n&&n.call)return n.call(this)}var i=!0,l=e.document,s=l.createElement("link");if(r)s.media="only x";else{var d=l.createElement("style");d.appendChild(l.createTextNode("@media only x { "+t+" }")),l.head.appendChild(d)}s.rel="preload",s.as="style",s.href=t,s.onloadcssdefined=o,s.onload=o,s.onreadystatechange=function(){"complete"===this.readyState&&o()},l.head.appendChild(s);var a=l.styleSheets;return s},"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
+    </script>
     @isset($resource->color)
         <link rel="stylesheet" href="css/{{ $resource->color }}.css">
     @endisset
@@ -660,10 +690,11 @@
     </div>
 </div>
 
-<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://files.raketadesign.ru/files/sistema-repro/home.js" type="text/javascript"></script>
-<script src="/js/webflow.js"></script>
+{{-- JavaScript файлы загружаем с defer для оптимизации --}}
+<script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+<script src="https://files.raketadesign.ru/files/sistema-repro/home.js" type="text/javascript" defer></script>
+<script src="/js/webflow.js" defer></script>
 
 @yield('scripts')
 
