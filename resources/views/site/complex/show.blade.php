@@ -360,10 +360,17 @@
         // Обработчик кликов на миниатюры для открытия галереи
         document.addEventListener('DOMContentLoaded', function() {
             const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} .thumb-link');
-            thumbs{{ $product->id }}.forEach(function(thumbLink) {
+            thumbs{{ $product->id }}.forEach(function(thumbLink, index) {
                 thumbLink.addEventListener('click', function(e) {
-                    // Позволяем fslightbox обработать клик
-                    // Tiny-slider также может переключить слайд, но галерея откроется
+                    // Предотвращаем переключение слайдера при клике на миниатюру
+                    e.stopPropagation();
+                    
+                    // Находим соответствующую ссылку в main-slider и открываем галерею
+                    const mainSliderLinks = document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]');
+                    if (mainSliderLinks[index]) {
+                        // Программно кликаем на соответствующую ссылку в main-slider
+                        mainSliderLinks[index].click();
+                    }
                 });
             });
         });
