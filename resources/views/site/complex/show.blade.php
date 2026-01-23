@@ -79,10 +79,10 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="thumbs-slider thumbs-slider{{ $product->id }}">
-                                    @foreach($product->images as $image)
-                                        <div class="">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" style="cursor: pointer;">
+                                <div class="thumbs-slider thumbs-slider{{ $product->id }}" data-thumbs-gallery="gallery{{ $product->id }}">
+                                    @foreach($product->images as $imageIndex => $image)
+                                        <div class="thumb-item" data-thumb-index="{{ $imageIndex }}">
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
                                                 <img src="{{ $image['url'] }}" alt="">
                                             </a>
                                         </div>
@@ -356,6 +356,17 @@
             autoplay: false,
             slideBy: 'page',
         });
+        
+        // Обработчик кликов на миниатюры для открытия галереи
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} .thumb-link');
+            thumbs{{ $product->id }}.forEach(function(thumbLink) {
+                thumbLink.addEventListener('click', function(e) {
+                    // Позволяем fslightbox обработать клик
+                    // Tiny-slider также может переключить слайд, но галерея откроется
+                });
+            });
+        });
 
         @endforeach
 
@@ -388,28 +399,6 @@
                 });
             });
             
-            // Обработчик кликов на миниатюры для открытия галереи
-            @if($resource->products)
-            @foreach($resource->products as $product)
-            const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} a[data-fslightbox]');
-            thumbs{{ $product->id }}.forEach(function(thumb, index) {
-                thumb.addEventListener('click', function(e) {
-                    // Открываем галерею fslightbox
-                    if (typeof refreshFsLightbox !== 'undefined') {
-                        refreshFsLightbox();
-                    }
-                    // Находим соответствующее изображение в main-slider и открываем его
-                    const mainSliderLinks = document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]');
-                    if (mainSliderLinks[index]) {
-                        mainSliderLinks[index].click();
-                    } else {
-                        // Fallback: кликаем на текущую миниатюру
-                        this.click();
-                    }
-                });
-            });
-            @endforeach
-            @endif
         });
 
         document.addEventListener('DOMContentLoaded', function() {
