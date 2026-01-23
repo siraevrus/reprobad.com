@@ -165,7 +165,10 @@
         img{border:0}
         /* Критические стили для navbar-background - загружаем сразу для предотвращения FOUC */
         .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
-        .navbar{position:relative;z-index:1}    </style>
+        .navbar{position:relative;z-index:1}
+        /* Критическое скрытие page-background для предотвращения мигания при загрузке */
+        .page-background{opacity:0!important;z-index:-1!important;pointer-events:none!important}
+    </style>
     {{-- Остальной normalize.css загружаем асинхронно --}}
     <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
