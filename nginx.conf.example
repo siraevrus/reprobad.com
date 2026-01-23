@@ -1,0 +1,77 @@
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /var/www/your-app/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+
+    charset utf-8;
+
+    # Кеширование статических файлов (JS, CSS, изображения)
+    # JavaScript файлы - кешируем на 1 год
+    location ~* \.(js)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        log_not_found off;
+    }
+
+    # CSS файлы - кешируем на 1 год
+    location ~* \.(css)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        log_not_found off;
+    }
+
+    # Изображения - кешируем на 1 год
+    location ~* \.(jpg|jpeg|png|gif|ico|svg|webp|avif)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        log_not_found off;
+    }
+
+    # Шрифты - кешируем на 1 год
+    location ~* \.(woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
+        log_not_found off;
+    }
+
+    # Основной location для Laravel
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { 
+        access_log off; 
+        log_not_found off; 
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    location = /robots.txt { 
+        access_log off; 
+        log_not_found off; 
+        expires 1d;
+        add_header Cache-Control "public";
+    }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
