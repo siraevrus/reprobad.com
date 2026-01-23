@@ -427,7 +427,20 @@
         .product-options-content > *:first-child { margin-top: 0; }
         .product-options-content > *:last-child { margin-bottom: 0; }
         .product-table .product-table-row:last-child{ border-bottom: none;}
+        /* Управление видимостью вариантов текста логотипа */
+        .brand-text-mobile {
+            display: none;
+        }
+        .brand-text-desktop {
+            display: block;
+        }
         @media screen and (max-width:767px) {
+            .brand-text-mobile {
+                display: block;
+            }
+            .brand-text-desktop {
+                display: none;
+            }
             .events-card-city::after { content: ', '; }
             .events-card-address-2::before { content: ', '; }
             .w-richtext figure { --figure-width: calc(100% + 2rem); }
@@ -497,7 +510,8 @@
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">
         <a href="/" aria-current="page" class="brand w-nav-brand w--current"><img src="images/lgog-gold.svg" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
-            <div>готовимся <br>к беременности <br>вместе!</div>
+            <div class="brand-text-desktop">готовимся <br>к беременности <br>вместе!</div>
+            <div class="brand-text-mobile">готовимся <br>к беременности <br>вместе</div>
         </a>
         <div class="nav-desktop-links">
             <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">Система РЕПРО</a>
