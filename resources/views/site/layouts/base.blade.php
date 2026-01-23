@@ -700,7 +700,37 @@
 <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 <script src="https://files.raketadesign.ru/files/sistema-repro/home.js" type="text/javascript" defer></script>
-<script src="/js/webflow.js" defer></script>
+{{-- Webflow.js загружаем лениво после полной загрузки страницы для уменьшения принудительной компоновки --}}
+<script>
+(function() {
+    // Загружаем webflow.js только после полной загрузки страницы и первого рендера
+    function loadWebflow() {
+        // Используем requestIdleCallback для загрузки в свободное время браузера
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() {
+                var script = document.createElement('script');
+                script.src = '/js/webflow.js';
+                script.defer = true;
+                document.head.appendChild(script);
+            }, { timeout: 2000 });
+        } else {
+            // Fallback для браузеров без requestIdleCallback
+            setTimeout(function() {
+                var script = document.createElement('script');
+                script.src = '/js/webflow.js';
+                script.defer = true;
+                document.head.appendChild(script);
+            }, 1000);
+        }
+    }
+    
+    if (document.readyState === 'complete') {
+        loadWebflow();
+    } else {
+        window.addEventListener('load', loadWebflow);
+    }
+})();
+</script>
 
 @yield('scripts')
 
