@@ -429,17 +429,17 @@
         .product-table .product-table-row:last-child{ border-bottom: none;}
         /* Управление видимостью вариантов текста логотипа */
         .brand-text-mobile {
-            display: none;
+            display: none !important;
         }
         .brand-text-desktop {
-            display: block;
+            display: block !important;
         }
         @media screen and (max-width:767px) {
             .brand-text-mobile {
-                display: block;
+                display: block !important;
             }
             .brand-text-desktop {
-                display: none;
+                display: none !important;
             }
             .events-card-city::after { content: ', '; }
             .events-card-address-2::before { content: ', '; }
