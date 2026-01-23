@@ -152,8 +152,22 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Критический CSS - загружаем синхронно --}}
-    <link href="css/normalize.css" rel="stylesheet" type="text/css">
+    {{-- Инлайним критический CSS для уменьшения критического пути --}}
+    <style>
+        /* Критическая часть normalize.css - инлайним для устранения блокировки рендеринга */
+        html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+        body{margin:0}
+        article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
+        audio,canvas,progress,video{display:inline-block;vertical-align:baseline}
+        audio:not([controls]){display:none;height:0}
+        [hidden],template{display:none}
+        a{background-color:transparent}
+        a:active,a:hover{outline:0}
+        img{border:0}
+    </style>
+    {{-- Остальной normalize.css загружаем асинхронно --}}
+    <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
     {{-- Некритичные CSS загружаем асинхронно для оптимизации --}}
     <link rel="preload" href="css/webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/webflow.css" rel="stylesheet" type="text/css"></noscript>
