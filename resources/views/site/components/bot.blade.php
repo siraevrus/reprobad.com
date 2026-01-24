@@ -26,7 +26,7 @@
     .message ul, .message ol { padding-left: 20px;margin-top: 10px;margin-bottom: 10px; }
     .message br { display: none; }
     .message strong { font-weight: 500; }
-    #openChatBtn { position: fixed;bottom: 160px;right: 20px;background: var(--mandarin);color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;display: none;z-index: 90; }
+    #openChatBtn { position: fixed;bottom: 160px;right: 20px;background: var(--mandarin);color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;font-size: 85%;display: none;z-index: 90; }
     #openChatBtn::before { content: "";position: absolute;top: 50%;left: 50%;width: 120%;height: 120%;background: rgba(79, 70, 229, 0.5);border-radius: 10px;transform: translate(-50%, -50%) scale(1);opacity: 0;animation: waveEffect 2.5s infinite;pointer-events: none;z-index: -1; }
     @keyframes waveEffect {
         0% { transform: translate(-50%, -50%) scale(0.7);opacity: 0.6; }
