@@ -1,5 +1,5 @@
 <style>
-    .chat-container { position: fixed;bottom: 60px;right: 20px;width: 360px;max-width: 100%;max-height: 500px;background: #fff;border-radius: 12px;box-shadow: 0 4px 12px rgba(0,0,0,0.2);display: flex;flex-direction: column;overflow: hidden;font-size: 14px;z-index: 9999; }
+    .chat-container { position: fixed;bottom: 160px;right: 20px;width: 360px;max-width: 100%;max-height: 500px;background: #fff;border-radius: 12px;box-shadow: 0 4px 12px rgba(0,0,0,0.2);display: flex;flex-direction: column;overflow: hidden;font-size: 14px;z-index: 9999; }
     .chat-header { background: var(--mandarin);color: white;padding: 12px;font-weight: bold;position: relative; }
     .chat-header button.close-btn { position: absolute;top: 8px;right: 12px;background: transparent;border: none;color: white;font-size: 18px;cursor: pointer; }
     .chat-header button.clear-btn { position: absolute;top: 8px;right: 40px;background: transparent;border: none;color: white;font-size: 14px;cursor: pointer;opacity: 0.8; }
@@ -26,7 +26,7 @@
     .message ul, .message ol { padding-left: 20px;margin-top: 10px;margin-bottom: 10px; }
     .message br { display: none; }
     .message strong { font-weight: 500; }
-    #openChatBtn { position: fixed;bottom: 60px;right: 20px;background: var(--mandarin);color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;display: none;z-index: 90; }
+    #openChatBtn { position: fixed;bottom: 160px;right: 20px;background: var(--mandarin);color: white;border: none;padding: 10px 16px;border-radius: 12px;cursor: pointer;font-weight: bold;display: none;z-index: 90; }
     #openChatBtn::before { content: "";position: absolute;top: 50%;left: 50%;width: 120%;height: 120%;background: rgba(79, 70, 229, 0.5);border-radius: 10px;transform: translate(-50%, -50%) scale(1);opacity: 0;animation: waveEffect 2.5s infinite;pointer-events: none;z-index: -1; }
     @keyframes waveEffect {
         0% { transform: translate(-50%, -50%) scale(0.7);opacity: 0.6; }
@@ -35,7 +35,7 @@
     }
     @media (max-width: 475px) {
         .chat-container { width: 320px }
-        #openChatBtn { bottom: 15px;right: 15px; }
+        #openChatBtn { bottom: 115px;right: 15px; }
         jdiv { bottom: -100px;right: -32px; }
     }
 </style>
@@ -60,7 +60,7 @@
 
 </div>
 
-<button id="openChatBtn" title="Открыть чат">ИИ-консультант</button>
+<button id="openChatBtn" title="Открыть чат">ИИ-консультант РЕПРО</button>
 
 <script>
     const chat = document.getElementById('chat');
