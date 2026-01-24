@@ -152,31 +152,46 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // На мобильной версии баннер не показываем
         if (isMobile) {
-            bannerDesktop.style.visibility = 'hidden';
-            bannerDesktop.style.bottom = '-200px';
-            bannerMobile.style.visibility = 'hidden';
-            bannerMobile.style.bottom = '-200px';
+            requestAnimationFrame(() => {
+                bannerDesktop.style.visibility = 'hidden';
+                bannerDesktop.style.bottom = '-200px';
+                bannerMobile.style.visibility = 'hidden';
+                bannerMobile.style.bottom = '-200px';
+            });
             return;
         }
         
-        if (shouldShow) {
-            // Загружаем Lottie скрипт только когда баннер должен показаться
-            loadLottieScript();
-            
-            bannerDesktop.style.visibility = 'visible';
-            bannerDesktop.style.bottom = '60px';
-            bannerMobile.style.visibility = 'hidden';
-            bannerMobile.style.bottom = '-200px';
-        } else {
-            bannerDesktop.style.visibility = 'hidden';
-            bannerDesktop.style.bottom = '-200px';
-            bannerMobile.style.visibility = 'hidden';
-            bannerMobile.style.bottom = '-200px';
+        requestAnimationFrame(() => {
+            if (shouldShow) {
+                // Загружаем Lottie скрипт только когда баннер должен показаться
+                loadLottieScript();
+                
+                bannerDesktop.style.visibility = 'visible';
+                bannerDesktop.style.bottom = '60px';
+                bannerMobile.style.visibility = 'hidden';
+                bannerMobile.style.bottom = '-200px';
+            } else {
+                bannerDesktop.style.visibility = 'hidden';
+                bannerDesktop.style.bottom = '-200px';
+                bannerMobile.style.visibility = 'hidden';
+                bannerMobile.style.bottom = '-200px';
+            }
+        });
+    }
+    
+    // Throttle функция для оптимизации обработчика scroll
+    let scrollTimeout = null;
+    function throttledCheckScroll() {
+        if (!scrollTimeout) {
+            scrollTimeout = requestAnimationFrame(() => {
+                checkScroll();
+                scrollTimeout = null;
+            });
         }
     }
     
     checkScroll();
-    window.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll);
+    window.addEventListener('scroll', throttledCheckScroll, { passive: true });
+    window.addEventListener('resize', throttledCheckScroll, { passive: true });
 });
 </script>

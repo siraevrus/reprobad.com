@@ -4,7 +4,7 @@
         html { font-size: 1.333125rem; }
         @media screen and (max-width:1920px) { html { font-size: calc(0.0009480702515177741rem + 1.1101474414570685vw); } }
         @media screen and (max-width:767px) { html { font-size: calc(-0.0026705287206266314rem + 4.27284595300261vw); } }
-        html { overflow-y: scroll; overflow-x: hidden; height: -webkit-fill-available; }
+        html { overflow-y: auto; overflow-x: hidden; height: -webkit-fill-available; }
         @supports (scrollbar-gutter: stable) { html { overflow-y: auto; scrollbar-gutter: stable; } }
         body { min-height: 100vh; min-height: -webkit-fill-available; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         @supports (font: -apple-system-body) and (-webkit-appearance: none) { img[loading="lazy"] { clip-path: inset(0.6px); } }
