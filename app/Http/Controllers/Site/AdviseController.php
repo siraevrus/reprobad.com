@@ -106,16 +106,17 @@ class AdviseController extends Controller
             $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
         }
 
-        // Получаем категории с подсчетом количества советов
-        $allAdvises = Advise::where('active', 1)->get();
+        // Оптимизированный подсчет категорий - используем группировку в БД вместо загрузки всех записей
         $categories = Advise::where('active', 1)
-            ->distinct()
-            ->pluck('category')
-            ->filter()
-            ->map(function ($category) use ($allAdvises) {
+            ->whereNotNull('category')
+            ->selectRaw('category as name, COUNT(*) as count')
+            ->groupBy('category')
+            ->orderBy('name')
+            ->get()
+            ->map(function ($item) {
                 return [
-                    'name' => $category,
-                    'count' => $allAdvises->where('category', $category)->count()
+                    'name' => $item->name,
+                    'count' => $item->count
                 ];
             })
             ->values();

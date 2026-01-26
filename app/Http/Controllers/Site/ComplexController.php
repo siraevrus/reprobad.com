@@ -21,7 +21,14 @@ class ComplexController extends Controller
 
     public function show($alias): View
     {
-        $resource = Complex::where('alias', $alias)->where('active', 1)->firstOrFail();
+        // Используем eager loading для products, чтобы избежать N+1 проблемы
+        $resource = Complex::where('alias', $alias)
+            ->where('active', 1)
+            ->with(['products' => function($query) {
+                $query->where('active', 1)->orderBy('sort', 'ASC');
+            }])
+            ->firstOrFail();
+        
         $articles = Article::active()->orderBy('created_at', 'desc')->take(5)->get();
         $resources = Complex::active()->get();
 

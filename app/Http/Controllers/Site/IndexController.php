@@ -21,10 +21,25 @@ class IndexController extends Controller
             'home' => 1,
             'title' => 'Главная'
         ];
-        $resources = Article::active()->orderBy('created_at', 'DESC')->take(5)->get();
-        $complexes = Complex::active()->get();
-        $events = Event::active()->orderBy('sort', 'desc')->take(2)->get();
+        
+        // Оптимизация: используем select только нужных полей для уменьшения памяти
+        $resources = Article::active()
+            ->select('id', 'title', 'description', 'alias', 'image', 'icon', 'created_at', 'time', 'category')
+            ->orderBy('created_at', 'DESC')
+            ->take(5)
+            ->get();
+        
+        $complexes = Complex::active()
+            ->select('id', 'title', 'alias', 'subtitle', 'image_left', 'image_right', 'color', 'sort')
+            ->get();
+        
+        $events = Event::active()
+            ->select('id', 'title', 'description', 'dates', 'address', 'alias', 'created_at')
+            ->orderBy('sort', 'desc')
+            ->take(2)
+            ->get();
 
+        // Оптимизация: используем один запрос с union вместо трех отдельных
         $d1 = DB::table('articles')
             ->select('id', 'title', 'home', DB::raw("'article' as type"))
             ->where('home', 1);
@@ -45,8 +60,14 @@ class IndexController extends Controller
 
         $pageType = 'Home';
 
-        $questions = Question::active()->get();
-        $steps = Step::active()->get();
+        // Оптимизация: загружаем только нужные поля для questions и steps
+        $questions = Question::active()
+            ->select('id', 'title', 'text', 'icon')
+            ->get();
+        
+        $steps = Step::active()
+            ->select('id', 'title')
+            ->get();
 
         return view('site.index', compact('resource', 'complexes', 'resources', 'pageType', 'events', 'favorites', 'questions', 'steps'));
     }
