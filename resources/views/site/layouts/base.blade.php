@@ -3,6 +3,27 @@
 <head>
     <meta charset="utf-8">
 
+    {{-- Обработка параметра ?city= для всех страниц - сохраняем город в сессию --}}
+    @php
+        // Обработка параметра ?city= для обратной совместимости (без редиректа)
+        if(request()->get('city')) {
+            $citiesFile = public_path('cities.txt');
+            if (file_exists($citiesFile)) {
+                $cities = explode(PHP_EOL, file_get_contents($citiesFile));
+                $cities = array_unique($cities);
+                $cityParam = trim(request()->get('city'));
+                
+                foreach ($cities as $city) {
+                    if (trim($city) === $cityParam) {
+                        session()->put('city', trim($city));
+                        app(\App\Services\CityStatsService::class)->recordCitySelection(trim($city));
+                        break;
+                    }
+                }
+            }
+        }
+    @endphp
+
     {{-- Preconnect для внешних CDN - оптимизация загрузки --}}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://d3e54v103j8qbb.cloudfront.net" crossorigin>
