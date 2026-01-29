@@ -794,34 +794,55 @@
 {{-- Локальные скрипты с версионированием для кеширования --}}
 <link rel="preload" href="/js/home.js?v={{ md5_file(public_path('js/home.js')) }}" as="script">
 <script src="/js/home.js?v={{ md5_file(public_path('js/home.js')) }}" type="text/javascript" defer></script>
-{{-- Webflow.js загружаем лениво после полной загрузки страницы для уменьшения принудительной компоновки --}}
+{{-- Webflow.js загружаем после jQuery для корректной работы меню-бургера --}}
 <script>
 (function() {
-    // Загружаем webflow.js только после полной загрузки страницы и первого рендера
     function loadWebflow() {
-        // Используем requestIdleCallback для загрузки в свободное время браузера
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(function() {
-                var script = document.createElement('script');
-                script.src = '/js/webflow.js';
-                script.defer = true;
-                document.head.appendChild(script);
-            }, { timeout: 2000 });
+        // Проверяем, не загружен ли уже скрипт
+        if (document.querySelector('script[src="/js/webflow.js"]')) {
+            return;
+        }
+        
+        // Проверяем наличие jQuery (webflow.js зависит от него)
+        if (typeof jQuery === 'undefined') {
+            // Если jQuery еще не загружен, ждем его
+            setTimeout(loadWebflow, 50);
+            return;
+        }
+        
+        var script = document.createElement('script');
+        script.src = '/js/webflow.js';
+        // Не используем defer для синхронной инициализации меню
+        document.head.appendChild(script);
+    }
+    
+    // Загружаем после того, как jQuery будет готов
+    // jQuery загружается с defer, поэтому ждем события load или проверяем наличие jQuery
+    function initWebflow() {
+        if (typeof jQuery !== 'undefined') {
+            loadWebflow();
         } else {
-            // Fallback для браузеров без requestIdleCallback
-            setTimeout(function() {
-                var script = document.createElement('script');
-                script.src = '/js/webflow.js';
-                script.defer = true;
-                document.head.appendChild(script);
-            }, 1000);
+            // Ждем загрузки jQuery (максимум 3 секунды)
+            var attempts = 0;
+            var checkJQuery = setInterval(function() {
+                attempts++;
+                if (typeof jQuery !== 'undefined' || attempts > 60) {
+                    clearInterval(checkJQuery);
+                    if (typeof jQuery !== 'undefined') {
+                        loadWebflow();
+                    }
+                }
+            }, 50);
         }
     }
     
-    if (document.readyState === 'complete') {
-        loadWebflow();
+    // Запускаем после загрузки DOM и скриптов
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initWebflow, 100);
+        });
     } else {
-        window.addEventListener('load', loadWebflow);
+        setTimeout(initWebflow, 100);
     }
 })();
 </script>
