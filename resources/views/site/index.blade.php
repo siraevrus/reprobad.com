@@ -18,6 +18,11 @@
   }
 }
 </script>
+<style>
+    .sistema-repro-semibold {
+        margin-right: 15px;
+    }
+</style>
 @endsection
 
 @section('content')

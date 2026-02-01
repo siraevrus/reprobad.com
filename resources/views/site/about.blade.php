@@ -25,6 +25,11 @@
   ]
 }
 </script>
+<style>
+    .about-repro-h1 .sistema-repro-semibold {
+        margin-right: -5px;
+    }
+</style>
 @endsection
 
 @section('content')
