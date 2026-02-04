@@ -71,6 +71,7 @@
                     title_right: 'hero-product-2',
                     images: []
                 },
+                errors: {},
             }
         }
     </script>

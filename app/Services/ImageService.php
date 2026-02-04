@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Decoders\DataUriImageDecoder;
 use Intervention\Image\Decoders\Base64ImageDecoder;
 

@@ -257,7 +257,17 @@ const save = {
                 body: JSON.stringify(this.form)
             });
 
-            const data = await response.json();
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                // Если ответ не JSON, значит серверная ошибка
+                this.errors = {};
+                this.showAlert('Ошибка сервера: ' + response.status + ' ' + response.statusText, true);
+                this.loading = false;
+                return;
+            }
+
             if (data.success) {
                 if(this.action === 'create') {
                     window.location.href = '/admin/' + this.route+ '/';
@@ -266,12 +276,14 @@ const save = {
                     this.showAlert('Сохранено');
                 }
             } else {
-                this.errors = data.errors;
-                this.showAlert(data.errors, true);
+                this.errors = data.errors || {};
+                this.showAlert(data.errors || 'Ошибка при сохранении', true);
             }
         }
         catch (e) {
-            console.log(e)
+            console.log(e);
+            this.errors = {};
+            this.showAlert('Ошибка при сохранении: ' + e.message, true);
         }
         finally {
             this.loading = false;
@@ -284,7 +296,26 @@ const get = {
         this.loading = true;
         try {
             const response = await fetch('/admin/' + this.route + '/' + this.action);
-            this.form = Object.assign(this.form, await response.json());
+            const data = await response.json();
+            
+            // Нормализуем поле images, если оно существует
+            if (data.images !== undefined) {
+                if (!Array.isArray(data.images)) {
+                    // Если это строка (JSON), пытаемся распарсить
+                    if (typeof data.images === 'string') {
+                        try {
+                            data.images = JSON.parse(data.images);
+                        } catch (e) {
+                            data.images = [];
+                        }
+                    } else {
+                        // Если это объект или null, преобразуем в массив
+                        data.images = data.images ? [data.images] : [];
+                    }
+                }
+            }
+            
+            this.form = Object.assign(this.form, data);
             this.loading = false;
         }
         catch (e) {
@@ -327,7 +358,20 @@ const dropzone = {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    if(this.form[field] === null) this.form[field] = [];
+                    // Гарантируем, что поле всегда является массивом
+                    if (!Array.isArray(this.form[field])) {
+                        // Если это строка (JSON), пытаемся распарсить
+                        if (typeof this.form[field] === 'string') {
+                            try {
+                                this.form[field] = JSON.parse(this.form[field]);
+                            } catch (e) {
+                                this.form[field] = [];
+                            }
+                        } else {
+                            // Если это объект или null, преобразуем в массив
+                            this.form[field] = this.form[field] ? [this.form[field]] : [];
+                        }
+                    }
                     this.form[field].push({ url: e.target.result, name: file.name });
                 };
                 reader.readAsDataURL(file);
@@ -336,19 +380,57 @@ const dropzone = {
     },
 
     removeDropzoneImage(index, field) {
-        if(this.form[field][index].url.startsWith('data:')) {
+        // Гарантируем, что поле является массивом
+        if (!Array.isArray(this.form[field])) {
+            if (typeof this.form[field] === 'string') {
+                try {
+                    this.form[field] = JSON.parse(this.form[field]);
+                } catch (e) {
+                    this.form[field] = [];
+                }
+            } else {
+                this.form[field] = this.form[field] ? [this.form[field]] : [];
+            }
+        }
+        
+        if (this.form[field][index] && this.form[field][index].url && this.form[field][index].url.startsWith('data:')) {
             this.form[field].splice(index, 1);
         }
-        else {
+        else if (this.form[field][index]) {
             this.form[field][index]['remove'] = !this.form[field][index]['remove'];
         }
     },
 
     dragDropzoneImageStart(event, index, field) {
+        // Гарантируем, что поле является массивом
+        if (!Array.isArray(this.form[field])) {
+            if (typeof this.form[field] === 'string') {
+                try {
+                    this.form[field] = JSON.parse(this.form[field]);
+                } catch (e) {
+                    this.form[field] = [];
+                }
+            } else {
+                this.form[field] = this.form[field] ? [this.form[field]] : [];
+            }
+        }
         this.draggedItem = this.form[field][index];
     },
 
     dragDropzoneImageOver(event, index, field) {
+        // Гарантируем, что поле является массивом
+        if (!Array.isArray(this.form[field])) {
+            if (typeof this.form[field] === 'string') {
+                try {
+                    this.form[field] = JSON.parse(this.form[field]);
+                } catch (e) {
+                    this.form[field] = [];
+                }
+            } else {
+                this.form[field] = this.form[field] ? [this.form[field]] : [];
+            }
+        }
+        
         const draggedOverItem = this.form[field][index];
 
         if (this.draggedItem === draggedOverItem) {
