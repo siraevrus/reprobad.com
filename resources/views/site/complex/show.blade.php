@@ -71,9 +71,9 @@
                         @if($product->images)
                             <div class="slider-block product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                                 <div class="main-slider main-slider{{ $product->id }}">
-                                    @foreach($product->images as $image)
+                                    @foreach($product->images as $imageIndex => $image)
                                         <div class="">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}">
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}">
                                                 <img src="{{ $image['url'] }}" alt="">
                                             </a>
                                         </div>
@@ -82,7 +82,7 @@
                                 <div class="thumbs-slider thumbs-slider{{ $product->id }}" data-thumbs-gallery="gallery{{ $product->id }}">
                                     @foreach($product->images as $imageIndex => $image)
                                         <div class="thumb-item" data-thumb-index="{{ $imageIndex }}">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
+                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
                                                 <img src="{{ $image['url'] }}" alt="">
                                             </a>
                                         </div>
@@ -360,16 +360,29 @@
         // Обработчик кликов на миниатюры для открытия галереи
         document.addEventListener('DOMContentLoaded', function() {
             const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} .thumb-link');
-            thumbs{{ $product->id }}.forEach(function(thumbLink, index) {
+            const mainSliderLinks{{ $product->id }} = Array.from(document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]'));
+            
+            thumbs{{ $product->id }}.forEach(function(thumbLink) {
                 thumbLink.addEventListener('click', function(e) {
                     // Предотвращаем переключение слайдера при клике на миниатюру
+                    e.preventDefault();
                     e.stopPropagation();
                     
-                    // Находим соответствующую ссылку в main-slider и открываем галерею
-                    const mainSliderLinks = document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]');
-                    if (mainSliderLinks[index]) {
-                        // Программно кликаем на соответствующую ссылку в main-slider
-                        mainSliderLinks[index].click();
+                    // Получаем индекс из data-source-index миниатюры
+                    const thumbIndex = parseInt(thumbLink.getAttribute('data-source-index')) || 0;
+                    
+                    // Находим соответствующую ссылку в main-slider с таким же data-source-index
+                    const targetLink = mainSliderLinks{{ $product->id }}.find(function(link) {
+                        return parseInt(link.getAttribute('data-source-index')) === thumbIndex;
+                    });
+                    
+                    if (targetLink) {
+                        // Используем setTimeout чтобы убедиться, что fslightbox инициализирован
+                        setTimeout(function() {
+                            // Кликаем на соответствующую ссылку из main-slider
+                            // Это гарантирует, что откроется правильное изображение с правильным индексом
+                            targetLink.click();
+                        }, 10);
                     }
                 });
             });
