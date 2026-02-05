@@ -269,12 +269,12 @@
                 <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="/privacy" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
               </label>
             </form>
-            <div class="subscribe-success w-form-done">
+            <div class="subscribe-success w-form-done" style="display: none;">
               <div class="reprotest-succes"><img loading="lazy" src="{{ asset("images/success-icon.svg") }}" alt="" class="success-icon">
                 <div>Результаты теста отправлены!</div>
               </div>
             </div>
-            <div class="error-message reprotest-error-message w-form-fail">
+            <div class="error-message reprotest-error-message w-form-fail" style="display: none;">
               <div>Произошла непредвиденная ошибка во время отправки формы!</div>
             </div>
           </div>
