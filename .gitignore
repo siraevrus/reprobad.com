@@ -24,3 +24,5 @@ yarn-error.log
 /.zed
 .DS_Store
 public/sitemap.xml
+/storage/app/test-export/
+test-data-export.tar.gz
