@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('faq', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('title');
-            $table->string('content')->nullable();
-            $table->boolean('active')->default(true);
-        });
+        if (!Schema::hasTable('faq')) {
+            Schema::create('faq', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('title');
+                $table->string('content')->nullable();
+                $table->boolean('active')->default(true);
+            });
+        }
     }
 
     /**

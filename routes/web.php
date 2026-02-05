@@ -18,6 +18,9 @@ use App\Http\Controllers\Admin\SubscribeController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\TestResultController;
+use App\Http\Controllers\Admin\TestQuestionController;
+use App\Http\Controllers\Admin\TestResultFieldController;
 use App\Http\Controllers\Admin\ChatHistoryController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Site\FormController;
@@ -33,6 +36,7 @@ use App\Http\Controllers\Site\PageController as SitePageController;
 use App\Http\Controllers\Site\MapController as SiteMapController;
 use App\Http\Controllers\Site\FaqController as SiteFaqController;
 use App\Http\Controllers\Site\MenuController as SiteMenuController;
+use App\Http\Controllers\Site\TestController as SiteTestController;
 
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
@@ -53,6 +57,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/menus', MenuController::class);
     Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/feedbacks', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('/admin/test-results', TestResultController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('/admin/test-questions', TestQuestionController::class);
+    Route::resource('/admin/test-result-fields', TestResultFieldController::class);
 
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
@@ -134,4 +141,10 @@ Route::post('/usefully-tips/{alias}/like', [SiteAdviseController::class, 'like']
 use App\Http\Controllers\Site\BotController;
 Route::post('/bot/ask', [BotController::class, 'ask'])->name('site.bot.ask');
 Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name('site.bot.clearHistory');
+
+// Тест "Репродуктивное здоровье"
+Route::get('/test', [SiteTestController::class, 'index'])->name('site.test.index');
+Route::post('/test/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
+Route::post('/test/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
+Route::post('/test/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
 

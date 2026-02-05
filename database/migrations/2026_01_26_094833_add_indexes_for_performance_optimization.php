@@ -14,8 +14,16 @@ return new class extends Migration
     {
         // Вспомогательная функция для проверки существования индекса
         $hasIndex = function($tableName, $indexName) {
-            $indexes = DB::select("SHOW INDEXES FROM `{$tableName}` WHERE Key_name = ?", [$indexName]);
-            return count($indexes) > 0;
+            $driver = DB::getDriverName();
+            if ($driver === 'sqlite') {
+                // Для SQLite проверяем через sqlite_master
+                $result = DB::select("SELECT name FROM sqlite_master WHERE type='index' AND name=?", [$indexName]);
+                return count($result) > 0;
+            } else {
+                // Для MySQL и других
+                $indexes = DB::select("SHOW INDEXES FROM `{$tableName}` WHERE Key_name = ?", [$indexName]);
+                return count($indexes) > 0;
+            }
         };
 
         // Индексы для таблицы articles
@@ -25,7 +33,14 @@ return new class extends Migration
             });
         }
         if (!$hasIndex('articles', 'articles_category_index')) {
-            DB::statement('CREATE INDEX articles_category_index ON articles (category(255))');
+            $driver = DB::getDriverName();
+            if ($driver === 'sqlite') {
+                Schema::table('articles', function (Blueprint $table) {
+                    $table->index('category', 'articles_category_index');
+                });
+            } else {
+                DB::statement('CREATE INDEX articles_category_index ON articles (category(255))');
+            }
         }
         if (!$hasIndex('articles', 'articles_created_at_index')) {
             Schema::table('articles', function (Blueprint $table) {
@@ -50,7 +65,14 @@ return new class extends Migration
             });
         }
         if (!$hasIndex('advises', 'advises_category_index')) {
-            DB::statement('CREATE INDEX advises_category_index ON advises (category(255))');
+            $driver = DB::getDriverName();
+            if ($driver === 'sqlite') {
+                Schema::table('advises', function (Blueprint $table) {
+                    $table->index('category', 'advises_category_index');
+                });
+            } else {
+                DB::statement('CREATE INDEX advises_category_index ON advises (category(255))');
+            }
         }
         if (!$hasIndex('advises', 'advises_created_at_index')) {
             Schema::table('advises', function (Blueprint $table) {

@@ -106,6 +106,9 @@
                 { href: '{{ route('admin.pages.index') }}', segment: 'pages', icon: 'pages', text: 'Страницы' },
                 { href: '{{ route('admin.subscribers.index') }}', segment: 'subscribers', icon: 'mail', text: 'Подписчики' },
                 { href: '{{ route('admin.feedbacks.index') }}', segment: 'feedbacks', icon: 'question_answer', text: 'Вопросы с сайта' },
+                { href: '{{ route('admin.test-questions.index') }}', segment: 'test-questions', icon: 'help_outline', text: 'Вопросы теста' },
+                { href: '{{ route('admin.test-result-fields.index') }}', segment: 'test-result-fields', icon: 'edit_note', text: 'Редактирование результатов теста' },
+                { href: '{{ route('admin.test-results.index') }}', segment: 'test-results', icon: 'quiz', text: 'Результаты пользователей' },
                 { href: '#', segment: 'divider', icon: '', text: '' }, // Separator
                 { href: '{{ route('admin.users.index') }}', segment: 'users', icon: 'person', text: 'Пользователи' },
                 { href: '{{ route('admin.config.edit') }}', segment: 'config', icon: 'settings', text: 'Настройки' }

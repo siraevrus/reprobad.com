@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Mail;
+
+use App\Models\TestResult;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+
+class TestResultMail extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public $testResult;
+
+    public function __construct(TestResult $testResult)
+    {
+        $this->testResult = $testResult;
+    }
+
+    public function build()
+    {
+        return $this->view('mail.test-result')
+            ->subject('Система РЕПРО: Результаты теста «Репродуктивное здоровье»')
+            ->with([
+                'testResult' => $this->testResult,
+                'results' => $this->testResult->results['results'] ?? [],
+            ]);
+    }
+}

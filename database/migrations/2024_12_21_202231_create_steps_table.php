@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('steps', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('title');
-            $table->string('text')->nullable();
-            $table->boolean('active')->default(true);
-        });
+        if (!Schema::hasTable('steps')) {
+            Schema::create('steps', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('title');
+                $table->string('text')->nullable();
+                $table->boolean('active')->default(true);
+            });
+        }
     }
 
     /**
