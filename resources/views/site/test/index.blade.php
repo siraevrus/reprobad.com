@@ -648,31 +648,49 @@ Webflow.push(function() {
         
         // Формируем продукты
         let productsHtml = '';
-        const sacheImageSrc = '{{ asset("images/sache.webp") }}';
-        const sacheImageSrcset = '{{ asset("images/sache-p-500.webp") }} 500w, {{ asset("images/sache.webp") }} 648w';
         const baseUrl = '{{ url("/") }}';
         
         if (result.image1 && result.image1.trim() !== '') {
-          const image1Url = result.image1.startsWith('http') ? result.image1 : baseUrl + result.image1;
+          // Обрабатываем путь к изображению
+          let image1Url = result.image1;
+          if (!image1Url.startsWith('http')) {
+            // Если путь начинается с /, добавляем baseUrl
+            if (image1Url.startsWith('/')) {
+              image1Url = baseUrl + image1Url;
+            } else {
+              // Если путь относительный, добавляем baseUrl и /
+              image1Url = baseUrl + '/' + image1Url;
+            }
+          }
           const link1 = result.link1 || '#';
           console.log('Image1 URL:', image1Url);
           productsHtml += `
             <a href="${link1}" class="product-item-link test-product-link w-inline-block">
               <div class="sache-image-element">
-                <img src="${image1Url}" loading="lazy" alt="Product 1" class="sache-image">
+                <img src="${image1Url}" loading="lazy" alt="Product 1" class="sache-image" onerror="this.style.display='none';">
               </div>
               <div class="product-item-image-shadow"></div>
             </a>
           `;
         }
         if (result.image2 && result.image2.trim() !== '') {
-          const image2Url = result.image2.startsWith('http') ? result.image2 : baseUrl + result.image2;
+          // Обрабатываем путь к изображению
+          let image2Url = result.image2;
+          if (!image2Url.startsWith('http')) {
+            // Если путь начинается с /, добавляем baseUrl
+            if (image2Url.startsWith('/')) {
+              image2Url = baseUrl + image2Url;
+            } else {
+              // Если путь относительный, добавляем baseUrl и /
+              image2Url = baseUrl + '/' + image2Url;
+            }
+          }
           const link2 = result.link2 || '#';
           console.log('Image2 URL:', image2Url);
           productsHtml += `
             <a href="${link2}" class="product-item-link test-product-link w-inline-block">
               <div class="sache-image-element">
-                <img src="${image2Url}" loading="lazy" alt="Product 2" class="sache-image">
+                <img src="${image2Url}" loading="lazy" alt="Product 2" class="sache-image" onerror="this.style.display='none';">
               </div>
               <div class="product-item-image-shadow"></div>
             </a>
