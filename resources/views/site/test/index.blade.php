@@ -36,6 +36,14 @@
   .reprotest-arrow-button:not(.disabled) {
     cursor: pointer;
   }
+  /* Убираем тень у изображений продуктов на странице теста */
+  .reprotest-products .sache-image-element,
+  .reprotest-products .sache-image {
+    box-shadow: none !important;
+  }
+  .reprotest-products .product-item-image-shadow {
+    display: none !important;
+  }
 </style>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -669,7 +677,6 @@ Webflow.push(function() {
               <div class="sache-image-element">
                 <img src="${image1Url}" loading="lazy" alt="Product 1" class="sache-image" onerror="this.style.display='none';">
               </div>
-              <div class="product-item-image-shadow"></div>
             </a>
           `;
         }
@@ -692,7 +699,6 @@ Webflow.push(function() {
               <div class="sache-image-element">
                 <img src="${image2Url}" loading="lazy" alt="Product 2" class="sache-image" onerror="this.style.display='none';">
               </div>
-              <div class="product-item-image-shadow"></div>
             </a>
           `;
         }
