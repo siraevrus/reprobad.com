@@ -175,30 +175,37 @@
     {{-- Инлайним критический CSS для уменьшения критического пути --}}
     <style>
         /* Критическая часть normalize.css - инлайним для устранения блокировки рендеринга */
-        html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
-        body{margin:0}
+        html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;height:100%}
+        body{margin:0;min-height:100%;background-color:#fff;font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#333}
         article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
         audio,canvas,progress,video{display:inline-block;vertical-align:baseline}
         audio:not([controls]){display:none;height:0}
         [hidden],template{display:none}
         a{background-color:transparent}
         a:active,a:hover{outline:0}
-        img{border:0}
+        img{border:0;max-width:100%;vertical-align:middle;display:inline-block}
         /* Критические стили для navbar-background - загружаем сразу для предотвращения FOUC */
         .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
         .navbar{position:relative;z-index:1}
         /* Критическое скрытие page-background для предотвращения мигания при загрузке */
         .page-background{opacity:0!important;visibility:hidden!important;z-index:-1!important;pointer-events:none!important}
+        /* Скрытие контента до загрузки CSS для предотвращения FOUC */
+        html:not(.w-mod-js) body{visibility:hidden;opacity:0}
+        html.w-mod-js body.css-loaded{visibility:visible;opacity:1;transition:opacity 0.15s ease-in}
+        /* Базовые стили для предотвращения мигания элементов */
+        *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
     </style>
-    {{-- Остальной normalize.css загружаем асинхронно --}}
+    {{-- webflow.css загружаем синхронно для предотвращения FOUC (критический CSS) --}}
+    <link rel="stylesheet" href="css/webflow.css">
+    {{-- Остальной normalize.css загружаем асинхронно (некритичный) --}}
     <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
-    {{-- Некритичные CSS загружаем асинхронно для оптимизации --}}
-    <link rel="preload" href="css/webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="css/webflow.css" rel="stylesheet" type="text/css"></noscript>
+    {{-- sistema-repro.webflow.css загружаем асинхронно (некритичный CSS) --}}
     <link rel="preload" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css"></noscript>
-    {{-- Webfont загружаем асинхронно для оптимизации --}}
+    {{-- Webfont загружаем асинхронно для оптимизации (не блокирует рендеринг) --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
     <script type="text/javascript">
         // Загружаем шрифты после загрузки скрипта
@@ -219,8 +226,44 @@
     </script>
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script>
-    // Критический скрипт для мгновенного скрытия page-background при загрузке
+    // Критический скрипт для проверки загрузки CSS и показа контента
     (function() {
+        // Функция проверки загрузки CSS
+        function isCSSLoaded() {
+            // Проверяем наличие загруженных стилей
+            var styleSheets = document.styleSheets;
+            var webflowLoaded = false;
+            
+            // Проверяем наличие webflow.css
+            for (var i = 0; i < styleSheets.length; i++) {
+                try {
+                    var href = styleSheets[i].href || '';
+                    if (href.indexOf('webflow.css') !== -1) {
+                        webflowLoaded = true;
+                        break;
+                    }
+                } catch(e) {
+                    // Игнорируем ошибки доступа к CORS стилям
+                }
+            }
+            
+            // Также проверяем наличие link элемента с webflow.css
+            var webflowLink = document.querySelector('link[href*="webflow.css"]');
+            if (webflowLink && webflowLink.sheet) {
+                webflowLoaded = true;
+            }
+            
+            return webflowLoaded;
+        }
+        
+        // Функция показа контента
+        function showContent() {
+            if (document.body) {
+                document.body.classList.add('css-loaded');
+            }
+        }
+        
+        // Функция скрытия page-background
         function hidePageBg() {
             var pageBgs = document.querySelectorAll('.page-background');
             for (var i = 0; i < pageBgs.length; i++) {
@@ -228,13 +271,40 @@
                 pageBgs[i].style.visibility = 'hidden';
             }
         }
-        // Выполняем сразу, если DOM уже готов
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', hidePageBg);
-        } else {
-            hidePageBg();
+        
+        // Проверяем загрузку CSS и показываем контент
+        function checkAndShow() {
+            // Так как webflow.css загружается синхронно, он должен быть загружен сразу
+            // Но проверяем на всякий случай
+            if (isCSSLoaded() || document.querySelector('link[href*="webflow.css"]')) {
+                showContent();
+                hidePageBg();
+                return true;
+            }
+            return false;
         }
-        // Также выполняем с небольшой задержкой для перехвата динамически добавляемых элементов
+        
+        // Показываем контент сразу после добавления класса w-mod-js
+        // webflow.css загружается синхронно, поэтому стили должны быть применены
+        function initContentDisplay() {
+            // Небольшая задержка для применения стилей после синхронной загрузки CSS
+            setTimeout(function() {
+                if (!checkAndShow()) {
+                    // Fallback: показываем контент через 100ms даже если проверка не прошла
+                    setTimeout(showContent, 100);
+                }
+            }, 10);
+        }
+        
+        // Запускаем после добавления класса w-mod-js
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initContentDisplay);
+        } else {
+            initContentDisplay();
+        }
+        
+        // Также скрываем page-background сразу
+        hidePageBg();
         setTimeout(hidePageBg, 0);
         setTimeout(hidePageBg, 10);
         setTimeout(hidePageBg, 50);
