@@ -889,10 +889,15 @@ function menuApp() {
                     }
 
                     const row = {};
-                    normalizedHeaders.forEach((header, index) => {
-                        // Берем значение по индексу, сохраняем даже если это 0 или пустая строка
-                        const value = values[index] !== undefined && values[index] !== null ? String(values[index]) : '';
-                        row[header] = value;
+                    // Создаем маппинг: оригинальный индекс заголовка -> нормализованное имя
+                    headers.forEach((originalHeader, originalIndex) => {
+                        const normalized = normalizeHeader(originalHeader);
+                        const mappedHeader = headerMap[normalized] || headerMap[originalHeader] || originalHeader;
+                        // Используем оригинальный индекс для получения значения
+                        const value = values[originalIndex] !== undefined && values[originalIndex] !== null 
+                            ? String(values[originalIndex]).trim() 
+                            : '';
+                        row[mappedHeader] = value;
                     });
                     
                     // Отладка для первых двух строк
