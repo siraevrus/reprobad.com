@@ -21,6 +21,7 @@ class TestResultMail extends Mailable
     public function build()
     {
         return $this->view('mail.test-result')
+            ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
             ->subject('Система РЕПРО: Результаты теста «Репродуктивное здоровье»')
             ->with([
                 'testResult' => $this->testResult,
