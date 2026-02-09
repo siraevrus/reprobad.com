@@ -150,8 +150,12 @@
                     <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
                 </div>
                 
-                <div class="mb-3">
+                <div class="mb-3 flex gap-2">
                     <button type="button" @click="addRecipeTableRow('{{ $mealKey }}')" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                    <label class="px-4 py-2 bg-green-500 text-white rounded text-sm cursor-pointer hover:bg-green-600">
+                        📥 Импорт из CSV
+                        <input type="file" accept=".csv" class="hidden" @change="importCsvToRecipeTable($event, '{{ $mealKey }}')">
+                    </label>
                 </div>
                 
                 <div class="overflow-x-auto" x-show="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.rows && menuData.{{ $mealKey }}.recipe_table.rows.length > 0">
@@ -269,8 +273,12 @@
                                     <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
                                 </div>
                                 
-                                <div class="mb-3">
+                                <div class="mb-3 flex gap-2">
                                     <button type="button" @click="addTableRowToExpandable('{{ $mealKey }}', index)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                                    <label class="px-4 py-2 bg-green-500 text-white rounded text-sm cursor-pointer hover:bg-green-600">
+                                        📥 Импорт из CSV
+                                        <input type="file" accept=".csv" class="hidden" @change="importCsvToExpandableTable($event, '{{ $mealKey }}', index)">
+                                    </label>
                                 </div>
                                 
                                 <div class="overflow-x-auto" x-show="expandable.table && expandable.table.rows && expandable.table.rows.length > 0">

@@ -560,6 +560,103 @@ function menuApp() {
                 expandable.table.rows.splice(rowIndex, 1);
             }
         },
+        importCsvToExpandableTable(event, mealKey, expandableIndex) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const expandable = this.menuData[mealKey].expandables[expandableIndex];
+            
+            // Убеждаемся, что таблица создана
+            if (!expandable.table) {
+                this.addTableToExpandable(mealKey, expandableIndex);
+            }
+            if (!expandable.table.rows) {
+                expandable.table.rows = [];
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim());
+                
+                if (lines.length === 0) {
+                    alert('Файл пустой');
+                    return;
+                }
+
+                // Парсинг CSV
+                const delimiter = text.includes(';') ? ';' : ',';
+                const headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
+                
+                // Нормализация заголовков
+                const headerMap = {
+                    'продукт': 'product',
+                    'product': 'product',
+                    'вес (гр)': 'weight',
+                    'вес': 'weight',
+                    'weight': 'weight',
+                    'белки': 'proteins',
+                    'бел': 'proteins',
+                    'proteins': 'proteins',
+                    'жиры': 'fats',
+                    'жир': 'fats',
+                    'fats': 'fats',
+                    'углеводы': 'carbs',
+                    'угл': 'carbs',
+                    'carbs': 'carbs',
+                    'калории': 'calories',
+                    'ккал': 'calories',
+                    'calories': 'calories'
+                };
+
+                const normalizedHeaders = headers.map(h => headerMap[h] || h);
+                
+                if (!normalizedHeaders.includes('product')) {
+                    alert('Ошибка: В CSV файле отсутствует колонка "Продукт"');
+                    return;
+                }
+
+                let imported = 0;
+                let skipped = 0;
+
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(delimiter).map(v => v.trim());
+                    
+                    if (values.every(v => !v)) {
+                        skipped++;
+                        continue;
+                    }
+
+                    const row = {};
+                    normalizedHeaders.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+
+                    if (row.product) {
+                        expandable.table.rows.push({
+                            product: row.product || '',
+                            weight: row.weight || '',
+                            proteins: row.proteins || '',
+                            fats: row.fats || '',
+                            carbs: row.carbs || '',
+                            calories: row.calories || ''
+                        });
+                        imported++;
+                    } else {
+                        skipped++;
+                    }
+                }
+
+                event.target.value = '';
+                alert(`Импорт завершен!\nИмпортировано: ${imported}\nПропущено: ${skipped}`);
+            };
+
+            reader.onerror = () => {
+                alert('Ошибка при чтении файла');
+            };
+
+            reader.readAsText(file, 'UTF-8');
+        },
         addRecipeTable(mealKey) {
             if (!this.menuData[mealKey].recipe_table) {
                 this.menuData[mealKey].recipe_table = {
@@ -593,6 +690,107 @@ function menuApp() {
             if (this.menuData[mealKey].recipe_table && this.menuData[mealKey].recipe_table.rows) {
                 this.menuData[mealKey].recipe_table.rows.splice(rowIndex, 1);
             }
+        },
+        importCsvToRecipeTable(event, mealKey) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Убеждаемся, что таблица создана
+            if (!this.menuData[mealKey].recipe_table) {
+                this.addRecipeTable(mealKey);
+            }
+            if (!this.menuData[mealKey].recipe_table.rows) {
+                this.menuData[mealKey].recipe_table.rows = [];
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim());
+                
+                if (lines.length === 0) {
+                    alert('Файл пустой');
+                    return;
+                }
+
+                // Парсинг CSV (простой вариант, поддерживает запятые и точки с запятой)
+                const delimiter = text.includes(';') ? ';' : ',';
+                const headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
+                
+                // Нормализация заголовков
+                const headerMap = {
+                    'продукт': 'product',
+                    'product': 'product',
+                    'вес (гр)': 'weight',
+                    'вес': 'weight',
+                    'weight': 'weight',
+                    'белки': 'proteins',
+                    'бел': 'proteins',
+                    'proteins': 'proteins',
+                    'жиры': 'fats',
+                    'жир': 'fats',
+                    'fats': 'fats',
+                    'углеводы': 'carbs',
+                    'угл': 'carbs',
+                    'carbs': 'carbs',
+                    'калории': 'calories',
+                    'ккал': 'calories',
+                    'calories': 'calories'
+                };
+
+                const normalizedHeaders = headers.map(h => headerMap[h] || h);
+                
+                // Проверка наличия обязательного поля product
+                if (!normalizedHeaders.includes('product')) {
+                    alert('Ошибка: В CSV файле отсутствует колонка "Продукт"');
+                    return;
+                }
+
+                let imported = 0;
+                let skipped = 0;
+
+                // Парсинг строк данных (начиная со второй строки)
+                for (let i = 1; i < lines.length; i++) {
+                    const values = lines[i].split(delimiter).map(v => v.trim());
+                    
+                    // Пропуск пустых строк
+                    if (values.every(v => !v)) {
+                        skipped++;
+                        continue;
+                    }
+
+                    const row = {};
+                    normalizedHeaders.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+
+                    // Добавление строки только если есть название продукта
+                    if (row.product) {
+                        this.menuData[mealKey].recipe_table.rows.push({
+                            product: row.product || '',
+                            weight: row.weight || '',
+                            proteins: row.proteins || '',
+                            fats: row.fats || '',
+                            carbs: row.carbs || '',
+                            calories: row.calories || ''
+                        });
+                        imported++;
+                    } else {
+                        skipped++;
+                    }
+                }
+
+                // Очистка input для возможности повторной загрузки того же файла
+                event.target.value = '';
+
+                alert(`Импорт завершен!\nИмпортировано: ${imported}\nПропущено: ${skipped}`);
+            };
+
+            reader.onerror = () => {
+                alert('Ошибка при чтении файла');
+            };
+
+            reader.readAsText(file, 'UTF-8');
         },
         addRecommendationContent() {
             if (!this.menuData.recommendations.content) {
