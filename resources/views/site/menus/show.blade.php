@@ -22,6 +22,10 @@
   .menu-table + .menu-table { margin-top: 0.5rem; }
   .menu-table .menu-table-row:last-child { border-bottom: none; }
   .side-menu-link.w--current .side-menu-title::after { content: ' —>'; }
+  /* Отступ для якорей при прокрутке */
+  .menu-part[id] {
+    scroll-margin-top: 20px;
+  }
   .side-menu-image {
     width: 55px !important;
     height: 55px !important;
@@ -461,7 +465,7 @@ document.querySelectorAll('.expandable-head').forEach(head => {
     });
 });
 
-// Плавная прокрутка к якорям
+// Плавная прокрутка к якорям с отступом
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
@@ -470,13 +474,31 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const targetId = href.substring(1);
             const target = document.querySelector('#' + targetId);
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 20;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
                 });
             }
         }
     });
 });
+
+// Обработка прямого перехода по URL с якорем (при загрузке страницы)
+if (window.location.hash) {
+    window.addEventListener('load', () => {
+        const targetId = window.location.hash.substring(1);
+        const target = document.querySelector('#' + targetId);
+        if (target) {
+            setTimeout(() => {
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - 20;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
+    });
+}
 </script>
 @endsection
