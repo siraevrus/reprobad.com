@@ -4949,7 +4949,7 @@ figcaption {
 
 .menu-table-cell.first {
   text-align: left;
-  flex: 0.7;
+  flex: 0.49;
 }
 
 .side-menu-items {
@@ -7088,7 +7088,7 @@ figcaption {
 
   .menu-table-cell.first {
     flex: none;
-    width: 8.05rem;
+    width: 5.635rem;
   }
 
   .side-menu-items {
