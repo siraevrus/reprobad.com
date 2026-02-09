@@ -822,32 +822,49 @@ function menuApp() {
 
                 const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
                 
-                // Нормализация заголовков
+                // Нормализация заголовков (удаляем запятые и лишние пробелы для сравнения)
+                const normalizeHeader = (header) => {
+                    return header.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
+                };
+                
                 const headerMap = {
                     'продукт': 'product',
                     'product': 'product',
                     'вес (гр)': 'weight',
+                    'вес гр': 'weight',
                     'вес': 'weight',
                     'weight': 'weight',
                     'белки': 'proteins',
+                    'бел гр': 'proteins',
                     'бел': 'proteins',
                     'proteins': 'proteins',
                     'жиры': 'fats',
+                    'жир гр': 'fats',
                     'жир': 'fats',
                     'fats': 'fats',
                     'углеводы': 'carbs',
+                    'угл гр': 'carbs',
                     'угл': 'carbs',
                     'carbs': 'carbs',
                     'калории': 'calories',
+                    'кал ккал': 'calories',
                     'ккал': 'calories',
                     'calories': 'calories'
                 };
 
-                const normalizedHeaders = headers.map(h => headerMap[h] || h);
+                const normalizedHeaders = headers.map(h => {
+                    const normalized = normalizeHeader(h);
+                    // Сначала проверяем нормализованный вариант, потом оригинал
+                    return headerMap[normalized] || headerMap[h] || h;
+                });
+                
+                // Отладка: выводим информацию о заголовках
+                console.log('Заголовки CSV:', headers);
+                console.log('Нормализованные заголовки:', normalizedHeaders);
                 
                 // Проверка наличия обязательного поля product
                 if (!normalizedHeaders.includes('product')) {
-                    alert('Ошибка: В CSV файле отсутствует колонка "Продукт"');
+                    alert('Ошибка: В CSV файле отсутствует колонка "Продукт". Найденные заголовки: ' + headers.join(', '));
                     return;
                 }
 
@@ -876,6 +893,12 @@ function menuApp() {
                         const value = values[index] !== undefined && values[index] !== null ? String(values[index]) : '';
                         row[header] = value;
                     });
+                    
+                    // Отладка для первой строки
+                    if (i === 1) {
+                        console.log('Первая строка данных:', values);
+                        console.log('Распарсенные значения:', row);
+                    }
 
                     // Добавление строки только если есть название продукта
                     if (row.product && row.product.trim()) {
