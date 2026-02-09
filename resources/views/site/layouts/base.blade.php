@@ -943,15 +943,21 @@
     $isHomePage = request()->is('/');
     $isMapPage = request()->is('map');
     $showCitySelect = $isHomePage || $isMapPage;
+    
+    // Не показываем баннер лотти и бота на страницах меню
+    $isMenuPage = request()->is('menu*');
 @endphp
 
 @if($showCitySelect)
     @include('site.components.select-city')
 @endif
-@include('site.components.lottie-banner')
+@if(!$isMenuPage)
+    @include('site.components.lottie-banner')
+@endif
 
-
-@include('site.components.bot')
+@if(!$isMenuPage)
+    @include('site.components.bot')
+@endif
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

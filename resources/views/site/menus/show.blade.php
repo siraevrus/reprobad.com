@@ -22,14 +22,27 @@
   .menu-table + .menu-table { margin-top: 0.5rem; }
   .menu-table .menu-table-row:last-child { border-bottom: none; }
   .side-menu-link.w--current .side-menu-title::after { content: ' —>'; }
+  .side-menu-image {
+    width: 55px !important;
+    height: 55px !important;
+    object-fit: cover;
+    flex-shrink: 0;
+    background-color: #e5e5e5;
+  }
+  .menu-card-image {
+    background-color: #e5e5e5;
+  }
+  .menu-card-image.mci-big {
+    background-color: #e5e5e5;
+  }
 </style>
 @endsection
 
 @section('content')
 @php
     $menuData = is_string($menu->menu_data) ? json_decode($menu->menu_data, true) : $menu->menu_data;
-    $dailyKbju = $menuData['daily_kbju'] ?? null;
-    $withoutSnackKbju = $menuData['without_snack_kbju'] ?? null;
+    $dailyKbju = $menuData['daily_kbju']['with_snack'] ?? null;
+    $withoutSnackKbju = $menuData['daily_kbju']['without_snack'] ?? null;
     // Определяем якоря для каждого приема пищи (из JSON или дефолтные)
     $breakfastAnchor = $menuData['breakfast']['anchor'] ?? 'breakfast';
     $snackAnchor = $menuData['snack']['anchor'] ?? 'snack';
@@ -80,31 +93,35 @@
             @if(isset($menuData['breakfast']))
                 <a href="#{{ $breakfastAnchor }}" class="menu-card-link w-inline-block">
                     <div class="menu-card">
-                        <img src="{{ $menuData['breakfast']['image'] ?? '/menu-images/menu-1.webp' }}" loading="lazy" alt="" class="menu-card-image">
+                        @php
+                            $breakfastImg = $menuData['breakfast']['image'] ?? null;
+                            $breakfastImgSrc = $breakfastImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                        @endphp
+                        <img src="{{ $breakfastImgSrc }}" loading="lazy" alt="" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
                         <div class="menu-card-info">
-                            <div class="menu-card-info-item">
-                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
-                                    <div>ккал</div>
-                                </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['breakfast']['kbju']['kcal'] ?? 0), 2, ',', '') }}</div>
-                            </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/belki.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-belki">
                                     <div>белки</div>
                                 </div>
-                                <div class="menu-card-value"><strong>{{ number_format((float)($menuData['breakfast']['kbju']['proteins'] ?? 0), 2, ',', '') }}</strong></div>
+                                <div class="menu-card-value"><strong>{{ formatMenuNumber($menuData['breakfast']['kbju']['proteins'] ?? 0) }}</strong></div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/zhiry.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-zhiry">
                                     <div>жиры</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['breakfast']['kbju']['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['breakfast']['kbju']['fats'] ?? 0) }}</div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/uglevody.svg" loading="lazy" width="14" alt="" class="menu-card-icon">
                                     <div>углеводы</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['breakfast']['kbju']['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['breakfast']['kbju']['carbs'] ?? 0) }}</div>
+                            </div>
+                            <div class="menu-card-info-item">
+                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
+                                    <div>ккал</div>
+                                </div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['breakfast']['kbju']['calories'] ?? $menuData['breakfast']['kbju']['kcal'] ?? 0) }}</div>
                             </div>
                         </div>
                     </div>
@@ -116,31 +133,35 @@
             @if(isset($menuData['snack']))
                 <a href="#{{ $snackAnchor }}" class="menu-card-link w-inline-block">
                     <div class="menu-card">
-                        <img src="{{ $menuData['snack']['image'] ?? '/menu-images/menu-2.webp' }}" loading="lazy" alt="" class="menu-card-image">
+                        @php
+                            $snackImg = $menuData['snack']['image'] ?? null;
+                            $snackImgSrc = $snackImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                        @endphp
+                        <img src="{{ $snackImgSrc }}" loading="lazy" alt="" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
                         <div class="menu-card-info">
-                            <div class="menu-card-info-item">
-                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
-                                    <div>ккал</div>
-                                </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['snack']['kbju']['kcal'] ?? 0), 2, ',', '') }}</div>
-                            </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/belki.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-belki">
                                     <div>белки</div>
                                 </div>
-                                <div class="menu-card-value"><strong>{{ number_format((float)($menuData['snack']['kbju']['proteins'] ?? 0), 2, ',', '') }}</strong></div>
+                                <div class="menu-card-value"><strong>{{ formatMenuNumber($menuData['snack']['kbju']['proteins'] ?? 0) }}</strong></div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/zhiry.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-zhiry">
                                     <div>жиры</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['snack']['kbju']['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['snack']['kbju']['fats'] ?? 0) }}</div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/uglevody.svg" loading="lazy" width="14" alt="" class="menu-card-icon">
                                     <div>углеводы</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['snack']['kbju']['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['snack']['kbju']['carbs'] ?? 0) }}</div>
+                            </div>
+                            <div class="menu-card-info-item">
+                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
+                                    <div>ккал</div>
+                                </div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['snack']['kbju']['calories'] ?? $menuData['snack']['kbju']['kcal'] ?? 0) }}</div>
                             </div>
                         </div>
                     </div>
@@ -152,31 +173,35 @@
             @if(isset($menuData['dinner']))
                 <a href="#{{ $dinnerAnchor }}" class="menu-card-link w-inline-block">
                     <div class="menu-card">
-                        <img src="{{ $menuData['dinner']['image'] ?? '/menu-images/menu-3.webp' }}" loading="lazy" alt="" class="menu-card-image">
+                        @php
+                            $dinnerImg = $menuData['dinner']['image'] ?? null;
+                            $dinnerImgSrc = $dinnerImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                        @endphp
+                        <img src="{{ $dinnerImgSrc }}" loading="lazy" alt="" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
                         <div class="menu-card-info">
-                            <div class="menu-card-info-item">
-                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
-                                    <div>ккал</div>
-                                </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['dinner']['kbju']['kcal'] ?? 0), 2, ',', '') }}</div>
-                            </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/belki.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-belki">
                                     <div>белки</div>
                                 </div>
-                                <div class="menu-card-value"><strong>{{ number_format((float)($menuData['dinner']['kbju']['proteins'] ?? 0), 2, ',', '') }}</strong></div>
+                                <div class="menu-card-value"><strong>{{ formatMenuNumber($menuData['dinner']['kbju']['proteins'] ?? 0) }}</strong></div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/zhiry.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-zhiry">
                                     <div>жиры</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['dinner']['kbju']['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['dinner']['kbju']['fats'] ?? 0) }}</div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/uglevody.svg" loading="lazy" width="14" alt="" class="menu-card-icon">
                                     <div>углеводы</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['dinner']['kbju']['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['dinner']['kbju']['carbs'] ?? 0) }}</div>
+                            </div>
+                            <div class="menu-card-info-item">
+                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
+                                    <div>ккал</div>
+                                </div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['dinner']['kbju']['calories'] ?? $menuData['dinner']['kbju']['kcal'] ?? 0) }}</div>
                             </div>
                         </div>
                     </div>
@@ -188,31 +213,35 @@
             @if(isset($menuData['lunch']))
                 <a href="#{{ $lunchAnchor }}" class="menu-card-link w-inline-block">
                     <div class="menu-card">
-                        <img src="{{ $menuData['lunch']['image'] ?? '/menu-images/menu-4.webp' }}" loading="lazy" alt="" class="menu-card-image">
+                        @php
+                            $lunchImg = $menuData['lunch']['image'] ?? null;
+                            $lunchImgSrc = $lunchImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                        @endphp
+                        <img src="{{ $lunchImgSrc }}" loading="lazy" alt="" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
                         <div class="menu-card-info">
-                            <div class="menu-card-info-item">
-                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
-                                    <div>ккал</div>
-                                </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['lunch']['kbju']['kcal'] ?? 0), 2, ',', '') }}</div>
-                            </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/belki.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-belki">
                                     <div>белки</div>
                                 </div>
-                                <div class="menu-card-value"><strong>{{ number_format((float)($menuData['lunch']['kbju']['proteins'] ?? 0), 2, ',', '') }}</strong></div>
+                                <div class="menu-card-value"><strong>{{ formatMenuNumber($menuData['lunch']['kbju']['proteins'] ?? 0) }}</strong></div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/zhiry.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-zhiry">
                                     <div>жиры</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['lunch']['kbju']['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['lunch']['kbju']['fats'] ?? 0) }}</div>
                             </div>
                             <div class="menu-card-info-item">
                                 <div class="menu-card-label"><img src="/menu-images/uglevody.svg" loading="lazy" width="14" alt="" class="menu-card-icon">
                                     <div>углеводы</div>
                                 </div>
-                                <div class="menu-card-value">{{ number_format((float)($menuData['lunch']['kbju']['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['lunch']['kbju']['carbs'] ?? 0) }}</div>
+                            </div>
+                            <div class="menu-card-info-item">
+                                <div class="menu-card-label"><img src="/menu-images/ckal.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-ckal">
+                                    <div>ккал</div>
+                                </div>
+                                <div class="menu-card-value">{{ formatMenuNumber($menuData['lunch']['kbju']['calories'] ?? $menuData['lunch']['kbju']['kcal'] ?? 0) }}</div>
                             </div>
                         </div>
                     </div>
@@ -232,7 +261,11 @@
                     <div class="side-menu-h"><strong>{{ $menu->title }}</strong></div>
                     @if(isset($menuData['breakfast']))
                         <a href="#{{ $breakfastAnchor }}" class="side-menu-link w-inline-block">
-                            <img src="{{ $menuData['breakfast']['small_image'] ?? '/menu-images/menu-sm-1.webp' }}" loading="lazy" alt="" class="side-menu-image">
+                            @php
+                                $breakfastImageSmall = $menuData['breakfast']['image_small'] ?? $menuData['breakfast']['small_image'] ?? null;
+                                $breakfastImage = $breakfastImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                            @endphp
+                            <img src="{{ $breakfastImage }}" loading="lazy" alt="Завтрак" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Завтрак</div>
                                 <div>{{ $menuData['breakfast']['title'] ?? '' }}</div>
@@ -241,7 +274,11 @@
                     @endif
                     @if(isset($menuData['snack']))
                         <a href="#{{ $snackAnchor }}" class="side-menu-link w-inline-block">
-                            <img src="{{ $menuData['snack']['small_image'] ?? '/menu-images/menu-sm-2.webp' }}" loading="lazy" alt="" class="side-menu-image">
+                            @php
+                                $snackImageSmall = $menuData['snack']['image_small'] ?? $menuData['snack']['small_image'] ?? null;
+                                $snackImage = $snackImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                            @endphp
+                            <img src="{{ $snackImage }}" loading="lazy" alt="Перекус" class="side-menu-image">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Перекус</div>
                                 <div>{{ $menuData['snack']['title'] ?? '' }}</div>
@@ -250,7 +287,11 @@
                     @endif
                     @if(isset($menuData['dinner']))
                         <a href="#{{ $dinnerAnchor }}" class="side-menu-link w-inline-block">
-                            <img src="{{ $menuData['dinner']['small_image'] ?? '/menu-images/menu-sm-3.webp' }}" loading="lazy" alt="" class="side-menu-image">
+                            @php
+                                $dinnerImageSmall = $menuData['dinner']['image_small'] ?? $menuData['dinner']['small_image'] ?? null;
+                                $dinnerImage = $dinnerImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                            @endphp
+                            <img src="{{ $dinnerImage }}" loading="lazy" alt="Обед" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Обед</div>
                                 <div>{{ $menuData['dinner']['title'] ?? '' }}</div>
@@ -259,7 +300,11 @@
                     @endif
                     @if(isset($menuData['lunch']))
                         <a href="#{{ $lunchAnchor }}" class="side-menu-link w-inline-block">
-                            <img src="{{ $menuData['lunch']['small_image'] ?? '/menu-images/menu-sm-4.webp' }}" loading="lazy" alt="" class="side-menu-image">
+                            @php
+                                $lunchImageSmall = $menuData['lunch']['image_small'] ?? $menuData['lunch']['small_image'] ?? null;
+                                $lunchImage = $lunchImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                            @endphp
+                            <img src="{{ $lunchImage }}" loading="lazy" alt="Ужин" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Ужин</div>
                                 <div>{{ $menuData['lunch']['title'] ?? '' }}</div>
@@ -271,31 +316,31 @@
                     <div class="side-kbzhu">
                         <div class="kbzhu-title"><strong>Дневной КБЖУ</strong></div>
                         <div class="menu-card-info-item mci-small">
-                            <div class="mci-lavender"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
-                            <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($dailyKbju['kcal'] ?? 0), 2, ',', '') }}</div>
-                                <div>ккал</div>
-                            </div>
-                        </div>
-                        <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($dailyKbju['proteins'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['proteins'] ?? 0) }}</div>
                                 <div>белки</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($dailyKbju['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['fats'] ?? 0) }}</div>
                                 <div>жиры</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($dailyKbju['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['carbs'] ?? 0) }}</div>
                                 <div>углеводы</div>
+                            </div>
+                        </div>
+                        <div class="menu-card-info-item mci-small">
+                            <div class="mci-lavender"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
+                            <div class="menu-card-label mcl-big">
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['calories'] ?? $dailyKbju['kcal'] ?? 0) }}</div>
+                                <div>ккал</div>
                             </div>
                         </div>
                     </div>
@@ -304,31 +349,31 @@
                     <div class="side-kbzhu kbzhu-lavender">
                         <div class="kbzhu-title"><strong>Без перекуса</strong></div>
                         <div class="menu-card-info-item mci-small">
-                            <div class="mci-lavender"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
-                            <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($withoutSnackKbju['kcal'] ?? 0), 2, ',', '') }}</div>
-                                <div>ккал</div>
-                            </div>
-                        </div>
-                        <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($withoutSnackKbju['proteins'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['proteins'] ?? 0) }}</div>
                                 <div>белки</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($withoutSnackKbju['fats'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['fats'] ?? 0) }}</div>
                                 <div>жиры</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ number_format((float)($withoutSnackKbju['carbs'] ?? 0), 2, ',', '') }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['carbs'] ?? 0) }}</div>
                                 <div>углеводы</div>
+                            </div>
+                        </div>
+                        <div class="menu-card-info-item mci-small">
+                            <div class="mci-lavender"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
+                            <div class="menu-card-label mcl-big">
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['calories'] ?? $withoutSnackKbju['kcal'] ?? 0) }}</div>
+                                <div>ккал</div>
                             </div>
                         </div>
                     </div>
@@ -400,6 +445,15 @@
 
 @section('scripts')
 <script type="text/javascript">
+// Обработка ошибок загрузки изображений - показываем серую подложку
+document.querySelectorAll('.menu-card-image, .side-menu-image').forEach(img => {
+    img.addEventListener('error', function() {
+        this.style.backgroundColor = '#e5e5e5';
+        this.style.display = 'block';
+        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+    });
+});
+
 document.querySelectorAll('.expandable-head').forEach(head => {
     head.addEventListener('click', () => {
         const expandable = head.closest('.expandable');

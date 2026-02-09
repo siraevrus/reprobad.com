@@ -28,7 +28,7 @@
         <span>страница</span>
     </a>
 
-    <a href="{{ route('admin.menus.create') }}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-5 items-center inline-flex gap-1">
+    <a href="{{ route('admin.menus.index') }}" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-5 items-center inline-flex gap-1">
         <span class="material-icons">restaurant</span>
         <span>меню</span>
     </a>
