@@ -875,9 +875,10 @@ function menuApp() {
                 for (let i = 1; i < lines.length; i++) {
                     const rawValues = parseCsvLine(lines[i], delimiter);
                     const values = rawValues.map(v => {
-                        // Удаляем кавычки и обрезаем пробелы
-                        let cleaned = v.replace(/^"|"$/g, '').trim();
-                        // Удаляем пробелы в начале и конце, но сохраняем пробелы внутри значения
+                        // Удаляем кавычки
+                        let cleaned = v.replace(/^"|"$/g, '');
+                        // Удаляем ВСЕ пробелы в начале и конце (включая неразрывные пробелы)
+                        cleaned = cleaned.replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '');
                         return cleaned;
                     });
                     
