@@ -895,22 +895,33 @@ function menuApp() {
                         row[header] = value;
                     });
                     
-                    // Отладка для первой строки
-                    if (i === 1) {
-                        console.log('Первая строка данных:', values);
-                        console.log('Распарсенные значения:', row);
+                    // Отладка для первых двух строк
+                    if (i <= 2) {
+                        console.log(`Строка ${i}:`, {
+                            rawValues: rawValues,
+                            values: values,
+                            normalizedHeaders: normalizedHeaders,
+                            row: row
+                        });
                     }
 
                     // Добавление строки только если есть название продукта
                     if (row.product && row.product.trim()) {
-                        this.menuData[mealKey].recipe_table.rows.push({
+                        const newRow = {
                             product: (row.product || '').trim(),
                             weight: (row.weight || '').trim(),
                             proteins: (row.proteins || '').trim(),
                             fats: (row.fats || '').trim(),
                             carbs: (row.carbs || '').trim(),
                             calories: (row.calories || '').trim()
-                        });
+                        };
+                        
+                        // Отладка для первой строки
+                        if (i === 1) {
+                            console.log('Добавляемая строка:', newRow);
+                        }
+                        
+                        this.menuData[mealKey].recipe_table.rows.push(newRow);
                         imported++;
                     } else {
                         skipped++;
