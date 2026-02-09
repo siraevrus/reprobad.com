@@ -577,16 +577,62 @@ function menuApp() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const text = e.target.result;
-                const lines = text.split('\n').filter(line => line.trim());
+                // Нормализация окончаний строк (Windows/Unix/Mac)
+                const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                const lines = normalizedText.split('\n').filter(line => line.trim());
                 
                 if (lines.length === 0) {
                     alert('Файл пустой');
                     return;
                 }
 
-                // Парсинг CSV
-                const delimiter = text.includes(';') ? ';' : ',';
-                const headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
+                // Определение разделителя: проверяем первую строку (заголовки)
+                const firstLine = lines[0];
+                let delimiter = ',';
+                
+                // Если в первой строке есть точка с запятой, используем её
+                if (firstLine.includes(';')) {
+                    delimiter = ';';
+                } else if (firstLine.includes(',')) {
+                    delimiter = ',';
+                } else {
+                    alert('Ошибка: Не удалось определить разделитель CSV. Используйте запятую (,) или точку с запятой (;)');
+                    return;
+                }
+
+                // Функция для правильного парсинга CSV строки с учетом кавычек
+                const parseCsvLine = (line, delimiter) => {
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        const nextChar = line[i + 1];
+                        
+                        if (char === '"') {
+                            if (inQuotes && nextChar === '"') {
+                                // Двойные кавычки - экранированная кавычка
+                                current += '"';
+                                i++; // Пропускаем следующую кавычку
+                            } else {
+                                // Переключаем режим кавычек
+                                inQuotes = !inQuotes;
+                            }
+                        } else if (char === delimiter && !inQuotes) {
+                            // Разделитель вне кавычек - новая колонка
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    // Добавляем последнюю колонку
+                    result.push(current.trim());
+                    return result;
+                };
+
+                const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
                 
                 // Нормализация заголовков
                 const headerMap = {
@@ -620,7 +666,7 @@ function menuApp() {
                 let skipped = 0;
 
                 for (let i = 1; i < lines.length; i++) {
-                    const values = lines[i].split(delimiter).map(v => v.trim());
+                    const values = parseCsvLine(lines[i], delimiter).map(v => v.replace(/^"|"$/g, '').trim());
                     
                     if (values.every(v => !v)) {
                         skipped++;
@@ -706,16 +752,62 @@ function menuApp() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const text = e.target.result;
-                const lines = text.split('\n').filter(line => line.trim());
+                // Нормализация окончаний строк (Windows/Unix/Mac)
+                const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                const lines = normalizedText.split('\n').filter(line => line.trim());
                 
                 if (lines.length === 0) {
                     alert('Файл пустой');
                     return;
                 }
 
-                // Парсинг CSV (простой вариант, поддерживает запятые и точки с запятой)
-                const delimiter = text.includes(';') ? ';' : ',';
-                const headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
+                // Определение разделителя: проверяем первую строку (заголовки)
+                const firstLine = lines[0];
+                let delimiter = ',';
+                
+                // Если в первой строке есть точка с запятой, используем её
+                if (firstLine.includes(';')) {
+                    delimiter = ';';
+                } else if (firstLine.includes(',')) {
+                    delimiter = ',';
+                } else {
+                    alert('Ошибка: Не удалось определить разделитель CSV. Используйте запятую (,) или точку с запятой (;)');
+                    return;
+                }
+
+                // Функция для правильного парсинга CSV строки с учетом кавычек
+                const parseCsvLine = (line, delimiter) => {
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        const nextChar = line[i + 1];
+                        
+                        if (char === '"') {
+                            if (inQuotes && nextChar === '"') {
+                                // Двойные кавычки - экранированная кавычка
+                                current += '"';
+                                i++; // Пропускаем следующую кавычку
+                            } else {
+                                // Переключаем режим кавычек
+                                inQuotes = !inQuotes;
+                            }
+                        } else if (char === delimiter && !inQuotes) {
+                            // Разделитель вне кавычек - новая колонка
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    // Добавляем последнюю колонку
+                    result.push(current.trim());
+                    return result;
+                };
+
+                const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
                 
                 // Нормализация заголовков
                 const headerMap = {
@@ -751,7 +843,7 @@ function menuApp() {
 
                 // Парсинг строк данных (начиная со второй строки)
                 for (let i = 1; i < lines.length; i++) {
-                    const values = lines[i].split(delimiter).map(v => v.trim());
+                    const values = parseCsvLine(lines[i], delimiter).map(v => v.replace(/^"|"$/g, '').trim());
                     
                     // Пропуск пустых строк
                     if (values.every(v => !v)) {
