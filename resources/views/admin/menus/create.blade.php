@@ -219,6 +219,7 @@ function menuApp() {
             this.$nextTick(() => {
                 setTimeout(() => {
                     this.initializeRecipeEditors();
+                    this.initializeDescriptionEditors();
                 }, 500);
             });
             
@@ -227,6 +228,7 @@ function menuApp() {
                 this.$nextTick(() => {
                     setTimeout(() => {
                         this.initializeRecipeEditors();
+                    this.initializeDescriptionEditors();
                     }, 300);
                 });
             });
@@ -287,6 +289,51 @@ function menuApp() {
                         editor.on('init', () => {
                             if (this.menuData[mealKey] && this.menuData[mealKey].recipe) {
                                 editor.setContent(this.menuData[mealKey].recipe);
+                            }
+                        });
+                    }
+                });
+            });
+        },
+        initializeDescriptionEditors() {
+            if (typeof tinymce === 'undefined') {
+                return;
+            }
+            
+            // Инициализируем редакторы для всех полей описания
+            const mealKeys = ['breakfast', 'snack', 'dinner', 'lunch'];
+            mealKeys.forEach(mealKey => {
+                const editorId = `description-editor-${mealKey}`;
+                const textarea = document.getElementById(editorId);
+                
+                if (!textarea) {
+                    return;
+                }
+                
+                // Проверяем, не инициализирован ли уже редактор
+                const existingEditor = tinymce.get(editorId);
+                if (existingEditor) {
+                    return; // Редактор уже инициализирован
+                }
+                
+                // Инициализируем редактор только если элемент видим или будет видим
+                tinymce.init({
+                    selector: `#${editorId}`,
+                    license_key: 'gpl',
+                    height: 300,
+                    menubar: false,
+                    language: 'ru',
+                    language_url: '/js/ru.min.js',
+                    plugins: 'advlist autolink lists link image charmap preview anchor code',
+                    toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
+                    setup: (editor) => {
+                        editor.on('change', () => {
+                            this.menuData[mealKey].description = editor.getContent();
+                        });
+                        // Синхронизация при загрузке содержимого
+                        editor.on('init', () => {
+                            if (this.menuData[mealKey] && this.menuData[mealKey].description) {
+                                editor.setContent(this.menuData[mealKey].description);
                             }
                         });
                     }
@@ -355,6 +402,7 @@ function menuApp() {
                 // Инициализируем редакторы после загрузки данных
                 this.$nextTick(() => {
                     this.initializeRecipeEditors();
+                    this.initializeDescriptionEditors();
                     // Пересчитываем дневное КБЖУ после загрузки данных
                     this.calculateDailyKbju();
                 });

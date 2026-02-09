@@ -104,7 +104,7 @@
     <!-- Описание и рецепт -->
     <div class="mb-6">
         <label class="block font-semibold mb-2">Описание</label>
-        <textarea x-model="menuData.{{ $mealKey }}.description" class="w-full p-2 border rounded" rows="3" placeholder="Описание блюда"></textarea>
+        <textarea x-model="menuData.{{ $mealKey }}.description" id="description-editor-{{ $mealKey }}" class="w-full p-2 border rounded editor" rows="4" placeholder="Описание блюда"></textarea>
     </div>
 
     <div class="mb-6">
