@@ -4974,8 +4974,8 @@ figcaption {
 
 .menu-table-cell {
   text-align: right;
-  flex: none;
-  min-width: 4rem;
+  flex: 1;
+  min-width: 3rem;
 }
 
 .menu-table-cell.first {
