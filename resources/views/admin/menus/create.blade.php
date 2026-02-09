@@ -378,6 +378,25 @@ function menuApp() {
                         if (!merged[key].expandables) {
                             merged[key].expandables = [];
                         }
+                        // Убеждаемся, что recipe_table либо null, либо объект
+                        if (merged[key].recipe_table !== null && typeof merged[key].recipe_table !== 'object') {
+                            merged[key].recipe_table = null;
+                        }
+                        // Если recipe_table есть, убеждаемся что rows - массив
+                        if (merged[key].recipe_table && !Array.isArray(merged[key].recipe_table.rows)) {
+                            merged[key].recipe_table.rows = [];
+                        }
+                        // Обрабатываем expandables: убеждаемся что table либо null, либо объект
+                        if (Array.isArray(merged[key].expandables)) {
+                            merged[key].expandables.forEach(expandable => {
+                                if (expandable.table !== null && typeof expandable.table !== 'object') {
+                                    expandable.table = null;
+                                }
+                                if (expandable.table && !Array.isArray(expandable.table.rows)) {
+                                    expandable.table.rows = [];
+                                }
+                            });
+                        }
                     } else {
                         merged[key] = { ...merged[key], ...savedData[key] };
                     }

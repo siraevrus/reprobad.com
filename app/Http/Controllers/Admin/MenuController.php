@@ -17,7 +17,7 @@ class MenuController extends Controller
         'title' => 'required|string',
         'alias' => 'required|unique:menus,alias',
         'description' => 'string|nullable',
-        'menu_data' => 'string|nullable',
+        'menu_data' => 'nullable|array',
         'active' => 'boolean|required',
     ];
 
@@ -43,7 +43,32 @@ class MenuController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), $this->rules);
+        // Обрабатываем menu_data до валидации
+        $data = $request->all();
+        if (isset($data['menu_data'])) {
+            // Если это строка (JSON), декодируем
+            if (is_string($data['menu_data']) && !empty($data['menu_data'])) {
+                $decoded = json_decode($data['menu_data'], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data['menu_data'] = $decoded;
+                } else {
+                    $data['menu_data'] = null;
+                }
+            }
+            // Если это объект (stdClass или любой другой объект), преобразуем в массив
+            if (is_object($data['menu_data'])) {
+                $data['menu_data'] = json_decode(json_encode($data['menu_data']), true);
+            }
+            // Убеждаемся что это массив или null
+            if (!is_array($data['menu_data']) && $data['menu_data'] !== null) {
+                $data['menu_data'] = null;
+            }
+        } else {
+            // Если menu_data не передан, устанавливаем null
+            $data['menu_data'] = null;
+        }
+
+        $validator = Validator::make($data, $this->rules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -54,16 +79,12 @@ class MenuController extends Controller
 
         $validated = $validator->validated();
         
-        // Декодируем и валидируем JSON если он пришел как строка
-        if (isset($validated['menu_data']) && is_string($validated['menu_data']) && !empty($validated['menu_data'])) {
-            $decoded = json_decode($validated['menu_data'], true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['menu_data' => ['Невалидный JSON: ' . json_last_error_msg()]]
-                ], 422);
-            }
-            $validated['menu_data'] = $decoded;
+        // menu_data уже обработан до валидации, просто убеждаемся что это массив
+        if (isset($validated['menu_data']) && !is_array($validated['menu_data'])) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['menu_data' => ['menu_data должен быть массивом']]
+            ], 422);
         }
         
         $resource = Menu::query()->create($validated);
@@ -78,7 +99,32 @@ class MenuController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), array_merge($this->rules, [
+        // Обрабатываем menu_data до валидации
+        $data = $request->all();
+        if (isset($data['menu_data'])) {
+            // Если это строка (JSON), декодируем
+            if (is_string($data['menu_data']) && !empty($data['menu_data'])) {
+                $decoded = json_decode($data['menu_data'], true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $data['menu_data'] = $decoded;
+                } else {
+                    $data['menu_data'] = null;
+                }
+            }
+            // Если это объект (stdClass или любой другой объект), преобразуем в массив
+            if (is_object($data['menu_data'])) {
+                $data['menu_data'] = json_decode(json_encode($data['menu_data']), true);
+            }
+            // Убеждаемся что это массив или null
+            if (!is_array($data['menu_data']) && $data['menu_data'] !== null) {
+                $data['menu_data'] = null;
+            }
+        } else {
+            // Если menu_data не передан, устанавливаем null
+            $data['menu_data'] = null;
+        }
+
+        $validator = Validator::make($data, array_merge($this->rules, [
             'day' => 'required|integer|min:1|max:7|unique:menus,day,' . $id,
             'alias' => 'required|unique:menus,alias,' . $id,
         ]));
@@ -92,16 +138,12 @@ class MenuController extends Controller
 
         $validated = $validator->validated();
         
-        // Декодируем и валидируем JSON если он пришел как строка
-        if (isset($validated['menu_data']) && is_string($validated['menu_data']) && !empty($validated['menu_data'])) {
-            $decoded = json_decode($validated['menu_data'], true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => ['menu_data' => ['Невалидный JSON: ' . json_last_error_msg()]]
-                ], 422);
-            }
-            $validated['menu_data'] = $decoded;
+        // menu_data уже обработан до валидации, просто убеждаемся что это массив
+        if (isset($validated['menu_data']) && !is_array($validated['menu_data'])) {
+            return response()->json([
+                'success' => false,
+                'errors' => ['menu_data' => ['menu_data должен быть массивом']]
+            ], 422);
         }
         
         $resource = Menu::query()->findOrFail($id);

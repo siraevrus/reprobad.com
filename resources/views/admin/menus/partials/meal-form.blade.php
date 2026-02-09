@@ -122,52 +122,53 @@
             </div>
         </div>
         
-        <div x-show="menuData.{{ $mealKey }}.recipe_table" class="space-y-3">
-            <div>
-                <label class="block text-sm mb-1">Название таблицы</label>
-                <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Тип</label>
-                <select x-model="menuData.{{ $mealKey }}.recipe_table.type" class="w-full p-2 border rounded">
-                    <option value="products">Продукты</option>
-                    <option value="variants">Варианты</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm mb-1">Цвет подложки</label>
-                <div class="flex items-center gap-3">
-                    <input type="color" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
-                    <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
-                    <button type="button" @click="menuData.{{ $mealKey }}.recipe_table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+        <template x-if="menuData.{{ $mealKey }}.recipe_table">
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-sm mb-1">Название таблицы</label>
+                    <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
                 </div>
-                <div class="mt-2 flex items-center gap-2">
-                    <span class="text-xs text-gray-600">Предпросмотр:</span>
-                    <div class="w-16 h-8 border rounded" :style="menuData.{{ $mealKey }}.recipe_table.background_color ? 'background-color: ' + menuData.{{ $mealKey }}.recipe_table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
-                    <span class="text-xs text-gray-500" x-text="menuData.{{ $mealKey }}.recipe_table.background_color || 'прозрачно'"></span>
+                <div>
+                    <label class="block text-sm mb-1">Тип</label>
+                    <select x-model="menuData.{{ $mealKey }}.recipe_table.type" class="w-full p-2 border rounded">
+                        <option value="products">Продукты</option>
+                        <option value="variants">Варианты</option>
+                    </select>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
-            </div>
-            
-            <div class="mb-3">
-                <button type="button" @click="addRecipeTableRow('{{ $mealKey }}')" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
-            </div>
-            
-            <div class="overflow-x-auto" x-show="menuData.{{ $mealKey }}.recipe_table.rows && menuData.{{ $mealKey }}.recipe_table.rows.length > 0">
-                <table class="min-w-full border border-gray-300">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="border p-2 text-left">Продукт</th>
-                            <th class="border p-2 text-left">Вес (гр)</th>
-                            <th class="border p-2 text-left">Белки</th>
-                            <th class="border p-2 text-left">Жиры</th>
-                            <th class="border p-2 text-left">Углеводы</th>
-                            <th class="border p-2 text-left">Калории</th>
-                            <th class="border p-2 text-left">Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template x-for="(row, rowIndex) in (menuData.{{ $mealKey }}.recipe_table.rows || [])" :key="rowIndex">
+                <div>
+                    <label class="block text-sm mb-1">Цвет подложки</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
+                        <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
+                        <button type="button" @click="menuData.{{ $mealKey }}.recipe_table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+                    </div>
+                    <div class="mt-2 flex items-center gap-2">
+                        <span class="text-xs text-gray-600">Предпросмотр:</span>
+                        <div class="w-16 h-8 border rounded" :style="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.background_color ? 'background-color: ' + menuData.{{ $mealKey }}.recipe_table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
+                        <span class="text-xs text-gray-500" x-text="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.background_color ? menuData.{{ $mealKey }}.recipe_table.background_color : 'прозрачно'"></span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
+                </div>
+                
+                <div class="mb-3">
+                    <button type="button" @click="addRecipeTableRow('{{ $mealKey }}')" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                </div>
+                
+                <div class="overflow-x-auto" x-show="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.rows && menuData.{{ $mealKey }}.recipe_table.rows.length > 0">
+                    <table class="min-w-full border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2 text-left">Продукт</th>
+                                <th class="border p-2 text-left">Вес (гр)</th>
+                                <th class="border p-2 text-left">Белки</th>
+                                <th class="border p-2 text-left">Жиры</th>
+                                <th class="border p-2 text-left">Углеводы</th>
+                                <th class="border p-2 text-left">Калории</th>
+                                <th class="border p-2 text-left">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(row, rowIndex) in (menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.rows ? menuData.{{ $mealKey }}.recipe_table.rows : [])" :key="rowIndex">
                             <tr>
                                 <td class="border p-2">
                                     <input type="text" x-model="row.product" class="w-full p-1 border rounded text-sm" placeholder="Название продукта">
@@ -191,11 +192,12 @@
                                     <button type="button" @click="removeRecipeTableRow('{{ $mealKey }}', rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
                                 </td>
                             </tr>
-                        </template>
-                    </tbody>
-                </table>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </template>
     </div>
 
     <div class="mb-6">
@@ -239,52 +241,53 @@
                             </div>
                         </div>
                         
-                        <div x-show="expandable.table" class="space-y-3">
-                            <div>
-                                <label class="block text-sm mb-1">Название таблицы</label>
-                                <input type="text" x-model="expandable.table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
-                            </div>
-                            <div>
-                                <label class="block text-sm mb-1">Тип</label>
-                                <select x-model="expandable.table.type" class="w-full p-2 border rounded">
-                                    <option value="products">Продукты</option>
-                                    <option value="variants">Варианты</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm mb-1">Цвет подложки</label>
-                                <div class="flex items-center gap-3">
-                                    <input type="color" x-model="expandable.table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
-                                    <input type="text" x-model="expandable.table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
-                                    <button type="button" @click="expandable.table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+                        <template x-if="expandable.table">
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm mb-1">Название таблицы</label>
+                                    <input type="text" x-model="expandable.table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
                                 </div>
-                                <div class="mt-2 flex items-center gap-2">
-                                    <span class="text-xs text-gray-600">Предпросмотр:</span>
-                                    <div class="w-16 h-8 border rounded" :style="expandable.table.background_color ? 'background-color: ' + expandable.table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
-                                    <span class="text-xs text-gray-500" x-text="expandable.table.background_color || 'прозрачно'"></span>
+                                <div>
+                                    <label class="block text-sm mb-1">Тип</label>
+                                    <select x-model="expandable.table.type" class="w-full p-2 border rounded">
+                                        <option value="products">Продукты</option>
+                                        <option value="variants">Варианты</option>
+                                    </select>
                                 </div>
-                                <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <button type="button" @click="addTableRowToExpandable('{{ $mealKey }}', index)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
-                            </div>
-                            
-                            <div class="overflow-x-auto" x-show="expandable.table.rows && expandable.table.rows.length > 0">
-                                <table class="min-w-full border border-gray-300">
-                                    <thead>
-                                        <tr class="bg-gray-100">
-                                            <th class="border p-2 text-left">Продукт</th>
-                                            <th class="border p-2 text-left">Вес (гр)</th>
-                                            <th class="border p-2 text-left">Белки</th>
-                                            <th class="border p-2 text-left">Жиры</th>
-                                            <th class="border p-2 text-left">Углеводы</th>
-                                            <th class="border p-2 text-left">Калории</th>
-                                            <th class="border p-2 text-left">Действия</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <template x-for="(row, rowIndex) in (expandable.table.rows || [])" :key="rowIndex">
+                                <div>
+                                    <label class="block text-sm mb-1">Цвет подложки</label>
+                                    <div class="flex items-center gap-3">
+                                        <input type="color" x-model="expandable.table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
+                                        <input type="text" x-model="expandable.table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
+                                        <button type="button" @click="expandable.table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+                                    </div>
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <span class="text-xs text-gray-600">Предпросмотр:</span>
+                                        <div class="w-16 h-8 border rounded" :style="expandable.table && expandable.table.background_color ? 'background-color: ' + expandable.table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
+                                        <span class="text-xs text-gray-500" x-text="expandable.table && expandable.table.background_color ? expandable.table.background_color : 'прозрачно'"></span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <button type="button" @click="addTableRowToExpandable('{{ $mealKey }}', index)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                                </div>
+                                
+                                <div class="overflow-x-auto" x-show="expandable.table && expandable.table.rows && expandable.table.rows.length > 0">
+                                    <table class="min-w-full border border-gray-300">
+                                        <thead>
+                                            <tr class="bg-gray-100">
+                                                <th class="border p-2 text-left">Продукт</th>
+                                                <th class="border p-2 text-left">Вес (гр)</th>
+                                                <th class="border p-2 text-left">Белки</th>
+                                                <th class="border p-2 text-left">Жиры</th>
+                                                <th class="border p-2 text-left">Углеводы</th>
+                                                <th class="border p-2 text-left">Калории</th>
+                                                <th class="border p-2 text-left">Действия</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="(row, rowIndex) in (expandable.table && expandable.table.rows ? expandable.table.rows : [])" :key="rowIndex">
                                             <tr>
                                                 <td class="border p-2">
                                                     <input type="text" x-model="row.product" class="w-full p-1 border rounded text-sm" placeholder="Название продукта">
@@ -308,11 +311,12 @@
                                                     <button type="button" @click="removeTableRowFromExpandable('{{ $mealKey }}', index, rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
                                                 </td>
                                             </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </div>
