@@ -634,28 +634,41 @@ function menuApp() {
 
                 const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
                 
-                // Нормализация заголовков
+                // Нормализация заголовков (удаляем запятые и лишние пробелы для сравнения)
+                const normalizeHeader = (header) => {
+                    return header.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
+                };
+                
                 const headerMap = {
                     'продукт': 'product',
                     'product': 'product',
                     'вес (гр)': 'weight',
+                    'вес гр': 'weight',
                     'вес': 'weight',
                     'weight': 'weight',
                     'белки': 'proteins',
+                    'бел гр': 'proteins',
                     'бел': 'proteins',
                     'proteins': 'proteins',
                     'жиры': 'fats',
+                    'жир гр': 'fats',
                     'жир': 'fats',
                     'fats': 'fats',
                     'углеводы': 'carbs',
+                    'угл гр': 'carbs',
                     'угл': 'carbs',
                     'carbs': 'carbs',
                     'калории': 'calories',
+                    'кал ккал': 'calories',
                     'ккал': 'calories',
                     'calories': 'calories'
                 };
 
-                const normalizedHeaders = headers.map(h => headerMap[h] || h);
+                const normalizedHeaders = headers.map(h => {
+                    const normalized = normalizeHeader(h);
+                    // Сначала проверяем нормализованный вариант, потом оригинал
+                    return headerMap[normalized] || headerMap[h] || h;
+                });
                 
                 if (!normalizedHeaders.includes('product')) {
                     alert('Ошибка: В CSV файле отсутствует колонка "Продукт"');
@@ -843,7 +856,13 @@ function menuApp() {
 
                 // Парсинг строк данных (начиная со второй строки)
                 for (let i = 1; i < lines.length; i++) {
-                    const values = parseCsvLine(lines[i], delimiter).map(v => v.replace(/^"|"$/g, '').trim());
+                    const rawValues = parseCsvLine(lines[i], delimiter);
+                    const values = rawValues.map(v => {
+                        // Удаляем кавычки и обрезаем пробелы
+                        let cleaned = v.replace(/^"|"$/g, '').trim();
+                        // Удаляем пробелы в начале и конце, но сохраняем пробелы внутри значения
+                        return cleaned;
+                    });
                     
                     // Пропуск пустых строк
                     if (values.every(v => !v)) {
@@ -853,18 +872,20 @@ function menuApp() {
 
                     const row = {};
                     normalizedHeaders.forEach((header, index) => {
-                        row[header] = values[index] || '';
+                        // Берем значение по индексу, сохраняем даже если это 0 или пустая строка
+                        const value = values[index] !== undefined && values[index] !== null ? String(values[index]) : '';
+                        row[header] = value;
                     });
 
                     // Добавление строки только если есть название продукта
-                    if (row.product) {
+                    if (row.product && row.product.trim()) {
                         this.menuData[mealKey].recipe_table.rows.push({
-                            product: row.product || '',
-                            weight: row.weight || '',
-                            proteins: row.proteins || '',
-                            fats: row.fats || '',
-                            carbs: row.carbs || '',
-                            calories: row.calories || ''
+                            product: (row.product || '').trim(),
+                            weight: (row.weight || '').trim(),
+                            proteins: (row.proteins || '').trim(),
+                            fats: (row.fats || '').trim(),
+                            carbs: (row.carbs || '').trim(),
+                            calories: (row.calories || '').trim()
                         });
                         imported++;
                     } else {
