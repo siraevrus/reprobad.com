@@ -146,9 +146,31 @@ class TestController extends Controller
                 }
                 
                 // Отправляем письмо
+                \Log::info('Попытка отправки письма с результатами теста', [
+                    'email' => $email,
+                    'result_id' => $testResult->id,
+                    'mailer' => config('mail.default'),
+                    'queue_connection' => config('queue.default'),
+                ]);
+                
                 Mail::to($email)->send(new TestResultMail($testResult));
+                
+                \Log::info('Письмо с результатами теста успешно отправлено', [
+                    'email' => $email,
+                    'result_id' => $testResult->id,
+                ]);
             } catch (\Exception $e) {
-                \Log::error('Ошибка отправки письма с результатами теста: ' . $e->getMessage());
+                \Log::error('Ошибка отправки письма с результатами теста', [
+                    'email' => $email,
+                    'result_id' => $testResult->id ?? null,
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString(),
+                    'mailer' => config('mail.default'),
+                    'mail_host' => config('mail.mailers.smtp.host'),
+                    'queue_connection' => config('queue.default'),
+                ]);
                 // Не прерываем выполнение, если письмо не отправилось
             }
         }
