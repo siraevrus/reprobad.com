@@ -38,7 +38,7 @@
             :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? $resource->description ?? ''"
             :resource="$resource"
-            :forceDynamic="$forceDynamic ?? false"
+            :forceDynamic="$forceDynamic ?? ($pageType === 'Menu' ? true : false)"
         />
     @elseif(isset($resource))
         @php

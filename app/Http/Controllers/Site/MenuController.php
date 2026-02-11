@@ -26,7 +26,8 @@ class MenuController extends Controller
         $menu = Menu::active()->where('alias', $alias)->firstOrFail();
         $allMenus = Menu::active()->sorted()->get();
         $pageType = 'Menu';
+        $resource = $menu; // Для использования в base.blade.php для SEO
         
-        return view('site.menus.show', compact('menu', 'allMenus', 'pageType'));
+        return view('site.menus.show', compact('menu', 'allMenus', 'pageType', 'resource'));
     }
 }
