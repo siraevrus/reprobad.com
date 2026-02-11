@@ -17,6 +17,8 @@ class MenuController extends Controller
         'title' => 'required|string',
         'alias' => 'required|unique:menus,alias',
         'description' => 'string|nullable',
+        'seo_title' => 'string|nullable|max:60',
+        'seo_description' => 'string|nullable|max:160',
         'menu_data' => 'nullable|array',
         'active' => 'boolean|required',
     ];

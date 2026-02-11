@@ -21,6 +21,31 @@
                 <div class="mt-4">
                     @include('admin.components.textarea-input', ['title' => 'Описание', 'field' => 'description', 'no_editor' => true])
                 </div>
+                <div class="mt-4 border-t pt-4">
+                    <h4 class="text-md font-semibold mb-3">SEO настройки</h4>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                SEO Title <span class="text-gray-500">(до 60 символов)</span>
+                            </label>
+                            <input type="text" x-model="form.seo_title" maxlength="60" 
+                                   class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <div class="mt-1 text-sm text-gray-500">
+                                <span x-text="(form.seo_title || '').length"></span>/60 символов
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                SEO Description <span class="text-gray-500">(до 160 символов)</span>
+                            </label>
+                            <textarea x-model="form.seo_description" rows="3" maxlength="160"
+                                      class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            <div class="mt-1 text-sm text-gray-500">
+                                <span x-text="(form.seo_description || '').length"></span>/160 символов
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Табы для приемов пищи -->
@@ -208,6 +233,8 @@ function menuApp() {
             title: '',
             alias: '',
             description: '',
+            seo_title: '',
+            seo_description: '',
             active: 1,
         },
         async init() {
@@ -403,6 +430,8 @@ function menuApp() {
                     title: data.title || '',
                     alias: data.alias || '',
                     description: data.description || '',
+                    seo_title: data.seo_title || '',
+                    seo_description: data.seo_description || '',
                     active: data.active ?? 1,
                 };
                 
