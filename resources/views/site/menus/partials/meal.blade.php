@@ -64,33 +64,40 @@
         <div>{!! $recipe !!}</div>
     @endif
 
-    @if(isset($meal['recipe_table']) && isset($meal['recipe_table']['rows']) && count($meal['recipe_table']['rows']) > 0)
-        <div class="menu-table" style="background-image: none !important; background-color: {{ $meal['recipe_table']['background_color'] ?? '' }} !important; margin-top: 20px; margin-bottom: 30px;">
-            @if(!empty($meal['recipe_table']['title']))
-                <p><strong>{{ $meal['recipe_table']['title'] }}</strong></p>
-            @endif
-            <div class="menu-table-scroller">
-                <div class="menu-table-row mtr-head">
-                    <div class="menu-table-cell first">продукт</div>
-                    <div class="menu-table-cell">вес, гр</div>
-                    <div class="menu-table-cell">бел, гр</div>
-                    <div class="menu-table-cell">жир, гр</div>
-                    <div class="menu-table-cell">угл, гр</div>
-                    <div class="menu-table-cell">ккал</div>
-                </div>
-                @foreach($meal['recipe_table']['rows'] as $row)
-                    <div class="menu-table-row">
-                        <div class="menu-table-cell first">{{ $row['product'] ?? '' }}</div>
-                        <div class="menu-table-cell">{{ formatMenuNumber($row['weight'] ?? 0) }}</div>
-                        <div class="menu-table-cell">{{ formatMenuNumber($row['proteins'] ?? 0) }}</div>
-                        <div class="menu-table-cell">{{ formatMenuNumber($row['fats'] ?? 0) }}</div>
-                        <div class="menu-table-cell">{{ formatMenuNumber($row['carbs'] ?? 0) }}</div>
-                        <div class="menu-table-cell">{{ formatMenuNumber($row['calories'] ?? $row['kcal'] ?? 0) }}</div>
+    @php
+        $mealRecipeTables = isset($meal['recipe_tables']) && is_array($meal['recipe_tables'])
+            ? $meal['recipe_tables']
+            : (isset($meal['recipe_table']) && is_array($meal['recipe_table']) ? [$meal['recipe_table']] : []);
+    @endphp
+    @foreach($mealRecipeTables as $recipeTable)
+        @if(isset($recipeTable['rows']) && is_array($recipeTable['rows']) && count($recipeTable['rows']) > 0)
+            <div class="menu-table" style="background-image: none !important; background-color: {{ $recipeTable['background_color'] ?? '' }} !important; margin-top: 20px; margin-bottom: 30px;">
+                @if(!empty($recipeTable['title']))
+                    <p><strong>{{ $recipeTable['title'] }}</strong></p>
+                @endif
+                <div class="menu-table-scroller">
+                    <div class="menu-table-row mtr-head">
+                        <div class="menu-table-cell first">продукт</div>
+                        <div class="menu-table-cell">вес, гр</div>
+                        <div class="menu-table-cell">бел, гр</div>
+                        <div class="menu-table-cell">жир, гр</div>
+                        <div class="menu-table-cell">угл, гр</div>
+                        <div class="menu-table-cell">ккал</div>
                     </div>
-                @endforeach
+                    @foreach($recipeTable['rows'] as $row)
+                        <div class="menu-table-row">
+                            <div class="menu-table-cell first">{{ $row['product'] ?? '' }}</div>
+                            <div class="menu-table-cell">{{ formatMenuNumber($row['weight'] ?? 0) }}</div>
+                            <div class="menu-table-cell">{{ formatMenuNumber($row['proteins'] ?? 0) }}</div>
+                            <div class="menu-table-cell">{{ formatMenuNumber($row['fats'] ?? 0) }}</div>
+                            <div class="menu-table-cell">{{ formatMenuNumber($row['carbs'] ?? 0) }}</div>
+                            <div class="menu-table-cell">{{ formatMenuNumber($row['calories'] ?? $row['kcal'] ?? 0) }}</div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
-    @endif
+        @endif
+    @endforeach
 
     @if(isset($meal['expandables']) && is_array($meal['expandables']))
         @foreach($meal['expandables'] as $expandable)
@@ -115,36 +122,43 @@
                                 <p class="menu-snoska">{!! nl2br(e($expandable['note'])) !!}</p>
                             @endif
                             
-                            @if(isset($expandable['table']) && is_array($expandable['table']) && isset($expandable['table']['rows']) && is_array($expandable['table']['rows']) && count($expandable['table']['rows']) > 0)
-                                <div class="menu-table" @if(isset($expandable['table']['background_color']) && !empty($expandable['table']['background_color'])) style="background-image: none !important; background-color: {{ $expandable['table']['background_color'] }} !important;" @endif>
-                                    @if(isset($expandable['table']['title']) && !empty($expandable['table']['title']))
-                                        <p><strong>{!! $expandable['table']['title'] !!}</strong></p>
-                                    @endif
-                                    @if(isset($expandable['table']['description']) && !empty($expandable['table']['description']))
-                                        <p>{!! nl2br(e($expandable['table']['description'])) !!}</p>
-                                    @endif
-                                    <div class="menu-table-scroller">
-                                        <div class="menu-table-row mtr-head">
-                                            <div class="menu-table-cell first">продукт</div>
-                                            <div class="menu-table-cell">вес, гр</div>
-                                            <div class="menu-table-cell">бел, гр</div>
-                                            <div class="menu-table-cell">жир, гр</div>
-                                            <div class="menu-table-cell">угл, гр</div>
-                                            <div class="menu-table-cell">ккал</div>
-                                        </div>
-                                        @foreach($expandable['table']['rows'] as $row)
-                                            <div class="menu-table-row">
-                                                <div class="menu-table-cell first">{!! $row['product'] ?? '' !!}</div>
-                                                <div class="menu-table-cell">{{ formatMenuNumber($row['weight'] ?? 0) }}</div>
-                                                <div class="menu-table-cell">{{ formatMenuNumber($row['proteins'] ?? 0) }}</div>
-                                                <div class="menu-table-cell">{{ formatMenuNumber($row['fats'] ?? 0) }}</div>
-                                                <div class="menu-table-cell">{{ formatMenuNumber($row['carbs'] ?? 0) }}</div>
-                                                <div class="menu-table-cell">{{ formatMenuNumber($row['calories'] ?? $row['kcal'] ?? 0) }}</div>
+                            @php
+                                $expandableTables = isset($expandable['tables']) && is_array($expandable['tables'])
+                                    ? $expandable['tables']
+                                    : (isset($expandable['table']) && is_array($expandable['table']) ? [$expandable['table']] : []);
+                            @endphp
+                            @foreach($expandableTables as $expTable)
+                                @if(isset($expTable['rows']) && is_array($expTable['rows']) && count($expTable['rows']) > 0)
+                                    <div class="menu-table" @if(isset($expTable['background_color']) && !empty($expTable['background_color'])) style="background-image: none !important; background-color: {{ $expTable['background_color'] }} !important;" @endif>
+                                        @if(isset($expTable['title']) && !empty($expTable['title']))
+                                            <p><strong>{!! $expTable['title'] !!}</strong></p>
+                                        @endif
+                                        @if(isset($expTable['description']) && !empty($expTable['description']))
+                                            <p>{!! nl2br(e($expTable['description'])) !!}</p>
+                                        @endif
+                                        <div class="menu-table-scroller">
+                                            <div class="menu-table-row mtr-head">
+                                                <div class="menu-table-cell first">продукт</div>
+                                                <div class="menu-table-cell">вес, гр</div>
+                                                <div class="menu-table-cell">бел, гр</div>
+                                                <div class="menu-table-cell">жир, гр</div>
+                                                <div class="menu-table-cell">угл, гр</div>
+                                                <div class="menu-table-cell">ккал</div>
                                             </div>
-                                        @endforeach
+                                            @foreach($expTable['rows'] as $row)
+                                                <div class="menu-table-row">
+                                                    <div class="menu-table-cell first">{!! $row['product'] ?? '' !!}</div>
+                                                    <div class="menu-table-cell">{{ formatMenuNumber($row['weight'] ?? 0) }}</div>
+                                                    <div class="menu-table-cell">{{ formatMenuNumber($row['proteins'] ?? 0) }}</div>
+                                                    <div class="menu-table-cell">{{ formatMenuNumber($row['fats'] ?? 0) }}</div>
+                                                    <div class="menu-table-cell">{{ formatMenuNumber($row['carbs'] ?? 0) }}</div>
+                                                    <div class="menu-table-cell">{{ formatMenuNumber($row['calories'] ?? $row['kcal'] ?? 0) }}</div>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>

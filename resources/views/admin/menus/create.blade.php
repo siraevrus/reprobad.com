@@ -166,7 +166,7 @@ function menuApp() {
                 title: '', name: 'Завтрак', anchor: 'breakfast',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
-                recipe_table: null,
+                recipe_tables: [],
                 expandables: []
             },
             snack: { 
@@ -174,7 +174,7 @@ function menuApp() {
                 title: '', name: 'Перекус', anchor: 'snack',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
-                recipe_table: null,
+                recipe_tables: [],
                 expandables: []
             },
             dinner: { 
@@ -182,7 +182,7 @@ function menuApp() {
                 title: '', name: 'Обед', anchor: 'dinner',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
-                recipe_table: null,
+                recipe_tables: [],
                 expandables: []
             },
             lunch: { 
@@ -190,7 +190,7 @@ function menuApp() {
                 title: '', name: 'Ужин', anchor: 'lunch',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
-                recipe_table: null,
+                recipe_tables: [],
                 expandables: []
             },
             daily_kbju: { 
@@ -368,32 +368,44 @@ function menuApp() {
                     }
                     
                     if (parsedData) {
-                        // Миграция существующих таблиц в expandables
+                        // Миграция существующих таблиц в expandables (старый формат tables на уровне meal)
                         const mealKeys = ['breakfast', 'snack', 'dinner', 'lunch'];
                         mealKeys.forEach(mealKey => {
                             if (parsedData[mealKey] && parsedData[mealKey].tables && Array.isArray(parsedData[mealKey].tables)) {
-                                // Создаем expandable для каждой таблицы
+                                if (!parsedData[mealKey].expandables) {
+                                    parsedData[mealKey].expandables = [];
+                                }
                                 parsedData[mealKey].tables.forEach(table => {
-                                    if (!parsedData[mealKey].expandables) {
-                                        parsedData[mealKey].expandables = [];
-                                    }
                                     parsedData[mealKey].expandables.push({
                                         title: table.title || '',
                                         content: '',
                                         note: '',
-                                        table: {
+                                        tables: [{
                                             title: table.title || '',
                                             type: table.type || 'products',
                                             background_color: table.background_color || '',
                                             rows: table.rows || []
-                                        }
+                                        }]
                                     });
                                 });
-                                // Удаляем старый массив tables
                                 delete parsedData[mealKey].tables;
                             }
+                            // Миграция recipe_table -> recipe_tables (одна таблица -> массив)
+                            if (parsedData[mealKey] && parsedData[mealKey].recipe_table != null && typeof parsedData[mealKey].recipe_table === 'object' && !Array.isArray(parsedData[mealKey].recipe_tables)) {
+                                parsedData[mealKey].recipe_tables = [parsedData[mealKey].recipe_table];
+                                delete parsedData[mealKey].recipe_table;
+                            }
+                            // Миграция expandable.table -> expandable.tables
+                            if (parsedData[mealKey] && Array.isArray(parsedData[mealKey].expandables)) {
+                                parsedData[mealKey].expandables.forEach(expandable => {
+                                    if (expandable.table != null && typeof expandable.table === 'object' && !Array.isArray(expandable.tables)) {
+                                        expandable.tables = [expandable.table];
+                                        delete expandable.table;
+                                    }
+                                });
+                            }
                         });
-                        
+
                         this.menuData = this.mergeMenuData(this.menuData, parsedData);
                     }
                 }
@@ -418,31 +430,36 @@ function menuApp() {
                     // Для meal объектов (breakfast, snack, dinner, lunch) делаем глубокое слияние
                     if (['breakfast', 'snack', 'dinner', 'lunch'].includes(key)) {
                         merged[key] = { ...merged[key], ...savedData[key] };
-                        // Удаляем старый массив tables, если он есть
                         if (merged[key].tables) {
                             delete merged[key].tables;
                         }
-                        // Убеждаемся, что expandables - массив
                         if (!merged[key].expandables) {
                             merged[key].expandables = [];
                         }
-                        // Убеждаемся, что recipe_table либо null, либо объект
-                        if (merged[key].recipe_table !== null && typeof merged[key].recipe_table !== 'object') {
-                            merged[key].recipe_table = null;
+                        // Миграция recipe_table -> recipe_tables
+                        if (merged[key].recipe_table != null && typeof merged[key].recipe_table === 'object' && !Array.isArray(merged[key].recipe_tables)) {
+                            merged[key].recipe_tables = [merged[key].recipe_table];
+                            delete merged[key].recipe_table;
                         }
-                        // Если recipe_table есть, убеждаемся что rows - массив
-                        if (merged[key].recipe_table && !Array.isArray(merged[key].recipe_table.rows)) {
-                            merged[key].recipe_table.rows = [];
+                        if (!Array.isArray(merged[key].recipe_tables)) {
+                            merged[key].recipe_tables = [];
                         }
-                        // Обрабатываем expandables: убеждаемся что table либо null, либо объект
+                        merged[key].recipe_tables.forEach(t => {
+                            if (t && !Array.isArray(t.rows)) t.rows = [];
+                        });
+                        // Миграция expandable.table -> expandable.tables
                         if (Array.isArray(merged[key].expandables)) {
                             merged[key].expandables.forEach(expandable => {
-                                if (expandable.table !== null && typeof expandable.table !== 'object') {
-                                    expandable.table = null;
+                                if (expandable.table != null && typeof expandable.table === 'object' && !Array.isArray(expandable.tables)) {
+                                    expandable.tables = [expandable.table];
+                                    delete expandable.table;
                                 }
-                                if (expandable.table && !Array.isArray(expandable.table.rows)) {
-                                    expandable.table.rows = [];
+                                if (!Array.isArray(expandable.tables)) {
+                                    expandable.tables = [];
                                 }
+                                (expandable.tables || []).forEach(t => {
+                                    if (t && !Array.isArray(t.rows)) t.rows = [];
+                                });
                             });
                         }
                     } else {
@@ -515,13 +532,16 @@ function menuApp() {
                     });
                 }
                 
-                // Очищаем старые таблицы из menuData перед сохранением
+                // Очищаем устаревшие ключи из menuData перед сохранением
                 const mealKeys = ['breakfast', 'snack', 'dinner', 'lunch'];
                 const cleanedMenuData = JSON.parse(JSON.stringify(this.menuData));
                 mealKeys.forEach(mealKey => {
-                    if (cleanedMenuData[mealKey] && cleanedMenuData[mealKey].tables) {
-                        delete cleanedMenuData[mealKey].tables;
-                    }
+                    if (!cleanedMenuData[mealKey]) return;
+                    if (cleanedMenuData[mealKey].tables) delete cleanedMenuData[mealKey].tables;
+                    if (cleanedMenuData[mealKey].recipe_table !== undefined) delete cleanedMenuData[mealKey].recipe_table;
+                    (cleanedMenuData[mealKey].expandables || []).forEach(exp => {
+                        if (exp.table !== undefined) delete exp.table;
+                    });
                 });
                 
                 // Отправляем menu_data как объект, Laravel автоматически его обработает
@@ -566,34 +586,36 @@ function menuApp() {
                 title: '', 
                 content: '', 
                 note: '',
-                table: null
+                tables: []
             });
         },
         removeExpandable(mealKey, index) {
             this.menuData[mealKey].expandables.splice(index, 1);
         },
         addTableToExpandable(mealKey, expandableIndex) {
-            if (!this.menuData[mealKey].expandables[expandableIndex].table) {
-                this.menuData[mealKey].expandables[expandableIndex].table = {
-                    title: '',
-                    type: 'products',
-                    background_color: '',
-                    rows: []
-                };
-            }
-        },
-        removeTableFromExpandable(mealKey, expandableIndex) {
-            this.menuData[mealKey].expandables[expandableIndex].table = null;
-        },
-        addTableRowToExpandable(mealKey, expandableIndex) {
             const expandable = this.menuData[mealKey].expandables[expandableIndex];
-            if (!expandable.table) {
-                this.addTableToExpandable(mealKey, expandableIndex);
+            if (!expandable.tables) {
+                expandable.tables = [];
             }
-            if (!expandable.table.rows) {
-                expandable.table.rows = [];
+            expandable.tables.push({
+                title: '',
+                type: 'products',
+                background_color: '',
+                rows: []
+            });
+        },
+        removeTableFromExpandable(mealKey, expandableIndex, tableIndex) {
+            const expandable = this.menuData[mealKey].expandables[expandableIndex];
+            if (expandable.tables) {
+                expandable.tables.splice(tableIndex, 1);
             }
-            expandable.table.rows.push({
+        },
+        addTableRowToExpandable(mealKey, expandableIndex, tableIndex) {
+            const expandable = this.menuData[mealKey].expandables[expandableIndex];
+            if (!expandable.tables || !expandable.tables[tableIndex]) return;
+            const table = expandable.tables[tableIndex];
+            if (!table.rows) table.rows = [];
+            table.rows.push({
                 product: '',
                 weight: '',
                 proteins: '',
@@ -602,30 +624,27 @@ function menuApp() {
                 calories: ''
             });
         },
-        removeTableRowFromExpandable(mealKey, expandableIndex, rowIndex) {
+        removeTableRowFromExpandable(mealKey, expandableIndex, tableIndex, rowIndex) {
             const expandable = this.menuData[mealKey].expandables[expandableIndex];
-            if (expandable.table && expandable.table.rows) {
-                expandable.table.rows.splice(rowIndex, 1);
+            if (expandable.tables && expandable.tables[tableIndex] && expandable.tables[tableIndex].rows) {
+                expandable.tables[tableIndex].rows.splice(rowIndex, 1);
             }
         },
-        importCsvToExpandableTable(event, mealKey, expandableIndex) {
+        importCsvToExpandableTable(event, mealKey, expandableIndex, tableIndex) {
             const file = event.target.files[0];
             if (!file) return;
 
             const expandable = this.menuData[mealKey].expandables[expandableIndex];
-            
-            // Убеждаемся, что таблица создана
-            if (!expandable.table) {
-                this.addTableToExpandable(mealKey, expandableIndex);
+            if (!expandable.tables) expandable.tables = [];
+            if (!expandable.tables[tableIndex]) {
+                expandable.tables[tableIndex] = { title: '', type: 'products', background_color: '', rows: [] };
             }
-            if (!expandable.table.rows) {
-                expandable.table.rows = [];
-            }
+            const table = expandable.tables[tableIndex];
+            if (!table.rows) table.rows = [];
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 const text = e.target.result;
-                // Нормализация окончаний строк (Windows/Unix/Mac)
                 const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
                 const lines = normalizedText.split('\n').filter(line => line.trim());
                 
@@ -634,181 +653,106 @@ function menuApp() {
                     return;
                 }
 
-                // Определение разделителя: проверяем первую строку (заголовки)
                 const firstLine = lines[0];
-                let delimiter = ',';
-                
-                // Если в первой строке есть точка с запятой, используем её
-                if (firstLine.includes(';')) {
-                    delimiter = ';';
-                } else if (firstLine.includes(',')) {
-                    delimiter = ',';
-                } else {
+                let delimiter = firstLine.includes(';') ? ';' : (firstLine.includes(',') ? ',' : null);
+                if (!delimiter) {
                     alert('Ошибка: Не удалось определить разделитель CSV. Используйте запятую (,) или точку с запятой (;)');
                     return;
                 }
 
-                // Функция для правильного парсинга CSV строки с учетом кавычек
-                const parseCsvLine = (line, delimiter) => {
+                const parseCsvLine = (line, d) => {
                     const result = [];
                     let current = '';
                     let inQuotes = false;
-                    
                     for (let i = 0; i < line.length; i++) {
                         const char = line[i];
                         const nextChar = line[i + 1];
-                        
                         if (char === '"') {
-                            if (inQuotes && nextChar === '"') {
-                                // Двойные кавычки - экранированная кавычка
-                                current += '"';
-                                i++; // Пропускаем следующую кавычку
-                            } else {
-                                // Переключаем режим кавычек
-                                inQuotes = !inQuotes;
-                            }
-                        } else if (char === delimiter && !inQuotes) {
-                            // Разделитель вне кавычек - новая колонка
+                            if (inQuotes && nextChar === '"') { current += '"'; i++; } else inQuotes = !inQuotes;
+                        } else if (char === d && !inQuotes) {
                             result.push(current.trim());
                             current = '';
-                        } else {
-                            current += char;
-                        }
+                        } else current += char;
                     }
-                    // Добавляем последнюю колонку
                     result.push(current.trim());
                     return result;
                 };
 
-                const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
-                
-                // Нормализация заголовков (удаляем запятые и лишние пробелы для сравнения)
-                const normalizeHeader = (header) => {
-                    return header.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
-                };
-                
+                const normalizeHeader = (header) => header.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
                 const headerMap = {
-                    'продукт': 'product',
-                    'product': 'product',
-                    'вес (гр)': 'weight',
-                    'вес гр': 'weight',
-                    'вес': 'weight',
-                    'weight': 'weight',
-                    'белки': 'proteins',
-                    'бел гр': 'proteins',
-                    'бел': 'proteins',
-                    'proteins': 'proteins',
-                    'жиры': 'fats',
-                    'жир гр': 'fats',
-                    'жир': 'fats',
-                    'fats': 'fats',
-                    'углеводы': 'carbs',
-                    'угл гр': 'carbs',
-                    'угл': 'carbs',
-                    'carbs': 'carbs',
-                    'калории': 'calories',
-                    'кал ккал': 'calories',
-                    'ккал': 'calories',
-                    'calories': 'calories'
+                    'продукт': 'product', 'product': 'product', 'вес (гр)': 'weight', 'вес гр': 'weight', 'вес': 'weight', 'weight': 'weight',
+                    'белки': 'proteins', 'бел гр': 'proteins', 'бел': 'proteins', 'proteins': 'proteins',
+                    'жиры': 'fats', 'жир гр': 'fats', 'жир': 'fats', 'fats': 'fats',
+                    'углеводы': 'carbs', 'угл гр': 'carbs', 'угл': 'carbs', 'carbs': 'carbs',
+                    'калории': 'calories', 'кал ккал': 'calories', 'ккал': 'calories', 'calories': 'calories'
                 };
-
-                const normalizedHeaders = headers.map(h => {
-                    const normalized = normalizeHeader(h);
-                    // Сначала проверяем нормализованный вариант, потом оригинал
-                    return headerMap[normalized] || headerMap[h] || h;
-                });
-                
+                const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+                const normalizedHeaders = headers.map(h => headerMap[normalizeHeader(h)] || headerMap[h] || h);
                 if (!normalizedHeaders.includes('product')) {
                     alert('Ошибка: В CSV файле отсутствует колонка "Продукт"');
                     return;
                 }
 
-                let imported = 0;
-                let skipped = 0;
-
+                let imported = 0, skipped = 0;
                 for (let i = 1; i < lines.length; i++) {
                     const values = parseCsvLine(lines[i], delimiter).map(v => v.replace(/^"|"$/g, '').trim());
-                    
-                    if (values.every(v => !v)) {
-                        skipped++;
-                        continue;
-                    }
-
+                    if (values.every(v => !v)) { skipped++; continue; }
                     const row = {};
-                    normalizedHeaders.forEach((header, index) => {
-                        row[header] = values[index] || '';
-                    });
-
+                    normalizedHeaders.forEach((header, index) => { row[header] = values[index] || ''; });
                     if (row.product) {
-                        expandable.table.rows.push({
-                            product: row.product || '',
-                            weight: row.weight || '',
-                            proteins: row.proteins || '',
-                            fats: row.fats || '',
-                            carbs: row.carbs || '',
-                            calories: row.calories || ''
+                        table.rows.push({
+                            product: row.product || '', weight: row.weight || '', proteins: row.proteins || '',
+                            fats: row.fats || '', carbs: row.carbs || '', calories: row.calories || ''
                         });
                         imported++;
-                    } else {
-                        skipped++;
-                    }
+                    } else skipped++;
                 }
-
                 event.target.value = '';
                 alert(`Импорт завершен!\nИмпортировано: ${imported}\nПропущено: ${skipped}`);
             };
-
-            reader.onerror = () => {
-                alert('Ошибка при чтении файла');
-            };
-
+            reader.onerror = () => alert('Ошибка при чтении файла');
             reader.readAsText(file, 'UTF-8');
         },
         addRecipeTable(mealKey) {
-            if (!this.menuData[mealKey].recipe_table) {
-                this.menuData[mealKey].recipe_table = {
-                    title: '',
-                    type: 'products',
-                    background_color: '',
-                    rows: []
-                };
+            if (!this.menuData[mealKey].recipe_tables) {
+                this.menuData[mealKey].recipe_tables = [];
             }
-        },
-        removeRecipeTable(mealKey) {
-            this.menuData[mealKey].recipe_table = null;
-        },
-        addRecipeTableRow(mealKey) {
-            if (!this.menuData[mealKey].recipe_table) {
-                this.addRecipeTable(mealKey);
-            }
-            if (!this.menuData[mealKey].recipe_table.rows) {
-                this.menuData[mealKey].recipe_table.rows = [];
-            }
-            this.menuData[mealKey].recipe_table.rows.push({
-                product: '',
-                weight: '',
-                proteins: '',
-                fats: '',
-                carbs: '',
-                calories: ''
+            this.menuData[mealKey].recipe_tables.push({
+                title: '',
+                type: 'products',
+                background_color: '',
+                rows: []
             });
         },
-        removeRecipeTableRow(mealKey, rowIndex) {
-            if (this.menuData[mealKey].recipe_table && this.menuData[mealKey].recipe_table.rows) {
-                this.menuData[mealKey].recipe_table.rows.splice(rowIndex, 1);
+        removeRecipeTable(mealKey, tableIndex) {
+            if (this.menuData[mealKey].recipe_tables) {
+                this.menuData[mealKey].recipe_tables.splice(tableIndex, 1);
             }
         },
-        importCsvToRecipeTable(event, mealKey) {
+        addRecipeTableRow(mealKey, tableIndex) {
+            const tables = this.menuData[mealKey].recipe_tables;
+            if (!tables || !tables[tableIndex]) return;
+            if (!tables[tableIndex].rows) tables[tableIndex].rows = [];
+            tables[tableIndex].rows.push({
+                product: '', weight: '', proteins: '', fats: '', carbs: '', calories: ''
+            });
+        },
+        removeRecipeTableRow(mealKey, tableIndex, rowIndex) {
+            const tables = this.menuData[mealKey].recipe_tables;
+            if (tables && tables[tableIndex] && tables[tableIndex].rows) {
+                tables[tableIndex].rows.splice(rowIndex, 1);
+            }
+        },
+        importCsvToRecipeTable(event, mealKey, tableIndex) {
             const file = event.target.files[0];
             if (!file) return;
 
-            // Убеждаемся, что таблица создана
-            if (!this.menuData[mealKey].recipe_table) {
-                this.addRecipeTable(mealKey);
+            if (!this.menuData[mealKey].recipe_tables) this.menuData[mealKey].recipe_tables = [];
+            if (!this.menuData[mealKey].recipe_tables[tableIndex]) {
+                this.menuData[mealKey].recipe_tables[tableIndex] = { title: '', type: 'products', background_color: '', rows: [] };
             }
-            if (!this.menuData[mealKey].recipe_table.rows) {
-                this.menuData[mealKey].recipe_table.rows = [];
-            }
+            const table = this.menuData[mealKey].recipe_tables[tableIndex];
+            if (!table.rows) table.rows = [];
 
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -974,7 +918,7 @@ function menuApp() {
                             console.log('Добавляемая строка:', newRow);
                         }
                         
-                        this.menuData[mealKey].recipe_table.rows.push(newRow);
+                        table.rows.push(newRow);
                         imported++;
                     } else {
                         skipped++;

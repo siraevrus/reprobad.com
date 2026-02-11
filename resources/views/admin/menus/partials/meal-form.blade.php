@@ -112,25 +112,24 @@
         <textarea x-model="menuData.{{ $mealKey }}.recipe" id="recipe-editor-{{ $mealKey }}" class="w-full p-2 border rounded editor" rows="4" placeholder="Рецепт приготовления"></textarea>
     </div>
 
-    <!-- Таблица продуктов для рецепта -->
+    <!-- Таблицы продуктов для рецепта -->
     <div class="mb-6 border rounded p-4">
         <div class="flex justify-between items-center mb-3">
             <label class="block text-sm font-semibold">Таблица продуктов</label>
-            <div class="flex gap-2">
-                <button type="button" x-show="!menuData.{{ $mealKey }}.recipe_table" @click="addRecipeTable('{{ $mealKey }}')" class="px-3 py-1 bg-green-500 text-white rounded text-sm">+ Добавить таблицу</button>
-                <button type="button" x-show="menuData.{{ $mealKey }}.recipe_table" @click="removeRecipeTable('{{ $mealKey }}')" class="px-3 py-1 bg-red-500 text-white rounded text-sm">Удалить таблицу</button>
-            </div>
         </div>
-        
-        <template x-if="menuData.{{ $mealKey }}.recipe_table">
-            <div class="space-y-3">
+        <template x-for="(table, tableIndex) in (menuData.{{ $mealKey }}.recipe_tables || [])" :key="'rt-'+tableIndex">
+            <div class="border rounded p-4 mb-4 bg-gray-50 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm font-medium">Таблица продуктов <span x-text="tableIndex + 1"></span></span>
+                    <button type="button" @click="removeRecipeTable('{{ $mealKey }}', tableIndex)" class="px-3 py-1 bg-red-500 text-white rounded text-sm">Удалить таблицу</button>
+                </div>
                 <div>
                     <label class="block text-sm mb-1">Название таблицы</label>
-                    <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
+                    <input type="text" x-model="menuData.{{ $mealKey }}.recipe_tables[tableIndex].title" class="w-full p-2 border rounded" placeholder="Название таблицы">
                 </div>
                 <div>
                     <label class="block text-sm mb-1">Тип</label>
-                    <select x-model="menuData.{{ $mealKey }}.recipe_table.type" class="w-full p-2 border rounded">
+                    <select x-model="menuData.{{ $mealKey }}.recipe_tables[tableIndex].type" class="w-full p-2 border rounded">
                         <option value="products">Продукты</option>
                         <option value="variants">Варианты</option>
                     </select>
@@ -138,27 +137,25 @@
                 <div>
                     <label class="block text-sm mb-1">Цвет подложки</label>
                     <div class="flex items-center gap-3">
-                        <input type="color" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
-                        <input type="text" x-model="menuData.{{ $mealKey }}.recipe_table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
-                        <button type="button" @click="menuData.{{ $mealKey }}.recipe_table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+                        <input type="color" x-model="menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
+                        <input type="text" x-model="menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
+                        <button type="button" @click="menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
                     </div>
                     <div class="mt-2 flex items-center gap-2">
                         <span class="text-xs text-gray-600">Предпросмотр:</span>
-                        <div class="w-16 h-8 border rounded" :style="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.background_color ? 'background-color: ' + menuData.{{ $mealKey }}.recipe_table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
-                        <span class="text-xs text-gray-500" x-text="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.background_color ? menuData.{{ $mealKey }}.recipe_table.background_color : 'прозрачно'"></span>
+                        <div class="w-16 h-8 border rounded" :style="(menuData.{{ $mealKey }}.recipe_tables[tableIndex] && menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color) ? 'background-color: ' + menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
+                        <span class="text-xs text-gray-500" x-text="(menuData.{{ $mealKey }}.recipe_tables[tableIndex] && menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color) ? menuData.{{ $mealKey }}.recipe_tables[tableIndex].background_color : 'прозрачно'"></span>
                     </div>
                     <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
                 </div>
-                
                 <div class="mb-3 flex gap-2">
-                    <button type="button" @click="addRecipeTableRow('{{ $mealKey }}')" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                    <button type="button" @click="addRecipeTableRow('{{ $mealKey }}', tableIndex)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
                     <label class="px-4 py-2 bg-green-500 text-white rounded text-sm cursor-pointer hover:bg-green-600">
                         📥 Импорт из CSV
-                        <input type="file" accept=".csv" class="hidden" @change="importCsvToRecipeTable($event, '{{ $mealKey }}')">
+                        <input type="file" accept=".csv" class="hidden" @change="importCsvToRecipeTable($event, '{{ $mealKey }}', tableIndex)">
                     </label>
                 </div>
-                
-                <div class="overflow-x-auto" x-show="menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.rows && menuData.{{ $mealKey }}.recipe_table.rows.length > 0">
+                <div class="overflow-x-auto" x-show="menuData.{{ $mealKey }}.recipe_tables[tableIndex] && menuData.{{ $mealKey }}.recipe_tables[tableIndex].rows && menuData.{{ $mealKey }}.recipe_tables[tableIndex].rows.length > 0">
                     <table class="min-w-full border border-gray-300">
                         <thead>
                             <tr class="bg-gray-100">
@@ -172,7 +169,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template x-for="(row, rowIndex) in (menuData.{{ $mealKey }}.recipe_table && menuData.{{ $mealKey }}.recipe_table.rows ? menuData.{{ $mealKey }}.recipe_table.rows : [])" :key="rowIndex">
+                            <template x-for="(row, rowIndex) in (menuData.{{ $mealKey }}.recipe_tables[tableIndex] && menuData.{{ $mealKey }}.recipe_tables[tableIndex].rows ? menuData.{{ $mealKey }}.recipe_tables[tableIndex].rows : [])" :key="rowIndex">
                             <tr>
                                 <td class="border p-2">
                                     <input type="text" x-model="row.product" class="w-full p-1 border rounded text-sm" placeholder="Название продукта">
@@ -193,7 +190,7 @@
                                     <input type="text" x-model="row.calories" class="w-full p-1 border rounded text-sm" placeholder="0">
                                 </td>
                                 <td class="border p-2">
-                                    <button type="button" @click="removeRecipeTableRow('{{ $mealKey }}', rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
+                                    <button type="button" @click="removeRecipeTableRow('{{ $mealKey }}', tableIndex, rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
                                 </td>
                             </tr>
                             </template>
@@ -202,6 +199,9 @@
                 </div>
             </div>
         </template>
+        <div class="mt-3">
+            <button type="button" @click="addRecipeTable('{{ $mealKey }}')" class="px-4 py-2 bg-green-500 text-white rounded text-sm">+ Добавить таблицу продуктов</button>
+        </div>
     </div>
 
     <div class="mb-6">
@@ -235,25 +235,22 @@
                         <textarea x-model="expandable.note" class="w-full p-2 border rounded" rows="2" placeholder="Примечание"></textarea>
                     </div>
                     
-                    <!-- Таблица продуктов внутри expandable -->
+                    <!-- Таблицы продуктов внутри expandable -->
                     <div class="border-t pt-3 mt-3">
-                        <div class="flex justify-between items-center mb-3">
-                            <label class="block text-sm font-semibold">Таблица продуктов</label>
-                            <div class="flex gap-2">
-                                <button type="button" x-show="!expandable.table" @click="addTableToExpandable('{{ $mealKey }}', index)" class="px-3 py-1 bg-green-500 text-white rounded text-sm">+ Добавить таблицу</button>
-                                <button type="button" x-show="expandable.table" @click="removeTableFromExpandable('{{ $mealKey }}', index)" class="px-3 py-1 bg-red-500 text-white rounded text-sm">Удалить таблицу</button>
-                            </div>
-                        </div>
-                        
-                        <template x-if="expandable.table">
-                            <div class="space-y-3">
+                        <label class="block text-sm font-semibold mb-3">Таблица продуктов</label>
+                        <template x-for="(table, tableIndex) in (expandable.tables || [])" :key="'et-'+index+'-'+tableIndex">
+                            <div class="border rounded p-4 mb-4 bg-gray-50 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium">Таблица продуктов <span x-text="tableIndex + 1"></span></span>
+                                    <button type="button" @click="removeTableFromExpandable('{{ $mealKey }}', index, tableIndex)" class="px-3 py-1 bg-red-500 text-white rounded text-sm">Удалить таблицу</button>
+                                </div>
                                 <div>
                                     <label class="block text-sm mb-1">Название таблицы</label>
-                                    <input type="text" x-model="expandable.table.title" class="w-full p-2 border rounded" placeholder="Название таблицы">
+                                    <input type="text" x-model="expandable.tables[tableIndex].title" class="w-full p-2 border rounded" placeholder="Название таблицы">
                                 </div>
                                 <div>
                                     <label class="block text-sm mb-1">Тип</label>
-                                    <select x-model="expandable.table.type" class="w-full p-2 border rounded">
+                                    <select x-model="expandable.tables[tableIndex].type" class="w-full p-2 border rounded">
                                         <option value="products">Продукты</option>
                                         <option value="variants">Варианты</option>
                                     </select>
@@ -261,27 +258,25 @@
                                 <div>
                                     <label class="block text-sm mb-1">Цвет подложки</label>
                                     <div class="flex items-center gap-3">
-                                        <input type="color" x-model="expandable.table.background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
-                                        <input type="text" x-model="expandable.table.background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
-                                        <button type="button" @click="expandable.table.background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
+                                        <input type="color" x-model="expandable.tables[tableIndex].background_color" class="h-10 w-20 border rounded cursor-pointer" value="#ffffff">
+                                        <input type="text" x-model="expandable.tables[tableIndex].background_color" class="flex-1 p-2 border rounded" placeholder="#ffffff или прозрачно" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$">
+                                        <button type="button" @click="expandable.tables[tableIndex].background_color = ''" class="px-3 py-2 bg-gray-500 text-white rounded text-sm">Очистить</button>
                                     </div>
                                     <div class="mt-2 flex items-center gap-2">
                                         <span class="text-xs text-gray-600">Предпросмотр:</span>
-                                        <div class="w-16 h-8 border rounded" :style="expandable.table && expandable.table.background_color ? 'background-color: ' + expandable.table.background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
-                                        <span class="text-xs text-gray-500" x-text="expandable.table && expandable.table.background_color ? expandable.table.background_color : 'прозрачно'"></span>
+                                        <div class="w-16 h-8 border rounded" :style="(expandable.tables[tableIndex] && expandable.tables[tableIndex].background_color) ? 'background-color: ' + expandable.tables[tableIndex].background_color : 'background: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 8px 8px; background-position: 0 0, 0 4px, 4px -4px, -4px 0px;'"></div>
+                                        <span class="text-xs text-gray-500" x-text="(expandable.tables[tableIndex] && expandable.tables[tableIndex].background_color) ? expandable.tables[tableIndex].background_color : 'прозрачно'"></span>
                                     </div>
                                     <p class="text-xs text-gray-500 mt-1">Оставьте пустым для прозрачного фона. Формат: #ffffff или #fff</p>
                                 </div>
-                                
                                 <div class="mb-3 flex gap-2">
-                                    <button type="button" @click="addTableRowToExpandable('{{ $mealKey }}', index)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
+                                    <button type="button" @click="addTableRowToExpandable('{{ $mealKey }}', index, tableIndex)" class="px-4 py-2 bg-blue-500 text-white rounded text-sm">+ Добавить строку</button>
                                     <label class="px-4 py-2 bg-green-500 text-white rounded text-sm cursor-pointer hover:bg-green-600">
                                         📥 Импорт из CSV
-                                        <input type="file" accept=".csv" class="hidden" @change="importCsvToExpandableTable($event, '{{ $mealKey }}', index)">
+                                        <input type="file" accept=".csv" class="hidden" @change="importCsvToExpandableTable($event, '{{ $mealKey }}', index, tableIndex)">
                                     </label>
                                 </div>
-                                
-                                <div class="overflow-x-auto" x-show="expandable.table && expandable.table.rows && expandable.table.rows.length > 0">
+                                <div class="overflow-x-auto" x-show="expandable.tables[tableIndex] && expandable.tables[tableIndex].rows && expandable.tables[tableIndex].rows.length > 0">
                                     <table class="min-w-full border border-gray-300">
                                         <thead>
                                             <tr class="bg-gray-100">
@@ -295,7 +290,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template x-for="(row, rowIndex) in (expandable.table && expandable.table.rows ? expandable.table.rows : [])" :key="rowIndex">
+                                            <template x-for="(row, rowIndex) in (expandable.tables[tableIndex] && expandable.tables[tableIndex].rows ? expandable.tables[tableIndex].rows : [])" :key="rowIndex">
                                             <tr>
                                                 <td class="border p-2">
                                                     <input type="text" x-model="row.product" class="w-full p-1 border rounded text-sm" placeholder="Название продукта">
@@ -316,7 +311,7 @@
                                                     <input type="text" x-model="row.calories" class="w-full p-1 border rounded text-sm" placeholder="0">
                                                 </td>
                                                 <td class="border p-2">
-                                                    <button type="button" @click="removeTableRowFromExpandable('{{ $mealKey }}', index, rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
+                                                    <button type="button" @click="removeTableRowFromExpandable('{{ $mealKey }}', index, tableIndex, rowIndex)" class="px-2 py-1 bg-red-500 text-white rounded text-xs">Удалить</button>
                                                 </td>
                                             </tr>
                                             </template>
@@ -325,6 +320,9 @@
                                 </div>
                             </div>
                         </template>
+                        <div class="mt-3">
+                            <button type="button" @click="addTableToExpandable('{{ $mealKey }}', index)" class="px-4 py-2 bg-green-500 text-white rounded text-sm">+ Добавить таблицу продуктов</button>
+                        </div>
                     </div>
                 </div>
             </div>
