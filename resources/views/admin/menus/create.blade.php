@@ -220,6 +220,7 @@ function menuApp() {
                 setTimeout(() => {
                     this.initializeRecipeEditors();
                     this.initializeDescriptionEditors();
+                    this.initializeExpandableContentEditors();
                 }, 500);
             });
             
@@ -229,6 +230,7 @@ function menuApp() {
                     setTimeout(() => {
                         this.initializeRecipeEditors();
                     this.initializeDescriptionEditors();
+                    this.initializeExpandableContentEditors();
                     }, 300);
                 });
             });
@@ -340,6 +342,56 @@ function menuApp() {
                 });
             });
         },
+        initializeExpandableContentEditors() {
+            if (typeof tinymce === 'undefined') {
+                return;
+            }
+            
+            // Инициализируем редакторы для всех полей содержания в expandable блоках
+            const mealKeys = ['breakfast', 'snack', 'dinner', 'lunch'];
+            mealKeys.forEach(mealKey => {
+                const expandables = this.menuData[mealKey]?.expandables || [];
+                expandables.forEach((expandable, index) => {
+                    const editorId = `expandable-content-${mealKey}-${index}`;
+                    const textarea = document.getElementById(editorId);
+                    
+                    if (!textarea) {
+                        return;
+                    }
+                    
+                    // Проверяем, не инициализирован ли уже редактор
+                    const existingEditor = tinymce.get(editorId);
+                    if (existingEditor) {
+                        return; // Редактор уже инициализирован
+                    }
+                    
+                    // Инициализируем редактор
+                    tinymce.init({
+                        selector: `#${editorId}`,
+                        license_key: 'gpl',
+                        height: 300,
+                        menubar: false,
+                        language: 'ru',
+                        language_url: '/js/ru.min.js',
+                        plugins: 'advlist autolink lists link image charmap preview anchor code',
+                        toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
+                        setup: (editor) => {
+                            editor.on('change', () => {
+                                if (this.menuData[mealKey] && this.menuData[mealKey].expandables && this.menuData[mealKey].expandables[index]) {
+                                    this.menuData[mealKey].expandables[index].content = editor.getContent();
+                                }
+                            });
+                            // Синхронизация при загрузке содержимого
+                            editor.on('init', () => {
+                                if (expandable && expandable.content) {
+                                    editor.setContent(expandable.content);
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        },
         async get() {
             this.loading = true;
             try {
@@ -413,10 +465,13 @@ function menuApp() {
                 this.loading = false;
                 // Инициализируем редакторы после загрузки данных
                 this.$nextTick(() => {
-                    this.initializeRecipeEditors();
-                    this.initializeDescriptionEditors();
-                    // Пересчитываем дневное КБЖУ после загрузки данных
-                    this.calculateDailyKbju();
+                    setTimeout(() => {
+                        this.initializeRecipeEditors();
+                        this.initializeDescriptionEditors();
+                        this.initializeExpandableContentEditors();
+                        // Пересчитываем дневное КБЖУ после загрузки данных
+                        this.calculateDailyKbju();
+                    }, 500);
                 });
             } catch (e) {
                 console.log(e);
@@ -523,12 +578,26 @@ function menuApp() {
                 if (typeof tinymce !== 'undefined') {
                     const mealKeys = ['breakfast', 'snack', 'dinner', 'lunch'];
                     mealKeys.forEach(mealKey => {
-                        const editorId = `recipe-editor-${mealKey}`;
-                        const editor = tinymce.get(editorId);
-                        if (editor) {
-                            editor.save();
-                            this.menuData[mealKey].recipe = editor.getContent();
+                        // Сохраняем редакторы рецептов
+                        const recipeEditorId = `recipe-editor-${mealKey}`;
+                        const recipeEditor = tinymce.get(recipeEditorId);
+                        if (recipeEditor) {
+                            recipeEditor.save();
+                            this.menuData[mealKey].recipe = recipeEditor.getContent();
                         }
+                        
+                        // Сохраняем редакторы содержания в expandable блоках
+                        const expandables = this.menuData[mealKey]?.expandables || [];
+                        expandables.forEach((expandable, index) => {
+                            const expandableEditorId = `expandable-content-${mealKey}-${index}`;
+                            const expandableEditor = tinymce.get(expandableEditorId);
+                            if (expandableEditor) {
+                                expandableEditor.save();
+                                if (this.menuData[mealKey] && this.menuData[mealKey].expandables && this.menuData[mealKey].expandables[index]) {
+                                    this.menuData[mealKey].expandables[index].content = expandableEditor.getContent();
+                                }
+                            }
+                        });
                     });
                 }
                 
@@ -587,6 +656,12 @@ function menuApp() {
                 content: '', 
                 note: '',
                 tables: []
+            });
+            // Инициализируем редактор для нового expandable блока
+            this.$nextTick(() => {
+                setTimeout(() => {
+                    this.initializeExpandableContentEditors();
+                }, 300);
             });
         },
         removeExpandable(mealKey, index) {

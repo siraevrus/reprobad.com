@@ -228,7 +228,7 @@
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Содержание</label>
-                        <textarea x-model="expandable.content" class="w-full p-2 border rounded" rows="3" placeholder="Содержание блока"></textarea>
+                        <textarea x-model="expandable.content" :id="'expandable-content-{{ $mealKey }}-' + index" class="w-full p-2 border rounded editor" rows="3" placeholder="Содержание блока"></textarea>
                     </div>
                     <div>
                         <label class="block text-sm mb-1">Примечание</label>
