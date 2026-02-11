@@ -39,6 +39,13 @@
   .menu-card-image.mci-big {
     background-color: #e5e5e5;
   }
+  .menu-card-name {
+    margin-top: 15px !important;
+  }
+  .menu-card-title {
+    font-size: calc(1.375rem - 4px) !important;
+    margin-top: calc(0.5rem - 3px) !important;
+  }
 </style>
 @endsection
 
@@ -129,8 +136,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-card-title">{{ $menuData['breakfast']['title'] ?? 'Завтрак' }}</div>
                     <div class="menu-card-name">Завтрак —&gt;</div>
+                    <div class="menu-card-title">{{ $menuData['breakfast']['title'] ?? 'Завтрак' }}</div>
                 </a>
             @endif
 
@@ -169,8 +176,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-card-title">{{ $menuData['snack']['title'] ?? 'Перекус' }}</div>
                     <div class="menu-card-name">Перекус —&gt;</div>
+                    <div class="menu-card-title">{{ $menuData['snack']['title'] ?? 'Перекус' }}</div>
                 </a>
             @endif
 
@@ -209,8 +216,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-card-title">{{ $menuData['dinner']['title'] ?? 'Обед' }}</div>
                     <div class="menu-card-name">Обед —&gt;</div>
+                    <div class="menu-card-title">{{ $menuData['dinner']['title'] ?? 'Обед' }}</div>
                 </a>
             @endif
 
@@ -249,8 +256,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="menu-card-title">{{ $menuData['lunch']['title'] ?? 'Ужин' }}</div>
                     <div class="menu-card-name">Ужин —&gt;</div>
+                    <div class="menu-card-title">{{ $menuData['lunch']['title'] ?? 'Ужин' }}</div>
                 </a>
             @endif
         </div>
