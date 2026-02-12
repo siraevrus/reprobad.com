@@ -71,11 +71,18 @@ class ComplexController extends Controller
         }
 
         $validated = $validator->validated();
-        $resource = Complex::query()
-            ->create($validated);
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image_left', 'image_right', 'images'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
+        $resource = Complex::query()
+            ->create($dataForSave);
+
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image_left, $resource, 'image_left');
         InputService::uploadFile($request->image_right, $resource, 'image_right');
+        InputService::uploadGallery($request->images, $resource, 'images');
 
         return response()->json([
             'success' => true,
@@ -100,12 +107,18 @@ class ComplexController extends Controller
 
         $validated = $validator->validated();
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image_left', 'image_right', 'images'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Complex::query()->findOrFail($id);
-        $resource->fill($validated);
+        $resource->fill($dataForSave);
         $resource->save();
 
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image_left, $resource, 'image_left');
         InputService::uploadFile($request->image_right, $resource, 'image_right');
+        InputService::uploadGallery($request->images, $resource, 'images');
 
         return response()->json([
             'success' => true,

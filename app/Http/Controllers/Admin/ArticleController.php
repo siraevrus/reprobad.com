@@ -62,8 +62,14 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
-        $resource = Article::query()->create($validated);
+
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image', 'icon'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
+        $resource = Article::query()->create($dataForSave);
         
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadFile($request->icon, $resource, 'icon');
         
@@ -89,10 +95,16 @@ class ArticleController extends Controller
         }
 
         $validated = $validator->validated();
+
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image', 'icon'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Article::query()->findOrFail($id);
-        $resource->fill($validated);
+        $resource->fill($dataForSave);
         $resource->save();
 
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadFile($request->icon, $resource, 'icon');
 

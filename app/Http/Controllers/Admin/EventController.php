@@ -67,9 +67,17 @@ class EventController extends Controller
             ], 422);
         }
 
-        $resource = Event::query()
-            ->create($validator->validated());
+        $validated = $validator->validated();
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        // Это предотвращает проблемы с памятью при работе с большими base64 строками
+        $imageFields = ['image', 'images', 'file', 'logo'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
+        $resource = Event::query()
+            ->create($dataForSave);
+
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');
@@ -96,10 +104,18 @@ class EventController extends Controller
             ], 422);
         }
 
+        $validated = $validator->validated();
+
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        // Это предотвращает проблемы с памятью при работе с большими base64 строками
+        $imageFields = ['image', 'images', 'file', 'logo'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Event::query()->findOrFail($id);
-        $resource->fill($validator->validated());
+        $resource->fill($dataForSave);
         $resource->save();
 
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->file, $resource, 'file');

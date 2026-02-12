@@ -74,9 +74,14 @@ class QuestionController extends Controller
 
         $validated = $validator->validated();
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['icon'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Question::query()
-            ->create($validated);
+            ->create($dataForSave);
         
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->icon, $resource, 'icon');
         
         return response()->json([
@@ -113,10 +118,15 @@ class QuestionController extends Controller
 
         $validated = $validator->validated();
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['icon'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Question::query()->findOrFail($id);
-        $resource->fill($validated);
+        $resource->fill($dataForSave);
         $resource->save();
 
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->icon, $resource, 'icon');
 
         return response()->json([

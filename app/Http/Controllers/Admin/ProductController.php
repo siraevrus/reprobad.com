@@ -73,15 +73,21 @@ class ProductController extends Controller
 
         $validated = $validator->validated();
 
-        $resource = Product::query()
-            ->create($validated);
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image', 'photo', 'logo', 'images', 'video', 'image_left', 'image_right'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
 
-        // Обработка изображений через InputService
+        $resource = Product::query()
+            ->create($dataForSave);
+
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadFile($request->photo, $resource, 'photo');
         InputService::uploadFile($request->logo, $resource, 'logo');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->video, $resource, 'video');
+        InputService::uploadFile($request->image_left, $resource, 'image_left');
+        InputService::uploadFile($request->image_right, $resource, 'image_right');
 
         return response()->json([
             'success' => true,
@@ -106,16 +112,22 @@ class ProductController extends Controller
 
         $validated = $validator->validated();
 
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image', 'photo', 'logo', 'images', 'video', 'image_left', 'image_right'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Product::query()->findOrFail($id);
-        $resource->fill($validated);
+        $resource->fill($dataForSave);
         $resource->save();
 
-        // Обработка изображений через InputService
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         InputService::uploadFile($request->photo, $resource, 'photo');
         InputService::uploadFile($request->logo, $resource, 'logo');
         InputService::uploadGallery($request->images, $resource, 'images');
         InputService::uploadFile($request->video, $resource, 'video');
+        InputService::uploadFile($request->image_left, $resource, 'image_left');
+        InputService::uploadFile($request->image_right, $resource, 'image_right');
 
         return response()->json([
             'success' => true,

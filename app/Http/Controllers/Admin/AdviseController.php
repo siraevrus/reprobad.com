@@ -58,9 +58,15 @@ class AdviseController extends Controller
         }
 
         $validated = $validator->validated();
+
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Advise::query()
-            ->create($validated);
+            ->create($dataForSave);
         
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
         
         return response()->json([
@@ -85,10 +91,16 @@ class AdviseController extends Controller
         }
 
         $validated = $validator->validated();
+
+        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
+        $imageFields = ['image'];
+        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
         $resource = Advise::query()->findOrFail($id);
-        $resource->fill($validated);
+        $resource->fill($dataForSave);
         $resource->save();
 
+        // Обработка изображений через InputService (конвертирует base64 в файлы)
         InputService::uploadFile($request->image, $resource, 'image');
 
         return response()->json([
