@@ -1399,8 +1399,7 @@ figcaption {
 }
 
 .nav-link-divider {
-  background-image: linear-gradient(90deg, #ffffff1a, #ffffff40 50%, #ffffff0d);
-  height: .0625rem;
+  display: none;
 }
 
 .footer-logo-link:hover {
@@ -6425,7 +6424,7 @@ figcaption {
     color: var(--white);
   }
 
-  .nav-dropdown, .nav-link-divider {
+  .nav-dropdown {
     display: none;
   }
 
