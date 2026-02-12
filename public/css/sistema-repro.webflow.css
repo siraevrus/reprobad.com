@@ -6344,7 +6344,7 @@ figcaption {
   .brand {
     grid-column-gap: .75rem;
     grid-row-gap: .75rem;
-    max-width: 10rem;
+    max-width: 13rem;
     margin-left: .5rem;
     padding-left: 0;
     font-size: .5rem;
