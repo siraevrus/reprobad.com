@@ -26,9 +26,15 @@
   .menu-part[id] {
     scroll-margin-top: 20px;
   }
+  .side-menu-link {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
   .side-menu-image {
-    width: 55px !important;
-    height: 55px !important;
+    width: 65px !important;
+    height: 65px !important;
     object-fit: cover;
     flex-shrink: 0;
     background-color: #e5e5e5;
@@ -45,6 +51,20 @@
   .menu-card-title {
     font-size: calc(1.375rem - 4px) !important;
     margin-top: calc(0.5rem - 3px) !important;
+  }
+  .menu-table-cell.first {
+    flex: 2 !important;
+  }
+  .menu-table-cell:not(.first) {
+    flex: 1 !important;
+  }
+  @media screen and (max-width: 767px) {
+    .menu-table-row {
+      font-size: calc(0.875rem * 0.75) !important;
+    }
+    .menu-table-row.mtr-head {
+      font-size: calc(0.75rem * 0.75) !important;
+    }
   }
 </style>
 @endsection
@@ -271,7 +291,7 @@
                 <div class="side-menu-items">
                     <div class="side-menu-h"><strong>{{ $menu->title }}</strong></div>
                     @if(isset($menuData['breakfast']))
-                        <a href="#{{ $breakfastAnchor }}" class="side-menu-link w-inline-block">
+                        <a href="#{{ $breakfastAnchor }}" class="side-menu-link w-inline-block w--current">
                             @php
                                 $breakfastImageSmall = $menuData['breakfast']['image_small'] ?? $menuData['breakfast']['small_image'] ?? null;
                                 $breakfastImage = $breakfastImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
@@ -279,7 +299,7 @@
                             <img src="{{ $breakfastImage }}" loading="lazy" alt="Завтрак" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Завтрак</div>
-                                <div>{{ $menuData['breakfast']['title'] ?? '' }}</div>
+                                <div>{{ strip_tags($menuData['breakfast']['title'] ?? '') }}</div>
                             </div>
                         </a>
                     @endif
@@ -292,7 +312,7 @@
                             <img src="{{ $snackImage }}" loading="lazy" alt="Перекус" class="side-menu-image">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Перекус</div>
-                                <div>{{ $menuData['snack']['title'] ?? '' }}</div>
+                                <div>{{ strip_tags($menuData['snack']['title'] ?? '') }}</div>
                             </div>
                         </a>
                     @endif
@@ -305,7 +325,7 @@
                             <img src="{{ $dinnerImage }}" loading="lazy" alt="Обед" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Обед</div>
-                                <div>{{ $menuData['dinner']['title'] ?? '' }}</div>
+                                <div>{{ strip_tags($menuData['dinner']['title'] ?? '') }}</div>
                             </div>
                         </a>
                     @endif
@@ -318,7 +338,7 @@
                             <img src="{{ $lunchImage }}" loading="lazy" alt="Ужин" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
                             <div class="side-menu-item-content">
                                 <div class="side-menu-title">Ужин</div>
-                                <div>{{ $menuData['lunch']['title'] ?? '' }}</div>
+                                <div>{{ strip_tags($menuData['lunch']['title'] ?? '') }}</div>
                             </div>
                         </a>
                     @endif
