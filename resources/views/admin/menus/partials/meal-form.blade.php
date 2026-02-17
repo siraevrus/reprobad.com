@@ -64,6 +64,51 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Галерея изображений -->
+        <div class="mt-6 border-t pt-6">
+            <div class="flex justify-between items-center mb-3">
+                <h4 class="font-semibold">Галерея изображений</h4>
+                <button type="button" @click="addImageToGallery('{{ $mealKey }}')" class="px-4 py-2 bg-green-500 text-white rounded text-sm">+ Добавить изображение</button>
+            </div>
+            <div class="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4">
+                <p class="text-sm text-yellow-800 mb-2"><strong>Галерея изображений:</strong></p>
+                <ul class="text-sm text-yellow-700 space-y-1 list-disc list-inside">
+                    <li>Используется для отображения нескольких изображений блюда в галерее</li>
+                    <li>Рекомендуемый размер: 768×512px (соотношение 3:2)</li>
+                    <li>Если галерея не заполнена, будет использоваться "Большое изображение"</li>
+                    <li>Можно загрузить несколько изображений и прокручивать их</li>
+                </ul>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <template x-for="(img, imgIndex) in (menuData.{{ $mealKey }}.images || [])" :key="'img-'+imgIndex">
+                    <div class="relative border-2 border-dashed border-gray-300 rounded p-2">
+                        <div class="relative w-full h-[150px] flex items-center justify-center">
+                            <div x-show="!img.url" class="text-xs text-gray-500 text-center px-2">
+                                <p>Загрузить</p>
+                                <p class="text-[10px] mt-1">768×512px</p>
+                            </div>
+                            <img :src="img.url" alt="" class="max-w-full max-h-full object-cover rounded" x-show="img.url">
+                            <label class="absolute inset-0 cursor-pointer" x-show="!img.url">
+                                <input type="file" @change="openImageCropperForGallery($event, '{{ $mealKey }}', imgIndex, 768, 512)" class="hidden" accept="image/jpeg,image/png,image/webp">
+                            </label>
+                            <button x-show="img.url" @click.prevent="removeImageFromGallery('{{ $mealKey }}', imgIndex)" class="absolute top-1 right-1 py-1 px-2 bg-red-500 text-white text-xs rounded">&times;</button>
+                            <label x-show="img.url" class="absolute bottom-1 left-1 cursor-pointer bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                Заменить
+                                <input type="file" @change="openImageCropperForGallery($event, '{{ $mealKey }}', imgIndex, 768, 512)" class="hidden" accept="image/jpeg,image/png,image/webp">
+                            </label>
+                        </div>
+                        <div class="mt-2 text-xs text-center text-gray-600" x-show="img.url">
+                            Изображение <span x-text="imgIndex + 1"></span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div x-show="!menuData.{{ $mealKey }}.images || menuData.{{ $mealKey }}.images.length === 0" class="text-center py-8 text-gray-500">
+                <p class="mb-2">Галерея пуста</p>
+                <p class="text-sm">Нажмите "+ Добавить изображение" для начала загрузки</p>
+            </div>
+        </div>
     </div>
 
     <!-- Основная информация -->

@@ -6,44 +6,112 @@
     @endif
 
     @php
-        $bigImage = $meal['image_big'] ?? $meal['big_image'] ?? null;
-        $bigImageSrc = $bigImage ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+        // Поддержка массива изображений или одиночного изображения
+        $images = [];
+        if (isset($meal['images']) && is_array($meal['images']) && count($meal['images']) > 0) {
+            // Если есть массив изображений, используем его
+            foreach ($meal['images'] as $img) {
+                if (is_array($img) && isset($img['url'])) {
+                    $images[] = ['url' => $img['url']];
+                } elseif (is_string($img)) {
+                    $images[] = ['url' => $img];
+                }
+            }
+        }
+        // Если массива нет, используем одиночное изображение
+        if (empty($images)) {
+            $bigImage = $meal['image_big'] ?? $meal['big_image'] ?? null;
+            if ($bigImage) {
+                $images[] = ['url' => $bigImage];
+            } else {
+                $images[] = ['url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg=='];
+            }
+        }
+        $galleryId = 'gallery-' . str_replace(['#', ' '], ['', '-'], $mealId);
     @endphp
-    <div class="menu-content-card">
-        <img src="{{ $bigImageSrc }}" loading="lazy" sizes="(max-width: 767px) 100vw, 768px" alt="" class="menu-card-image mci-big" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
-            @if(isset($meal['kbju']))
-                <div class="menu-card-info mci-block">
-                    <div class="menu-card-info-item mci-big">
-                        <div class="mci-orange"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
-                        <div class="menu-card-label mcl-big">
-                            <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['proteins'] ?? 0) }} г</strong></div>
-                            <div>белки</div>
-                        </div>
-                    </div>
-                    <div class="menu-card-info-item mci-big">
-                        <div class="mci-orange"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
-                        <div class="menu-card-label mcl-big">
-                            <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['fats'] ?? 0) }} г</strong></div>
-                            <div>жиры</div>
-                        </div>
-                    </div>
-                    <div class="menu-card-info-item mci-big">
-                        <div class="mci-orange"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
-                        <div class="menu-card-label mcl-big">
-                            <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['carbs'] ?? 0) }} г</strong></div>
-                            <div>углеводы</div>
-                        </div>
-                    </div>
-                    <div class="menu-card-info-item mci-big">
-                        <div class="mci-orange"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
-                        <div class="menu-card-label mcl-big">
-                            <div class="menu-card-value mcv-big">{{ formatMenuNumber($meal['kbju']['calories'] ?? $meal['kbju']['kcal'] ?? 0) }}</div>
-                            <div>ккал</div>
-                        </div>
-                    </div>
+    <div class="menu-content-card menu-gallery-container" x-data="menuGallery{{ $galleryId }}()">
+        <div class="menu-gallery-main">
+            <img @click="currentImage = slides[currentIndex].url; open = true" 
+                 :src="slides[currentIndex].url" 
+                 alt="" 
+                 class="menu-card-image mci-big" 
+                 style="cursor: pointer;"
+                 onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
+            
+            @if(count($images) > 1)
+                <div class="menu-gallery-prev" @click="prevImage" x-show="slides.length > 1">
+                    <
+                </div>
+                <div class="menu-gallery-next" @click="nextImage" x-show="slides.length > 1">
+                    >
                 </div>
             @endif
         </div>
+
+        <!-- Модальное окно для увеличения изображения -->
+        <template x-if="open">
+            <div class="menu-gallery-modal" @click="open = false" x-cloak>
+                <div class="menu-gallery-modal-close" @click.stop="open = false">&times;</div>
+                <div class="menu-gallery-modal-content" @click.stop>
+                    <img :src="currentImage" alt="" x-show="currentImage">
+                    @if(count($images) > 1)
+                        <div class="menu-gallery-modal-prev" @click.stop="prevImage" x-show="slides.length > 1">
+                            <
+                        </div>
+                        <div class="menu-gallery-modal-next" @click.stop="nextImage" x-show="slides.length > 1">
+                            >
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </template>
+
+        <!-- Миниатюры для прокрутки -->
+        @if(count($images) > 1)
+            <div class="menu-gallery-thumbnails">
+                <template x-for="(image, index) in slides" :key="index">
+                    <img :src="image.url" 
+                         :class="{'active': index === currentIndex}" 
+                         @click="setCurrentIndex(index)"
+                         alt=""
+                         style="cursor: pointer;">
+                </template>
+            </div>
+        @endif
+
+        @if(isset($meal['kbju']))
+            <div class="menu-card-info mci-block">
+                <div class="menu-card-info-item mci-big">
+                    <div class="mci-orange"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
+                    <div class="menu-card-label mcl-big">
+                        <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['proteins'] ?? 0) }} г</strong></div>
+                        <div>белки</div>
+                    </div>
+                </div>
+                <div class="menu-card-info-item mci-big">
+                    <div class="mci-orange"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
+                    <div class="menu-card-label mcl-big">
+                        <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['fats'] ?? 0) }} г</strong></div>
+                        <div>жиры</div>
+                    </div>
+                </div>
+                <div class="menu-card-info-item mci-big">
+                    <div class="mci-orange"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
+                    <div class="menu-card-label mcl-big">
+                        <div class="menu-card-value mcv-big"><strong>{{ formatMenuNumber($meal['kbju']['carbs'] ?? 0) }} г</strong></div>
+                        <div>углеводы</div>
+                    </div>
+                </div>
+                <div class="menu-card-info-item mci-big">
+                    <div class="mci-orange"><img src="/menu-images/ckal-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white"></div>
+                    <div class="menu-card-label mcl-big">
+                        <div class="menu-card-value mcv-big">{{ formatMenuNumber($meal['kbju']['calories'] ?? $meal['kbju']['kcal'] ?? 0) }}</div>
+                        <div>ккал</div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
 
     @if(isset($meal['description']))
         @php
@@ -170,3 +238,40 @@
         <p class="menu-snoska">{!! nl2br(e($meal['note'])) !!}</p>
     @endif
 </div>
+
+<script>
+function menuGallery{{ $galleryId }}() {
+    return {
+        slides: @json($images),
+        currentIndex: 0,
+        currentImage: '',
+        open: false,
+        init() {
+            // Инициализируем currentImage только при необходимости, но не открываем модальное окно
+            if (this.slides.length > 0 && this.slides[0].url) {
+                this.currentImage = this.slides[0].url;
+            }
+            // Убеждаемся, что модальное окно закрыто при инициализации
+            this.open = false;
+        },
+        setCurrentIndex(index) {
+            this.currentIndex = index;
+            if (this.slides[index] && this.slides[index].url) {
+                this.currentImage = this.slides[index].url;
+            }
+        },
+        prevImage() {
+            this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
+            if (this.slides[this.currentIndex] && this.slides[this.currentIndex].url) {
+                this.currentImage = this.slides[this.currentIndex].url;
+            }
+        },
+        nextImage() {
+            this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
+            if (this.slides[this.currentIndex] && this.slides[this.currentIndex].url) {
+                this.currentImage = this.slides[this.currentIndex].url;
+            }
+        }
+    };
+}
+</script>

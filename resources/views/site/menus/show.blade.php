@@ -5,6 +5,7 @@
 <link href="/menu-css/webflow.css" rel="stylesheet" type="text/css">
 <link href="/menu-css/sistema-repro.webflow.css" rel="stylesheet" type="text/css">
 <style>
+  [x-cloak] { display: none !important; }
   p + .expandable {
     margin-top: 1.5rem;
   }
@@ -64,6 +65,162 @@
     }
     .menu-table-row.mtr-head {
       font-size: calc(0.75rem * 0.75) !important;
+    }
+  }
+  /* Стили для галереи изображений */
+  .menu-gallery-container {
+    position: relative;
+  }
+  .menu-gallery-main {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .menu-gallery-prev,
+  .menu-gallery-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+    transition: background 0.3s ease;
+  }
+  .menu-gallery-prev:hover,
+  .menu-gallery-next:hover {
+    background: rgba(255, 255, 255, 1);
+  }
+  .menu-gallery-prev {
+    left: 10px;
+  }
+  .menu-gallery-next {
+    right: 10px;
+  }
+  .menu-gallery-thumbnails {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .menu-gallery-thumbnails img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .menu-gallery-thumbnails img:hover {
+    transform: scale(1.1);
+  }
+  .menu-gallery-thumbnails img.active {
+    border-color: #007bff;
+  }
+  .menu-gallery-modal {
+    position: fixed;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.9);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-gallery-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-gallery-modal-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .menu-gallery-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #fff;
+    font-size: 60px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 0.55;
+    z-index: 1001;
+    transition: color 0.3s ease;
+  }
+  .menu-gallery-modal-close:hover {
+    color: #ccc;
+  }
+  .menu-gallery-modal-prev,
+  .menu-gallery-modal-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    z-index: 1001;
+    transition: background 0.3s ease;
+  }
+  .menu-gallery-modal-prev:hover,
+  .menu-gallery-modal-next:hover {
+    background: rgba(255, 255, 255, 1);
+  }
+  .menu-gallery-modal-prev {
+    left: 20px;
+  }
+  .menu-gallery-modal-next {
+    right: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    .menu-gallery-prev,
+    .menu-gallery-next {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+    }
+    .menu-gallery-prev {
+      left: 5px;
+    }
+    .menu-gallery-next {
+      right: 5px;
+    }
+    .menu-gallery-thumbnails img {
+      width: 60px;
+      height: 45px;
+    }
+    .menu-gallery-modal-prev,
+    .menu-gallery-modal-next {
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+    }
+    .menu-gallery-modal-prev {
+      left: 10px;
+    }
+    .menu-gallery-modal-next {
+      right: 10px;
     }
   }
 </style>

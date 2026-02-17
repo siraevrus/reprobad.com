@@ -181,13 +181,14 @@ function menuApp() {
             imageUrl: '',
             mealKey: '',
             field: '',
+            imgIndex: undefined,
             cropper: null,
             targetWidth: 600,
             targetHeight: 400
         },
         menuData: {
             breakfast: { 
-                image: '', image_big: '', image_small: '', 
+                image: '', image_big: '', image_small: '', images: [],
                 title: '', name: 'Завтрак', anchor: 'breakfast',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -195,7 +196,7 @@ function menuApp() {
                 expandables: []
             },
             snack: { 
-                image: '', image_big: '', image_small: '', 
+                image: '', image_big: '', image_small: '', images: [],
                 title: '', name: 'Перекус', anchor: 'snack',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -203,7 +204,7 @@ function menuApp() {
                 expandables: []
             },
             dinner: { 
-                image: '', image_big: '', image_small: '', 
+                image: '', image_big: '', image_small: '', images: [],
                 title: '', name: 'Обед', anchor: 'dinner',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -211,7 +212,7 @@ function menuApp() {
                 expandables: []
             },
             lunch: { 
-                image: '', image_big: '', image_small: '', 
+                image: '', image_big: '', image_small: '', images: [],
                 title: '', name: 'Ужин', anchor: 'lunch',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -519,6 +520,19 @@ function menuApp() {
                         }
                         if (!merged[key].expandables) {
                             merged[key].expandables = [];
+                        }
+                        // Инициализируем массив images, если его нет
+                        if (!Array.isArray(merged[key].images)) {
+                            merged[key].images = [];
+                        }
+                        // Нормализуем формат images: если есть строки, преобразуем в объекты с url
+                        if (Array.isArray(merged[key].images)) {
+                            merged[key].images = merged[key].images.map(img => {
+                                if (typeof img === 'string') {
+                                    return { url: img };
+                                }
+                                return img;
+                            });
                         }
                         // Миграция recipe_table -> recipe_tables
                         if (merged[key].recipe_table != null && typeof merged[key].recipe_table === 'object' && !Array.isArray(merged[key].recipe_tables)) {
@@ -846,6 +860,95 @@ function menuApp() {
             if (tables && tables[tableIndex] && tables[tableIndex].rows) {
                 tables[tableIndex].rows.splice(rowIndex, 1);
             }
+        },
+        addImageToGallery(mealKey) {
+            if (!this.menuData[mealKey].images) {
+                this.menuData[mealKey].images = [];
+            }
+            this.menuData[mealKey].images.push({ url: '' });
+        },
+        removeImageFromGallery(mealKey, imgIndex) {
+            if (this.menuData[mealKey].images) {
+                this.menuData[mealKey].images.splice(imgIndex, 1);
+            }
+        },
+        openImageCropperForGallery(event, mealKey, imgIndex, width, height) {
+            console.log('openImageCropperForGallery вызван', { mealKey, imgIndex, width, height });
+            const file = event.target.files[0];
+            if (!file) {
+                console.log('Файл не выбран');
+                return;
+            }
+            
+            if (typeof Cropper === 'undefined') {
+                console.error('Cropper.js не загружен');
+                alert('Ошибка: библиотека Cropper.js не загружена. Пожалуйста, обновите страницу.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                console.log('Изображение загружено, открываем модальное окно');
+                this.cropperModal.imageUrl = e.target.result;
+                this.cropperModal.mealKey = mealKey;
+                this.cropperModal.field = `images[${imgIndex}].url`;
+                this.cropperModal.imgIndex = imgIndex;
+                this.cropperModal.targetWidth = width;
+                this.cropperModal.targetHeight = height;
+                this.cropperModal.show = true;
+                
+                // Ждем пока DOM обновится и Alpine.js отрисует модальное окно
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        const imageElement = document.getElementById('cropper-image-menu');
+                        console.log('Ищем элемент изображения:', imageElement, 'URL:', this.cropperModal.imageUrl);
+                        if (imageElement && this.cropperModal.imageUrl) {
+                            if (this.cropperModal.cropper) {
+                                this.cropperModal.cropper.destroy();
+                                this.cropperModal.cropper = null;
+                            }
+                            
+                            // Функция инициализации Cropper
+                            const initCropper = () => {
+                                console.log('Инициализируем Cropper');
+                                try {
+                                    this.cropperModal.cropper = new Cropper(imageElement, {
+                                        aspectRatio: width / height,
+                                        viewMode: 1,
+                                        autoCropArea: 1,
+                                        responsive: true,
+                                        background: false,
+                                        guides: true,
+                                        center: true,
+                                        highlight: false,
+                                        cropBoxMovable: true,
+                                        cropBoxResizable: true,
+                                        toggleDragModeOnDblclick: false,
+                                    });
+                                    console.log('Cropper инициализирован успешно');
+                                } catch (error) {
+                                    console.error('Ошибка при инициализации Cropper:', error);
+                                    alert('Ошибка при инициализации редактора изображений. Попробуйте обновить страницу.');
+                                }
+                            };
+                            
+                            if (imageElement.complete) {
+                                initCropper();
+                            } else {
+                                imageElement.onload = initCropper;
+                            }
+                        } else {
+                            console.error('Элемент изображения не найден или URL пуст');
+                        }
+                    }, 100);
+                });
+            };
+            reader.onerror = () => {
+                console.error('Ошибка при чтении файла');
+                alert('Ошибка при чтении файла изображения');
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
         },
         importCsvToRecipeTable(event, mealKey, tableIndex) {
             const file = event.target.files[0];
@@ -1177,6 +1280,7 @@ function menuApp() {
                 this.cropperModal.cropper.destroy();
                 this.cropperModal.cropper = null;
             }
+            this.cropperModal.imgIndex = undefined;
         },
         saveCroppedImage() {
             console.log('saveCroppedImage вызван');
@@ -1200,8 +1304,22 @@ function menuApp() {
                     
                     // Сохраняем в menuData
                     if (this.menuData[this.cropperModal.mealKey]) {
-                        this.menuData[this.cropperModal.mealKey][this.cropperModal.field] = croppedImageUrl;
-                        console.log('Изображение сохранено');
+                        // Проверяем, сохраняем ли мы в массив images
+                        if (this.cropperModal.field && this.cropperModal.field.startsWith('images[') && typeof this.cropperModal.imgIndex !== 'undefined') {
+                            // Сохраняем в массив images
+                            if (!this.menuData[this.cropperModal.mealKey].images) {
+                                this.menuData[this.cropperModal.mealKey].images = [];
+                            }
+                            if (!this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex]) {
+                                this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex] = { url: '' };
+                            }
+                            this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex].url = croppedImageUrl;
+                            console.log('Изображение сохранено в галерею, индекс:', this.cropperModal.imgIndex);
+                        } else {
+                            // Обычное сохранение в поле
+                            this.menuData[this.cropperModal.mealKey][this.cropperModal.field] = croppedImageUrl;
+                            console.log('Изображение сохранено');
+                        }
                     } else {
                         console.error('mealKey не найден:', this.cropperModal.mealKey);
                     }
