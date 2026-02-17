@@ -3,7 +3,7 @@
 @section('content')
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-semibold text-gray-800">История запросов пользователей</h1>
-        <a href="{{ route('admin.chat-history.export', request()->query()) }}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 inline-flex items-center gap-1">
+        <a href="/admin/chat-history/export?{{ http_build_query(array_filter(['source' => $source ?? null, 'user_id' => $userId ?? null])) }}" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 inline-flex items-center gap-1">
             <span class="material-icons">download</span>
             <span>Выгрузить отчет (TXT)</span>
         </a>

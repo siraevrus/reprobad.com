@@ -55,8 +55,8 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
     Route::resource('/admin/menus', MenuController::class);
-    Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
     Route::get('/admin/chat-history/export', [ChatHistoryController::class, 'export'])->name('chat-history.export');
+    Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/feedbacks', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/test-results', TestResultController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/test-questions', TestQuestionController::class);
