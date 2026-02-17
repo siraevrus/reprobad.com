@@ -43,6 +43,11 @@
         <span>SEO управление</span>
     </a>
 
+    <a href="{{ route('admin.short-links.index') }}" class="px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 mb-5 items-center inline-flex gap-1">
+        <span class="material-icons">link</span>
+        <span>Короткие ссылки</span>
+    </a>
+
     <a href="{{ route('admin.chat-history.index') }}" class="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 mb-5 items-center inline-flex gap-1">
         <span class="material-icons">history</span>
         <span>История запросов бота</span>

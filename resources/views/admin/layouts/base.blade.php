@@ -109,6 +109,7 @@
                 { href: '{{ route('admin.test-questions.index') }}', segment: 'test-questions', icon: 'help_outline', text: 'Вопросы теста' },
                 { href: '{{ route('admin.test-result-fields.index') }}', segment: 'test-result-fields', icon: 'edit_note', text: 'Редактирование результатов теста' },
                 { href: '{{ route('admin.test-results.index') }}', segment: 'test-results', icon: 'quiz', text: 'Результаты пользователей' },
+                { href: '{{ route('admin.short-links.index') }}', segment: 'short-links', icon: 'link', text: 'Короткие ссылки' },
                 { href: '#', segment: 'divider', icon: '', text: '' }, // Separator
                 { href: '{{ route('admin.users.index') }}', segment: 'users', icon: 'person', text: 'Пользователи' },
                 { href: '{{ route('admin.config.edit') }}', segment: 'config', icon: 'settings', text: 'Настройки' }

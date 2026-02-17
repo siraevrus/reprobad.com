@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\TestQuestionController;
 use App\Http\Controllers\Admin\TestResultFieldController;
 use App\Http\Controllers\Admin\ChatHistoryController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ShortLinkController;
 use App\Http\Controllers\Site\FormController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\ArticleController as SiteArticleController;
@@ -37,7 +38,9 @@ use App\Http\Controllers\Site\MapController as SiteMapController;
 use App\Http\Controllers\Site\FaqController as SiteFaqController;
 use App\Http\Controllers\Site\MenuController as SiteMenuController;
 use App\Http\Controllers\Site\TestController as SiteTestController;
+use App\Http\Controllers\ShortLinkRedirectController;
 
+Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name('short.redirect');
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
@@ -55,6 +58,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/subscribers', SubscribeController::class);
     Route::resource('/admin/steps', StepController::class);
     Route::resource('/admin/menus', MenuController::class);
+    Route::resource('/admin/short-links', ShortLinkController::class);
     Route::get('/admin/chat-history/export', [ChatHistoryController::class, 'export'])->name('chat-history.export');
     Route::resource('/admin/chat-history', ChatHistoryController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/feedbacks', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'show', 'destroy']);
