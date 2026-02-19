@@ -8,10 +8,11 @@
             <label for="file-input-replace-{{ $field }}" class="py-1 px-3 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
                 Заменить изображение
             </label>
-            <button onclick="removeImage{{ $field }}()" class="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600">
+            <button onclick="removeImage{{ $field }}()" type="button" class="py-1 px-3 bg-red-500 text-white rounded hover:bg-red-600">
                 Удалить изображение
             </button>
         </div>
+        <div id="upload-status-{{ $field }}" class="text-sm text-gray-500 mt-1" style="display: none;"></div>
     </div>
 
     <!-- Кнопка загрузки -->
@@ -22,20 +23,9 @@
         >
             <p>Перетащите изображение сюда <br>или нажмите для загрузки <br><span class="text-sm text-gray-500">(рекомендуемый размер: {{ $width ?? 1280 }}×{{ $height ?? 853 }})</span></p>
         </label>
-        <input 
-            type="file" 
-            id="file-input-{{ $field }}"
-            accept="image/*" 
-            class="hidden">
-        <input 
-            type="file" 
-            id="file-input-replace-{{ $field }}"
-            accept="image/*" 
-            class="hidden">
+        <input type="file" id="file-input-{{ $field }}" accept="image/*" class="hidden">
+        <input type="file" id="file-input-replace-{{ $field }}" accept="image/*" class="hidden">
     </div>
-
-    <!-- Скрытое поле для хранения base64 изображения с синхронизацией через Alpine.js -->
-    <input type="hidden" id="hidden-image-{{ $field }}" name="{{ $field }}" x-model="form.{{ $field }}" value="">
 </div>
 
 <!-- Модальное окно для обрезки изображения -->
@@ -43,20 +33,14 @@
     <div class="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-xl font-semibold">Обрезка изображения ({{ $width ?? 1280 }}×{{ $height ?? 853 }})</h3>
-            <button onclick="closeCropper{{ $field }}()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            <button onclick="closeCropper{{ $field }}()" type="button" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
         </div>
-        
         <div class="mb-4" style="max-height: 60vh; overflow: auto;">
             <img id="cropper-image-{{ $field }}" style="max-width: 100%; display: block;">
         </div>
-        
         <div class="flex justify-end space-x-2">
-            <button onclick="closeCropper{{ $field }}()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
-                Отмена
-            </button>
-            <button onclick="cropAndSave{{ $field }}()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                Сохранить
-            </button>
+            <button onclick="closeCropper{{ $field }}()" type="button" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Отмена</button>
+            <button onclick="cropAndSave{{ $field }}()" type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Сохранить</button>
         </div>
     </div>
 </div>
@@ -67,206 +51,144 @@
     const targetWidth = {{ $width ?? 1280 }};
     const targetHeight = {{ $height ?? 853 }};
     let cropperInstance = null;
-    
-    // Функция для обновления Alpine.js формы
-    function updateAlpineForm(fieldName, value) {
-        console.log('Обновление формы для поля:', fieldName, 'значение:', value ? 'base64 данные (' + value.length + ' символов)' : 'пусто');
-        
-        // Обновляем напрямую через Alpine (приоритетный способ)
-        if (window.Alpine) {
-            const alpineComponent = document.querySelector('[x-data*="app()"]');
-            if (alpineComponent) {
-                try {
-                    const data = Alpine.$data(alpineComponent);
-                    if (data && data.form) {
-                        data.form[fieldName] = value || null;
-                        console.log('Форма обновлена через Alpine.$data');
-                    }
-                } catch (e) {
-                    console.warn('Ошибка при обновлении через Alpine.$data:', e);
-                    // Альтернативный способ через _x_dataStack
-                    if (alpineComponent._x_dataStack && alpineComponent._x_dataStack.length > 0) {
-                        const data = alpineComponent._x_dataStack[0];
-                        if (data && data.form) {
-                            data.form[fieldName] = value || null;
-                            console.log('Форма обновлена через _x_dataStack');
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Обновляем скрытое поле, которое связано с x-model
-        const hiddenInput = document.getElementById('hidden-image-' + fieldName);
-        if (hiddenInput) {
-            hiddenInput.value = value || '';
-            // Триггерим событие input для Alpine.js
-            hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-    }
-    
-    // Проверяем наличие Cropper.js
+
     if (typeof Cropper === 'undefined') {
         console.error('Cropper.js не загружен!');
-        alert('Ошибка: библиотека Cropper.js не загружена. Пожалуйста, обновите страницу.');
         return;
     }
-    
+
+    function setAlpineFormField(fieldName, value) {
+        const el = document.querySelector('[x-data*="app()"]');
+        if (!el) return;
+        try {
+            const data = Alpine.$data(el);
+            if (data && data.form) data.form[fieldName] = value;
+        } catch (e) {
+            if (el._x_dataStack && el._x_dataStack[0] && el._x_dataStack[0].form) {
+                el._x_dataStack[0].form[fieldName] = value;
+            }
+        }
+    }
+
+    function showStatus(msg) {
+        const el = document.getElementById('upload-status-' + field);
+        if (el) { el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
+    }
+
+    function showPreview(url) {
+        document.getElementById('preview-img-' + field).src = url;
+        document.getElementById('preview-' + field).style.display = 'block';
+        document.getElementById('upload-area-' + field).style.display = 'none';
+    }
+
+    function hidePreview() {
+        document.getElementById('preview-' + field).style.display = 'none';
+        document.getElementById('upload-area-' + field).style.display = 'block';
+        showStatus('');
+    }
+
+    async function uploadBlob(blob) {
+        showStatus('Загрузка...');
+        const formData = new FormData();
+        formData.append('file', blob, field + '.jpg');
+
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        try {
+            const response = await fetch('/admin/upload', {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': token },
+                body: formData
+            });
+            const data = await response.json();
+            if (data.success && data.url) {
+                setAlpineFormField(field, data.url);
+                showPreview(data.url);
+                showStatus('');
+                return data.url;
+            } else {
+                showStatus('Ошибка: ' + JSON.stringify(data.errors || data));
+                return null;
+            }
+        } catch (e) {
+            showStatus('Ошибка сети: ' + e.message);
+            return null;
+        }
+    }
+
     function openCropper(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const modal = document.getElementById('cropper-modal-' + field);
             const img = document.getElementById('cropper-image-' + field);
-            
             img.src = e.target.result;
             modal.style.display = 'flex';
-            
-            // Уничтожаем предыдущий cropper, если есть
-            if (cropperInstance) {
-                cropperInstance.destroy();
-            }
-            
-            // Инициализируем новый cropper
+            if (cropperInstance) cropperInstance.destroy();
             cropperInstance = new Cropper(img, {
                 aspectRatio: targetWidth / targetHeight,
                 viewMode: 1,
                 autoCropArea: 1,
                 responsive: true,
                 background: false,
-                guides: true,
-                center: true,
-                highlight: true,
-                cropBoxMovable: true,
-                cropBoxResizable: true,
             });
         };
         reader.readAsDataURL(file);
     }
-    
+
     function closeCropper() {
-        const modal = document.getElementById('cropper-modal-' + field);
-        modal.style.display = 'none';
-        if (cropperInstance) {
-            cropperInstance.destroy();
-            cropperInstance = null;
-        }
+        document.getElementById('cropper-modal-' + field).style.display = 'none';
+        if (cropperInstance) { cropperInstance.destroy(); cropperInstance = null; }
     }
-    
+
     function cropAndSave() {
-        if (!cropperInstance) {
-            alert('Ошибка: редактор не инициализирован');
-            return;
-        }
-        
+        if (!cropperInstance) return;
         const canvas = cropperInstance.getCroppedCanvas({
-            width: targetWidth,
-            height: targetHeight,
-            imageSmoothingEnabled: true,
-            imageSmoothingQuality: 'high',
+            width: targetWidth, height: targetHeight,
+            imageSmoothingEnabled: true, imageSmoothingQuality: 'high',
         });
-        
-        if (canvas) {
-            const croppedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
-            
-            // Обновляем Alpine.js форму ПЕРЕД обновлением скрытого поля
-            updateAlpineForm(field, croppedImageUrl);
-            
-            // Сохраняем в скрытое поле (после обновления формы)
-            const hiddenInput = document.getElementById('hidden-image-' + field);
-            if (hiddenInput) {
-                hiddenInput.value = croppedImageUrl;
-                // Триггерим событие для Alpine.js
-                hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-                hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-            }
-            
-            // Показываем превью
-            document.getElementById('preview-img-' + field).src = croppedImageUrl;
-            document.getElementById('preview-' + field).style.display = 'block';
-            document.getElementById('upload-area-' + field).style.display = 'none';
-            
+        if (!canvas) return;
+
+        canvas.toBlob(async function(blob) {
             closeCropper();
-        }
+            showPreview(URL.createObjectURL(blob));
+            showStatus('Загрузка...');
+            await uploadBlob(blob);
+        }, 'image/jpeg', 0.9);
     }
-    
+
     function removeImage() {
-        // Обновляем Alpine.js форму ПЕРЕД обновлением скрытого поля
-        updateAlpineForm(field, null);
-        
-        // Очищаем скрытое поле
-        const hiddenInput = document.getElementById('hidden-image-' + field);
-        if (hiddenInput) {
-            hiddenInput.value = '';
-            // Триггерим событие для Alpine.js
-            hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
-            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        
-        document.getElementById('preview-' + field).style.display = 'none';
-        document.getElementById('upload-area-' + field).style.display = 'block';
+        setAlpineFormField(field, null);
+        hidePreview();
     }
-    
-    // Обработчики событий
+
+    // Обработчики
     document.getElementById('file-input-' + field).addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            openCropper(file);
-        }
+        if (e.target.files[0]) openCropper(e.target.files[0]);
+        e.target.value = '';
     });
-    
     document.getElementById('file-input-replace-' + field).addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            openCropper(file);
-        }
+        if (e.target.files[0]) openCropper(e.target.files[0]);
+        e.target.value = '';
     });
-    
-    // Экспортируем функции глобально для Alpine.js
+
     window['openCropper' + field] = openCropper;
     window['closeCropper' + field] = closeCropper;
     window['cropAndSave' + field] = cropAndSave;
     window['removeImage' + field] = removeImage;
-    
-    // Загружаем существующее изображение при редактировании
-    function loadExistingImage() {
-        const alpineComponent = document.querySelector('[x-data*="app()"]');
-        if (alpineComponent) {
-            let formData = null;
-            try {
-                formData = Alpine.$data(alpineComponent);
-            } catch (e) {
-                if (alpineComponent._x_dataStack && alpineComponent._x_dataStack.length > 0) {
-                    formData = alpineComponent._x_dataStack[0];
-                }
-            }
-            
-            if (formData && formData.form && formData.form[field]) {
-                const imageValue = formData.form[field];
-                // Проверяем, что это не пустая строка и не null
-                if (imageValue && imageValue !== '') {
-                    document.getElementById('preview-img-' + field).src = imageValue;
-                    document.getElementById('hidden-image-' + field).value = imageValue;
-                    document.getElementById('preview-' + field).style.display = 'block';
-                    document.getElementById('upload-area-' + field).style.display = 'none';
-                }
-            }
-        }
-    }
-    
-    // Загружаем изображение при загрузке страницы
+
+    // При редактировании — показать существующее изображение
     document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(loadExistingImage, 500);
-        // Также проверяем после небольшой задержки на случай, если Alpine еще не инициализирован
-        setTimeout(loadExistingImage, 1000);
+        setTimeout(function() {
+            const el = document.querySelector('[x-data*="app()"]');
+            if (!el) return;
+            let formData;
+            try { formData = Alpine.$data(el); } catch(e) {
+                formData = el._x_dataStack?.[0];
+            }
+            if (formData?.form?.[field]) {
+                showPreview(formData.form[field]);
+            }
+        }, 600);
     });
-    
-    // Слушаем изменения в Alpine форме через MutationObserver или события
-    if (window.Alpine) {
-        // Используем Alpine для отслеживания изменений формы
-        document.addEventListener('alpine:init', function() {
-            setTimeout(loadExistingImage, 100);
-        });
-    }
 })();
 </script>

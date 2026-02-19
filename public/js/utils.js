@@ -267,38 +267,13 @@ const save = {
     _saving: false,
     
     async save() {
-        if (this._saving) {
-            console.warn('[SAVE] Уже идёт сохранение, пропускаем');
-            return;
-        }
+        if (this._saving) return;
         this._saving = true;
         this.loading = true;
         
         try {
-            // Синхронизируем image-crop-input поля
-            document.querySelectorAll('[id^="hidden-image-"]').forEach(function(hiddenInput) {
-                const fieldName = hiddenInput.id.replace('hidden-image-', '');
-                if (!fieldName || !this.form) return;
-                
-                const hiddenValue = hiddenInput.value;
-                const formValue = this.form[fieldName];
-                
-                if (hiddenValue && hiddenValue.startsWith('data:')) {
-                    this.form[fieldName] = hiddenValue;
-                    console.log('[SAVE] Поле', fieldName, '→ base64 (' + hiddenValue.length + ' символов)');
-                } else if (formValue && !formValue.startsWith('data:') && formValue !== '') {
-                    console.log('[SAVE] Поле', fieldName, '→ оставляем URL:', formValue.substring(0, 60));
-                } else {
-                    console.log('[SAVE] Поле', fieldName, '→ пусто/null');
-                }
-            }.bind(this));
-            
-            const method = this.action !== 'create' ? 'PUT' : 'POST';
-            const hasBase64Image = this.form.image && this.form.image.startsWith('data:');
-            console.log('[SAVE] Отправка', method, this.url, 'image:', hasBase64Image ? 'base64 (' + this.form.image.length + ')' : (this.form.image || 'null'));
-            
             const response = await fetch(this.url, {
-                method: method,
+                method: this.action !== 'create' ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': this.token
@@ -306,27 +281,13 @@ const save = {
                 body: JSON.stringify(this.form)
             });
 
-            console.log('[SAVE] Ответ сервера:', response.status, response.statusText);
-            
-            const responseText = await response.text();
-            console.log('[SAVE] Тело ответа:', responseText.substring(0, 500));
-            
             let data;
             try {
-                data = JSON.parse(responseText);
+                data = await response.json();
             } catch (e) {
-                console.error('[SAVE] Ответ не JSON:', responseText.substring(0, 1000));
                 this.errors = {};
                 this.showAlert('Ошибка сервера: ' + response.status + ' ' + response.statusText, true);
                 return;
-            }
-
-            console.log('[SAVE] Результат: success=' + data.success + ', image=' + JSON.stringify(data.resource?.image));
-            if (data.debug) {
-                console.log('[SAVE] DEBUG:', JSON.stringify(data.debug));
-            }
-            if (data.errors) {
-                console.log('[SAVE] ERRORS:', JSON.stringify(data.errors));
             }
 
             if (data.success) {
@@ -342,7 +303,6 @@ const save = {
             }
         }
         catch (e) {
-            console.error('[SAVE] Исключение:', e);
             this.errors = {};
             this.showAlert('Ошибка при сохранении: ' + e.message, true);
         }

@@ -24,6 +24,22 @@ class FileManagerController extends Controller
         return view('admin.file-manager.index', compact('files'));
     }
 
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,svg,pdf|max:10240',
+        ]);
+
+        $file = $request->file('file');
+        $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+        $path = $file->storeAs('uploads', $fileName, 'public');
+
+        return response()->json([
+            'success' => true,
+            'url' => Storage::disk('public')->url($path),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

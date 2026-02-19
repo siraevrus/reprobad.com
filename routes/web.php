@@ -66,6 +66,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/test-questions', TestQuestionController::class);
     Route::resource('/admin/test-result-fields', TestResultFieldController::class);
 
+    // Загрузка файлов (AJAX)
+    Route::post('/admin/upload', [FileManagerController::class, 'upload'])->name('upload');
+
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
     Route::post('/admin/file-manager', [FileManagerController::class, 'store'])->name('file-manager.store');
