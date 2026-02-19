@@ -265,27 +265,48 @@ const showAlert = {
 
 const save = {
     async save() {
+        // Защита от двойной отправки
+        if (this.loading) {
+            console.warn('Форма уже отправляется, пропускаем повторную отправку');
+            return;
+        }
+        
         this.loading = true;
         
         // Синхронизируем данные из скрытых полей image-crop-input в форму перед отправкой
         document.querySelectorAll('[id^="hidden-image-"]').forEach(function(hiddenInput) {
             const fieldName = hiddenInput.id.replace('hidden-image-', '');
             if (fieldName && this.form) {
-                const value = hiddenInput.value;
-                // Обновляем форму независимо от того, пустое значение или нет
-                this.form[fieldName] = value || null;
-                console.log('Синхронизировано поле', fieldName, '=', value ? 'base64 данные (' + value.length + ' символов)' : 'пусто');
+                const hiddenValue = hiddenInput.value;
+                const formValue = this.form[fieldName];
+                
+                // Если скрытое поле содержит base64 данные - используем их
+                if (hiddenValue && hiddenValue.trim() !== '' && hiddenValue.startsWith('data:')) {
+                    this.form[fieldName] = hiddenValue;
+                    console.log('Синхронизировано поле', fieldName, '=', 'base64 данные (' + hiddenValue.length + ' символов)');
+                } 
+                // Если скрытое поле пустое, но в форме есть base64 - очищаем форму
+                else if ((!hiddenValue || hiddenValue.trim() === '') && formValue && formValue.startsWith('data:')) {
+                    this.form[fieldName] = null;
+                    console.log('Очищено поле', fieldName, '(было base64, скрытое поле пустое)');
+                }
+                // Если в форме есть URL (не base64) - оставляем его как есть
+                // Это означает, что изображение уже загружено и не изменялось
+                else if (formValue && !formValue.startsWith('data:')) {
+                    console.log('Поле', fieldName, 'оставлено без изменений (URL:', formValue.substring(0, 50) + '...)');
+                }
             }
         }.bind(this));
         
         // Логируем данные формы перед отправкой для отладки
+        const formDataForLog = { ...this.form };
+        if (formDataForLog.image && formDataForLog.image.startsWith('data:')) {
+            formDataForLog.image = 'base64 данные (' + formDataForLog.image.length + ' символов)';
+        }
         console.log('Отправка формы:', {
             url: this.url,
             method: this.action !== 'create' ? 'PUT' : 'POST',
-            formData: {
-                ...this.form,
-                image: this.form.image ? 'base64 данные (' + this.form.image.length + ' символов)' : null
-            }
+            formData: formDataForLog
         });
         
         try {
