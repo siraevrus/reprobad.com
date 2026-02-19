@@ -12,37 +12,39 @@ class InputService
      * @param $field
      * @return bool
      */
+    public static string $lastError = '';
+
     public static function uploadFile($fileBase64, $resource, $field): bool
     {
-        // Если файл пустой или null, очищаем поле и выходим
+        self::$lastError = '';
+
         if(empty($fileBase64) || $fileBase64 === null || $fileBase64 === '') {
             $resource->$field = '';
             $resource->save();
             return true;
         }
 
-        // Проверяем, что это строка
         if(!is_string($fileBase64)) {
+            self::$lastError = 'not_a_string: ' . gettype($fileBase64);
             return false;
         }
 
-        // Проверяем формат base64
         $exploded = explode('base64,', $fileBase64);
         if(count($exploded) < 2) {
+            self::$lastError = 'no_base64_separator';
             return false;
         }
         
         list($metaData, $fileBase64Data) = $exploded;
         
-        // Проверяем, что есть данные после base64,
         if(empty($fileBase64Data)) {
+            self::$lastError = 'empty_base64_data';
             return false;
         }
         
         preg_match('/data:(.*?);/', $metaData, $matches);
         $mimeType = $matches[1] ?? 'application/octet-stream';
         
-        // Маппинг MIME типов к расширениям
         $mimeToExtension = [
             'image/svg+xml' => 'svg',
             'image/jpeg' => 'jpg',
@@ -53,43 +55,52 @@ class InputService
             'application/pdf' => 'pdf',
         ];
         
-        // Если есть в маппинге - используем его, иначе извлекаем из MIME типа
         if (isset($mimeToExtension[$mimeType])) {
             $extension = $mimeToExtension[$mimeType];
         } else {
             $mimeParts = explode('/', $mimeType);
             if(count($mimeParts) < 2) {
+                self::$lastError = 'bad_mime: ' . $mimeType;
                 return false;
             }
             $extension = $mimeParts[1];
-            // Убираем все после + (например, svg+xml -> svg)
             if (str_contains($extension, '+')) {
                 $extension = explode('+', $extension)[0];
             }
         }
 
-        try {
-            $class_name = strtolower(class_basename($resource));
-            $path = $class_name . '/' . $resource->id . '/' . uniqid() . '.' . $extension;
+        $class_name = strtolower(class_basename($resource));
+        $path = $class_name . '/' . $resource->id . '/' . uniqid() . '.' . $extension;
 
-            // Декодируем base64
-            $decodedData = base64_decode($fileBase64Data, true);
-            if($decodedData === false) {
-                \Log::error('Failed to decode base64 data for field: ' . $field);
-                return false;
-            }
-
-            // Сохраняем файл
-            Storage::disk('public')->put($path, $decodedData);
-
-            $resource->$field = '/storage/' . $path;
-            $resource->save();
-
-            return true;
-        } catch (\Exception $e) {
-            \Log::error('Error uploading file for field ' . $field . ': ' . $e->getMessage());
+        $decodedData = base64_decode($fileBase64Data, true);
+        if($decodedData === false) {
+            self::$lastError = 'base64_decode_failed';
             return false;
         }
+
+        try {
+            Storage::disk('public')->put($path, $decodedData);
+        } catch (\Exception $e) {
+            self::$lastError = 'storage_put_error: ' . $e->getMessage();
+            return false;
+        }
+
+        $fullPath = Storage::disk('public')->path($path);
+        if (!file_exists($fullPath)) {
+            self::$lastError = 'file_not_created: ' . $fullPath;
+            return false;
+        }
+
+        $resource->$field = '/storage/' . $path;
+        
+        try {
+            $resource->save();
+        } catch (\Exception $e) {
+            self::$lastError = 'db_save_error: ' . $e->getMessage();
+            return false;
+        }
+
+        return true;
     }
 
     /**

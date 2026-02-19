@@ -147,6 +147,9 @@ class ArticleController extends Controller
                 $debug['steps'][] = 'calling_uploadFile';
                 $imageUploaded = InputService::uploadFile($rawImage, $resource, 'image');
                 $debug['steps'][] = 'uploadFile_returned_' . ($imageUploaded ? 'true' : 'false');
+                if (!$imageUploaded) {
+                    $debug['upload_error'] = InputService::$lastError;
+                }
                 $debug['image_after_upload'] = $resource->image;
             } else {
                 $debug['steps'][] = 'skipped_uploadFile_not_base64';
