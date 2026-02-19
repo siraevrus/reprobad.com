@@ -103,8 +103,16 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id): JsonResponse
     {
+        $debug = ['steps' => []];
+
         try {
             $request->headers->set('Accept', 'application/json');
+
+            $rawImage = $request->input('image');
+            $debug['request_has_image'] = $request->has('image');
+            $debug['image_type'] = gettype($rawImage);
+            $debug['image_length'] = is_string($rawImage) ? strlen($rawImage) : 0;
+            $debug['image_starts_with_data'] = is_string($rawImage) && strlen($rawImage) > 5 ? substr($rawImage, 0, 30) : $rawImage;
 
             $validator = Validator::make($request->all(), array_merge($this->rules, [
                 'alias' => 'required|unique:articles,alias,' . $id,
@@ -113,9 +121,12 @@ class ArticleController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
+                    'debug' => $debug
                 ], 422);
             }
+
+            $debug['steps'][] = 'validation_passed';
 
             $validated = $validator->validated();
 
@@ -123,38 +134,40 @@ class ArticleController extends Controller
             $dataForSave = array_diff_key($validated, array_flip($imageFields));
 
             $resource = Article::query()->findOrFail($id);
+            $debug['image_before'] = $resource->image;
             $resource->fill($dataForSave);
             $resource->save();
+            $debug['steps'][] = 'resource_saved';
 
             $imageUploaded = false;
-            $iconUploaded = false;
+            $isBase64 = is_string($rawImage) && str_starts_with($rawImage, 'data:');
+            $debug['is_base64'] = $isBase64;
 
-            if ($request->has('image') && $request->image && is_string($request->image) && str_starts_with($request->image, 'data:')) {
-                $imageUploaded = InputService::uploadFile($request->image, $resource, 'image');
-                \Log::info("Article {$id}: image upload result = " . ($imageUploaded ? 'success' : 'failed') . ", image field = " . ($resource->image ?? 'null'));
-            }
-
-            if ($request->has('icon') && $request->icon && is_string($request->icon) && str_starts_with($request->icon, 'data:')) {
-                $iconUploaded = InputService::uploadFile($request->icon, $resource, 'icon');
+            if ($isBase64) {
+                $debug['steps'][] = 'calling_uploadFile';
+                $imageUploaded = InputService::uploadFile($rawImage, $resource, 'image');
+                $debug['steps'][] = 'uploadFile_returned_' . ($imageUploaded ? 'true' : 'false');
+                $debug['image_after_upload'] = $resource->image;
+            } else {
+                $debug['steps'][] = 'skipped_uploadFile_not_base64';
             }
 
             $resource->refresh();
+            $debug['image_final'] = $resource->image;
+            $debug['steps'][] = 'done';
 
             return response()->json([
                 'success' => true,
                 'resource' => $resource,
-                'debug' => [
-                    'image_uploaded' => $imageUploaded,
-                    'icon_uploaded' => $iconUploaded,
-                    'image_value' => $resource->image,
-                    'had_base64_image' => $request->has('image') && is_string($request->image) && str_starts_with($request->image ?? '', 'data:'),
-                ]
+                'debug' => $debug
             ]);
         } catch (\Exception $e) {
+            $debug['steps'][] = 'exception: ' . $e->getMessage();
             \Log::error("Article update error for {$id}: " . $e->getMessage() . "\n" . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
-                'errors' => ['server' => ['Ошибка сервера: ' . $e->getMessage()]]
+                'errors' => ['server' => ['Ошибка сервера: ' . $e->getMessage()]],
+                'debug' => $debug
             ], 500);
         }
     }

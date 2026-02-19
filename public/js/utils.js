@@ -321,12 +321,13 @@ const save = {
                 return;
             }
 
-            console.log('[SAVE] Данные ответа:', { 
-                success: data.success, 
-                image: data.resource?.image, 
-                errors: data.errors,
-                debug: data.debug 
-            });
+            console.log('[SAVE] Результат: success=' + data.success + ', image=' + JSON.stringify(data.resource?.image));
+            if (data.debug) {
+                console.log('[SAVE] DEBUG:', JSON.stringify(data.debug));
+            }
+            if (data.errors) {
+                console.log('[SAVE] ERRORS:', JSON.stringify(data.errors));
+            }
 
             if (data.success) {
                 if (this.action === 'create') {
