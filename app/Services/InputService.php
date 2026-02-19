@@ -14,17 +14,31 @@ class InputService
      */
     public static function uploadFile($fileBase64, $resource, $field): bool
     {
-        if($fileBase64 == '') {
+        // Если файл пустой или null, очищаем поле и выходим
+        if(empty($fileBase64) || $fileBase64 === null || $fileBase64 === '') {
             $resource->$field = '';
             $resource->save();
+            return true;
         }
 
-        if(!is_string($fileBase64) || empty($fileBase64)) return false;
+        // Проверяем, что это строка
+        if(!is_string($fileBase64)) {
+            return false;
+        }
 
+        // Проверяем формат base64
         $exploded = explode('base64,', $fileBase64);
-        if(count($exploded) < 2) return false;
+        if(count($exploded) < 2) {
+            return false;
+        }
         
-        list($metaData, $fileBase64) = $exploded;
+        list($metaData, $fileBase64Data) = $exploded;
+        
+        // Проверяем, что есть данные после base64,
+        if(empty($fileBase64Data)) {
+            return false;
+        }
+        
         preg_match('/data:(.*?);/', $metaData, $matches);
         $mimeType = $matches[1] ?? 'application/octet-stream';
         
@@ -43,22 +57,39 @@ class InputService
         if (isset($mimeToExtension[$mimeType])) {
             $extension = $mimeToExtension[$mimeType];
         } else {
-            $extension = explode('/', $mimeType)[1];
+            $mimeParts = explode('/', $mimeType);
+            if(count($mimeParts) < 2) {
+                return false;
+            }
+            $extension = $mimeParts[1];
             // Убираем все после + (например, svg+xml -> svg)
             if (str_contains($extension, '+')) {
                 $extension = explode('+', $extension)[0];
             }
         }
 
-        $class_name = strtolower(class_basename($resource));
-        $path = $class_name . '/' . $resource->id . '/' . uniqid() . '.' . $extension;
+        try {
+            $class_name = strtolower(class_basename($resource));
+            $path = $class_name . '/' . $resource->id . '/' . uniqid() . '.' . $extension;
 
-        Storage::disk('public')->put($path, base64_decode($fileBase64));
+            // Декодируем base64
+            $decodedData = base64_decode($fileBase64Data, true);
+            if($decodedData === false) {
+                \Log::error('Failed to decode base64 data for field: ' . $field);
+                return false;
+            }
 
-        $resource->$field = '/storage/' . $path;
-        $resource->save();
+            // Сохраняем файл
+            Storage::disk('public')->put($path, $decodedData);
 
-        return true;
+            $resource->$field = '/storage/' . $path;
+            $resource->save();
+
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Error uploading file for field ' . $field . ': ' . $e->getMessage());
+            return false;
+        }
     }
 
     /**

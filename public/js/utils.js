@@ -225,9 +225,28 @@ const showAlert = {
 
     getErrorMessages(errorObject) {
         let messages = '';
+        
+        // Если errorObject уже строка, возвращаем её
+        if (typeof errorObject === 'string') {
+            return errorObject;
+        }
+        
+        // Если errorObject не объект, возвращаем его строковое представление
+        if (typeof errorObject !== 'object' || errorObject === null) {
+            return String(errorObject);
+        }
+        
         for (const key in errorObject) {
             if (errorObject.hasOwnProperty(key)) {
-                messages += errorObject[key].join("<br>") + "<br>";
+                const value = errorObject[key];
+                // Проверяем, является ли значение массивом
+                if (Array.isArray(value)) {
+                    messages += value.join("<br>") + "<br>";
+                } else if (typeof value === 'string') {
+                    messages += value + "<br>";
+                } else {
+                    messages += String(value) + "<br>";
+                }
             }
         }
         return messages;

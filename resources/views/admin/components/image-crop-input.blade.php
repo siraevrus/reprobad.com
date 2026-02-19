@@ -68,6 +68,35 @@
     const targetHeight = {{ $height ?? 853 }};
     let cropperInstance = null;
     
+    // Функция для обновления Alpine.js формы
+    function updateAlpineForm(fieldName, value) {
+        if (window.Alpine) {
+            // Ищем Alpine компонент с формой
+            const alpineComponent = document.querySelector('[x-data*="app()"]');
+            if (alpineComponent) {
+                // Используем Alpine.$data для получения данных компонента
+                try {
+                    const data = Alpine.$data(alpineComponent);
+                    if (data && data.form) {
+                        data.form[fieldName] = value;
+                        // Принудительно обновляем Alpine
+                        Alpine.nextTick(() => {
+                            // Форсируем обновление
+                        });
+                    }
+                } catch (e) {
+                    // Альтернативный способ через _x_dataStack
+                    if (alpineComponent._x_dataStack && alpineComponent._x_dataStack.length > 0) {
+                        const data = alpineComponent._x_dataStack[0];
+                        if (data && data.form) {
+                            data.form[fieldName] = value;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     // Проверяем наличие Cropper.js
     if (typeof Cropper === 'undefined') {
         console.error('Cropper.js не загружен!');
@@ -140,16 +169,7 @@
             document.getElementById('upload-area-' + field).style.display = 'none';
             
             // Обновляем Alpine.js форму, если она есть
-            if (window.Alpine && typeof window.Alpine.store !== 'undefined') {
-                // Пытаемся найти Alpine компонент
-                const alpineComponent = document.querySelector('[x-data*="app()"]');
-                if (alpineComponent && alpineComponent._x_dataStack) {
-                    const data = alpineComponent._x_dataStack[0];
-                    if (data && data.form) {
-                        data.form[field] = croppedImageUrl;
-                    }
-                }
-            }
+            updateAlpineForm(field, croppedImageUrl);
             
             closeCropper();
         }
@@ -161,15 +181,7 @@
         document.getElementById('upload-area-' + field).style.display = 'block';
         
         // Обновляем Alpine.js форму, если она есть
-        if (window.Alpine && typeof window.Alpine.store !== 'undefined') {
-            const alpineComponent = document.querySelector('[x-data*="app()"]');
-            if (alpineComponent && alpineComponent._x_dataStack) {
-                const data = alpineComponent._x_dataStack[0];
-                if (data && data.form) {
-                    data.form[field] = null;
-                }
-            }
-        }
+        updateAlpineForm(field, null);
     }
     
     // Обработчики событий
@@ -194,20 +206,44 @@
     window['removeImage' + field] = removeImage;
     
     // Загружаем существующее изображение при редактировании
-    document.addEventListener('DOMContentLoaded', function() {
-        // Проверяем, есть ли уже изображение в Alpine форме
-        setTimeout(function() {
-            const alpineComponent = document.querySelector('[x-data*="app()"]');
-            if (alpineComponent && alpineComponent._x_dataStack) {
-                const data = alpineComponent._x_dataStack[0];
-                if (data && data.form && data.form[field]) {
-                    document.getElementById('preview-img-' + field).src = data.form[field];
-                    document.getElementById('hidden-image-' + field).value = data.form[field];
+    function loadExistingImage() {
+        const alpineComponent = document.querySelector('[x-data*="app()"]');
+        if (alpineComponent) {
+            let formData = null;
+            try {
+                formData = Alpine.$data(alpineComponent);
+            } catch (e) {
+                if (alpineComponent._x_dataStack && alpineComponent._x_dataStack.length > 0) {
+                    formData = alpineComponent._x_dataStack[0];
+                }
+            }
+            
+            if (formData && formData.form && formData.form[field]) {
+                const imageValue = formData.form[field];
+                // Проверяем, что это не пустая строка и не null
+                if (imageValue && imageValue !== '') {
+                    document.getElementById('preview-img-' + field).src = imageValue;
+                    document.getElementById('hidden-image-' + field).value = imageValue;
                     document.getElementById('preview-' + field).style.display = 'block';
                     document.getElementById('upload-area-' + field).style.display = 'none';
                 }
             }
-        }, 500);
+        }
+    }
+    
+    // Загружаем изображение при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(loadExistingImage, 500);
+        // Также проверяем после небольшой задержки на случай, если Alpine еще не инициализирован
+        setTimeout(loadExistingImage, 1000);
     });
+    
+    // Слушаем изменения в Alpine форме через MutationObserver или события
+    if (window.Alpine) {
+        // Используем Alpine для отслеживания изменений формы
+        document.addEventListener('alpine:init', function() {
+            setTimeout(loadExistingImage, 100);
+        });
+    }
 })();
 </script>

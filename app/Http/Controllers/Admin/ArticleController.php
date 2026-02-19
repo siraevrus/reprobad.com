@@ -70,8 +70,16 @@ class ArticleController extends Controller
         $resource = Article::query()->create($dataForSave);
         
         // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
-        InputService::uploadFile($request->icon, $resource, 'icon');
+        try {
+            InputService::uploadFile($request->image, $resource, 'image');
+            InputService::uploadFile($request->icon, $resource, 'icon');
+        } catch (\Exception $e) {
+            \Log::error('Error uploading images for new article: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'errors' => ['image' => ['Ошибка при загрузке изображения: ' . $e->getMessage()]]
+            ], 500);
+        }
         
         return response()->json([
             'success' => true,
@@ -105,8 +113,16 @@ class ArticleController extends Controller
         $resource->save();
 
         // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
-        InputService::uploadFile($request->icon, $resource, 'icon');
+        try {
+            InputService::uploadFile($request->image, $resource, 'image');
+            InputService::uploadFile($request->icon, $resource, 'icon');
+        } catch (\Exception $e) {
+            \Log::error('Error uploading images for article ' . $id . ': ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'errors' => ['image' => ['Ошибка при загрузке изображения: ' . $e->getMessage()]]
+            ], 500);
+        }
 
         return response()->json([
             'success' => true,
