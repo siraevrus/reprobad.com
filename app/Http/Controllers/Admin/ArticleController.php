@@ -50,94 +50,113 @@ class ArticleController extends Controller
 
     public function store(Request $request) : JsonResponse
     {
-        $request->headers->set('Accept', 'application/json');
-
-        $validator = Validator::make($request->all(), $this->rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $validated = $validator->validated();
-
-        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
-        $imageFields = ['image', 'icon'];
-        $dataForSave = array_diff_key($validated, array_flip($imageFields));
-
-        $resource = Article::query()->create($dataForSave);
-        
-        // Обработка изображений через InputService (конвертирует base64 в файлы)
-        // Вызываем только если есть base64 данные
         try {
+            $request->headers->set('Accept', 'application/json');
+
+            $validator = Validator::make($request->all(), $this->rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $validated = $validator->validated();
+
+            $imageFields = ['image', 'icon'];
+            $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
+            $resource = Article::query()->create($dataForSave);
+
+            $imageUploaded = false;
+            $iconUploaded = false;
+
             if ($request->has('image') && $request->image && is_string($request->image) && str_starts_with($request->image, 'data:')) {
-                InputService::uploadFile($request->image, $resource, 'image');
+                $imageUploaded = InputService::uploadFile($request->image, $resource, 'image');
+                \Log::info("New article {$resource->id}: image upload result = " . ($imageUploaded ? 'success' : 'failed'));
             }
+
             if ($request->has('icon') && $request->icon && is_string($request->icon) && str_starts_with($request->icon, 'data:')) {
-                InputService::uploadFile($request->icon, $resource, 'icon');
+                $iconUploaded = InputService::uploadFile($request->icon, $resource, 'icon');
             }
+
+            $resource->refresh();
+
+            return response()->json([
+                'success' => true,
+                'resource' => $resource,
+                'debug' => [
+                    'image_uploaded' => $imageUploaded,
+                    'icon_uploaded' => $iconUploaded,
+                    'image_value' => $resource->image,
+                ]
+            ]);
         } catch (\Exception $e) {
-            \Log::error('Error uploading images for new article: ' . $e->getMessage());
+            \Log::error("Article store error: " . $e->getMessage() . "\n" . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
-                'errors' => ['image' => ['Ошибка при загрузке изображения: ' . $e->getMessage()]]
+                'errors' => ['server' => ['Ошибка сервера: ' . $e->getMessage()]]
             ], 500);
         }
-        
-        return response()->json([
-            'success' => true,
-            'resource' => $resource
-        ]);
     }
 
     public function update(Request $request, $id): JsonResponse
     {
-        $request->headers->set('Accept', 'application/json');
-
-        $validator = Validator::make($request->all(), array_merge($this->rules, [
-            'alias' => 'required|unique:articles,alias,' . $id,
-        ]));
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $validated = $validator->validated();
-
-        // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
-        $imageFields = ['image', 'icon'];
-        $dataForSave = array_diff_key($validated, array_flip($imageFields));
-
-        $resource = Article::query()->findOrFail($id);
-        $resource->fill($dataForSave);
-        $resource->save();
-
-        // Обработка изображений через InputService (конвертирует base64 в файлы)
-        // Вызываем только если есть base64 данные (новое изображение)
         try {
+            $request->headers->set('Accept', 'application/json');
+
+            $validator = Validator::make($request->all(), array_merge($this->rules, [
+                'alias' => 'required|unique:articles,alias,' . $id,
+            ]));
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+
+            $validated = $validator->validated();
+
+            $imageFields = ['image', 'icon'];
+            $dataForSave = array_diff_key($validated, array_flip($imageFields));
+
+            $resource = Article::query()->findOrFail($id);
+            $resource->fill($dataForSave);
+            $resource->save();
+
+            $imageUploaded = false;
+            $iconUploaded = false;
+
             if ($request->has('image') && $request->image && is_string($request->image) && str_starts_with($request->image, 'data:')) {
-                InputService::uploadFile($request->image, $resource, 'image');
+                $imageUploaded = InputService::uploadFile($request->image, $resource, 'image');
+                \Log::info("Article {$id}: image upload result = " . ($imageUploaded ? 'success' : 'failed') . ", image field = " . ($resource->image ?? 'null'));
             }
+
             if ($request->has('icon') && $request->icon && is_string($request->icon) && str_starts_with($request->icon, 'data:')) {
-                InputService::uploadFile($request->icon, $resource, 'icon');
+                $iconUploaded = InputService::uploadFile($request->icon, $resource, 'icon');
             }
+
+            $resource->refresh();
+
+            return response()->json([
+                'success' => true,
+                'resource' => $resource,
+                'debug' => [
+                    'image_uploaded' => $imageUploaded,
+                    'icon_uploaded' => $iconUploaded,
+                    'image_value' => $resource->image,
+                    'had_base64_image' => $request->has('image') && is_string($request->image) && str_starts_with($request->image ?? '', 'data:'),
+                ]
+            ]);
         } catch (\Exception $e) {
-            \Log::error('Error uploading images for article ' . $id . ': ' . $e->getMessage());
+            \Log::error("Article update error for {$id}: " . $e->getMessage() . "\n" . $e->getTraceAsString());
             return response()->json([
                 'success' => false,
-                'errors' => ['image' => ['Ошибка при загрузке изображения: ' . $e->getMessage()]]
+                'errors' => ['server' => ['Ошибка сервера: ' . $e->getMessage()]]
             ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'resource' => $resource
-        ]);
     }
 
     public function destroy($id): RedirectResponse
