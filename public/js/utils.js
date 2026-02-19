@@ -266,6 +266,28 @@ const showAlert = {
 const save = {
     async save() {
         this.loading = true;
+        
+        // Синхронизируем данные из скрытых полей image-crop-input в форму перед отправкой
+        document.querySelectorAll('[id^="hidden-image-"]').forEach(function(hiddenInput) {
+            const fieldName = hiddenInput.id.replace('hidden-image-', '');
+            if (fieldName && this.form) {
+                const value = hiddenInput.value;
+                // Обновляем форму независимо от того, пустое значение или нет
+                this.form[fieldName] = value || null;
+                console.log('Синхронизировано поле', fieldName, '=', value ? 'base64 данные (' + value.length + ' символов)' : 'пусто');
+            }
+        }.bind(this));
+        
+        // Логируем данные формы перед отправкой для отладки
+        console.log('Отправка формы:', {
+            url: this.url,
+            method: this.action !== 'create' ? 'PUT' : 'POST',
+            formData: {
+                ...this.form,
+                image: this.form.image ? 'base64 данные (' + this.form.image.length + ' символов)' : null
+            }
+        });
+        
         try {
             const response = await fetch(this.url, {
                 method: this.action !== 'create' ? 'PUT' : 'POST',

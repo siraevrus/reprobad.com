@@ -34,8 +34,8 @@
             class="hidden">
     </div>
 
-    <!-- Скрытое поле для хранения base64 изображения -->
-    <input type="hidden" id="hidden-image-{{ $field }}" name="{{ $field }}" value="">
+    <!-- Скрытое поле для хранения base64 изображения с синхронизацией через Alpine.js -->
+    <input type="hidden" id="hidden-image-{{ $field }}" name="{{ $field }}" x-model="form.{{ $field }}" value="">
 </div>
 
 <!-- Модальное окно для обрезки изображения -->
@@ -70,30 +70,39 @@
     
     // Функция для обновления Alpine.js формы
     function updateAlpineForm(fieldName, value) {
+        console.log('Обновление формы для поля:', fieldName, 'значение:', value ? 'base64 данные (' + value.length + ' символов)' : 'пусто');
+        
+        // Обновляем напрямую через Alpine (приоритетный способ)
         if (window.Alpine) {
-            // Ищем Alpine компонент с формой
             const alpineComponent = document.querySelector('[x-data*="app()"]');
             if (alpineComponent) {
-                // Используем Alpine.$data для получения данных компонента
                 try {
                     const data = Alpine.$data(alpineComponent);
                     if (data && data.form) {
-                        data.form[fieldName] = value;
-                        // Принудительно обновляем Alpine
-                        Alpine.nextTick(() => {
-                            // Форсируем обновление
-                        });
+                        data.form[fieldName] = value || null;
+                        console.log('Форма обновлена через Alpine.$data');
                     }
                 } catch (e) {
+                    console.warn('Ошибка при обновлении через Alpine.$data:', e);
                     // Альтернативный способ через _x_dataStack
                     if (alpineComponent._x_dataStack && alpineComponent._x_dataStack.length > 0) {
                         const data = alpineComponent._x_dataStack[0];
                         if (data && data.form) {
-                            data.form[fieldName] = value;
+                            data.form[fieldName] = value || null;
+                            console.log('Форма обновлена через _x_dataStack');
                         }
                     }
                 }
             }
+        }
+        
+        // Обновляем скрытое поле, которое связано с x-model
+        const hiddenInput = document.getElementById('hidden-image-' + fieldName);
+        if (hiddenInput) {
+            hiddenInput.value = value || '';
+            // Триггерим событие input для Alpine.js
+            hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
     }
     
@@ -160,28 +169,42 @@
         if (canvas) {
             const croppedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
             
-            // Сохраняем в скрытое поле
-            document.getElementById('hidden-image-' + field).value = croppedImageUrl;
+            // Обновляем Alpine.js форму ПЕРЕД обновлением скрытого поля
+            updateAlpineForm(field, croppedImageUrl);
+            
+            // Сохраняем в скрытое поле (после обновления формы)
+            const hiddenInput = document.getElementById('hidden-image-' + field);
+            if (hiddenInput) {
+                hiddenInput.value = croppedImageUrl;
+                // Триггерим событие для Alpine.js
+                hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+                hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
             
             // Показываем превью
             document.getElementById('preview-img-' + field).src = croppedImageUrl;
             document.getElementById('preview-' + field).style.display = 'block';
             document.getElementById('upload-area-' + field).style.display = 'none';
             
-            // Обновляем Alpine.js форму, если она есть
-            updateAlpineForm(field, croppedImageUrl);
-            
             closeCropper();
         }
     }
     
     function removeImage() {
-        document.getElementById('hidden-image-' + field).value = '';
+        // Обновляем Alpine.js форму ПЕРЕД обновлением скрытого поля
+        updateAlpineForm(field, null);
+        
+        // Очищаем скрытое поле
+        const hiddenInput = document.getElementById('hidden-image-' + field);
+        if (hiddenInput) {
+            hiddenInput.value = '';
+            // Триггерим событие для Alpine.js
+            hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        
         document.getElementById('preview-' + field).style.display = 'none';
         document.getElementById('upload-area-' + field).style.display = 'block';
-        
-        // Обновляем Alpine.js форму, если она есть
-        updateAlpineForm(field, null);
     }
     
     // Обработчики событий
