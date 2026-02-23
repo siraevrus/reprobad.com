@@ -27,6 +27,19 @@
   .menu-part[id] {
     scroll-margin-top: 20px;
   }
+  @media screen and (min-width: 992px) {
+    .menu-part[id] {
+      scroll-margin-top: var(--menu-sticky-top, 20px);
+    }
+    .menu-part > .menu-h2 {
+      position: sticky;
+      top: var(--menu-sticky-top, 20px);
+      z-index: 15;
+      background: #fff;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
   .side-menu-link {
     display: flex !important;
     flex-direction: row !important;
@@ -701,5 +714,16 @@ if (window.location.hash) {
         }
     });
 }
+
+// Sticky-заголовки секций меню должны быть ниже верхнего navbar.
+const updateMenuStickyOffset = () => {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    const offset = Math.max(0, Math.ceil(navbar.getBoundingClientRect().height - 12));
+    document.documentElement.style.setProperty('--menu-sticky-top', `${offset}px`);
+};
+
+window.addEventListener('load', updateMenuStickyOffset);
+window.addEventListener('resize', updateMenuStickyOffset);
 </script>
 @endsection
