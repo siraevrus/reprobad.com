@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -38,6 +39,30 @@ class FileManagerController extends Controller
             'success' => true,
             'url' => Storage::disk('public')->url($path),
         ]);
+    }
+
+    /**
+     * Загрузка изображения из base64 (data URL) в файл. Возвращает URL сохранённого файла.
+     */
+    public function uploadBase64(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|string', // data:image/jpeg;base64,... или data:image/png;base64,...
+        ]);
+
+        $dataUrl = $request->input('image');
+        if (!str_starts_with($dataUrl, 'data:image/')) {
+            return response()->json(['success' => false, 'message' => 'Недопустимый формат изображения'], 422);
+        }
+
+        try {
+            $format = str_contains($dataUrl, 'image/png') ? 'png' : 'jpg';
+            $url = ImageService::resize($dataUrl, $format, 'menu-images');
+            return response()->json(['success' => true, 'url' => $url]);
+        } catch (\Exception $e) {
+            \Log::error('uploadBase64 error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Ошибка сохранения изображения'], 500);
+        }
     }
 
     public function store(Request $request)

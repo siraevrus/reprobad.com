@@ -146,11 +146,12 @@
                 </div>
                 
                 <div class="flex justify-end space-x-2">
-                    <button @click="closeImageCropper()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+                    <button @click="closeImageCropper()" :disabled="cropperModal.uploading" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50">
                         Отмена
                     </button>
-                    <button @click="saveCroppedImage()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Сохранить
+                    <button @click="saveCroppedImage()" :disabled="cropperModal.uploading" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50">
+                        <span x-show="!cropperModal.uploading">Сохранить</span>
+                        <span x-show="cropperModal.uploading">Загрузка...</span>
                     </button>
                 </div>
             </div>
@@ -184,7 +185,8 @@ function menuApp() {
             imgIndex: undefined,
             cropper: null,
             targetWidth: 600,
-            targetHeight: 400
+            targetHeight: 400,
+            uploading: false
         },
         menuData: {
             breakfast: { 
@@ -1166,12 +1168,31 @@ function menuApp() {
         removeNextDayPreview(index) {
             this.menuData.recommendations.next_day_preview.splice(index, 1);
         },
+        async uploadBase64ToServer(dataUrl) {
+            const token = document.querySelector('input[name="_token"]').value;
+            const res = await fetch('{{ route("admin.upload.image-base64") }}', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': token },
+                body: JSON.stringify({ image: dataUrl })
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.message || 'Ошибка загрузки');
+            return data.url;
+        },
         uploadImageToArray(event, array, index, field) {
+            const file = event.target.files[0];
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = () => {
-                array[index][field] = reader.result;
+            reader.onload = async () => {
+                try {
+                    const url = await this.uploadBase64ToServer(reader.result);
+                    array[index][field] = url;
+                } catch (e) {
+                    console.error('Ошибка загрузки изображения:', e);
+                    this.showAlert(e.message || 'Ошибка загрузки изображения', true);
+                }
             };
-            reader.readAsDataURL(event.target.files[0]);
+            reader.readAsDataURL(file);
             event.target.value = '';
         },
         openImageCropper(event, mealKey, field, width, height) {
@@ -1282,14 +1303,11 @@ function menuApp() {
             }
             this.cropperModal.imgIndex = undefined;
         },
-        saveCroppedImage() {
-            console.log('saveCroppedImage вызван');
+        async saveCroppedImage() {
             if (!this.cropperModal.cropper) {
-                console.error('Cropper не инициализирован');
                 alert('Ошибка: редактор не инициализирован');
                 return;
             }
-            
             try {
                 const canvas = this.cropperModal.cropper.getCroppedCanvas({
                     width: this.cropperModal.targetWidth,
@@ -1297,66 +1315,48 @@ function menuApp() {
                     imageSmoothingEnabled: true,
                     imageSmoothingQuality: 'high',
                 });
-                
-                if (canvas) {
-                    const croppedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
-                    console.log('Изображение обрезано, сохраняем в', this.cropperModal.mealKey, this.cropperModal.field);
-                    
-                    // Сохраняем в menuData
-                    if (this.menuData[this.cropperModal.mealKey]) {
-                        // Проверяем, сохраняем ли мы в массив images
-                        if (this.cropperModal.field && this.cropperModal.field.startsWith('images[') && typeof this.cropperModal.imgIndex !== 'undefined') {
-                            // Сохраняем в массив images
-                            if (!this.menuData[this.cropperModal.mealKey].images) {
-                                this.menuData[this.cropperModal.mealKey].images = [];
-                            }
-                            if (!this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex]) {
-                                this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex] = { url: '' };
-                            }
-                            this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex].url = croppedImageUrl;
-                            console.log('Изображение сохранено в галерею, индекс:', this.cropperModal.imgIndex);
-                        } else {
-                            // Обычное сохранение в поле
-                            this.menuData[this.cropperModal.mealKey][this.cropperModal.field] = croppedImageUrl;
-                            console.log('Изображение сохранено');
-                        }
+                if (!canvas) return;
+                const croppedImageUrl = canvas.toDataURL('image/jpeg', 0.9);
+                this.cropperModal.uploading = true;
+                const url = await this.uploadBase64ToServer(croppedImageUrl);
+                if (this.menuData[this.cropperModal.mealKey]) {
+                    if (this.cropperModal.field && this.cropperModal.field.startsWith('images[') && typeof this.cropperModal.imgIndex !== 'undefined') {
+                        if (!this.menuData[this.cropperModal.mealKey].images) this.menuData[this.cropperModal.mealKey].images = [];
+                        if (!this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex]) this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex] = { url: '' };
+                        this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex].url = url;
                     } else {
-                        console.error('mealKey не найден:', this.cropperModal.mealKey);
+                        this.menuData[this.cropperModal.mealKey][this.cropperModal.field] = url;
                     }
-                    
-                    this.closeImageCropper();
                 }
             } catch (error) {
                 console.error('Ошибка при сохранении изображения:', error);
-                alert('Ошибка при сохранении изображения: ' + error.message);
+                this.showAlert('Ошибка при сохранении изображения: ' + (error.message || ''), true);
+            } finally {
+                this.cropperModal.uploading = false;
+                this.closeImageCropper();
             }
         },
         uploadImageForMenu(event, fieldPath) {
+            const file = event.target.files[0];
+            if (!file) return;
             const reader = new FileReader();
-            reader.onload = () => {
+            reader.onload = async () => {
                 try {
-                    // Парсим путь вида 'menuData.breakfast.image' или 'menuData.recommendations.next_day_preview[0].image'
-                    // Убираем 'menuData.' из начала пути, так как мы уже в контексте this
+                    const url = await this.uploadBase64ToServer(reader.result);
                     const path = fieldPath.replace(/^menuData\./, '');
                     const parts = path.split('.');
                     let current = this.menuData;
-                    
                     for (let i = 0; i < parts.length; i++) {
                         const part = parts[i];
-                        
-                        // Обработка массивов вида 'next_day_preview[0]'
                         if (part.includes('[') && part.includes(']')) {
                             const match = part.match(/(\w+)\[(\d+)\]/);
                             if (match) {
                                 const [, name, idx] = match;
                                 const index = parseInt(idx);
-                                
                                 if (i === parts.length - 1) {
-                                    // Последний элемент - устанавливаем значение
                                     if (!current[name]) current[name] = [];
-                                    current[name][index] = reader.result;
+                                    current[name][index] = url;
                                 } else {
-                                    // Промежуточный элемент - переходим дальше
                                     if (!current[name]) current[name] = [];
                                     if (!current[name][index]) current[name][index] = {};
                                     current = current[name][index];
@@ -1364,10 +1364,8 @@ function menuApp() {
                             }
                         } else {
                             if (i === parts.length - 1) {
-                                // Последний элемент - устанавливаем значение
-                                current[part] = reader.result;
+                                current[part] = url;
                             } else {
-                                // Промежуточный элемент - переходим дальше
                                 if (!current[part]) current[part] = {};
                                 current = current[part];
                             }
@@ -1375,10 +1373,10 @@ function menuApp() {
                     }
                 } catch (e) {
                     console.error('Ошибка загрузки изображения:', e);
-                    this.showAlert('Ошибка загрузки изображения', true);
+                    this.showAlert(e.message || 'Ошибка загрузки изображения', true);
                 }
             };
-            reader.readAsDataURL(event.target.files[0]);
+            reader.readAsDataURL(file);
             event.target.value = '';
         }
     }

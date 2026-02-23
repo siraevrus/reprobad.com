@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -88,6 +90,9 @@ class MenuController extends Controller
                 'errors' => ['menu_data' => ['menu_data должен быть массивом']]
             ], 422);
         }
+        if (isset($validated['menu_data']) && is_array($validated['menu_data'])) {
+            $validated['menu_data'] = $this->persistMenuDataImages($validated['menu_data']);
+        }
         
         $resource = Menu::query()->create($validated);
         
@@ -147,6 +152,9 @@ class MenuController extends Controller
                 'errors' => ['menu_data' => ['menu_data должен быть массивом']]
             ], 422);
         }
+        if (isset($validated['menu_data']) && is_array($validated['menu_data'])) {
+            $validated['menu_data'] = $this->persistMenuDataImages($validated['menu_data']);
+        }
         
         $resource = Menu::query()->findOrFail($id);
         $resource->fill($validated);
@@ -182,5 +190,44 @@ class MenuController extends Controller
         $resource->save();
         session()->flash('message', 'Статус публикации обновлен');
         return back();
+    }
+
+    /**
+     * Рекурсивно заменяет data:image/* на URL сохраненных файлов.
+     * Это гарантирует, что в menu_data не сохраняются base64-строки изображений.
+     */
+    private function persistMenuDataImages(array $menuData): array
+    {
+        $walker = function ($value) use (&$walker) {
+            if (is_array($value)) {
+                foreach ($value as $key => $item) {
+                    $value[$key] = $walker($item);
+                }
+                return $value;
+            }
+
+            if (!is_string($value)) {
+                return $value;
+            }
+
+            if (!str_starts_with($value, 'data:image/')) {
+                return $value;
+            }
+
+            // SVG здесь обычно используются как плейсхолдеры, не сохраняем их в файлы.
+            if (str_starts_with($value, 'data:image/svg+xml')) {
+                return $value;
+            }
+
+            try {
+                $format = str_contains($value, 'data:image/png') ? 'png' : 'jpg';
+                return ImageService::resize($value, $format, 'menu-images');
+            } catch (\Throwable $e) {
+                Log::error('menu_data image conversion failed: ' . $e->getMessage());
+                return $value;
+            }
+        };
+
+        return $walker($menuData);
     }
 }
