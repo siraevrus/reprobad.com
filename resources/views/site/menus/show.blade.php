@@ -31,7 +31,7 @@
     .menu-part[id] {
       scroll-margin-top: var(--menu-sticky-top, 20px);
     }
-    .menu-part > .menu-h2 {
+    .menu-part > h2.menu-h2 {
       position: sticky;
       top: var(--menu-sticky-top, 20px);
       z-index: 15;
