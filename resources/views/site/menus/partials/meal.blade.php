@@ -159,7 +159,10 @@
                     <div class="expander-content">
                         <div class="expander-content-wrap">
                             @if(isset($expandable['content']) && !empty($expandable['content']))
-                                <p>{!! nl2br(e($expandable['content'])) !!}</p>
+                                @php
+                                    $expandableContent = html_entity_decode($expandable['content'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                @endphp
+                                <div>{!! $expandableContent !!}</div>
                             @endif
                             @if(isset($expandable['note']) && !empty($expandable['note']))
                                 <p class="menu-snoska">{!! nl2br(e($expandable['note'])) !!}</p>
