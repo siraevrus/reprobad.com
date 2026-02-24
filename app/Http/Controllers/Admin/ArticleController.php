@@ -58,7 +58,10 @@ class ArticleController extends Controller
             ], 422);
         }
 
-        $resource = Article::query()->create($validator->validated());
+        $data = $validator->validated();
+        $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
+
+        $resource = Article::query()->create($data);
 
         return response()->json([
             'success' => true,
@@ -81,8 +84,11 @@ class ArticleController extends Controller
             ], 422);
         }
 
+        $data = $validator->validated();
+        $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
+
         $resource = Article::query()->findOrFail($id);
-        $resource->fill($validator->validated());
+        $resource->fill($data);
         $resource->save();
 
         return response()->json([
@@ -128,5 +134,27 @@ class ArticleController extends Controller
         $resource->save();
         session()->flash('message', 'Элементы на главной странице обновлены');
         return back();
+    }
+
+    private function normalizeEmbeds(string $html): string
+    {
+        $result = preg_replace_callback(
+            '/<iframe\b[^>]*src=["\']https?:\/\/(?:www\.)?rutube\.ru\/play\/embed\/[^"\']+["\'][^>]*>/i',
+            function (array $matches): string {
+                $tag = $matches[0];
+
+                // Remove sandbox to allow Rutube player scripts to run.
+                $tag = preg_replace('/\s+sandbox(?:\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+))?/i', '', $tag) ?? $tag;
+
+                if (!preg_match('/\sallow(?:\s*=\s*(?:"[^"]*"|\'[^\']*\'))/i', $tag)) {
+                    $tag = rtrim($tag, '>') . ' allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media">';
+                }
+
+                return $tag;
+            },
+            $html
+        );
+
+        return $result ?? $html;
     }
 }
