@@ -45,7 +45,7 @@
                           id="description-input"
                           rows="5" 
                           required
-                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('description') }}</textarea>
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 editor">{{ old('description') }}</textarea>
                 <p class="mt-1 text-xs text-gray-500">Этот текст будет вставлен в &lt;p class="reprotest-p"&gt;</p>
                 @error('description')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -239,32 +239,33 @@
             });
         @endif
 
-        // Инициализация TinyMCE для поля email_description
+        // Инициализация TinyMCE для полей description и email_description
+        const tinyMceConfig = {
+            license_key: 'gpl',
+            height: 300,
+            menubar: false,
+            language: 'ru',
+            language_url: '/js/ru.min.js',
+            plugins: 'advlist autolink lists link image charmap preview anchor code',
+            toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
+            setup: (editor) => {
+                editor.on('change', () => {
+                    document.getElementById(editor.id).value = editor.getContent();
+                });
+            }
+        };
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof tinymce !== 'undefined') {
-                tinymce.init({
-                    selector: '#email-description-input',
-                    license_key: 'gpl',
-                    height: 300,
-                    menubar: false,
-                    language: 'ru',
-                    language_url: '/js/ru.min.js',
-                    plugins: 'advlist autolink lists link image charmap preview anchor code',
-                    toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
-                    setup: (editor) => {
-                        editor.on('change', () => {
-                            // Синхронизация при изменении
-                            document.getElementById('email-description-input').value = editor.getContent();
-                        });
-                    }
-                });
+                tinymce.init({ ...tinyMceConfig, selector: '#description-input' });
+                tinymce.init({ ...tinyMceConfig, selector: '#email-description-input' });
             }
         });
 
         // Синхронизация TinyMCE перед отправкой формы
         document.getElementById('field-form').addEventListener('submit', function(e) {
-            if (typeof tinymce !== 'undefined' && tinymce.get('email-description-input')) {
-                tinymce.get('email-description-input').save();
+            if (typeof tinymce !== 'undefined') {
+                if (tinymce.get('description-input')) tinymce.get('description-input').save();
+                if (tinymce.get('email-description-input')) tinymce.get('email-description-input').save();
             }
         });
     </script>
