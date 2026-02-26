@@ -27,6 +27,19 @@
   .menu-part[id] {
     scroll-margin-top: 20px;
   }
+  @media screen and (min-width: 992px) {
+    .menu-part[id] {
+      scroll-margin-top: var(--menu-sticky-top, 20px);
+    }
+    .menu-part > h2.menu-h2 {
+      position: sticky;
+      top: var(--menu-sticky-top, 20px);
+      z-index: 15;
+      background: #fff;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
   .side-menu-link {
     display: flex !important;
     flex-direction: row !important;
@@ -74,28 +87,45 @@
   .menu-gallery-main {
     position: relative;
     margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .menu-gallery-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.35s ease;
+    will-change: transform;
+  }
+  /* В галерее большое фото не должно наследовать absolute-режим карточек */
+  .menu-gallery-main .menu-card-image.mci-big {
+    position: relative;
+    inset: auto;
+    flex: 0 0 100%;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    display: block;
+    border-radius: 1rem;
   }
   .menu-gallery-prev,
   .menu-gallery-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    background: transparent;
+    border-radius: 0;
+    width: auto;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
     z-index: 10;
-    transition: background 0.3s ease;
+    transition: opacity 0.2s ease;
   }
   .menu-gallery-prev:hover,
   .menu-gallery-next:hover {
-    background: rgba(255, 255, 255, 1);
+    opacity: 0.85;
   }
   .menu-gallery-prev {
     left: 10px;
@@ -684,5 +714,16 @@ if (window.location.hash) {
         }
     });
 }
+
+// Sticky-заголовки секций меню должны быть ниже верхнего navbar.
+const updateMenuStickyOffset = () => {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+    const offset = Math.max(0, Math.ceil(navbar.getBoundingClientRect().height - 12));
+    document.documentElement.style.setProperty('--menu-sticky-top', `${offset}px`);
+};
+
+window.addEventListener('load', updateMenuStickyOffset);
+window.addEventListener('resize', updateMenuStickyOffset);
 </script>
 @endsection

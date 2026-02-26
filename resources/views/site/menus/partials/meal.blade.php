@@ -18,9 +18,9 @@
                 }
             }
         }
-        // Если массива нет, используем одиночное изображение
+        // Если массива нет, используем одиночное изображение (image_big, big_image или image для карточки)
         if (empty($images)) {
-            $bigImage = $meal['image_big'] ?? $meal['big_image'] ?? null;
+            $bigImage = $meal['image_big'] ?? $meal['big_image'] ?? $meal['image'] ?? null;
             if ($bigImage) {
                 $images[] = ['url' => $bigImage];
             } else {
@@ -28,56 +28,31 @@
             }
         }
         $galleryId = 'gallery-' . str_replace(['#', ' '], ['', '-'], $mealId);
+        // Имя функции должно быть валидным JS-идентификатором (без дефисов и спецсимволов)
+        $galleryFunction = 'menuGallery_' . preg_replace('/[^A-Za-z0-9_]/', '_', $galleryId);
     @endphp
-    <div class="menu-content-card menu-gallery-container" x-data="menuGallery{{ $galleryId }}()">
+    <div class="menu-content-card menu-gallery-container" x-data="{{ $galleryFunction }}()">
         <div class="menu-gallery-main">
-            <img @click="currentImage = slides[currentIndex].url; open = true" 
-                 :src="slides[currentIndex].url" 
-                 alt="" 
-                 class="menu-card-image mci-big" 
-                 style="cursor: pointer;"
-                 onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
+            <div class="menu-gallery-track" :style="`transform: translateX(-${currentIndex * 100}%);`">
+                <template x-for="(image, index) in slides" :key="index">
+                    <img
+                         :src="image.url" 
+                         alt="" 
+                         class="menu-card-image mci-big" 
+                         style="cursor: default;"
+                         onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
+                </template>
+            </div>
             
             @if(count($images) > 1)
                 <div class="menu-gallery-prev" @click="prevImage" x-show="slides.length > 1">
-                    <
+                    <img src="/images/left-arrow.svg" alt="Предыдущее изображение">
                 </div>
                 <div class="menu-gallery-next" @click="nextImage" x-show="slides.length > 1">
-                    >
+                    <img src="/images/right-arrow.svg" alt="Следующее изображение">
                 </div>
             @endif
         </div>
-
-        <!-- Модальное окно для увеличения изображения -->
-        <template x-if="open">
-            <div class="menu-gallery-modal" @click="open = false" x-cloak>
-                <div class="menu-gallery-modal-close" @click.stop="open = false">&times;</div>
-                <div class="menu-gallery-modal-content" @click.stop>
-                    <img :src="currentImage" alt="" x-show="currentImage">
-                    @if(count($images) > 1)
-                        <div class="menu-gallery-modal-prev" @click.stop="prevImage" x-show="slides.length > 1">
-                            <
-                        </div>
-                        <div class="menu-gallery-modal-next" @click.stop="nextImage" x-show="slides.length > 1">
-                            >
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </template>
-
-        <!-- Миниатюры для прокрутки -->
-        @if(count($images) > 1)
-            <div class="menu-gallery-thumbnails">
-                <template x-for="(image, index) in slides" :key="index">
-                    <img :src="image.url" 
-                         :class="{'active': index === currentIndex}" 
-                         @click="setCurrentIndex(index)"
-                         alt=""
-                         style="cursor: pointer;">
-                </template>
-            </div>
-        @endif
 
         @if(isset($meal['kbju']))
             <div class="menu-card-info mci-block">
@@ -184,7 +159,10 @@
                     <div class="expander-content">
                         <div class="expander-content-wrap">
                             @if(isset($expandable['content']) && !empty($expandable['content']))
-                                <p>{!! nl2br(e($expandable['content'])) !!}</p>
+                                @php
+                                    $expandableContent = html_entity_decode($expandable['content'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                @endphp
+                                <div>{!! $expandableContent !!}</div>
                             @endif
                             @if(isset($expandable['note']) && !empty($expandable['note']))
                                 <p class="menu-snoska">{!! nl2br(e($expandable['note'])) !!}</p>
@@ -240,37 +218,21 @@
 </div>
 
 <script>
-function menuGallery{{ $galleryId }}() {
+function {{ $galleryFunction }}() {
     return {
         slides: @json($images),
         currentIndex: 0,
-        currentImage: '',
-        open: false,
         init() {
-            // Инициализируем currentImage только при необходимости, но не открываем модальное окно
-            if (this.slides.length > 0 && this.slides[0].url) {
-                this.currentImage = this.slides[0].url;
-            }
-            // Убеждаемся, что модальное окно закрыто при инициализации
-            this.open = false;
+            // Инициализация при необходимости (без модального окна)
         },
         setCurrentIndex(index) {
             this.currentIndex = index;
-            if (this.slides[index] && this.slides[index].url) {
-                this.currentImage = this.slides[index].url;
-            }
         },
         prevImage() {
             this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
-            if (this.slides[this.currentIndex] && this.slides[this.currentIndex].url) {
-                this.currentImage = this.slides[this.currentIndex].url;
-            }
         },
         nextImage() {
             this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
-            if (this.slides[this.currentIndex] && this.slides[this.currentIndex].url) {
-                this.currentImage = this.slides[this.currentIndex].url;
-            }
         }
     };
 }

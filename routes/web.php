@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
 
     // Загрузка файлов (AJAX)
     Route::post('/admin/upload', [FileManagerController::class, 'upload'])->name('upload');
+    Route::post('/admin/upload-image-base64', [FileManagerController::class, 'uploadBase64'])->name('upload.image-base64');
 
     // Файловый менеджер
     Route::get('/admin/file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');

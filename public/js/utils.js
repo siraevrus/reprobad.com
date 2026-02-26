@@ -52,6 +52,8 @@ const initializeEditor = {
                 language_url: '/js/ru.min.js',
                 plugins: 'advlist autolink lists link image charmap preview anchor code',
                 toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
+                extended_valid_elements: 'iframe[src|width|height|style|allow|allowfullscreen|frameborder|loading|referrerpolicy]',
+                valid_children: '+body[iframe],+div[iframe],+p[iframe]',
                 setup: (editor) => {
                     editor.on('change', () => {
                         const field = element.getAttribute('x-model').split('.')[1];
