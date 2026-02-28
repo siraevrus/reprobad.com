@@ -1,6 +1,19 @@
 @extends('site.layouts.base')
 
 @section('head')
+@php
+    $paginationCurrentPage = $resources->currentPage();
+    $paginationLastPage = $resources->lastPage();
+    $paginationQuery = request()->query();
+@endphp
+@if($paginationLastPage > 1)
+    @if($paginationCurrentPage > 1)
+        <link rel="prev" href="{{ route('site.articles.index', array_merge($paginationQuery, ['page' => $paginationCurrentPage - 1])) }}">
+    @endif
+    @if($paginationCurrentPage < $paginationLastPage)
+        <link rel="next" href="{{ route('site.articles.index', array_merge($paginationQuery, ['page' => $paginationCurrentPage + 1])) }}">
+    @endif
+@endif
 <style>
     /* Исправление проблемы с появлением page-background поверх контента при переходах */
     .page-background {
