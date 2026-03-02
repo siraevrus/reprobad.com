@@ -96,6 +96,10 @@
         <meta property="og:type" content="website">
     @endif
 
+    @if(canonical_url())
+        <link rel="canonical" href="{{ canonical_url() }}">
+    @endif
+
     <base href="/">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">

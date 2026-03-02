@@ -23,3 +23,31 @@ if (!function_exists('formatMenuNumber')) {
         return number_format($floatValue, $decimals, ',', '');
     }
 }
+
+if (!function_exists('canonical_url')) {
+    /**
+     * Возвращает канонический URL для текущей страницы или null, если тег не нужно выводить.
+     * - Главная: корень сайта (APP_URL).
+     * - Страницы с пагинацией (page >= 2): null — тег не выводим.
+     * - Остальные: URL без GET-параметров, без index.php; хост и протокол из config('app.url').
+     *
+     * @return string|null
+     */
+    function canonical_url(): ?string
+    {
+        $pageParam = request()->query('page');
+        if ($pageParam !== null && (int) $pageParam >= 2) {
+            return null;
+        }
+
+        $base = rtrim(config('app.url'), '/');
+        $path = request()->path();
+
+        if ($path === '' || $path === '/') {
+            return $base;
+        }
+
+        $path = '/' . ltrim(str_replace('index.php', '', $path), '/');
+        return $base . $path;
+    }
+}
