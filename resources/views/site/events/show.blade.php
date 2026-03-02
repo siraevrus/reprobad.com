@@ -33,6 +33,43 @@
   ]
 }
 </script>
+@php
+    $eventImage = $resource->image ?? $resource->logo ?? null;
+    if ($eventImage && !str_starts_with($eventImage, 'http')) {
+        $eventImage = config('app.url') . '/' . ltrim($eventImage, '/');
+    }
+    $eventStartDate = null;
+    if ($resource->dates) {
+        try {
+            $dateStr = trim(explode('-', $resource->dates)[0] ?? $resource->dates);
+            $d = \Carbon\Carbon::createFromFormat('d.m.Y', $dateStr);
+            $eventStartDate = $d ? $d->toIso8601String() : null;
+        } catch (\Exception $e) {
+            $eventStartDate = null;
+        }
+    }
+@endphp
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {!! json_encode(strip_tags($resource->title)) !!},
+  "description": {!! json_encode(strip_tags($resource->description ?? '')) !!},
+  @if($eventImage)"image": {!! json_encode($eventImage) !!},
+  @endif
+  @if($eventStartDate)"startDate": "{{ $eventStartDate }}",
+  @endif
+  @if($resource->address)"location": {
+    "@type": "Place",
+    "name": {!! json_encode(strip_tags($resource->address)) !!}
+  },
+  @endif
+  "organizer": {
+    "@type": "Organization",
+    "name": "Система РЕПРО"
+  }
+}
+</script>
 @endsection
 
 @section('content')
@@ -62,7 +99,7 @@
                         @endif
                     </div>
                     @if(isset($resource->logo) && $resource->logo)
-                    <img src="{{ $resource->logo }}" loading="lazy" alt="" class="event-logo">
+                    <img src="{{ $resource->logo }}" loading="lazy" alt="{{ strip_tags($resource->title) }}" class="event-logo">
                     @endif
                     <a href="#" class="queston-popup-button w-button">Задать вопрос</a>
                     @if(isset($resource->file) && $resource->file)
@@ -78,7 +115,7 @@
                     <div class="w-richtext">
                         @if($resource->image)
                         <figure class="w-richtext-align-center w-richtext-figure-type-image">
-                            <div><img src="{{ $resource->image }}" loading="lazy" alt="" class="image"></div>
+                            <div><img src="{{ $resource->image }}" loading="lazy" alt="{{ strip_tags($resource->title) }}" class="image"></div>
                         </figure>
                         @endif
                         {!! $resource->content ?? '' !!}

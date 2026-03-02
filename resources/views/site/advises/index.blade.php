@@ -60,7 +60,7 @@
                     @if(in_array($idx, [0,1,2,3,4,5]))
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
+                                <img src="{{ $item->image }}" loading="lazy" alt="{{ strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
@@ -81,7 +81,7 @@
                         <div class="card">
                             @if(isset($item->icon))
                                 <div class="card-head">
-                                    <img src="{{ $item->icon }}" loading="lazy" alt="" class="card-icon">
+                                    <img src="{{ $item->icon }}" loading="lazy" alt="{{ strip_tags($item->title) }}" class="card-icon">
                                 </div>
                             @endif
                             <div class="card-body">
@@ -162,7 +162,6 @@
             } else {
                 searchForm.style.display = 'block';
                 searchForm.classList.add('mobile-search-active');
-                // Фокусируемся на поле ввода
                 const searchInput = searchForm.querySelector('.search-input');
                 if (searchInput) {
                     setTimeout(() => {

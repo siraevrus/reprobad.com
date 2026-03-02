@@ -33,6 +33,40 @@
   ]
 }
 </script>
+@php
+    $articleImage = $resource->image ?? null;
+    if ($articleImage && !str_starts_with($articleImage, 'http')) {
+        $articleImage = config('app.url') . '/' . ltrim($articleImage, '/');
+    }
+@endphp
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {!! json_encode(strip_tags($resource->title)) !!},
+  "description": {!! json_encode(strip_tags($resource->description ?? '')) !!},
+  @if($articleImage)"image": {!! json_encode($articleImage) !!},
+  @endif
+  "datePublished": "{{ $resource->created_at->toIso8601String() }}",
+  "dateModified": "{{ $resource->updated_at->toIso8601String() }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Система РЕПРО"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Система РЕПРО",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ config('app.url') }}/images/lgog-gold.svg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ route('site.articles.show', $resource->alias) }}"
+  }
+}
+</script>
 @endsection
 
 @section('content')
@@ -70,7 +104,7 @@
                     <div class="w-richtext">
                         @if($resource->image)
                         <figure class="w-richtext-align-center w-richtext-figure-type-image">
-                            <div><img src="{{ $resource->image }}" loading="lazy" alt="" class="image"></div>
+                            <div><img src="{{ $resource->image }}" loading="lazy" alt="{{ strip_tags($resource->title) }}" class="image"></div>
                         </figure>
                         @endif
                         {!! $resource->content ?? '' !!}

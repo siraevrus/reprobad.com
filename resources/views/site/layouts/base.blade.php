@@ -2,10 +2,7 @@
 <html data-wf-page="673718a9aa664236cdc0b634" data-wf-site="673718a9aa664236cdc0b633">
 <head>
     <meta charset="utf-8">
-
-    {{-- Обработка параметра ?city= для всех страниц - сохраняем город в сессию --}}
     @php
-        // Обработка параметра ?city= для обратной совместимости (без редиректа)
         if(request()->get('city')) {
             $citiesFile = public_path('cities.txt');
             if (file_exists($citiesFile)) {
@@ -23,8 +20,6 @@
             }
         }
     @endphp
-
-    {{-- Preconnect для внешних CDN - оптимизация загрузки --}}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://d3e54v103j8qbb.cloudfront.net" crossorigin>
     <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
@@ -58,14 +53,9 @@
         <meta content="{{ $resourceDescription }}" property="og:description">
         @php
             $ogImage = $resource->image ?? $resource->logo ?? null;
-            
-            // Проверяем, является ли изображение base64 (data:image/...)
-            // Если да, используем дефолтное изображение вместо base64 для оптимизации
             if ($ogImage && str_starts_with($ogImage, 'data:image')) {
                 $ogImage = null;
             }
-            
-            // Если нет изображения, используем дефолтное изображение сайта
             if (!$ogImage) {
                 $ogImage = config('app.url') . '/images/lgog-gold.svg';
             }
@@ -103,13 +93,11 @@
     <base href="/">
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <meta content="Webflow" name="generator">
 
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer>    </script>
 
     @yield('head')
 
-    {{-- Organization Schema - глобальная разметка компании --}}
     @php
         $contactPoints = [];
         if (config('phone')) {
@@ -176,9 +164,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- Инлайним критический CSS для уменьшения критического пути --}}
     <style>
-        /* Критическая часть normalize.css - инлайним для устранения блокировки рендеринга */
         html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;height:100%}
         body{margin:0;min-height:100%;background-color:#fff;font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#333}
         article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}
@@ -188,31 +174,22 @@
         a{background-color:transparent}
         a:active,a:hover{outline:0}
         img{border:0;max-width:100%;vertical-align:middle;display:inline-block}
-        /* Критические стили для navbar-background - загружаем сразу для предотвращения FOUC */
         .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
         .navbar{position:relative;z-index:1}
-        /* Критическое скрытие page-background для предотвращения мигания при загрузке */
         .page-background{opacity:0!important;visibility:hidden!important;z-index:-1!important;pointer-events:none!important}
-        /* Скрытие контента до загрузки CSS для предотвращения FOUC */
         html:not(.w-mod-js) body{visibility:hidden;opacity:0}
         html.w-mod-js body.css-loaded{visibility:visible;opacity:1;transition:opacity 0.15s ease-in}
-        /* Базовые стили для предотвращения мигания элементов */
         *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
     </style>
-    {{-- webflow.css загружаем синхронно для предотвращения FOUC (критический CSS) --}}
     <link rel="stylesheet" href="css/webflow.css">
-    {{-- Остальной normalize.css загружаем асинхронно (некритичный) --}}
     <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
-    {{-- sistema-repro.webflow.css загружаем асинхронно (некритичный CSS) --}}
     <link rel="preload" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css"></noscript>
-    {{-- Webfont загружаем асинхронно для оптимизации (не блокирует рендеринг) --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
     <script type="text/javascript">
-        // Загружаем шрифты после загрузки скрипта
         (function() {
             function loadWebFont() {
                 if (typeof WebFont !== 'undefined') {
@@ -230,15 +207,10 @@
     </script>
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script>
-    // Критический скрипт для проверки загрузки CSS и показа контента
     (function() {
-        // Функция проверки загрузки CSS
         function isCSSLoaded() {
-            // Проверяем наличие загруженных стилей
             var styleSheets = document.styleSheets;
             var webflowLoaded = false;
-            
-            // Проверяем наличие webflow.css
             for (var i = 0; i < styleSheets.length; i++) {
                 try {
                     var href = styleSheets[i].href || '';
@@ -247,11 +219,8 @@
                         break;
                     }
                 } catch(e) {
-                    // Игнорируем ошибки доступа к CORS стилям
                 }
             }
-            
-            // Также проверяем наличие link элемента с webflow.css
             var webflowLink = document.querySelector('link[href*="webflow.css"]');
             if (webflowLink && webflowLink.sheet) {
                 webflowLoaded = true;
@@ -259,15 +228,11 @@
             
             return webflowLoaded;
         }
-        
-        // Функция показа контента
         function showContent() {
             if (document.body) {
                 document.body.classList.add('css-loaded');
             }
         }
-        
-        // Функция скрытия page-background
         function hidePageBg() {
             var pageBgs = document.querySelectorAll('.page-background');
             for (var i = 0; i < pageBgs.length; i++) {
@@ -275,11 +240,7 @@
                 pageBgs[i].style.visibility = 'hidden';
             }
         }
-        
-        // Проверяем загрузку CSS и показываем контент
         function checkAndShow() {
-            // Так как webflow.css загружается синхронно, он должен быть загружен сразу
-            // Но проверяем на всякий случай
             if (isCSSLoaded() || document.querySelector('link[href*="webflow.css"]')) {
                 showContent();
                 hidePageBg();
@@ -287,27 +248,18 @@
             }
             return false;
         }
-        
-        // Показываем контент сразу после добавления класса w-mod-js
-        // webflow.css загружается синхронно, поэтому стили должны быть применены
         function initContentDisplay() {
-            // Небольшая задержка для применения стилей после синхронной загрузки CSS
             setTimeout(function() {
                 if (!checkAndShow()) {
-                    // Fallback: показываем контент через 100ms даже если проверка не прошла
                     setTimeout(showContent, 100);
                 }
             }, 10);
         }
-        
-        // Запускаем после добавления класса w-mod-js
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initContentDisplay);
         } else {
             initContentDisplay();
         }
-        
-        // Также скрываем page-background сразу
         hidePageBg();
         setTimeout(hidePageBg, 0);
         setTimeout(hidePageBg, 10);
@@ -321,7 +273,6 @@
         .bad-wrap { position: fixed; visibility: hidden; }
         .search-input:placeholder-shown ~ .search-button { display: none; }
         .cookies-banner { display: none; }
-        /* Глобальное исправление проблемы с появлением page-background поверх контента при загрузке */
         .page-background {
             z-index: -1 !important;
             pointer-events: none !important;
@@ -344,10 +295,7 @@
         .questions-slider { overflow: visible; }
         .swiper-button-disabled { opacity: 0; pointer-events: none; }
         .swiper-3d .swiper-slide-shadow { background: rgba(244,187,174,0.25); }
-        
-        /* Исправление мелких шрифтов для мобильных устройств (Яндекс Вебмастер) */
         @media screen and (max-width: 767px) {
-            /* Гарантируем минимум 12px для всех мелких элементов */
             .article-options,
             .article-date,
             .article-read-time {
@@ -373,8 +321,6 @@
             .brand {
                 font-size: clamp(12px, 0.5rem, 0.75rem) !important;
             }
-            
-            /* Также исправляем элементы в карточках */
             .card-date-time,
             .card-date,
             .card-read {
@@ -385,20 +331,14 @@
                 font-size: clamp(12px, 0.75rem, 0.875rem) !important;
             }
         }
-        
-        /* Большие карточки (news-card) остаются по 50% (2 в ряд) */
         .items-wrap .news-card {
             max-width: calc(50% - 0.5rem) !important;
         }
-        
-        /* Маленькие карточки (card) по 33% (3 в ряд) */
         .items-wrap .card {
             width: calc(33.333% - 0.67rem) !important;
             max-width: calc(33.333% - 0.67rem) !important;
             flex: 0 0 calc(33.333% - 0.67rem);
         }
-        
-        /* Блок подписки по 33% (3 в ряд с маленькими карточками) */
         .subscribe-block-wrapper {
             flex: 0 0 calc(33.333% - 0.67rem);
             width: calc(33.333% - 0.67rem);
@@ -407,8 +347,6 @@
             display: flex;
             flex-direction: column;
         }
-        
-        /* Социальная карточка внутри блока подписки */
         .subscribe-block-wrapper .socials-card {
             width: 100% !important;
             max-width: 100% !important;
@@ -417,13 +355,9 @@
             flex-direction: column;
             min-height: 100%;
         }
-        
-        /* Убеждаемся, что карточки в одном ряду имеют одинаковую высоту */
         .items-wrap {
             align-items: stretch;
         }
-        
-        /* Отступ между полем Email и чекбоксом согласия в форме подписки */
         .subscribe-form .text-field {
             margin-bottom: 15px !important;
         }
@@ -452,16 +386,13 @@
             }
         }
     </style>
-    {{-- Локальные скрипты с версионированием для кеширования --}}
     <link rel="preload" href="/js/head.js?v={{ md5_file(public_path('js/head.js')) }}" as="script">
     <script async="" src="/js/head.js?v={{ md5_file(public_path('js/head.js')) }}" type="text/javascript"></script>
-    {{-- Swiper CSS загружаем асинхронно для оптимизации --}}
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     </noscript>
     <script>
-        // Fallback для браузеров без поддержки onload в preload
         !function(e){"use strict";var t=function(t,n,r){function o(){if(i){i=!1;for(var e in a)a[e].rel="stylesheet",a[e].onload=null}if("undefined"!=typeof n&&n.call)return n.call(this)}var i=!0,l=e.document,s=l.createElement("link");if(r)s.media="only x";else{var d=l.createElement("style");d.appendChild(l.createTextNode("@media only x { "+t+" }")),l.head.appendChild(d)}s.rel="preload",s.as="style",s.href=t,s.onloadcssdefined=o,s.onload=o,s.onreadystatechange=function(){"complete"===this.readyState&&o()},l.head.appendChild(s);var a=l.styleSheets;return s},"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
     </script>
     @isset($resource->color)
@@ -487,7 +418,6 @@
         .w-richtext figure img { border-radius: 1rem; }
         .w-richtext figure { --figure-width: 100%; width: var(--figure-width); max-width: var(--figure-width); }
         .w-richtext figure div, .w-richtext figure img { width: 100% !important; !important; max-width: 100% !important; }
-        /* Гарантируем минимальный размер шрифта 13px для текста статей (требование Яндекс Вебмастера) */
         .w-richtext {
             font-size: clamp(13px, 1rem, 1rem);
         }
@@ -500,7 +430,6 @@
         .w-richtext th {
             font-size: clamp(13px, 1rem, 1rem);
         }
-        /* Гарантируем минимальный размер шрифта 13px для подзаголовков статей в мобильной версии */
         @media screen and (max-width: 767px) {
             .news-card-text,
             .card-text {
@@ -529,12 +458,10 @@
         }
         .search-input:focus ~ .search-icon, .search-input:not(:placeholder-shown)  ~ .search-icon { opacity: 1; }
         .search-input:not(:placeholder-shown)  ~ .search-button { display: block; }
-        /* Увеличение расстояния между телефоном и email в футере */
         .footer-email {
             margin-top: 10px;
             display: block;
         }
-        /* Показ формы поиска в мобильной версии */
         @media screen and (max-width: 767px) {
             .search.mobile-search-active {
                 display: block !important;
@@ -562,7 +489,6 @@
         .product-options-content > *:first-child { margin-top: 0; }
         .product-options-content > *:last-child { margin-bottom: 0; }
         .product-table .product-table-row:last-child{ border-bottom: none;}
-        /* Управление видимостью вариантов текста логотипа */
         .brand-text-mobile {
             display: none !important;
         }
@@ -718,7 +644,7 @@
 
 @if(isset($isHome) || isset($bodyClass) && $bodyClass == 'products-page')
     <div class="heart-bg">
-        <img src="images/heart.webp" loading="lazy" sizes="100vw" srcset="images/heart-p-500.webp 500w, images/heart-p-800.webp 800w, images/heart-p-1080.webp 1080w, images/heart-p-1600.webp 1600w, images/heart.webp 2000w" alt="" class="heart-bg-image">
+        <img src="images/heart.webp" loading="eager" sizes="100vw" srcset="images/heart-p-500.webp 500w, images/heart-p-800.webp 800w, images/heart-p-1080.webp 1080w, images/heart-p-1600.webp 1600w, images/heart.webp 2000w" alt="" class="heart-bg-image">
         <div class="heart-bg-mandarin-gradient"></div>
     </div>
 @endif
@@ -865,38 +791,27 @@
 {{-- JavaScript файлы загружаем с defer для оптимизации --}}
 <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=673718a9aa664236cdc0b633" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-{{-- Локальные скрипты с версионированием для кеширования --}}
 <link rel="preload" href="/js/home.js?v={{ md5_file(public_path('js/home.js')) }}" as="script">
 <script src="/js/home.js?v={{ md5_file(public_path('js/home.js')) }}" type="text/javascript" defer></script>
-{{-- Webflow.js загружаем после jQuery для корректной работы меню-бургера --}}
 <script>
 (function() {
     function loadWebflow() {
-        // Проверяем, не загружен ли уже скрипт
         if (document.querySelector('script[src="/js/webflow.js"]')) {
             return;
         }
-        
-        // Проверяем наличие jQuery (webflow.js зависит от него)
         if (typeof jQuery === 'undefined') {
-            // Если jQuery еще не загружен, ждем его
             setTimeout(loadWebflow, 50);
             return;
         }
         
         var script = document.createElement('script');
         script.src = '/js/webflow.js';
-        // Не используем defer для синхронной инициализации меню
         document.head.appendChild(script);
     }
-    
-    // Загружаем после того, как jQuery будет готов
-    // jQuery загружается с defer, поэтому ждем события load или проверяем наличие jQuery
     function initWebflow() {
         if (typeof jQuery !== 'undefined') {
             loadWebflow();
         } else {
-            // Ждем загрузки jQuery (максимум 3 секунды)
             var attempts = 0;
             var checkJQuery = setInterval(function() {
                 attempts++;
@@ -909,8 +824,6 @@
             }, 50);
         }
     }
-    
-    // Запускаем после загрузки DOM и скриптов
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(initWebflow, 100);
@@ -923,7 +836,6 @@
 
 @yield('scripts')
 
-<!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
     (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
         m[i].l=1*new Date();
@@ -939,16 +851,11 @@
     });
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/98482244" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 
 @php
-    // Определяем, является ли страница внутренним разделом
-    // Выбор города показываем только на главной странице и странице карты
     $isHomePage = request()->is('/');
     $isMapPage = request()->is('map');
     $showCitySelect = $isHomePage || $isMapPage;
-    
-    // Не показываем баннер лотти и бота на страницах меню
     $isMenuPage = request()->is('menu*');
 @endphp
 
@@ -965,7 +872,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Скрытие блока bad-wrap при клике на кнопку закрытия
     const badCloseBtn = document.querySelector('.bad-close');
     const badWrap = document.querySelector('.bad-wrap');
     
@@ -975,14 +881,10 @@ document.addEventListener('DOMContentLoaded', function() {
             badWrap.style.display = 'none';
         });
     }
-    
-    // Гарантируем, что только один вариант текста логотипа виден
-    // Используем кеширование и requestAnimationFrame для оптимизации
     let cachedWindowWidth = null;
     let resizeTimeout = null;
     
     function updateBrandTextVisibility() {
-        // Кешируем значение ширины окна, чтобы избежать повторных чтений
         if (cachedWindowWidth === null) {
             cachedWindowWidth = window.innerWidth;
         }
@@ -992,7 +894,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const brandMobile = document.querySelector('.brand-text-mobile');
         
         if (brandDesktop && brandMobile) {
-            // Используем requestAnimationFrame для батчинга изменений DOM
             requestAnimationFrame(function() {
                 if (isMobile) {
                     brandDesktop.style.display = 'none';
@@ -1004,11 +905,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
-    // Скрываем page-background до полной загрузки страницы (глобально для всех страниц)
     function hidePageBackground(element) {
         if (element) {
-            // Используем requestAnimationFrame для батчинга изменений стилей
             requestAnimationFrame(function() {
                 element.style.opacity = '0';
                 element.style.visibility = 'hidden';
@@ -1017,24 +915,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function initPageBackground() {
-        // Скрываем все существующие элементы page-background
         const pageBgs = document.querySelectorAll('.page-background');
-        // Батчим все изменения в один requestAnimationFrame
         requestAnimationFrame(function() {
             pageBgs.forEach(hidePageBackground);
         });
-        
-        // Отслеживаем динамически добавляемые элементы
         const observer = new MutationObserver(function(mutations) {
-            // Батчим обработку мутаций
             requestAnimationFrame(function() {
                 mutations.forEach(function(mutation) {
                     mutation.addedNodes.forEach(function(node) {
-                        if (node.nodeType === 1) { // Element node
+                        if (node.nodeType === 1) {
                             if (node.classList && node.classList.contains('page-background')) {
                                 hidePageBackground(node);
                             }
-                            // Проверяем дочерние элементы
                             const childBgs = node.querySelectorAll && node.querySelectorAll('.page-background');
                             if (childBgs) {
                                 childBgs.forEach(hidePageBackground);
@@ -1044,14 +936,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         });
-        
-        // Начинаем наблюдение за изменениями в DOM
         observer.observe(document.body, {
             childList: true,
             subtree: true
         });
-        
-        // Показываем после небольшой задержки, чтобы контент успел загрузиться
         setTimeout(function() {
             if (document.body) {
                 requestAnimationFrame(function() {
@@ -1060,23 +948,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 150);
     }
-    
-    // Выполняем при загрузке
     updateBrandTextVisibility();
-    
-    // Оптимизированный обработчик resize с debounce
     window.addEventListener('resize', function() {
-        // Сбрасываем кеш при изменении размера
         cachedWindowWidth = null;
-        
-        // Debounce для уменьшения количества вызовов
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(function() {
             requestAnimationFrame(updateBrandTextVisibility);
         }, 150);
     }, { passive: true });
-    
-    // Инициализируем скрытие page-background
     initPageBackground();
 });
 </script>

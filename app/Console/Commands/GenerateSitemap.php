@@ -6,6 +6,7 @@ use App\Models\Advise;
 use App\Models\Article;
 use App\Models\Complex;
 use App\Models\Event;
+use App\Models\Menu;
 use App\Models\Page;
 use App\Models\Text;
 use Illuminate\Console\Command;
@@ -45,6 +46,7 @@ class GenerateSitemap extends Command
 
         // Статические страницы
         $staticPages = [
+            '/menu' => 'weekly',
             '/articles' => 'weekly',
             '/events' => 'weekly',
             '/products' => 'weekly',
@@ -110,6 +112,19 @@ class GenerateSitemap extends Command
                 'changefreq' => 'weekly',
                 'priority' => '0.7'
             ];
+        }
+
+        // Меню
+        $menus = Menu::active()->get();
+        foreach ($menus as $menu) {
+            if (!empty($menu->alias)) {
+                $urls[] = [
+                    'loc' => $baseUrl . '/menu/' . $menu->alias,
+                    'lastmod' => isset($menu->updated_at) ? $menu->updated_at->format('Y-m-d') : now()->format('Y-m-d'),
+                    'changefreq' => 'weekly',
+                    'priority' => '0.6'
+                ];
+            }
         }
 
         // Тексты

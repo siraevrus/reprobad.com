@@ -15,19 +15,14 @@
     @endif
 @endif
 <style>
-    /* Исправление проблемы с появлением page-background поверх контента при переходах */
     .page-background {
         z-index: -1 !important;
         pointer-events: none !important;
     }
-    
-    /* Гарантируем, что контент всегда поверх фона */
     .section.inner-section {
         position: relative;
         z-index: 1;
     }
-    
-    /* Скрываем page-background до полной загрузки страницы */
     .page-background {
         opacity: 0;
         transition: opacity 0.1s ease-in;
@@ -38,18 +33,14 @@
     }
 </style>
 <script>
-    // Гарантируем правильное отображение при загрузке страницы
     (function() {
     function initPageBackground() {
         const pageBg = document.querySelector('.page-background');
         if (pageBg) {
-            // Используем requestAnimationFrame для батчинга изменений стилей
             requestAnimationFrame(function() {
                 pageBg.style.opacity = '0';
             });
         }
-        
-        // Показываем после небольшой задержки, чтобы контент успел загрузиться
         setTimeout(function() {
             if (document.body) {
                 requestAnimationFrame(function() {
@@ -58,8 +49,6 @@
             }
         }, 50);
     }
-        
-        // Обрабатываем случай, когда DOM уже загружен
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initPageBackground);
         } else {
@@ -112,7 +101,7 @@
                     @if(in_array($idx, [0,1,2,3,4,5]))
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
+                                <img src="{{ $item->image }}" loading="lazy" alt="{{ strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">

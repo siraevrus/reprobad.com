@@ -25,6 +25,27 @@
   ]
 }
 </script>
+@php
+    $lb = [
+        '@context' => 'https://schema.org',
+        '@type' => 'LocalBusiness',
+        'name' => 'Система РЕПРО',
+        'url' => config('app.url'),
+        'logo' => config('app.url') . '/images/lgog-gold.svg',
+    ];
+    if (config('address')) {
+        $lb['address'] = ['@type' => 'PostalAddress', 'streetAddress' => config('address')];
+    }
+    if (config('phone') || config('phone2')) {
+        $lb['telephone'] = config('phone2') ?: config('phone');
+    }
+    if (config('email')) {
+        $lb['email'] = config('email');
+    }
+@endphp
+<script type="application/ld+json">
+{!! json_encode($lb, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 <style>
     /* Базовые стили для карты */
     #map {
