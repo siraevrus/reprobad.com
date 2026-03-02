@@ -182,6 +182,7 @@ class AdviseController extends Controller
             ->get();
 
         $pageType = '';
+        $resource->seo_title = strip_tags($resource->title) . ': Полезные советы';
 
         return view('site.advises.show', compact('resource', 'events', 'pageType'));
     }

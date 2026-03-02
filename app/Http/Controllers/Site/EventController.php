@@ -124,6 +124,7 @@ class EventController extends Controller
             ->get();
 
         $pageType = '';
+        $resource->seo_title = strip_tags($resource->title) . ': События и мероприятия';
 
         return view('site.events.show', compact('resource', 'other', 'pageType'));
     }

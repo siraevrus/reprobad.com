@@ -191,6 +191,7 @@ class ArticleController extends Controller
             ->get();
 
         $pageType = '';
+        $resource->seo_title = strip_tags($resource->title) . ': Статьи';
 
         return view('site.articles.show', compact('resource', 'other', 'events', 'pageType'));
     }
