@@ -71,14 +71,14 @@
                         @if($product->images)
                             <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
                                 <div class="slider-main">
-                                    <img @click="currentImage = slides[currentIndex].url;open = true" x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
+                                    <img @click="currentImage = slides[currentIndex].url; currentAlt = slides[currentIndex].alt || ''; open = true" x-show="!showVideo" :src="slides[currentIndex].url" :alt="slides[currentIndex].alt || ''">
                                     <video :src="video" x-show="showVideo" controls></video>
                                 </div>
 
                                 <div class="modal" :class="{ 'active' : open }" @click="open = false">
                                     <div class="modal-close" @click="open = false">&times;</div>
                                     <div class="modal-content">
-                                        <img :src="currentImage" alt="">
+                                        <img :src="currentImage" :alt="currentAlt">
                                     </div>
                                 </div>
 
@@ -91,7 +91,7 @@
 
                                 <div class="thumbnails">
                                     <template x-for="(image, index) in slides" :key="index">
-                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
+                                        <img :src="image.url" :alt="image.alt || ''" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
                                     </template>
 
                                     <img @click="handleShowVideo" src="images/icons8-play-video-100.png" x-show="video" alt="">
@@ -243,11 +243,12 @@
         @foreach($resource->products as $product)
         function slider{{ $product->id }}() {
             return {
-                slides: @json($product->images),
+                slides: @json($product->images ?? []),
                 currentIndex: 0,
                 showVideo: false,
                 video: @json($product->video),
                 currentImage: '',
+                currentAlt: '',
                 open: false,
 
                 handleShowVideo() {

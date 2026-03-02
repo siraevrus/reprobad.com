@@ -51,6 +51,7 @@
     const targetWidth = {{ $width ?? 1280 }};
     const targetHeight = {{ $height ?? 853 }};
     let cropperInstance = null;
+    let isUploading = false;
 
     if (typeof Cropper === 'undefined') {
         console.error('Cropper.js не загружен!');
@@ -88,6 +89,8 @@
     }
 
     async function uploadBlob(blob) {
+        isUploading = true;
+        window.__adminUploadInProgress = true;
         showStatus('Загрузка...');
         const formData = new FormData();
         formData.append('file', blob, field + '.jpg');
@@ -100,7 +103,14 @@
                 headers: { 'X-CSRF-TOKEN': token },
                 body: formData
             });
-            const data = await response.json();
+            const raw = await response.text();
+            let data = {};
+            try {
+                data = JSON.parse(raw);
+            } catch (e) {
+                throw new Error('Некорректный ответ сервера: ' + raw.slice(0, 200));
+            }
+
             if (data.success && data.url) {
                 setAlpineFormField(field, data.url);
                 showPreview(data.url);
@@ -108,11 +118,16 @@
                 return data.url;
             } else {
                 showStatus('Ошибка: ' + JSON.stringify(data.errors || data));
+                setAlpineFormField(field, null);
                 return null;
             }
         } catch (e) {
             showStatus('Ошибка сети: ' + e.message);
+            setAlpineFormField(field, null);
             return null;
+        } finally {
+            isUploading = false;
+            window.__adminUploadInProgress = false;
         }
     }
 
@@ -152,7 +167,10 @@
             closeCropper();
             showPreview(URL.createObjectURL(blob));
             showStatus('Загрузка...');
-            await uploadBlob(blob);
+            const uploadedUrl = await uploadBlob(blob);
+            if (!uploadedUrl) {
+                hidePreview();
+            }
         }, 'image/jpeg', 0.9);
     }
 

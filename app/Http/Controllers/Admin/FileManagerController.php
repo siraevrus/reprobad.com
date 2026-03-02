@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -27,18 +28,46 @@ class FileManagerController extends Controller
 
     public function upload(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,svg,pdf|max:10240',
-        ]);
+        try {
+            $request->validate([
+                'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,svg,pdf|max:10240',
+            ]);
 
-        $file = $request->file('file');
-        $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-        $path = $file->storeAs('uploads', $fileName, 'public');
+            $file = $request->file('file');
+            $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
 
-        return response()->json([
-            'success' => true,
-            'url' => Storage::disk('public')->url($path),
-        ]);
+            // Основной путь: storage/app/public/uploads
+            try {
+                $path = $file->storeAs('uploads', $fileName, 'public');
+                if ($path && Storage::disk('public')->exists($path)) {
+                    return response()->json([
+                        'success' => true,
+                        'url' => Storage::disk('public')->url($path),
+                    ]);
+                }
+            } catch (\Throwable $e) {
+                // Пробуем fallback ниже
+            }
+
+            // Fallback: public/uploads (на случай проблем с правами в storage)
+            $publicUploadsDir = public_path('uploads');
+            if (!File::exists($publicUploadsDir)) {
+                File::makeDirectory($publicUploadsDir, 0755, true);
+            }
+            $file->move($publicUploadsDir, $fileName);
+
+            return response()->json([
+                'success' => true,
+                'url' => url('/uploads/' . $fileName),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'file' => ['Ошибка загрузки файла: ' . $e->getMessage()],
+                ],
+            ], 500);
+        }
     }
 
     /**

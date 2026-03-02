@@ -269,6 +269,10 @@ const save = {
     _saving: false,
     
     async save() {
+        if (window.__adminUploadInProgress) {
+            this.showAlert('Дождитесь окончания загрузки изображения', true);
+            return;
+        }
         if (this._saving) return;
         this._saving = true;
         this.loading = true;
@@ -337,6 +341,10 @@ const get = {
                         data.images = data.images ? [data.images] : [];
                     }
                 }
+                // Добавляем alt для обратной совместимости
+                data.images = (data.images || []).map(img => (typeof img === 'object' && img !== null)
+                    ? { ...img, alt: img.alt ?? '' }
+                    : { url: img, name: '', alt: '' });
             }
             
             this.form = Object.assign(this.form, data);
@@ -396,7 +404,7 @@ const dropzone = {
                             this.form[field] = this.form[field] ? [this.form[field]] : [];
                         }
                     }
-                    this.form[field].push({ url: e.target.result, name: file.name });
+                    this.form[field].push({ url: e.target.result, name: file.name, alt: '' });
                 };
                 reader.readAsDataURL(file);
             }

@@ -74,7 +74,7 @@
                                     @foreach($product->images as $imageIndex => $image)
                                         <div class="">
                                             <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}">
-                                                <img src="{{ $image['url'] }}" alt="">
+                                                <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">
                                             </a>
                                         </div>
                                     @endforeach
@@ -83,7 +83,7 @@
                                     @foreach($product->images as $imageIndex => $image)
                                         <div class="thumb-item" data-thumb-index="{{ $imageIndex }}">
                                             <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
-                                                <img src="{{ $image['url'] }}" alt="">
+                                                <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">
                                             </a>
                                         </div>
                                     @endforeach

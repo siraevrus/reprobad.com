@@ -127,9 +127,13 @@ class InputService
                 continue; // Пропускаем удаленные изображения
             }
             
-            // Если изображение уже загружено (не base64), просто добавляем его
+            // Если изображение уже загружено (не base64), сохраняем с alt
             if(isset($image['url']) && !str_contains($image['url'], 'data:')) {
-                $processedImages[] = $image;
+                $processedImages[] = [
+                    'url' => $image['url'],
+                    'name' => $image['name'] ?? basename($image['url']),
+                    'alt' => $image['alt'] ?? '',
+                ];
                 continue;
             }
             
@@ -140,7 +144,8 @@ class InputService
                     $path = ImageService::resize($image['url'], 'png', $class_name . '/' . $resource->id);
                     $processedImages[] = [
                         'url' => $path,
-                        'name' => $image['name'] ?? basename($path)
+                        'name' => $image['name'] ?? basename($path),
+                        'alt' => $image['alt'] ?? '',
                     ];
                 } catch (\Exception $e) {
                     // Логируем ошибку, но продолжаем обработку остальных изображений
