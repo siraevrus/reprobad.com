@@ -706,16 +706,18 @@ Webflow.push(function() {
         let html = '';
         if (productsHtml) {
           html = `
-            <div class="reprotest-recommend">
-              <div class="reprotest-recommend-block ${blockClass}">
-                <div class="reprotest-block-message">
-                  <p class="reprotest-p">${result.description}</p>
-                  <a href="https://reprobad.com" class="button w-button" style="width: 420px;" target="_blank">
-                    Подробные рекомендации
-                  </a>
-                </div>
-                <div class="reprotest-products">
-                  ${productsHtml}
+            <div class="container">
+              <div class="reprotest-recommend">
+                <div class="reprotest-recommend-block ${blockClass}">
+                  <div class="reprotest-block-message">
+                    <p class="reprotest-p">${result.description}</p>
+                    <a href="https://reprobad.com" class="button w-button" target="_blank">
+                      Подробные рекомендации
+                    </a>
+                  </div>
+                  <div class="reprotest-products">
+                    ${productsHtml}
+                  </div>
                 </div>
               </div>
             </div>
@@ -723,19 +725,21 @@ Webflow.push(function() {
         } else {
           // Если нет продуктов, показываем только текст
           html = `
-            <div class="reprotest-recommend">
-              <div class="reprotest-recommend-block ${blockClass}">
-                <div class="reprotest-block-message">
-                  <p class="reprotest-p">${result.description}</p>
-                  <a href="https://reprobad.com" class="button w-button" style="width: 420px;" target="_blank">
-                    Подробные рекомендации
-                  </a>
+            <div class="container">
+              <div class="reprotest-recommend">
+                <div class="reprotest-recommend-block ${blockClass}">
+                  <div class="reprotest-block-message">
+                    <p class="reprotest-p">${result.description}</p>
+                    <a href="https://reprobad.com" class="button w-button" target="_blank">
+                      Подробные рекомендации
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           `;
         }
-        $('.reprotest-result-container').append(html);
+        $('.reprotest-result-container').parent().append(html);
       });
     }
   }
