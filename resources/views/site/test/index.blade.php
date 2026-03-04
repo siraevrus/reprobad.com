@@ -326,6 +326,7 @@
         </div>
       </div>
     </div>
+  </section>
     <section class="section reprotest-about">
       <div class="heart-bg reprotest-section"><img sizes="100vw" srcset="{{ asset("images/heart_1-p-500.webp 500w, images/heart_1-p-800.webp 800w, images/heart_1-p-1080.webp 1080w, images/heart_1-p-1600.webp 1600w, images/heart_1.webp 2000w") }}" alt="" src="{{ asset("images/heart_1.webp") }}" loading="lazy" class="heart-bg-image"></div>
       <div class="container">
