@@ -267,7 +267,8 @@
             </div>
           </div>
         </div>
-
+      </div>
+      <div class="container">
         <div class="reprotest-cta">
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" data-name="Subscribe Form" method="POST" action="{{ route('site.test.subscribe') }}" class="reprotest-form" data-wf-page-id="697729df64c8f65c7ff4c2e1" data-wf-element-id="b0b44bde-be5e-77b8-b20d-3dd8764fe2ad">
@@ -327,13 +328,6 @@
     </div>
     <section class="section reprotest-about">
       <div class="heart-bg reprotest-section"><img sizes="100vw" srcset="{{ asset("images/heart_1-p-500.webp 500w, images/heart_1-p-800.webp 800w, images/heart_1-p-1080.webp 1080w, images/heart_1-p-1600.webp 1600w, images/heart_1.webp 2000w") }}" alt="" src="{{ asset("images/heart_1.webp") }}" loading="lazy" class="heart-bg-image"></div>
-      <div class="container">
-        <div class="sr-heading-reprotest">
-          <h2 class="sistema-repro-h1 srh1-reprotest"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> </h2>
-          <p class="sistema-repro-p">Система РЕПРО — это программа, которая нормализует дефициты и помогает восстановить важные функции в организме женщины и мужчины, может повысить шансы на успешное зачатие, в том числе методом ЭКО.</p>
-          <p class="reprotest-small-p">(с применением вспомогательных репродуктивных технологий)</p>
-        </div>
-      </div>
       <div class="container">
         <div class="reprotest-block rtb-advs">
           <div class="reprotest-adv-wrap">
@@ -713,7 +707,7 @@ Webflow.push(function() {
               <div class="reprotest-recommend-block ${blockClass}">
                 <div class="reprotest-block-message">
                   <p class="reprotest-p">${result.description}</p>
-                  <a href="https://reprobad.com" class="button w-button" style="width: 380px;" target="_blank">
+                  <a href="https://reprobad.com" class="button w-button" style="width: 420px;" target="_blank">
                     Подробные рекомендации
                   </a>
                 </div>
@@ -730,7 +724,7 @@ Webflow.push(function() {
               <div class="reprotest-recommend-block ${blockClass}">
                 <div class="reprotest-block-message">
                   <p class="reprotest-p">${result.description}</p>
-                  <a href="https://reprobad.com" class="button w-button" style="width: 380px;" target="_blank">
+                  <a href="https://reprobad.com" class="button w-button" style="width: 420px;" target="_blank">
                     Подробные рекомендации
                   </a>
                 </div>
