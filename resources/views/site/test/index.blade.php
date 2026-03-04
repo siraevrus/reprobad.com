@@ -646,7 +646,7 @@ Webflow.push(function() {
       $('.reprotest-block-message p.reprotest-p').text('Основываясь на ваших ответах, мы подготовили для вас персональные рекомендации. Они помогут понять, какие добавки могут быть полезны именно вам.');
       
       // Рендерим результаты
-      data.results.forEach(function(result) {
+      data.results.forEach(function(result, index) {
         console.log('Result:', result);
         console.log('image1:', result.image1, 'link1:', result.link1);
         console.log('image2:', result.image2, 'link2:', result.link2);
@@ -705,9 +705,10 @@ Webflow.push(function() {
         
         // Формируем HTML только если есть хоть один продукт
         let html = '';
+        const marginTop = index > 0 ? 'style="margin-top: 40px;"' : '';
         if (productsHtml) {
           html = `
-            <div class="container">
+            <div class="container" ${marginTop}>
               <div class="reprotest-recommend">
                 <div class="reprotest-recommend-block ${blockClass}">
                   <div class="reprotest-block-message">
@@ -726,7 +727,7 @@ Webflow.push(function() {
         } else {
           // Если нет продуктов, показываем только текст
           html = `
-            <div class="container">
+            <div class="container" ${marginTop}>
               <div class="reprotest-recommend">
                 <div class="reprotest-recommend-block ${blockClass}">
                   <div class="reprotest-block-message">
