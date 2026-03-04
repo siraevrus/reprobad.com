@@ -711,6 +711,9 @@ Webflow.push(function() {
               <div class="reprotest-recommend-block ${blockClass}">
                 <div class="reprotest-block-message">
                   <p class="reprotest-p">${result.description}</p>
+                  <a href="https://reprobad.com" class="button w-button">
+                    Подробные рекомендации
+                  </a>
                 </div>
                 <div class="reprotest-products">
                   ${productsHtml}
@@ -725,6 +728,9 @@ Webflow.push(function() {
               <div class="reprotest-recommend-block ${blockClass}">
                 <div class="reprotest-block-message">
                   <p class="reprotest-p">${result.description}</p>
+                  <a href="https://reprobad.com" class="button w-button">
+                    Подробные рекомендации
+                  </a>
                 </div>
               </div>
             </div>
