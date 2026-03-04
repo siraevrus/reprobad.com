@@ -365,7 +365,7 @@
   <div class="spacer desktop-3-rem"></div>
   <section class="footer-section">
     <div class="footer-container">
-      <a href="{{ url('/') }}" class="footer-logo-link w-inline-block"><img src="{{ asset("images/logo-black.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
+      <a href="/" class="footer-logo-link w-inline-block"><img src="{{ asset("images/logo-black.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
       <div class="footer-contacts">
         <div>
           <a href="tel:+74959567937" class="footer-phone">+7 495 956 79 37</a>
