@@ -5299,8 +5299,8 @@ figcaption {
 }
 
 .reprotest-question-text {
-  max-width: 44rem;
-  margin-bottom: 1.5rem;
+  max-width: 47.125rem; /* 44rem + 50px */
+  margin-bottom: 18px;
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.375;
