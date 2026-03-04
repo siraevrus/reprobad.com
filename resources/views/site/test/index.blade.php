@@ -272,7 +272,7 @@
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" data-name="Subscribe Form" method="POST" action="{{ route('site.test.subscribe') }}" class="reprotest-form" data-wf-page-id="697729df64c8f65c7ff4c2e1" data-wf-element-id="b0b44bde-be5e-77b8-b20d-3dd8764fe2ad">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-              <div class="subscribe-head-label"><strong>Получите расширенный отчет на вашу электронную почту:</strong></div>
+              <div class="subscribe-head-label"><strong>Получите расширенный ответ на вашу электронную почту:</strong></div>
               <div class="reprotest-form-fields"><input class="text-field w-input" autocomplete="off" maxlength="256" name="subscribe_email" data-name="subscribe_email" placeholder="Ваш Email*" type="email" id="subscribe_email"><input type="submit" data-wait="Секундочку..." class="reprotest-form-button w-button" value="Получить результат"></div><label class="w-checkbox reprotest-subscribe-checkbox">
                 <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div><input type="checkbox" name="agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked=""><span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="/privacy" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
               </label>
@@ -338,6 +338,8 @@
         <div class="reprotest-block rtb-advs">
           <div class="reprotest-adv-wrap">
             <h2 class="reprotest-adv-h2">Позаботьтесь о вашем организме с Системой РЕПРО!</h2>
+            <p class="reprotest-big-p-2">Программа подойдет и тем, кто не планирует беременность, но хочет понимать, что организм работает как часы.</p>
+            <p class="reprotest-big-p-2">Система рекомендаций от линейки продуктов РЕПРО – это программа, которая нормализует дефициты и помогает восстановить важные функции в организме женщины и мужчины, может повысить шансы на успешное зачатие, в том числе методом ЭКО (с применением вспомогательных репродуктивных технологий).</p>
             <p class="reprotest-big-p-2">Программа подойдет и тем, кто не планирует беременность, но хочет понимать, что организм работает как часы.</p>
             <p class="reprotest-p">Восстановление проходит на нескольких этапах:</p>
           </div>
