@@ -268,7 +268,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <div class="container reprotest-cta-container">
         <div class="reprotest-cta" style="margin-top: 40px;">
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" data-name="Subscribe Form" method="POST" action="{{ route('site.test.subscribe') }}" class="reprotest-form" data-wf-page-id="697729df64c8f65c7ff4c2e1" data-wf-element-id="b0b44bde-be5e-77b8-b20d-3dd8764fe2ad">
@@ -740,7 +740,13 @@ Webflow.push(function() {
             </div>
           `;
         }
-        $('.reprotest-result-container').parent().append(html);
+        // Добавляем блоки рекомендаций перед блоком формы подписки
+        const ctaContainer = $('.reprotest-cta-container');
+        if (ctaContainer.length) {
+          ctaContainer.before(html);
+        } else {
+          $('.reprotest-result-container').parent().append(html);
+        }
       });
     }
   }
