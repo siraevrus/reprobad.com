@@ -714,7 +714,7 @@ Webflow.push(function() {
                   <div class="reprotest-block-message">
                     <p class="reprotest-p">${result.description}</p>
                     <a href="https://reprobad.com" class="button w-button" target="_blank">
-                      Подробные рекомендации
+                      Подробные рекомендации —>
                     </a>
                   </div>
                   <div class="reprotest-products">
@@ -733,7 +733,7 @@ Webflow.push(function() {
                   <div class="reprotest-block-message">
                     <p class="reprotest-p">${result.description}</p>
                     <a href="https://reprobad.com" class="button w-button" target="_blank">
-                      Подробные рекомендации
+                      Подробные рекомендации —>
                     </a>
                   </div>
                 </div>
