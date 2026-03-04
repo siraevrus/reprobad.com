@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Storage;
 
 class InputService
 {
-    /**
-     * @param $fileBase64
-     * @param $resource
-     * @param $field
-     * @return bool
-     */
     public static string $lastError = '';
 
     public static function uploadFile($fileBase64, $resource, $field): bool
@@ -103,31 +97,21 @@ class InputService
         return true;
     }
 
-    /**
-     * @param $images
-     * @param $resource
-     * @param $field
-     * @return bool
-     */
     public static function uploadGallery($images, $resource, $field): bool
     {
         if(!is_array($images)) {
-            // Если images не массив, не обновляем поле
             return false;
         }
 
         $processedImages = [];
         foreach ($images as $key => $image) {
             if(isset($image['remove']) && $image['remove'] === true) {
-                // Удаляем файл, если он был загружен ранее
                 if(isset($image['url']) && !str_contains($image['url'], 'data:')) {
                     $filePath = str_replace('/storage/', '', $image['url']);
                     Storage::disk('public')->delete($filePath);
                 }
-                continue; // Пропускаем удаленные изображения
+                continue;
             }
-            
-            // Если изображение уже загружено (не base64), сохраняем с alt
             if(isset($image['url']) && !str_contains($image['url'], 'data:')) {
                 $processedImages[] = [
                     'url' => $image['url'],
@@ -136,8 +120,6 @@ class InputService
                 ];
                 continue;
             }
-            
-            // Обрабатываем новые изображения (base64)
             if(isset($image['url']) && str_contains($image['url'], 'data:')) {
                 try {
                     $class_name = strtolower(class_basename($resource));
@@ -148,7 +130,6 @@ class InputService
                         'alt' => $image['alt'] ?? '',
                     ];
                 } catch (\Exception $e) {
-                    // Логируем ошибку, но продолжаем обработку остальных изображений
                     \Log::error('Error processing image in gallery: ' . $e->getMessage());
                     continue;
                 }

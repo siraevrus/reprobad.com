@@ -36,11 +36,6 @@
                 <h1 class="product-h1 small">{!! $resource->title !!}</h1>
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
                 <p class="product-hero-p">{!! $resource->content !!}</p>
-                {{--
-                <div class="product-buy-buttons">
-                    <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-button">Подробнее —&gt;</a>
-                </div>
-                --}}
                 <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
                         <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
@@ -210,8 +205,6 @@
 @endsection
 
 @section('scripts')
-    {{-- Временно отключаем внешний скрипт, так как он конфликтует с нашим кодом --}}
-    {{-- <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script> --}}
     <style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
@@ -219,7 +212,6 @@
             .product-table-cell:not(:first-child) { display: none; }
             .product-table-cell.active { display: block; }
         }
-        /* Исправление проблемы с кликабельностью кнопок */
         .product-body {
             position: relative;
             z-index: 10;
@@ -366,9 +358,7 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Обработчик для кнопок вкладок продукта
             function initProductTabs() {
-                // Проверяем наличие элементов
                 const tabs = document.querySelectorAll('.product-options-tab');
                 if (tabs.length === 0) {
                     console.log('Кнопки вкладок не найдены, повторная попытка через 100мс');
@@ -377,17 +367,10 @@
                 }
                 
                 if (typeof $ !== 'undefined') {
-                    // Удаляем все старые обработчики
                     $('.product-options-tab').off('click tap');
-                    
-                    // Добавляем обработчики напрямую к элементам (не через делегирование)
                     $('.product-options-tab').each(function() {
                         const $tab = $(this);
-                        
-                        // Удаляем старые обработчики
                         $tab.off('click tap');
-                        
-                        // Добавляем новый обработчик
                         $tab.on('click', function(e) {
                             e.preventDefault();
                             e.stopPropagation();
@@ -401,21 +384,14 @@
                                 console.log('Не найден .product-body');
                                 return false;
                             }
-                            
-                            // Убираем активный класс со всех кнопок и контента
                             $wrap.find('.product-options-tab, .product-options-tab-content').removeClass('active');
-                            
-                            // Если кнопка уже была активна, просто закрываем
                             if (needClose) return false;
-                            
-                            // Находим следующий элемент контента после кнопки
                             const $nextContent = $clickedTab.next('.product-options-tab-content');
                             
                             if ($nextContent.length) {
                                 $clickedTab.addClass('active');
                                 $nextContent.addClass('active');
                             } else {
-                                // Fallback: используем индекс
                                 const $tabs = $wrap.find('.product-options-tab');
                                 const $tabsContent = $wrap.find('.product-options-tab-content');
                                 const index = $tabs.index($clickedTab);
@@ -429,8 +405,6 @@
                             return false;
                         });
                     });
-                    
-                    // Активируем первую вкладку по умолчанию
                     $('.product-body').each(function() {
                         const $wrap = $(this);
                         const $firstTab = $wrap.find('.product-options-tab').first();
@@ -441,9 +415,7 @@
                         }
                     });
                 } else {
-                    // Fallback на vanilla JS
                     document.querySelectorAll('.product-options-tab').forEach(function(tab) {
-                        // Удаляем старые обработчики
                         const newTab = tab.cloneNode(true);
                         tab.parentNode.replaceChild(newTab, tab);
                         
@@ -462,8 +434,6 @@
                             tabsContent.forEach(function(c) { c.classList.remove('active'); });
                             
                             if (needClose) return;
-                            
-                            // Находим следующий элемент контента после кнопки
                             let nextElement = this.nextElementSibling;
                             while (nextElement && !nextElement.classList.contains('product-options-tab-content')) {
                                 nextElement = nextElement.nextElementSibling;
@@ -473,7 +443,6 @@
                                 this.classList.add('active');
                                 nextElement.classList.add('active');
                             } else {
-                                // Fallback: используем индекс
                                 const index = tabs.indexOf(this);
                                 if (index >= 0 && index < tabsContent.length) {
                                     this.classList.add('active');
@@ -493,8 +462,6 @@
                     });
                 }
             }
-            
-            // Выполняем после полной загрузки страницы
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(initProductTabs, 300);
@@ -502,15 +469,11 @@
             } else {
                 setTimeout(initProductTabs, 300);
             }
-            
-            // Также выполняем после загрузки Webflow, если он есть
             if (typeof Webflow !== 'undefined') {
                 Webflow.push(function() {
                     setTimeout(initProductTabs, 100);
                 });
             }
-            
-            // Дополнительная проверка после полной загрузки
             window.addEventListener('load', function() {
                 setTimeout(initProductTabs, 500);
             });

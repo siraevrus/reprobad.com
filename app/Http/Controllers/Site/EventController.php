@@ -12,18 +12,13 @@ class EventController extends Controller
 {
     public function index(Request $request): View
     {
-        // Исключаем большие поля (content, images, image, logo) из запроса для оптимизации памяти
-        // Поля image и logo содержат base64-данные размером до 9.6 МБ, что вызывает ошибки памяти
-        // Эти поля загружаются только на странице детального просмотра (show)
         $resources = Event::where('active', 1)
             ->select('id', 'title', 'description', 'dates', 'address', 'alias', 'sort', 'created_at', 'category');
 
-        // Фильтрация по категории
         if ($request->get('category')) {
             $resources = $resources->where('category', $request->get('category'));
         }
 
-        // Поиск - используем только поля, которые есть в select
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
             $resources = $resources->where(function($q) use ($query) {
@@ -49,13 +44,11 @@ class EventController extends Controller
             'декабрь'  => 12,
         ];
 
-        // Оптимизация: получаем категории и их количество через группировку в БД, без загрузки всех событий
-        // Используем только поле category для минимизации данных
         $categories = Event::where('active', 1)
             ->selectRaw('category, COUNT(*) as count')
             ->whereNotNull('category')
             ->groupBy('category')
-            ->orderBy('category', 'desc') // Предварительная сортировка в БД
+            ->orderBy('category', 'desc')
             ->get()
             ->map(function ($item) {
                 return [
@@ -74,20 +67,13 @@ class EventController extends Controller
             })
             ->values();
 
-
-
-
-        // Формируем динамические SEO данные при фильтрации по категории и пагинации
         $category = $request->get('category');
         $forceDynamic = false;
         $currentPage = $resources->currentPage();
         $lastPage = $resources->lastPage();
-        
-        // Проверяем, есть ли пагинация (только если не первая страница)
         $hasPagination = $currentPage > 1;
         
         if ($category) {
-            // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
             $title = 'События и мероприятия: ' . $decodedCategory;
             if ($hasPagination) {
@@ -97,12 +83,12 @@ class EventController extends Controller
                 'title' => $title,
                 'description' => 'События и мероприятия посвященные теме репродуктологии: ' . $decodedCategory
             ];
-            $forceDynamic = true; // Принудительно используем динамические значения
+            $forceDynamic = true;
         } else {
             $title = 'События и мероприятия';
             if ($hasPagination) {
                 $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
-                $forceDynamic = true; // При пагинации используем динамические значения
+                $forceDynamic = true;
             }
             $resource = (object)[
                 'title' => $title,

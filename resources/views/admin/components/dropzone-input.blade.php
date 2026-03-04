@@ -1,6 +1,5 @@
 <div class="container mx-auto">
     <label class="block font-semibold mb-2">{{ $title }}</label>
-    <!-- Dropzone -->
     <label for="dropzone-{{$field}}"
         class="border-2 border-dashed block border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-gray-500"
         :class="{ 'border-green-500': isDragging }"
@@ -15,8 +14,6 @@
             hidden
             @change="handleDropzoneFiles($event, '{{$field}}')">
     </label>
-
-    <!-- Gallery -->
     <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         <template x-for="(image, index) in form.{{$field}}" :key="index">
             <div class="relative group cursor-move border rounded-lg p-2 bg-gray-50"

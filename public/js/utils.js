@@ -1,5 +1,3 @@
-// utils.js
-
 const variables = {
     alert: {
         show: false,
@@ -25,7 +23,7 @@ const initializeEditor = {
     initializeEditorJs () {
         document.querySelectorAll('.editor-js').forEach((element, index) => {
             if (!element.id) {
-                element.id = `editor-js-${index}`; // Назначаем уникальный ID
+                element.id = `editor-js-${index}`;
             }
 
             const editor = new EditorJS({
@@ -40,12 +38,12 @@ const initializeEditor = {
     initializeTinyMCE () {
         document.querySelectorAll('.editor').forEach((element, index) => {
             if (!element.id) {
-                element.id = `editor-${index}`; // Назначаем уникальный ID
+                element.id = `editor-${index}`;
             }
 
             tinymce.init({
-                selector: `#${element.id}`, // Используем уникальный ID
-                license_key: 'gpl', // Согласие с условиями GPL лицензии
+                selector: `#${element.id}`,
+                license_key: 'gpl',
                 height: 300,
                 menubar: false,
                 language: 'ru',
@@ -68,7 +66,7 @@ const initializeEditor = {
 const userIsNotActive = {
     async userIsNotActive() {
         let idleTime = 0;
-        const idleLimit = 10; // Время бездействия в секундах
+        const idleLimit = 10;
 
         const resetIdleTimer = () => {
             idleTime = 0;
@@ -128,25 +126,18 @@ const imageUpload = {
             this.cropperModal.show = true;
             this.cropperModal.targetWidth = targetWidth;
             this.cropperModal.targetHeight = targetHeight;
-            
-            // Ждем, пока DOM обновится
             this.$nextTick(() => {
                 const imageElement = document.getElementById(`cropper-image-${field}`);
                 console.log('Image element:', imageElement);
                 if (imageElement) {
-                    // Уничтожаем предыдущий cropper, если он существует
                     if (this.cropperModal.cropper) {
                         this.cropperModal.cropper.destroy();
                     }
-                    
-                    // Проверяем наличие Cropper
                     if (typeof Cropper === 'undefined') {
                         console.error('Cropper.js is not loaded!');
                         alert('Ошибка: библиотека Cropper.js не загружена. Пожалуйста, обновите страницу.');
                         return;
                     }
-                    
-                    // Инициализируем новый cropper
                     this.cropperModal.cropper = new Cropper(imageElement, {
                         aspectRatio: targetWidth / targetHeight,
                         viewMode: 1,
@@ -227,13 +218,9 @@ const showAlert = {
 
     getErrorMessages(errorObject) {
         let messages = '';
-        
-        // Если errorObject уже строка, возвращаем её
         if (typeof errorObject === 'string') {
             return errorObject;
         }
-        
-        // Если errorObject не объект, возвращаем его строковое представление
         if (typeof errorObject !== 'object' || errorObject === null) {
             return String(errorObject);
         }
@@ -241,7 +228,6 @@ const showAlert = {
         for (const key in errorObject) {
             if (errorObject.hasOwnProperty(key)) {
                 const value = errorObject[key];
-                // Проверяем, является ли значение массивом
                 if (Array.isArray(value)) {
                     messages += value.join("<br>") + "<br>";
                 } else if (typeof value === 'string') {
@@ -325,11 +311,8 @@ const get = {
         try {
             const response = await fetch('/admin/' + this.route + '/' + this.action);
             const data = await response.json();
-            
-            // Нормализуем поле images, если оно существует
             if (data.images !== undefined) {
                 if (!Array.isArray(data.images)) {
-                    // Если это строка (JSON), пытаемся распарсить
                     if (typeof data.images === 'string') {
                         try {
                             data.images = JSON.parse(data.images);
@@ -337,11 +320,9 @@ const get = {
                             data.images = [];
                         }
                     } else {
-                        // Если это объект или null, преобразуем в массив
                         data.images = data.images ? [data.images] : [];
                     }
                 }
-                // Добавляем alt для обратной совместимости
                 data.images = (data.images || []).map(img => (typeof img === 'object' && img !== null)
                     ? { ...img, alt: img.alt ?? '' }
                     : { url: img, name: '', alt: '' });
@@ -366,8 +347,6 @@ const init = {
         if (this.action !== 'create') {
             await this.get();
         }
-
-        //await this.userIsNotActive();
         this.initializeTinyMCE();
         this.initializeEditorJs();
     },
@@ -390,9 +369,7 @@ const dropzone = {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    // Гарантируем, что поле всегда является массивом
                     if (!Array.isArray(this.form[field])) {
-                        // Если это строка (JSON), пытаемся распарсить
                         if (typeof this.form[field] === 'string') {
                             try {
                                 this.form[field] = JSON.parse(this.form[field]);
@@ -400,7 +377,6 @@ const dropzone = {
                                 this.form[field] = [];
                             }
                         } else {
-                            // Если это объект или null, преобразуем в массив
                             this.form[field] = this.form[field] ? [this.form[field]] : [];
                         }
                     }
@@ -412,7 +388,6 @@ const dropzone = {
     },
 
     removeDropzoneImage(index, field) {
-        // Гарантируем, что поле является массивом
         if (!Array.isArray(this.form[field])) {
             if (typeof this.form[field] === 'string') {
                 try {
@@ -434,7 +409,6 @@ const dropzone = {
     },
 
     dragDropzoneImageStart(event, index, field) {
-        // Гарантируем, что поле является массивом
         if (!Array.isArray(this.form[field])) {
             if (typeof this.form[field] === 'string') {
                 try {
@@ -450,7 +424,6 @@ const dropzone = {
     },
 
     dragDropzoneImageOver(event, index, field) {
-        // Гарантируем, что поле является массивом
         if (!Array.isArray(this.form[field])) {
             if (typeof this.form[field] === 'string') {
                 try {

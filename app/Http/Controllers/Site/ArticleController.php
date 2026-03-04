@@ -15,11 +15,8 @@ class ArticleController extends Controller
 {
     public function index(Request $request): View
     {
-        // Если есть поисковый запрос, ищем в обоих разделах
         if ($request->get('query')) {
             $query = strtolower($request->get('query'));
-            
-            // Поиск в статьях по тексту
             $articles = Article::where('active', 1)
                 ->where(function($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
@@ -32,8 +29,6 @@ class ArticleController extends Controller
                     $item->route_name = 'site.articles.show';
                     return $item;
                 });
-            
-            // Поиск в советах по тексту
             $advises = Advise::where('active', 1)
                 ->where(function($q) use ($query) {
                     $q->where('title', 'like', '%' . $query . '%')
@@ -46,8 +41,6 @@ class ArticleController extends Controller
                     $item->route_name = 'site.advises.show';
                     return $item;
                 });
-            
-            // Поиск по категориям в статьях
             $articlesByCategory = Article::where('active', 1)
                 ->whereNotNull('category')
                 ->where('category', 'like', '%' . $query . '%')
@@ -57,8 +50,6 @@ class ArticleController extends Controller
                     $item->route_name = 'site.articles.show';
                     return $item;
                 });
-            
-            // Поиск по категориям в советах
             $advisesByCategory = Advise::where('active', 1)
                 ->whereNotNull('category')
                 ->where('category', 'like', '%' . $query . '%')
@@ -68,14 +59,10 @@ class ArticleController extends Controller
                     $item->route_name = 'site.advises.show';
                     return $item;
                 });
-            
-            // Объединяем результаты по категориям (отдельно для блока "Похожие")
             $similarByCategory = $articlesByCategory->concat($advisesByCategory)
                 ->sortByDesc('created_at')
                 ->take(2)
                 ->values();
-            
-            // Объединяем все результаты поиска (текст + категории, исключая дубликаты по alias)
             $allResources = $articles->concat($advises)
                 ->concat($articlesByCategory)
                 ->concat($advisesByCategory)
@@ -84,8 +71,6 @@ class ArticleController extends Controller
                 })
                 ->sortByDesc('created_at')
                 ->values();
-            
-            // Ручная пагинация
             $page = $request->get('page', 1);
             $perPage = 11;
             $currentPage = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
@@ -95,18 +80,13 @@ class ArticleController extends Controller
                 'query' => $request->query(),
             ]);
         } else {
-            // Обычный режим - только статьи
             $resources = Article::where('active', 1);
-
-            // Фильтрация по категории
             if ($request->get('category')) {
                 $resources = $resources->where('category', $request->get('category'));
             }
 
             $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
         }
-
-        // Оптимизированный подсчет категорий - используем группировку в БД вместо загрузки всех записей
         $categories = Article::where('active', 1)
             ->whereNotNull('category')
             ->selectRaw('category as name, COUNT(*) as count')
@@ -120,18 +100,12 @@ class ArticleController extends Controller
                 ];
             })
             ->values();
-
-        // Формируем динамические SEO данные при фильтрации по категории, поиске и пагинации
         $category = $request->get('category');
         $searchQuery = $request->get('query');
         $forceDynamic = false;
         $currentPage = $resources->currentPage();
         $lastPage = $resources->lastPage();
-        
-        // Проверяем, есть ли пагинация (только если не первая страница)
         $hasPagination = $currentPage > 1;
-        
-        // Если есть поисковый запрос
         if ($searchQuery) {
             $decodedQuery = urldecode($searchQuery);
             $totalCount = isset($allResources) ? $allResources->count() : $resources->total();
@@ -143,7 +117,6 @@ class ArticleController extends Controller
             ];
             $forceDynamic = true;
         } elseif ($category && !$searchQuery) {
-            // Laravel автоматически декодирует URL параметры, но на всякий случай используем urldecode
             $decodedCategory = urldecode($category);
             $title = 'Статьи по теме: ' . $decodedCategory;
             if ($hasPagination) {
@@ -153,12 +126,12 @@ class ArticleController extends Controller
                 'title' => $title,
                 'description' => 'Статьи о совместной подготовке к беременности: ' . $decodedCategory
             ];
-            $forceDynamic = true; // Принудительно используем динамические значения
+            $forceDynamic = true;
         } else {
             $title = 'Статьи и советы';
             if ($hasPagination) {
                 $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
-                $forceDynamic = true; // При пагинации используем динамические значения
+                $forceDynamic = true;
             }
             $resource = (object)[
                 'title' => $title,
@@ -166,8 +139,6 @@ class ArticleController extends Controller
             ];
         }
         $pageType = 'Article';
-
-        // Передаем похожие по категориям в шаблон
         $similarByCategory = isset($similarByCategory) ? $similarByCategory : collect();
 
         return view('site.articles.index', compact('resources', 'categories', 'resource', 'pageType', 'similarByCategory', 'forceDynamic'));

@@ -256,7 +256,7 @@
   </section>
   <section class="reprotest-final">
     <div class="section">
-      <div class="container reprotest-result-container">
+      <div class="container reprotest-result-container" style="margin-bottom: 40px;">
         <div class="reprotest-result">
           <div class="reprotest-block">
             <h2 class="reprotest-h">Тест «Репродуктивное здоровье» пройден</h2>
@@ -357,7 +357,7 @@
             </div>
           </div>
           <div style="margin-top: 2rem; text-align: left;">
-            <a href="https://reprobad.com/" class="button short-event-button w-button">Подробнее о продуктах</a>
+            <a href="https://reprobad.com/" class="button short-event-button w-button">Подробнее о продуктах  —></a>
           </div>
         </div>
       </div>

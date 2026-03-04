@@ -88,7 +88,6 @@
             } else {
                 searchForm.style.display = 'block';
                 searchForm.classList.add('mobile-search-active');
-                // Фокусируемся на поле ввода
                 const searchInput = searchForm.querySelector('.search-input');
                 if (searchInput) {
                     setTimeout(() => {
