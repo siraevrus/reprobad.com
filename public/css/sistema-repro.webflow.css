@@ -5439,6 +5439,12 @@ figcaption {
   display: flex;
 }
 
+.reprotest-block-message .button {
+  width: 440px;
+  background-color: var(--white);
+  color: rgb(78, 81, 92);
+}
+
 .reprotest-p {
   margin-bottom: 0;
 }
@@ -7981,6 +7987,10 @@ figcaption {
 
   .reprotest-block-message {
     margin-top: 1rem;
+  }
+
+  .reprotest-block-message .button {
+    width: auto;
   }
 
   .reprotest-recommend-block {
