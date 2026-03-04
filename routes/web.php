@@ -137,6 +137,9 @@ Route::get('/menu/{alias}', [SiteMenuController::class, 'show'])->name('site.men
 Route::get('/company', [SitePageController::class, 'company'])->name('site.text.company');
 Route::get('/privacy', [SitePageController::class, 'privacy'])->name('site.text.privacy');
 Route::get('/about', [SitePageController::class, 'about'])->name('site.text.about');
+Route::get('/about.html', function () {
+    return redirect()->route('site.text.about', [], 301);
+});
 Route::get('/contacts', [SitePageController::class, 'contacts'])->name('site.text.contacts');
 Route::get('/map', [SiteMapController::class, 'index'])->name('site.map');
 

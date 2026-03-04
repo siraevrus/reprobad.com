@@ -105,15 +105,15 @@
   </div>
   <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">
     <div class="navbar-container w-container">
-      <a href="index.html" class="brand w-nav-brand"><img src="{{ asset("images/lgog-gold.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
+      <a href="{{ url('/') }}" class="brand w-nav-brand"><img src="{{ asset("images/lgog-gold.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
         <div>готовимся <br>к беременности <br>вместе</div>
       </a>
       <div class="nav-desktop-links">
-        <a href="about.html" class="nav-quick-link">О системе РЕПРО</a>
-        <a href="products.html" class="nav-quick-link">Продукты</a>
-        <a href="useful-tips.html" class="nav-quick-link">Полезные советы</a>
-        <a href="articles.html" class="nav-quick-link">Статьи</a>
-        <a href="events.html" class="nav-quick-link">События</a>
+        <a href="{{ route('site.text.about') }}" class="nav-quick-link">О системе РЕПРО</a>
+        <a href="{{ route('site.products.index') }}" class="nav-quick-link">Продукты</a>
+        <a href="{{ route('site.advises.index') }}" class="nav-quick-link">Полезные советы</a>
+        <a href="{{ route('site.articles.index') }}" class="nav-quick-link">Статьи</a>
+        <a href="{{ route('site.events.index') }}" class="nav-quick-link">События</a>
       </div>
       <a href="#" class="navbar-buy-button w-button">Купить</a>
       <div data-hover="true" data-delay="200" class="nav-dropdown w-dropdown">
@@ -125,30 +125,30 @@
               <path d="M9.41421356,0.585786438 L16,7.17157288 L16,7.17157288 L0,7.17157288 L6.58578644,0.585786438 C7.36683502,-0.195262146 8.63316498,-0.195262146 9.41421356,0.585786438 Z" id="Rectangle" fill="#8577B7"></path>
             </svg></div>
           <div class="nav-menu-links">
-            <a href="products.html" class="nav-link hide-desktop">Продукты</a>
-            <a href="events.html" class="nav-link hide-desktop">События</a>
-            <a href="useful-tips.html" class="nav-link hide-desktop">Полезные советы</a>
-            <a href="useful-tips.html" class="nav-link hide-desktop">Статьи</a>
-            <a href="map.html" class="nav-link">Где купить</a>
+            <a href="{{ route('site.products.index') }}" class="nav-link hide-desktop">Продукты</a>
+            <a href="{{ route('site.events.index') }}" class="nav-link hide-desktop">События</a>
+            <a href="{{ route('site.advises.index') }}" class="nav-link hide-desktop">Полезные советы</a>
+            <a href="{{ route('site.articles.index') }}" class="nav-link hide-desktop">Статьи</a>
+            <a href="{{ route('site.map') }}" class="nav-link">Где купить</a>
             <div class="nav-link-divider"></div>
-            <a href="company.html" class="nav-link">О компании</a>
+            <a href="{{ route('site.text.company') }}" class="nav-link">О компании</a>
             <div class="nav-link-divider"></div>
-            <a href="contacts.html" class="nav-link">Контакты</a>
+            <a href="{{ route('site.text.contacts') }}" class="nav-link">Контакты</a>
           </div>
         </nav>
       </div>
       <nav role="navigation" class="nav-menu w-nav-menu">
         <div class="nav-menu-wrap">
           <div class="nav-menu-links">
-            <a href="products.html" class="nav-link hide-desktop">Продукты</a>
-            <a href="events.html" class="nav-link hide-desktop">События</a>
-            <a href="useful-tips.html" class="nav-link hide-desktop">Полезные советы</a>
-            <a href="useful-tips.html" class="nav-link hide-desktop">Статьи</a>
-            <a href="map.html" class="nav-link">Где купить</a>
+            <a href="{{ route('site.products.index') }}" class="nav-link hide-desktop">Продукты</a>
+            <a href="{{ route('site.events.index') }}" class="nav-link hide-desktop">События</a>
+            <a href="{{ route('site.advises.index') }}" class="nav-link hide-desktop">Полезные советы</a>
+            <a href="{{ route('site.articles.index') }}" class="nav-link hide-desktop">Статьи</a>
+            <a href="{{ route('site.map') }}" class="nav-link">Где купить</a>
             <div class="nav-link-divider"></div>
-            <a href="company.html" class="nav-link">О компании</a>
+            <a href="{{ route('site.text.company') }}" class="nav-link">О компании</a>
             <div class="nav-link-divider"></div>
-            <a href="contacts.html" class="nav-link">Контакты</a>
+            <a href="{{ route('site.text.contacts') }}" class="nav-link">Контакты</a>
           </div>
           <div class="nav-family-line"><img src="{{ asset("images/nav-family-line.svg") }}" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
           <div class="nav-contacts">
@@ -365,7 +365,7 @@
   <div class="spacer desktop-3-rem"></div>
   <section class="footer-section">
     <div class="footer-container">
-      <a href="index.html" class="footer-logo-link w-inline-block"><img src="{{ asset("images/logo-black.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
+      <a href="{{ url('/') }}" class="footer-logo-link w-inline-block"><img src="{{ asset("images/logo-black.svg") }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
       <div class="footer-contacts">
         <div>
           <a href="tel:+74959567937" class="footer-phone">+7 495 956 79 37</a>
@@ -402,16 +402,16 @@
       </div>
       <div class="footer-menu">
         <div class="footer-menu-column">
-          <a href="about.html" class="footer-menu-link">Система РЕПРО</a>
-          <a href="products.html" class="footer-menu-link">Продукты</a>
-          <a href="events.html" class="footer-menu-link">События</a>
-          <a href="useful-tips.html" class="footer-menu-link">Полезные советы</a>
-          <a href="articles.html" class="footer-menu-link">Статьи</a>
+          <a href="{{ route('site.text.about') }}" class="footer-menu-link">Система РЕПРО</a>
+          <a href="{{ route('site.products.index') }}" class="footer-menu-link">Продукты</a>
+          <a href="{{ route('site.events.index') }}" class="footer-menu-link">События</a>
+          <a href="{{ route('site.advises.index') }}" class="footer-menu-link">Полезные советы</a>
+          <a href="{{ route('site.articles.index') }}" class="footer-menu-link">Статьи</a>
         </div>
         <div class="footer-menu-column">
-          <a href="company.html" class="footer-menu-link">О компании</a>
-          <a href="company.html" class="footer-menu-link">Вопросы-ответы</a>
-          <a href="contacts.html" class="footer-menu-link">Контакты</a>
+          <a href="{{ route('site.text.company') }}" class="footer-menu-link">О компании</a>
+          <a href="{{ route('site.text.company') }}" class="footer-menu-link">Вопросы-ответы</a>
+          <a href="{{ route('site.text.contacts') }}" class="footer-menu-link">Контакты</a>
         </div>
         <a href="/privacy" target="_blank" class="footer-terms-link">Политика конфиденциальности в отношении персональных данных</a>
       </div>
