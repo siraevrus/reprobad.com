@@ -15,7 +15,6 @@
             <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Номер поля</th>
-                <th class="py-3 px-6 text-left">Описание</th>
                 <th class="py-3 px-6 text-left">Цвет</th>
                 <th class="py-3 px-6 text-left">Продукты</th>
                 <th class="py-3 px-6 text-center">Статус</th>
@@ -29,11 +28,6 @@
                         <span class="bg-purple-200 text-purple-700 px-2 py-1 rounded text-xs font-bold">
                             Поле {{ $resource->field_number }}
                         </span>
-                    </td>
-                    <td class="py-3 px-6">
-                        <div class="max-w-md truncate" title="{{ $resource->description }}">
-                            {{ Str::limit($resource->description, 100) }}
-                        </div>
                     </td>
                     <td class="py-3 px-6">
                         @if($resource->color)
@@ -91,7 +85,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="py-8 text-center text-gray-500">
+                    <td colspan="5" class="py-8 text-center text-gray-500">
                         Результаты пока не настроены. <a href="{{ route('admin.test-result-fields.create') }}" class="text-blue-500 hover:text-blue-700">Создать первый результат</a>
                     </td>
                 </tr>
