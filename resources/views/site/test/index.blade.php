@@ -269,7 +269,7 @@
         </div>
       </div>
       <div class="container">
-        <div class="reprotest-cta">
+        <div class="reprotest-cta" style="margin-top: 40px;">
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" data-name="Subscribe Form" method="POST" action="{{ route('site.test.subscribe') }}" class="reprotest-form" data-wf-page-id="697729df64c8f65c7ff4c2e1" data-wf-element-id="b0b44bde-be5e-77b8-b20d-3dd8764fe2ad">
       <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -354,6 +354,9 @@
               <h3 class="reprotest-adv-item-h"><strong>Репродуктивное здоровье</strong></h3>
               <p class="reprotest-p">Поддержка репродуктивной функции</p>
             </div>
+          </div>
+          <div style="margin-top: 2rem; text-align: left;">
+            <a href="https://reprobad.com/" class="button short-event-button w-button">Подробнее о продуктах</a>
           </div>
         </div>
       </div>
