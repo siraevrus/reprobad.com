@@ -2755,7 +2755,7 @@ figcaption {
 }
 
 .map-info-contacts {
-  margin-top: 1.5rem;
+  margin-top: 15px;
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
   justify-content: space-between;
