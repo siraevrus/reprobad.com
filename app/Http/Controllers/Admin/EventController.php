@@ -80,10 +80,10 @@ class EventController extends Controller
             ->create($dataForSave);
 
         // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
-        InputService::uploadGallery($request->images, $resource, 'images');
-        InputService::uploadFile($request->file, $resource, 'file');
-        InputService::uploadFile($request->logo, $resource, 'logo');
+        InputService::uploadFile($request->input('image'), $resource, 'image');
+        InputService::uploadGallery($request->input('images'), $resource, 'images');
+        InputService::uploadFile($request->input('file'), $resource, 'file');
+        InputService::uploadFile($request->input('logo'), $resource, 'logo');
 
         return response()->json([
             'success' => true,
@@ -118,10 +118,10 @@ class EventController extends Controller
         $resource->save();
 
         // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
-        InputService::uploadGallery($request->images, $resource, 'images');
-        InputService::uploadFile($request->file, $resource, 'file');
-        InputService::uploadFile($request->logo, $resource, 'logo');
+        InputService::uploadFile($request->input('image'), $resource, 'image');
+        InputService::uploadGallery($request->input('images'), $resource, 'images');
+        InputService::uploadFile($request->input('file'), $resource, 'file');
+        InputService::uploadFile($request->input('logo'), $resource, 'logo');
 
         return response()->json([
             'success' => true,

@@ -23,6 +23,13 @@ class InputService
             return false;
         }
 
+        // Если это не base64 (уже существующий URL), просто сохраняем как есть
+        if(!str_starts_with($fileBase64, 'data:')) {
+            $resource->$field = $fileBase64;
+            $resource->save();
+            return true;
+        }
+
         $exploded = explode('base64,', $fileBase64);
         if(count($exploded) < 2) {
             self::$lastError = 'no_base64_separator';

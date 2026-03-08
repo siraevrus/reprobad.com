@@ -263,6 +263,15 @@ const save = {
         this._saving = true;
         this.loading = true;
         
+        // Убеждаемся, что поля с изображениями всегда передаются (даже если null)
+        const formData = { ...this.form };
+        const imageFields = ['image', 'logo', 'file'];
+        imageFields.forEach(field => {
+            if (!(field in formData)) {
+                formData[field] = null;
+            }
+        });
+        
         try {
             const response = await fetch(this.url, {
                 method: this.action !== 'create' ? 'PUT' : 'POST',
@@ -270,7 +279,7 @@ const save = {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': this.token
                 },
-                body: JSON.stringify(this.form)
+                body: JSON.stringify(formData)
             });
 
             let data;
