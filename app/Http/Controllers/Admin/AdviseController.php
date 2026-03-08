@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Advise;
 use App\Services\InputService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +22,7 @@ class AdviseController extends Controller
         'description' => 'string|nullable',
         'image' => 'string|nullable',
         'image_alt' => 'string|nullable',
+        'icon' => 'string|nullable',
         'category' => 'string|nullable',
         'time' => 'string|nullable',
         'seo_description' => 'string|nullable',
@@ -135,12 +137,16 @@ class AdviseController extends Controller
 
     public function create(): View
     {
-        return view('admin.advises.create');
+        $files = Storage::disk('public')->files('icons');
+        $icons = array_map(fn($file) => Storage::disk('public')->url($file), $files);
+        return view('admin.advises.create', compact('icons'));
     }
 
     public function edit(): View
     {
-        return view('admin.advises.create');
+        $files = Storage::disk('public')->files('icons');
+        $icons = array_map(fn($file) => Storage::disk('public')->url($file), $files);
+        return view('admin.advises.create', compact('icons'));
     }
 
     public function switch($id): RedirectResponse

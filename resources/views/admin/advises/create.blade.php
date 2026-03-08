@@ -11,6 +11,17 @@
 
             <div>@include('admin.components.image-crop-input', ['title' => 'Фото', 'field' => 'image', 'width' => 1280, 'height' => 853])</div>
             <div>@include('admin.components.text-input', ['title' => 'Alt для фото', 'field' => 'image_alt'])</div>
+            <div>
+                <label class="block font-semibold mb-2">Иконка</label>
+                <div class="flex space-x-2">
+                    @foreach(($icons ?? []) as $idx => $icon)
+                        <label for="adv_icon_{{ $idx }}">
+                            <input id="adv_icon_{{ $idx }}" type="radio" name="icon" value="{{ $icon }}" x-model="form.icon" class="mr-2">
+                            <img src="{{ $icon }}" alt="Иконка" class="inline-block">
+                        </label>
+                    @endforeach
+                </div>
+            </div>
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
             <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
