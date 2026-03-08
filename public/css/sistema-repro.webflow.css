@@ -2526,6 +2526,10 @@ figcaption {
   max-width: 24rem;
 }
 
+.contacts-content .mb-0.mw-24rem {
+  max-width: 300px;
+}
+
 .contacts-wrap {
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
@@ -5440,7 +5444,7 @@ figcaption {
 }
 
 .reprotest-block-message .button {
-  width: 430px;
+  width: 460px;
   background-color: var(--white);
   color: rgb(78, 81, 92);
 }

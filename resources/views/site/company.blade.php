@@ -43,15 +43,15 @@
                     </div>
                 @elseif($block['type'] == 'block3')
                     <div class="manufacturer-images-wrap main-image">
-                        <img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="manufacturer-image">
+                        <img src="{{ $block['data']['image'] }}" loading="lazy" alt="{{ $block['data']['image_alt'] ?? '' }}" class="manufacturer-image">
                     </div>
                 @elseif($block['type'] == 'block9')
                     <div class="manufacturer-images-wrap">
                         @foreach($block['data']['subBlocks'] as $idx => $subBlock)
                             @if($idx == 0)
-                                <img src="{{ $subBlock['data']['image'] }}" loading="lazy" alt="" class="manufacturer-image manufacturer-image _1-2">
+                                <img src="{{ $subBlock['data']['image'] }}" loading="lazy" alt="{{ $subBlock['data']['image_alt'] ?? '' }}" class="manufacturer-image manufacturer-image _1-2">
                             @else
-                                <img src="{{ $subBlock['data']['image'] }}" loading="lazy" alt="" class="manufacturer-image manufacturer-image _1-4">
+                                <img src="{{ $subBlock['data']['image'] }}" loading="lazy" alt="{{ $subBlock['data']['image_alt'] ?? '' }}" class="manufacturer-image manufacturer-image _1-4">
                             @endif
                         @endforeach
                     </div>
