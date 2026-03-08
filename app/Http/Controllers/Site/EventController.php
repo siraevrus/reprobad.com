@@ -27,7 +27,7 @@ class EventController extends Controller
             });
         }
 
-        $resources = $resources->orderBy('sort', 'desc')->paginate(7);
+        $resources = $resources->orderBy('sort', 'desc')->paginate(7)->withQueryString();
 
         $monthsOrder = [
             'январь'   => 1,

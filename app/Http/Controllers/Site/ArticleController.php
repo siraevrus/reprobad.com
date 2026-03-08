@@ -85,7 +85,7 @@ class ArticleController extends Controller
                 $resources = $resources->where('category', $request->get('category'));
             }
 
-            $resources = $resources->orderBy('created_at', 'desc')->paginate(11);
+            $resources = $resources->orderBy('created_at', 'desc')->paginate(11)->withQueryString();
         }
         $categories = Article::where('active', 1)
             ->whereNotNull('category')
