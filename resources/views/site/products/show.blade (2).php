@@ -6,7 +6,7 @@
         '@context' => 'https://schema.org',
         '@type' => 'Product',
         'name' => strip_tags($resource->title),
-        'description' => strip_tags($resource->description ?? ''),
+        'description' => strip_tags($resource->description ?? $resource->subtitle ?? ''),
         'brand' => [
             '@type' => 'Brand',
             'name' => 'Система РЕПРО'
@@ -18,10 +18,10 @@
         ]
     ];
     
-    if ($resource->image_left) {
-        $productSchema['image'] = str_starts_with($resource->image_left, 'http') 
-            ? $resource->image_left 
-            : (config('app.url') . '/' . ltrim($resource->image_left, '/'));
+    if ($resource->image) {
+        $productSchema['image'] = str_starts_with($resource->image, 'http') 
+            ? $resource->image 
+            : (config('app.url') . '/' . ltrim($resource->image, '/'));
     }
 @endphp
 <script type="application/ld+json">
@@ -36,15 +36,20 @@
                 <h1 class="product-h1 small">{!! $resource->title !!}</h1>
                 <p class="product-descriptor">{{ $resource->subtitle }}</p>
                 <p class="product-hero-p">{!! $resource->content !!}</p>
+                {{--
+                <div class="product-buy-buttons">
+                    <a href="{{ route('site.complex.show', $resource->alias) }}#first" class="button w-buttonstyle="font-family: Inter, sans-serif;">Подробнее <span style="font-size: 2em; display: inline-block; line-height: 1; vertical-align: -0.15em;">→</span></a>
+                </div>
+                --}}
                 <div class="hero-products">
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_left }}" class="{{ $resource->title_left }} w-inline-block">
-                        <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="{{ $resource->alt_left ?? $resource->title }}" class="sache-image"></div>
+                        <div class="sache-image-element"><img src="{{ $resource->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                     </a>
                     <a href="{{ route('site.complex.show', $resource->alias) }}#{{ $resource->anchor_right }}" class="{{ $resource->title_right }} w-inline-block">
                         @if($resource->id == 1)
-                            <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="{{ $resource->alt_right ?? $resource->title }}" loading="lazy" class="bottle-image"></div>
+                            <div class="bottle-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="bottle-image"></div>
                         @else
-                            <div class="sache-image-element"><img src="{{ $resource->image_right }}" alt="{{ $resource->alt_right ?? $resource->title }}" loading="lazy" class="sache-image"></div>
+                            <div class="sache-image-element"><img src="{{ $resource->image_right }}" alt="" loading="lazy" class="sache-image"></div>
                         @endif
                     </a>
                 </div>
@@ -64,24 +69,32 @@
                         <p class="product-head-text"> </p>
 
                         @if($product->images)
-                            <div class="slider-block product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
-                                <div class="main-slider main-slider{{ $product->id }}">
-                                    @foreach($product->images as $imageIndex => $image)
-                                        <div class="">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}">
-                                                <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">
-                                            </a>
-                                        </div>
-                                    @endforeach
+                            <div class="slider-container product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}" x-data="slider{{ $product->id }}()">
+                                <div class="slider-main">
+                                    <img @click="currentImage = slides[currentIndex].url;open = true" x-show="!showVideo" :src="slides[currentIndex].url" alt="Main Image">
+                                    <video :src="video" x-show="showVideo" controls></video>
                                 </div>
-                                <div class="thumbs-slider thumbs-slider{{ $product->id }}" data-thumbs-gallery="gallery{{ $product->id }}">
-                                    @foreach($product->images as $imageIndex => $image)
-                                        <div class="thumb-item" data-thumb-index="{{ $imageIndex }}">
-                                            <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
-                                                <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">
-                                            </a>
-                                        </div>
-                                    @endforeach
+
+                                <div class="modal" :class="{ 'active' : open }" @click="open = false">
+                                    <div class="modal-close" @click="open = false">&times;</div>
+                                    <div class="modal-content">
+                                        <img :src="currentImage" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="slider-prev" @click="prevImage">
+                                    <
+                                </div>
+                                <div class="slider-next" @click="nextImage">
+                                    >
+                                </div>
+
+                                <div class="thumbnails">
+                                    <template x-for="(image, index) in slides" :key="index">
+                                        <img :src="image.url" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
+                                    </template>
+
+                                    <img @click="handleShowVideo" src="images/icons8-play-video-100.png" x-show="video" alt="">
                                 </div>
                             </div>
                         @else
@@ -175,16 +188,16 @@
                                 <div class="step-products">
                                     <a href="{{ route('site.complex.show', $complex->alias) }}#first" class="step-product-left w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $complex->image_left }}" loading="lazy" alt="{{ $complex->alt_left ?? $complex->title }}" class="sache-image"></div>
+                                            <img src="{{ $complex->image_left }}" loading="lazy" alt="" class="sache-image"></div>
                                         <div class="step-product-shadow"></div>
                                     </a>
                                     <a href="{{ route('site.complex.show', $complex->alias) }}#second" class="step-product-right w-inline-block">
                                         <div class="sache-image-element">
-                                            <img src="{{ $complex->image_right }}" loading="lazy" alt="{{ $complex->alt_right ?? $complex->title }}" class="sache-image"></div>
+                                            <img src="{{ $complex->image_right }}" loading="lazy" alt="" class="sache-image"></div>
                                         <div class="step-product-shadow gipokortizol"></div>
                                     </a>
                                 </div>
-                                <a href="{{ route('site.complex.show', $complex->alias) }}" class="step-button {{ $complex->color }} w-button">Подробнее —&gt;</a>
+                                <a href="{{ route('site.complex.show', $complex->alias) }}" class="step-button {{ $complex->color }} w-buttonstyle="font-family: Inter, sans-serif;">Подробнее <span style="font-size: 2em; display: inline-block; line-height: 1; vertical-align: -0.15em;">→</span></a>
                             </div>
                             <div class="step-item-overlay {{ $complex->color }}"></div>
                         </div>
@@ -197,7 +210,8 @@
 @endsection
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.min.js" integrity="sha512-03Ucfdj4I8Afv+9P/c9zkF4sBBGlf68zzr/MV+ClrqVCBXWAsTEjIoGCMqxhUxv1DGivK7Bm1IQd8iC4v7X2bw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- Временно отключаем внешний скрипт, так как он конфликтует с нашим кодом --}}
+    {{-- <script src="https://files.raketadesign.ru/files/sistema-repro/product.js" type="text/javascript"></script> --}}
     <style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
@@ -205,6 +219,7 @@
             .product-table-cell:not(:first-child) { display: none; }
             .product-table-cell.active { display: block; }
         }
+        /* Исправление проблемы с кликабельностью кнопок */
         .product-body {
             position: relative;
             z-index: 10;
@@ -222,186 +237,137 @@
         .product-head-image {
             pointer-events: none;
         }
-        .product-head-image .slider-block,
-        .product-head-image .main-slider,
-        .product-head-image [data-controls],
-        .product-head-image .tns-controls {
-            pointer-events: auto;
-        }
-        .hero-products .sache-image-element,
-        .hero-products .bottle-image-element {
-            margin-top: 23px;
-        }
-        .hero-products > a:nth-child(2) .sache-image-element,
-        .hero-products > a:nth-child(2) .bottle-image-element {
-            margin-top: 43px;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/min/tiny-slider.js"></script>
-    <style>
-        .main-slider img {
-            max-height: 20rem;
-            margin: auto;
-            display: block;
-        }
-        .thumbs-slider {
-            display: flex;
-            justify-content: center;
-        }
-        .thumbs-slider div {
-            padding: 10px;
-        }
-        .thumbs-slider a {
-            display: block;
-            cursor: pointer;
-            opacity: .5;
-            transition: opacity 0.2s ease;
-            pointer-events: auto !important;
-            position: relative;
-            z-index: 10;
-        }
-        .thumbs-slider a:hover {
-            opacity: .8;
-        }
-        .thumbs-slider img {
-            height: 80px;
-            display: block;
-            pointer-events: none;
-        }
-        .thumbs-slider .tns-nav-active a {
-            opacity: 1;
-        }
-        .thumbs-slider div {
-            pointer-events: auto !important;
-        }
-        [data-controls="prev"],
-        [data-controls="next"] {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            background: none;
-            z-index: 99;
-            font-size: 0;
-            margin: auto;
-            width: 100px;
-            height: 50px;
-            cursor: pointer;
-            pointer-events: auto;
-            transition: transform 0.15s ease-in-out;
-        }
-        [data-controls="prev"]:active,
-        [data-controls="next"]:active {
-            transform: scale(0.85);
-        }
-        [data-controls="next"] {
-            right: 0;
-        }
-        [data-controls="prev"]:after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            background-image: url('/images/left-arrow.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            pointer-events: none;
-        }
-        [data-controls="next"]:after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            background-image: url('/images/right-arrow.svg');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            pointer-events: none;
-        }
-        @media (max-width: 600px) {
-            [data-controls="prev"],
-            [data-controls="next"] {
-                width: 2rem;
-                height: 3rem;
-                line-height: .4;
-                bottom: auto;
-                top: 33%;
-            }
-        }
     </style>
     <script>
         @if($resource->products)
-
         @foreach($resource->products as $product)
+        function slider{{ $product->id }}() {
+            return {
+                slides: @json($product->images),
+                currentIndex: 0,
+                showVideo: false,
+                video: @json($product->video),
+                currentImage: '',
+                open: false,
 
-        const mainSlider{{ $product->id }} = tns({
-            container: '.main-slider{{ $product->id }}',
-            items: 1,
-            controls: true,
-            navContainer: '.thumbs-slider{{ $product->id }}',
-            navAsThumbnails: true,
-            mouseDrag: true,
-            autoplay: false,
-            slideBy: 'page',
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            const thumbs{{ $product->id }} = document.querySelectorAll('.thumbs-slider{{ $product->id }} .thumb-link');
-            const mainSliderLinks{{ $product->id }} = Array.from(document.querySelectorAll('.main-slider{{ $product->id }} a[data-fslightbox="gallery{{ $product->id }}"]'));
-            
-            thumbs{{ $product->id }}.forEach(function(thumbLink) {
-                thumbLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const thumbIndex = parseInt(thumbLink.getAttribute('data-source-index')) || 0;
-                    const targetLink = mainSliderLinks{{ $product->id }}.find(function(link) {
-                        return parseInt(link.getAttribute('data-source-index')) === thumbIndex;
-                    });
-                    
-                    if (targetLink) {
-                        setTimeout(function() {
-                            targetLink.click();
-                        }, 10);
-                    }
-                });
-            });
-        });
-
+                handleShowVideo() {
+                    this.showVideo = true;
+                },
+                setCurrentIndex(index) {
+                    this.currentIndex = index;
+                    this.showVideo = false;
+                },
+                prevImage() {
+                    this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
+                },
+                nextImage() {
+                    this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
+                }
+            };
+        }
         @endforeach
-
         @endif
-
+    </script>
+    <style>
+        .slider-container {
+            margin: 0 auto;
+            text-align: center;
+        }
+        .slider-prev,
+        .slider-next {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            height: 30px;
+            width: 30px;
+            border-radius: 100%;
+            color: #000;
+            cursor: pointer;
+            line-height: 160%;
+        }
+        .slider-prev {
+            left: 30px;
+        }
+        .slider-next {
+            right: 30px;
+        }
+        .slider-main {
+            position: relative;
+            margin: 0 auto 20px;
+            height: 84%;
+            width: fit-content;
+        }
+        .slider-main img,
+        .slider-main video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .thumbnails img {
+            width: 80px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .thumbnails img:hover {
+            transform: scale(1.1);
+        }
+        .thumbnails img.active {
+            border: 2px solid #007bff;
+        }
+        .modal {
+            position: fixed;
+            z-index: -1;
+            background: rgba(0,0,0,.4);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: none;
+        }
+        .modal-content {
+            padding: 20px;
+            width: 700px;
+            max-width: 100%;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            height: max-content;
+        }
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            color: #fff;
+            font-size: 60px;
+            cursor: pointer;
+            right: 20px;
+            height: 40px;
+            line-height: .55;
+        }
+        .modal.active {
+            display: block;
+            z-index: 100;
+        }
+    </style>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const navButtons = document.querySelectorAll('[data-controls="prev"], [data-controls="next"]');
-            
-            navButtons.forEach(function(button) {
-                button.addEventListener('mousedown', function() {
-                    this.style.transform = 'scale(0.85)';
-                });
-                
-                button.addEventListener('mouseup', function() {
-                    this.style.transform = 'scale(1)';
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
-                button.addEventListener('touchstart', function() {
-                    this.style.transform = 'scale(0.85)';
-                });
-                
-                button.addEventListener('touchend', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-            
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.product-head-image').forEach(el => {
-                el.classList.add('visible');
-            });
+            // Обработчик для кнопок вкладок продукта
             function initProductTabs() {
+                // Проверяем наличие элементов
                 const tabs = document.querySelectorAll('.product-options-tab');
                 if (tabs.length === 0) {
                     console.log('Кнопки вкладок не найдены, повторная попытка через 100мс');
@@ -410,10 +376,17 @@
                 }
                 
                 if (typeof $ !== 'undefined') {
+                    // Удаляем все старые обработчики
                     $('.product-options-tab').off('click tap');
+                    
+                    // Добавляем обработчики напрямую к элементам (не через делегирование)
                     $('.product-options-tab').each(function() {
                         const $tab = $(this);
+                        
+                        // Удаляем старые обработчики
                         $tab.off('click tap');
+                        
+                        // Добавляем новый обработчик
                         $tab.on('click', function(e) {
                             e.preventDefault();
                             e.stopPropagation();
@@ -427,14 +400,21 @@
                                 console.log('Не найден .product-body');
                                 return false;
                             }
+                            
+                            // Убираем активный класс со всех кнопок и контента
                             $wrap.find('.product-options-tab, .product-options-tab-content').removeClass('active');
+                            
+                            // Если кнопка уже была активна, просто закрываем
                             if (needClose) return false;
+                            
+                            // Находим следующий элемент контента после кнопки
                             const $nextContent = $clickedTab.next('.product-options-tab-content');
                             
                             if ($nextContent.length) {
                                 $clickedTab.addClass('active');
                                 $nextContent.addClass('active');
                             } else {
+                                // Fallback: используем индекс
                                 const $tabs = $wrap.find('.product-options-tab');
                                 const $tabsContent = $wrap.find('.product-options-tab-content');
                                 const index = $tabs.index($clickedTab);
@@ -448,6 +428,8 @@
                             return false;
                         });
                     });
+                    
+                    // Активируем первую вкладку по умолчанию
                     $('.product-body').each(function() {
                         const $wrap = $(this);
                         const $firstTab = $wrap.find('.product-options-tab').first();
@@ -458,7 +440,9 @@
                         }
                     });
                 } else {
+                    // Fallback на vanilla JS
                     document.querySelectorAll('.product-options-tab').forEach(function(tab) {
+                        // Удаляем старые обработчики
                         const newTab = tab.cloneNode(true);
                         tab.parentNode.replaceChild(newTab, tab);
                         
@@ -477,6 +461,8 @@
                             tabsContent.forEach(function(c) { c.classList.remove('active'); });
                             
                             if (needClose) return;
+                            
+                            // Находим следующий элемент контента после кнопки
                             let nextElement = this.nextElementSibling;
                             while (nextElement && !nextElement.classList.contains('product-options-tab-content')) {
                                 nextElement = nextElement.nextElementSibling;
@@ -486,6 +472,7 @@
                                 this.classList.add('active');
                                 nextElement.classList.add('active');
                             } else {
+                                // Fallback: используем индекс
                                 const index = tabs.indexOf(this);
                                 if (index >= 0 && index < tabsContent.length) {
                                     this.classList.add('active');
@@ -505,6 +492,8 @@
                     });
                 }
             }
+            
+            // Выполняем после полной загрузки страницы
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(initProductTabs, 300);
@@ -512,16 +501,19 @@
             } else {
                 setTimeout(initProductTabs, 300);
             }
+            
+            // Также выполняем после загрузки Webflow, если он есть
             if (typeof Webflow !== 'undefined') {
                 Webflow.push(function() {
                     setTimeout(initProductTabs, 100);
                 });
             }
+            
+            // Дополнительная проверка после полной загрузки
             window.addEventListener('load', function() {
                 setTimeout(initProductTabs, 500);
             });
         });
-
     </script>
 
 @endsection

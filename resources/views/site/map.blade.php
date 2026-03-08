@@ -235,7 +235,7 @@
                             <div id="map" class="map-container"></div>
                             <div class="map-info-overlay"></div>
                             <div class="map-info">
-                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="images/x.svg" alt="" class="map-info-close-icon"></a><img loading="lazy" src="images/enc.png" alt="" class="map-info-logo">
+                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="images/x.svg" alt="закрыть" class="map-info-close-icon"></a><img loading="lazy" src="images/enc.png" alt="" class="map-info-logo">
                                 <div class="place-title">Аптека при клинике «Доктор Озон»</div>
                                 <div class="place-subtitle">на Бульваре Дм. Донского</div>
                                 <div class="place-address">г. Москва, ул. Старокачаловская, д. 6</div>

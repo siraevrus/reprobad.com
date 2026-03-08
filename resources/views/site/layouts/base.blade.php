@@ -770,7 +770,7 @@
                     @if($resource->complex->alias)
                         <div class="product-item">
                             <div class="product-item-content">
-                                <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="" class="repro-relax-giper-logo"></div>
+                                <div class="product-item-logo big"><img src="{{ $resource->logo }}" loading="lazy" alt="{{ $resource->logo_alt ?? $resource->title }}" class="repro-relax-giper-logo"></div>
                                 <p class="product-item-text">{{ $resource->description }}</p>
                                 <a href="{{ route('site.complex.show', $resource->complex->alias) }}" class="product-item-link w-inline-block">
                                     <div class="sache-image-element"><img src="{{ $resource->image }}" loading="lazy" alt="{{ $resource->image_alt ?? $resource->title }}" class="sache-image"></div>

@@ -59,7 +59,7 @@
             <section id="{{ $product->alias }}" class="section product-section {{ $idx % 2 == 0 ? 'second' : '' }}">
                 <div class="container product-container">
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
-                        <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="repro-detoxi-logo"></div>
+                        <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="{{ $product->logo_alt ?? $product->title }}" class="repro-detoxi-logo"></div>
                         <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
                         <p class="product-head-text"> </p>
 

@@ -19,7 +19,7 @@
                             <div class="product-item-image-shadow"></div>
                         </a>
                         <div class="product-item-button-wrap">
-                            <a href="{{ route('site.complex.show', $resource->alias) }}" class="button w-button">Подробнее —&gt;</a>
+                            <a href="{{ route('site.complex.show', $resource->alias) }}" class="button w-buttonstyle="font-family: Inter, sans-serif;">Подробнее <span style="font-size: 2em; display: inline-block; line-height: 1; vertical-align: -0.15em;">→</span></a>
                         </div>
                     </div>
                 </div>

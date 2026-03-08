@@ -131,7 +131,7 @@
                         <div class="mobile-popup-overlay"></div>
                         <div class="question-form-block w-form">
                             <form action="{{ route('site.form.feedback') }}" @submit.prevent="feedbackForm" method="post" class="form" x-show="!successFeedback">
-                                <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
+                                <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
                                 <div class="form-h">Возникли вопросы?</div>
                                 <input class="text-field w-input" x-model="formFeedback.name" autocomplete="off" maxlength="256" placeholder="ФИО*" type="text" id="name-3"  :class="errorsFeedback.name ? 'input-error' : ''">
                                 <input class="text-field w-input" x-model="formFeedback.email" autocomplete="off" maxlength="256" placeholder="Email*" type="email" id="email-6"  :class="errorsFeedback.email ? 'input-error' : ''">
@@ -153,7 +153,7 @@
                                 <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                                 <div>Вопрос отправлен</div>
                                 <a href="#" class="close-popup-button w-inline-block" @click.prevent="successFeedback = false; formFeedback = {name: '', email: '', phone: '', message: '', agree: true}; errorsFeedback = {};">
-                                    <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
+                                    <img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon">
                                 </a>
                             </div>
 

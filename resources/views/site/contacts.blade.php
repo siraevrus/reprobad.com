@@ -98,7 +98,7 @@
 
                     <form class="form wf-form-Subscribe-Form" @submit.prevent="submit" method="post" action="{{ route('site.form.feedback') }}" x-show="!success">
                         <a href="#" class="close-popup-button w-inline-block">
-                            <img src="images/x.svg" loading="lazy" alt="" class="x-icon">
+                            <img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon">
                         </a>
                         <div class="form-h">Возникли вопросы?</div>
                         <div>
@@ -133,7 +133,7 @@
                     <div class="success-message w-form-done" style="margin-top: 20px;" x-show="success">
                         <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
                         <div>Вопрос отправлен</div>
-                        <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="" class="x-icon"></a>
+                        <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
                     </div>
 
                 </div>

@@ -29,7 +29,7 @@
 
                 <form action="{{ route('site.advises.index') }}" class="search w-form">
                     <input class="search-input w-input" value="{{ request()->get('query') }}" autocomplete="off" maxlength="256" name="query" placeholder="Искать совет…" type="search" id="search" required="">
-                    <img src="images/Search.svg" loading="lazy" alt="" class="search-icon">
+                    <img src="images/Search.svg" loading="lazy" alt="Поиск" class="search-icon">
                     <input type="submit" class="search-button w-button" value="—&gt;">
                 </form>
 
@@ -48,7 +48,7 @@
                 </div>
                 @endif
 
-                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="images/Search.svg" loading="lazy" alt="" class="mobile-search-button-icon"></a>
+                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="images/Search.svg" loading="lazy" alt="Поиск" class="mobile-search-button-icon"></a>
             </div>
             <div class="items-wrap">
                 @if(!$resources->count())
@@ -71,7 +71,7 @@
                                 <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
                                 <div class="card-date-time">
                                     <div class="card-date">{{ $item->published_at }}</div>
-                                    <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="" class="clock-icon">
+                                    <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="Часы" class="clock-icon">
                                         <div>{{ $item->time }}</div>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="card-date">{{ $item->published_at }}</div>
-                                <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="" class="clock-icon">
+                                <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="часы" class="clock-icon">
                                     <div>{{ $item->time }}</div>
                                 </div>
                                 <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="card-link w-inline-block">
@@ -135,7 +135,7 @@
                                 <a href="{{ route($item->route_name, $item->alias) }}" class="card-button w-button">Подробнее —&gt;</a>
                                 <div class="card-date-time">
                                     <div class="card-date">{{ $item->published_at }}</div>
-                                    <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="" class="clock-icon">
+                                    <div class="card-read"><img src="images/clock.svg" loading="lazy" alt="Часы" class="clock-icon">
                                         <div>{{ $item->time ?? '' }}</div>
                                     </div>
                                 </div>

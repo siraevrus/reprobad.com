@@ -8,7 +8,7 @@
     </div>
     <div class="card-footer">
         <div class="card-date">{{ $item->published_at }}</div>
-        <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="" class="clock-icon">
+        <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="часы" class="clock-icon">
             <div>{{ $item->time }}</div>
         </div>
         <a href="{{ route($item->route_name ?? 'site.articles.show', $item->alias) }}" class="card-link w-inline-block">

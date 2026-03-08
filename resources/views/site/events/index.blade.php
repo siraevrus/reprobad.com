@@ -28,7 +28,7 @@
                 @endif
                 <form action="{{ route('site.events.index') }}" class="search w-form">
                     <input class="search-input w-input" value="{{ request()->get('query') }}" autocomplete="off" maxlength="256" name="query" placeholder="Искать событие…" type="search" id="search" required="">
-                    <img src="images/Search.svg" loading="lazy" alt="" class="search-icon">
+                    <img src="images/Search.svg" loading="lazy" alt="Поиск" class="search-icon">
                     <input type="submit" class="search-button w-button" value="—&gt;">
                 </form>
                 @if(!request()->get('query'))
@@ -45,7 +45,7 @@
                     @endforeach
                 </div>
                 @endif
-                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="images/Search.svg" loading="lazy" alt="" class="mobile-search-button-icon"></a>
+                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="images/Search.svg" loading="lazy" alt="Поиск" class="mobile-search-button-icon"></a>
             </div>
             <div class="items-wrap gap-0">
                 @foreach($resources as $event)

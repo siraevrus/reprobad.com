@@ -24,7 +24,7 @@
                             <div class="product-item-content">
                                 <div class="product-item-logo big">
                                     <img src="{{ $resource->logo }}"
-                                         loading="lazy" alt=""
+                                         loading="lazy" alt="{{ $resource->logo_alt ?? $resource->title }}"
                                          class="repro-relax-giper-logo">
                                 </div>
                                 <p class="product-item-text">
