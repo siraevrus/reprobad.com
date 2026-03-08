@@ -217,6 +217,10 @@
                                     <img :src="block.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="block.data.image">
                                     <button x-show="block.data.image" x-on:click="removeImage($event, block)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
                                 </label>
+                                <div class="mt-2" x-show="block.data.image">
+                                    <label class="block font-semibold mb-2">Alt текст для изображения</label>
+                                    <input type="text" x-model="block.data.image_alt" class="w-full p-2 border rounded" placeholder="Введите alt текст">
+                                </div>
                             </div>
                         </template>
 
@@ -353,6 +357,10 @@
                                                     <img :src="subBlock.data.image" alt="Загруженное изображение" class="max-w-full max-h-full" x-show="subBlock.data.image">
                                                     <button x-show="subBlock.data.image" x-on:click="removeImage($event, subBlock)" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white">&times;</button>
                                                 </label>
+                                                <div class="mt-2" x-show="subBlock.data.image">
+                                                    <label class="block font-semibold mb-2">Alt текст для изображения</label>
+                                                    <input type="text" x-model="subBlock.data.image_alt" class="w-full p-2 border rounded" placeholder="Введите alt текст">
+                                                </div>
                                             </div>
                                         </div>
                                     </template>
@@ -724,6 +732,7 @@
                             break;
                         case 'block3':
                             block.data.image = '';
+                            block.data.image_alt = '';
                             break;
                         case 'block4':
                             block.data.title = '';
@@ -818,7 +827,7 @@
                     this.initializeAll();
                 },
                 addDynamicSubBlock(block) {
-                    block.data.subBlocks.push({ data : {title: '', text: '', image: '', isExpanded: false} });
+                    block.data.subBlocks.push({ data : {title: '', text: '', image: '', image_alt: '', isExpanded: false} });
                     this.initializeAll();
                 },
                 removeSubBlock(block, subIndex) {
