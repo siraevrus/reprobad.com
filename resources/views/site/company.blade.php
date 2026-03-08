@@ -30,7 +30,7 @@
 @section('content')
     <section class="section">
         <div class="container manufacturer-container">
-            <div class="rfarm-logo-wrap"><img src="images/RFarmLogo.png" loading="lazy" alt="" class="rfarm-green-logo"></div>
+            <div class="rfarm-logo-wrap"><img src="images/RFarmLogo.png" loading="lazy" alt="Лого Р-ФАРМ" class="rfarm-green-logo"></div>
             <div class="manufacturer-richtext _w-630 w-richtext">
                 <h1>{{ $resource->title }}</h1>
                 <p>{{ $resource->description }}</p>

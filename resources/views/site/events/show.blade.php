@@ -88,12 +88,12 @@
                     </div>
                     <div class="event-contacts">
                         @if(isset($resource->email) && $resource->email)
-                        <a href="#" class="event-link w-inline-block"><img src="images/event-email-icon_1event-email-icon.png" loading="lazy" alt="" class="event-link-icon">
+                        <a href="#" class="event-link w-inline-block"><img src="images/event-email-icon_1event-email-icon.png" loading="lazy" alt="email" class="event-link-icon">
                             <div>{{ $resource->email }}</div>
                         </a>
                         @endif
                         @if(isset($resource->phone) && $resource->phone)
-                        <a href="#" class="event-link w-inline-block"><img src="images/event-phone-icon_1event-phone-icon.png" loading="lazy" alt="" class="event-link-icon">
+                        <a href="#" class="event-link w-inline-block"><img src="images/event-phone-icon_1event-phone-icon.png" loading="lazy" alt="phone" class="event-link-icon">
                             <div>{{ $resource->phone }}</div>
                         </a>
                         @endif
@@ -124,7 +124,7 @@
                 <div class="side" x-data="app()">
                     <div class="side-promo">
                         <a href="//www.eapteka.ru/search/?q=репро" target="_blank">
-                            <img src="images/banner.png" style="width:100%" alt="">
+                            <img src="images/banner.png" style="width:100%" alt="Купить в Eapteka">
                         </a>
                     </div>
                     <div class="mobile-popup">
