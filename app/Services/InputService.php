@@ -23,9 +23,15 @@ class InputService
             return false;
         }
 
-        // Если это не base64 (уже существующий URL), просто сохраняем как есть
+        // Если это не base64 (уже существующий URL или путь), сохраняем путь для единообразия
         if(!str_starts_with($fileBase64, 'data:')) {
-            $resource->$field = $fileBase64;
+            // Нормализуем полный URL к относительному пути для хранения в БД
+            $path = $fileBase64;
+            if (str_starts_with($fileBase64, 'http')) {
+                $parsed = parse_url($fileBase64);
+                $path = $parsed['path'] ?? $fileBase64;
+            }
+            $resource->$field = $path;
             $resource->save();
             return true;
         }

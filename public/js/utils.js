@@ -336,8 +336,10 @@ const get = {
                     ? { ...img, alt: img.alt ?? '' }
                     : { url: img, name: '', alt: '' });
             }
-            
-            this.form = Object.assign(this.form, data);
+            // Явное присваивание для корректной реактивности Alpine.js
+            for (const key in data) {
+                this.form[key] = data[key];
+            }
             this.loading = false;
         }
         catch (e) {

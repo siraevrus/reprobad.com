@@ -53,7 +53,9 @@ class EventController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
         $resource = Event::query()->findOrFail($id);
-        return response()->json($resource);
+        $data = $resource->toArray();
+        $data = $this->makeAssetUrlsAbsolute($data, ['logo', 'image', 'file']);
+        return response()->json($data);
     }
 
     public function store(Request $request) : JsonResponse
@@ -85,9 +87,12 @@ class EventController extends Controller
         InputService::uploadFile($request->input('file'), $resource, 'file');
         InputService::uploadFile($request->input('logo'), $resource, 'logo');
 
+        $resourceData = $resource->fresh()->toArray();
+        $resourceData = $this->makeAssetUrlsAbsolute($resourceData, ['logo', 'image', 'file']);
+
         return response()->json([
             'success' => true,
-            'resource' => $resource
+            'resource' => $resourceData
         ]);
     }
 
@@ -123,9 +128,12 @@ class EventController extends Controller
         InputService::uploadFile($request->input('file'), $resource, 'file');
         InputService::uploadFile($request->input('logo'), $resource, 'logo');
 
+        $resourceData = $resource->fresh()->toArray();
+        $resourceData = $this->makeAssetUrlsAbsolute($resourceData, ['logo', 'image', 'file']);
+
         return response()->json([
             'success' => true,
-            'resource' => $resource
+            'resource' => $resourceData
         ]);
     }
 
@@ -202,6 +210,19 @@ class EventController extends Controller
         $resource->save();
         session()->flash('message', 'Порядок элементов обновлен');
         return back();
+    }
+
+    /**
+     * Преобразует относительные пути к файлам в абсолютные URL для корректной загрузки в админке.
+     */
+    protected function makeAssetUrlsAbsolute(array $data, array $fields): array
+    {
+        foreach ($fields as $field) {
+            if (!empty($data[$field]) && is_string($data[$field]) && !str_starts_with($data[$field], 'http')) {
+                $data[$field] = url($data[$field]);
+            }
+        }
+        return $data;
     }
 
     /**

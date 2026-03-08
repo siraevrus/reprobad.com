@@ -57,6 +57,7 @@
                 ...initializeEditor,
                 ...userIsNotActive,
                 ...imageUpload,
+                ...fileUpload,
                 ...variables,
                 ...dropzone,
                 ...showAlert,
@@ -64,7 +65,10 @@
                 ...save,
                 ...init,
                 form: {
-                    images: []
+                    images: [],
+                    logo: '',
+                    image: '',
+                    file: ''
                 },
             }
         }
