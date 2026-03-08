@@ -1,5 +1,5 @@
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" /></div>
+    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
         <dotlottie-wc 
             id="lottie-desktop"
@@ -14,7 +14,7 @@
 </div>
 
 <div id="lottie-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" /></div>
+    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
         <dotlottie-wc
             id="lottie-mobile"

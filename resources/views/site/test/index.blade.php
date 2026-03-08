@@ -1,4 +1,4 @@
-<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon Feb 02 2026 10:40:57 GMT+0000 (Coordinated Universal Time)  -->
+в<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Mon Feb 02 2026 10:40:57 GMT+0000 (Coordinated Universal Time)  -->
 <html data-wf-page="697729df64c8f65c7ff4c2e1" data-wf-site="67040316492967a9326aebb1">
 <head>
   <meta charset="utf-8">
@@ -426,7 +426,7 @@
     <div class="bad-wrap">
       <div class="bad-container">
         <div class="bad-text"></div>
-        <a href="#" class="bad-close w-inline-block"><img src="{{ asset("images/bad-close.svg") }}" loading="lazy" alt="" class="bad-close-image"></a>
+        <a href="#" class="bad-close w-inline-block"><img src="{{ asset("images/bad-close.svg") }}" loading="lazy" alt="Закрыть" class="bad-close-image"></a>
       </div>
     </div>
     <div class="cookies-banner">

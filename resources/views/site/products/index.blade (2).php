@@ -36,8 +36,8 @@
                                     </div>
                                 </a>
                                 <div class="product-item-button-wrap" style="display: block">
-                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="button w-button">
-                                        Подробнее —&gt;
+                                    <a href="{{ route('site.complex.show', $resource->complex->alias) }}#{{ $resource->alias }}" class="button w-button" style="font-family: Inter, sans-serif;">
+                                        Подробнее <span style="font-size: 2em; display: inline-block; line-height: 1; vertical-align: -0.15em;">→</span>
                                     </a>
 
                                     @if($resource->link)

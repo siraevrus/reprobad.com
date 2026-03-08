@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="widget-footer">
-                    <a href="{{ route('site.articles.index') }}" class="button w-button">Подробнее —&gt;</a>
+                    <a href="{{ route('site.articles.index') }}" class="button w-buttonstyle="font-family: Inter, sans-serif;">Подробнее <span style="font-size: 2em; display: inline-block; line-height: 1; vertical-align: -0.15em;">→</span></a>
                 </div>
             </div>
             --}}
