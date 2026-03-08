@@ -48,24 +48,31 @@
             $eventStartDate = null;
         }
     }
+    $eventSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Event',
+        'name' => strip_tags($resource->title),
+        'description' => strip_tags($resource->description ?? ''),
+        'organizer' => [
+            '@type' => 'Organization',
+            'name' => 'Система РЕПРО',
+        ],
+    ];
+    if ($eventImage) {
+        $eventSchema['image'] = $eventImage;
+    }
+    if ($eventStartDate) {
+        $eventSchema['startDate'] = $eventStartDate;
+    }
+    if ($resource->address) {
+        $eventSchema['location'] = [
+            '@type' => 'Place',
+            'name' => strip_tags($resource->address),
+        ];
+    }
 @endphp
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Event",
-  "name": {!! json_encode(strip_tags($resource->title)) !!},
-  "description": {!! json_encode(strip_tags($resource->description ?? '')) !!}@if($eventImage),
-  "image": {!! json_encode($eventImage) !!}@endif@if($eventStartDate),
-  "startDate": "{{ $eventStartDate }}"@endif@if($resource->address),
-  "location": {
-    "@type": "Place",
-    "name": {!! json_encode(strip_tags($resource->address)) !!}
-  }@endif,
-  "organizer": {
-    "@type": "Organization",
-    "name": "Система РЕПРО"
-  }
-}
+{!! json_encode($eventSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
