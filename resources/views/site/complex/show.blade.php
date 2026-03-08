@@ -168,7 +168,7 @@
             <div>
                 <div class="_4-steps-wrap">
                     @foreach($resources as $idx => $complex)
-                        <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+                        <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="{{ $idx + 1 }}" class="step-item-number">
                             <div class="step-item-content">
                                 <h2 class="step-h">{!! $complex->title !!}</h2>
                                 <p class="step-description">{{ $complex->subtitle }}</p>

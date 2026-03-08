@@ -10,6 +10,7 @@
             @csrf
 
             <div>@include('admin.components.image-crop-input', ['title' => 'Фото', 'field' => 'image', 'width' => 1280, 'height' => 853])</div>
+            <div>@include('admin.components.text-input', ['title' => 'Alt для фото', 'field' => 'image_alt'])</div>
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
             <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>

@@ -22,6 +22,7 @@
             <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">#</th>
+                <th class="py-3 px-6 text-left">Фото</th>
                 <th class="py-3 px-6 text-left">Заголовок</th>
                 <th class="py-3 px-6 text-left">Алиас</th>
                 <th class="py-3 px-6 text-left">Дата</th>
@@ -41,6 +42,13 @@
                 @endphp
                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                     <td class="py-3 px-6">{{ $resource->id }}</td>
+                    <td class="py-3 px-6">
+                        @if($resource->image)
+                            <img class="w-[120px]" src="{{ $resource->image }}" alt="{{ $resource->image_alt ?? strip_tags($resource->title ?? '') }}">
+                        @else
+                            —
+                        @endif
+                    </td>
                     <td class="py-3 px-6">{!! $highlightedTitle !!}</td>
                     <td class="py-3 px-6 font-mono text-xs">{!! $highlightedAlias !!}</td>
                     <td class="py-3 px-6">{{ $resource->created_at }}</td>

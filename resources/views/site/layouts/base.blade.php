@@ -603,6 +603,7 @@
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
                     <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <div class="nav-link-divider"></div>
                     <a href="map" class="nav-link">Карта</a>
                 </div>
             </nav>
@@ -623,6 +624,7 @@
                     <a href="contacts" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
                     <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <div class="nav-link-divider"></div>
                     <a href="map" class="nav-link">Карта</a>
                 </div>
                 <div class="nav-family-line"><img src="images/nav-family-line.svg" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
@@ -759,7 +761,7 @@
     <div class="products-popup-head">
         <div class="product-popup-head-container">
             <a href="#" class="products-popup-close-button w-inline-block">
-                <div>Закрыть</div><img src="images/wx.svg" loading="lazy" alt="" class="products-popup-close-cross">
+                <div>Закрыть</div><img src="images/wx.svg" loading="lazy" alt="иконка крестик" class="products-popup-close-cross">
             </a>
         </div>
     </div>

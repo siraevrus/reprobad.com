@@ -1,4 +1,4 @@
-<div class="step-item {{ $item->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="" class="step-item-number">
+<div class="step-item {{ $item->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="{{ $idx + 1 }}" class="step-item-number">
     <div class="step-item-content">
         <h2 class="step-h">{!! $item->title !!}</h2>
         <p class="step-description">{{ $item->subtitle }}</p>

@@ -154,7 +154,7 @@
                             </form>
 
                             <div x-show="successFeedback" x-cloak class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success">
-                                <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                                <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                 <div>Вопрос отправлен</div>
                                 <a href="#" class="close-popup-button w-inline-block" @click.prevent="successFeedback = false; formFeedback = {name: '', email: '', phone: '', message: '', agree: true}; errorsFeedback = {};">
                                     <img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon">
@@ -180,7 +180,7 @@
                                 </form>
 
                                 <div x-show="successSubscribe" class="subscribe-success w-form-done" tabindex="-1" role="region" aria-label="Subscribe Form success">
-                                    <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                                    <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                     <div>Вы успешно подписались <br>на рассылку!</div>
                                 </div>
 

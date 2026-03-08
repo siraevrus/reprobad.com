@@ -60,8 +60,17 @@
                     @if(in_array($idx, [0,1,2,3,4,5]))
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image }}" loading="lazy" alt="{{ strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
-                                <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
+                                <img src="{{ $item->image }}" loading="lazy" alt="{{ $item->image_alt ?? strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
+                                @php
+                                    $advIconSrc = $item->icon ?? '';
+                                    $advIconAlt = match(true) {
+                                        str_contains($advIconSrc, 'brain.svg') => 'иконка мозг',
+                                        str_contains($advIconSrc, 'ic-heart.svg') => 'иконка сердце',
+                                        str_contains($advIconSrc, 'bolt.svg') => 'Иконка молния',
+                                        default => 'Иконка',
+                                    };
+                                @endphp
+                                <img src="{{ $advIconSrc }}" loading="lazy" alt="{{ $advIconAlt }}" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
                                 <a href="{{ route($item->route_name ?? 'site.advises.show', $item->alias) }}" class="news-card-title">{{ $item->title }}</a>
@@ -80,8 +89,17 @@
                     @else
                         <div class="card">
                             @if(isset($item->icon))
+                                @php
+                                    $advIconSrc2 = $item->icon;
+                                    $advIconAlt2 = match(true) {
+                                        str_contains($advIconSrc2, 'brain.svg') => 'иконка мозг',
+                                        str_contains($advIconSrc2, 'ic-heart.svg') => 'иконка сердце',
+                                        str_contains($advIconSrc2, 'bolt.svg') => 'Иконка молния',
+                                        default => 'Иконка',
+                                    };
+                                @endphp
                                 <div class="card-head">
-                                    <img src="{{ $item->icon }}" loading="lazy" alt="{{ strip_tags($item->title) }}" class="card-icon">
+                                    <img src="{{ $advIconSrc2 }}" loading="lazy" alt="{{ $advIconAlt2 }}" class="card-icon">
                                 </div>
                             @endif
                             <div class="card-body">
@@ -124,7 +142,7 @@
                     @foreach($similarByCategory as $item)
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image ?? 'images/placeholder.jpg' }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image ?? 'images/placeholder.jpg' }} 500w, {{ $item->image ?? 'images/placeholder.jpg' }} 800w, {{ $item->image ?? 'images/placeholder.jpg' }} 960w" class="news-card-image">
+                                <img src="{{ $item->image ?? 'images/placeholder.jpg' }}" loading="lazy" alt="{{ $item->image_alt ?? strip_tags($item->title ?? '') }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image ?? 'images/placeholder.jpg' }} 500w, {{ $item->image ?? 'images/placeholder.jpg' }} 800w, {{ $item->image ?? 'images/placeholder.jpg' }} 960w" class="news-card-image">
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">

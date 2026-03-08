@@ -1,6 +1,15 @@
+@php
+    $iconSrc = $item->icon ?? 'images/bolt.svg';
+    $iconAlt = match(true) {
+        str_contains($iconSrc, 'brain.svg') => 'иконка мозг',
+        str_contains($iconSrc, 'ic-heart.svg') => 'иконка сердце',
+        str_contains($iconSrc, 'bolt.svg') => 'Иконка молния',
+        default => 'Иконка',
+    };
+@endphp
 <div class="card">
     <div class="card-head">
-        <img src="{{ $item->icon ?? 'images/bolt.svg' }}" loading="lazy" alt="{{ strip_tags($item->title) }}" class="card-icon">
+        <img src="{{ $iconSrc }}" loading="lazy" alt="{{ $iconAlt }}" class="card-icon">
     </div>
     <div class="card-body">
         <a href="{{ route($item->route_name ?? 'site.articles.show', $item->alias) }}" class="card-title {{ $resource->color ?? '' }}">{{ $item->title }}</a>

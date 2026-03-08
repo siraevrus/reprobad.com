@@ -126,7 +126,7 @@
                                 </form>
 
                                 <div class="subscribe-success w-form-done" x-show="success">
-                                    <img src="images/success-icon.svg" loading="lazy" alt="" class="success-icon">
+                                    <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                     <div>Вы подписаны!</div>
                                     <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
                                 </div>
@@ -141,7 +141,7 @@
 
     <section class="section short-events-in-article">
         <div class="container">
-            <div class="short-events"><img loading="lazy" src="images/bg-cal.svg" alt="" class="short-events-bg-image">
+            <div class="short-events"><img loading="lazy" src="images/bg-cal.svg" alt="иконка календарь" class="short-events-bg-image">
                 <div class="section-head-with-detali-button short-events-section">
                     <h2 class="big-section-h">События и мероприятия</h2>
                     <a href="{{ route('site.events.index') }}" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>

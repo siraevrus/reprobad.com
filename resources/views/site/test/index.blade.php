@@ -279,7 +279,7 @@
               </label>
             </form>
             <div class="subscribe-success w-form-done" style="display: none;">
-              <div class="reprotest-succes"><img loading="lazy" src="{{ asset("images/success-icon.svg") }}" alt="" class="success-icon">
+              <div class="reprotest-succes"><img loading="lazy" src="{{ asset("images/success-icon.svg") }}" alt="иконка письмо отправлено" class="success-icon">
                 <div>Результаты теста отправлены!</div>
               </div>
             </div>

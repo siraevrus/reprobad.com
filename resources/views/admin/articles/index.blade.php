@@ -43,7 +43,7 @@
             <tr class="border-b border-gray-200 hover:bg-gray-50">
                 <td class="py-3 px-6">{{ $resource->id }}</td>
                 <td class="py-3 px-6">
-                    <img class="w-[120px]" src="{{ $resource->image }}" alt="">
+                    <img class="w-[120px]" src="{{ $resource->image }}" alt="{{ $resource->image_alt ?? strip_tags($resource->title ?? '') }}">
                 </td>
                 <td class="py-3 px-6">{!! $highlightedTitle !!}</td>
                 <td class="py-3 px-6 font-mono text-xs">{!! $highlightedAlias !!}</td>

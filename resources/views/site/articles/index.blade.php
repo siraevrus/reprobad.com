@@ -101,7 +101,7 @@
                     @if(in_array($idx, [0,1,2,3,4,5]))
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image }}" loading="lazy" alt="{{ strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
+                                <img src="{{ $item->image }}" loading="lazy" alt="{{ $item->image_alt ?? strip_tags($item->title) }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image }} 500w, {{ $item->image }} 800w, {{ $item->image }} 960w" class="news-card-image">
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
@@ -145,7 +145,7 @@
                     @foreach($similarByCategory as $item)
                         <div class="news-card">
                             <div class="news-card-head">
-                                <img src="{{ $item->image ?? 'images/placeholder.jpg' }}" loading="lazy" alt="" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image ?? 'images/placeholder.jpg' }} 500w, {{ $item->image ?? 'images/placeholder.jpg' }} 800w, {{ $item->image ?? 'images/placeholder.jpg' }} 960w" class="news-card-image">
+                                <img src="{{ $item->image ?? 'images/placeholder.jpg' }}" loading="lazy" alt="{{ $item->image_alt ?? strip_tags($item->title ?? '') }}" sizes="(max-width: 479px) 92vw, (max-width: 767px) 91vw, 46vw" srcset="{{ $item->image ?? 'images/placeholder.jpg' }} 500w, {{ $item->image ?? 'images/placeholder.jpg' }} 800w, {{ $item->image ?? 'images/placeholder.jpg' }} 960w" class="news-card-image">
                                 <img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="news-card-icon">
                             </div>
                             <div class="news-card-body">
