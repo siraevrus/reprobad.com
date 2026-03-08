@@ -9,9 +9,15 @@
         <form action="#" method="POST" class="space-y-6" @submit.prevent="save">
             @csrf
 
-            <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])</div>
+            <div>
+                @include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])
+                @include('admin.components.text-input', ['title' => 'Alt текст для лого', 'field' => 'logo_alt'])
+            </div>
 
-            <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])</div>
+            <div>
+                @include('admin.components.image-input', ['title' => 'Фото', 'field' => 'image'])
+                @include('admin.components.text-input', ['title' => 'Alt текст для фото', 'field' => 'image_alt'])
+            </div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
             

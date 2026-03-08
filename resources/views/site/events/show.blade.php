@@ -99,7 +99,7 @@
                         @endif
                     </div>
                     @if(isset($resource->logo) && $resource->logo)
-                    <img src="{{ $resource->logo }}" loading="lazy" alt="{{ strip_tags($resource->title) }}" class="event-logo">
+                    <img src="{{ $resource->logo }}" loading="lazy" alt="{{ $resource->logo_alt ?? strip_tags($resource->title) }}" class="event-logo">
                     @endif
                     <a href="#" class="queston-popup-button w-button">Задать вопрос</a>
                     @if(isset($resource->file) && $resource->file)
@@ -115,7 +115,7 @@
                     <div class="w-richtext">
                         @if($resource->image)
                         <figure class="w-richtext-align-center w-richtext-figure-type-image">
-                            <div><img src="{{ $resource->image }}" loading="lazy" alt="{{ strip_tags($resource->title) }}" class="image"></div>
+                            <div><img src="{{ $resource->image }}" loading="lazy" alt="{{ $resource->image_alt ?? strip_tags($resource->title) }}" class="image"></div>
                         </figure>
                         @endif
                         {!! $resource->content ?? '' !!}
