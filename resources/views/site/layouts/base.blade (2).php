@@ -399,19 +399,15 @@
             flex: 0 0 calc(33.333% - 0.67rem);
             width: calc(33.333% - 0.67rem);
             max-width: calc(33.333% - 0.67rem);
-            align-self: stretch;
+            align-self: flex-start;
             display: flex;
             flex-direction: column;
         }
         
-        /* Социальная карточка внутри блока подписки */
+        /* Социальная карточка внутри блока подписки — компактная, не растягивается */
         .subscribe-block-wrapper .socials-card {
             width: 100% !important;
             max-width: 100% !important;
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
         }
         
         /* Убеждаемся, что карточки в одном ряду имеют одинаковую высоту */
@@ -829,7 +825,7 @@
     <div class="products-popup-head">
         <div class="product-popup-head-container">
             <a href="#" class="products-popup-close-button w-inline-block">
-                <div>Закрыть</div><img src="images/wx.svg" loading="lazy" alt="" class="products-popup-close-cross">
+                <div>Закрыть</div><img src="images/wx.svg" loading="lazy" alt="иконка крестик" class="products-popup-close-cross">
             </a>
         </div>
     </div>

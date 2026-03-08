@@ -343,17 +343,13 @@
             flex: 0 0 calc(33.333% - 0.67rem);
             width: calc(33.333% - 0.67rem);
             max-width: calc(33.333% - 0.67rem);
-            align-self: stretch;
+            align-self: flex-start;
             display: flex;
             flex-direction: column;
         }
         .subscribe-block-wrapper .socials-card {
             width: 100% !important;
             max-width: 100% !important;
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
         }
         .items-wrap {
             align-items: stretch;
