@@ -17,7 +17,10 @@
                 <div>@include('admin.components.image-input', ['title' => 'Фото', 'field' => 'photo'])</div>
             </div>
 
-            <div>@include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])</div>
+            <div>
+                @include('admin.components.image-input', ['title' => 'Лого', 'field' => 'logo'])
+                @include('admin.components.text-input', ['title' => 'Alt текст для лого', 'field' => 'logo_alt'])
+            </div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 

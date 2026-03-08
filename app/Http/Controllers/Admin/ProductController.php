@@ -22,6 +22,7 @@ class ProductController extends Controller
         'image' => 'string|nullable',
         'image_alt' => 'string|nullable',
         'logo' => 'string|nullable',
+        'logo_alt' => 'string|nullable',
         'includes' => 'string|nullable',
         'link' => 'string|nullable',
         'text' => 'string|nullable',
