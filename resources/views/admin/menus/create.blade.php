@@ -190,7 +190,7 @@ function menuApp() {
         },
         menuData: {
             breakfast: { 
-                image: '', image_big: '', image_small: '', images: [],
+                image: '', image_alt: '', image_big: '', image_big_alt: '', image_small: '', image_small_alt: '', images: [],
                 title: '', name: 'Завтрак', anchor: 'breakfast',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -198,7 +198,7 @@ function menuApp() {
                 expandables: []
             },
             snack: { 
-                image: '', image_big: '', image_small: '', images: [],
+                image: '', image_alt: '', image_big: '', image_big_alt: '', image_small: '', image_small_alt: '', images: [],
                 title: '', name: 'Перекус', anchor: 'snack',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -206,7 +206,7 @@ function menuApp() {
                 expandables: []
             },
             dinner: { 
-                image: '', image_big: '', image_small: '', images: [],
+                image: '', image_alt: '', image_big: '', image_big_alt: '', image_small: '', image_small_alt: '', images: [],
                 title: '', name: 'Обед', anchor: 'dinner',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',
@@ -214,7 +214,7 @@ function menuApp() {
                 expandables: []
             },
             lunch: { 
-                image: '', image_big: '', image_small: '', images: [],
+                image: '', image_alt: '', image_big: '', image_big_alt: '', image_small: '', image_small_alt: '', images: [],
                 title: '', name: 'Ужин', anchor: 'lunch',
                 kbju: { calories: '', proteins: '', fats: '', carbs: '' },
                 description: '', recipe: '', note: '',

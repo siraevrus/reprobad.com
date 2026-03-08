@@ -12,19 +12,20 @@
             // Если есть массив изображений, используем его
             foreach ($meal['images'] as $img) {
                 if (is_array($img) && isset($img['url'])) {
-                    $images[] = ['url' => $img['url']];
+                    $images[] = ['url' => $img['url'], 'alt' => $img['alt'] ?? strip_tags($meal['title'] ?? '')];
                 } elseif (is_string($img)) {
-                    $images[] = ['url' => $img];
+                    $images[] = ['url' => $img, 'alt' => strip_tags($meal['title'] ?? '')];
                 }
             }
         }
         // Если массива нет, используем одиночное изображение (image_big, big_image или image для карточки)
         if (empty($images)) {
             $bigImage = $meal['image_big'] ?? $meal['big_image'] ?? $meal['image'] ?? null;
+            $bigImageAlt = $meal['image_big_alt'] ?? $meal['image_alt'] ?? strip_tags($meal['title'] ?? '');
             if ($bigImage) {
-                $images[] = ['url' => $bigImage];
+                $images[] = ['url' => $bigImage, 'alt' => $bigImageAlt];
             } else {
-                $images[] = ['url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg=='];
+                $images[] = ['url' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==', 'alt' => ''];
             }
         }
         $galleryId = 'gallery-' . str_replace(['#', ' '], ['', '-'], $mealId);
@@ -37,7 +38,7 @@
                 <template x-for="(image, index) in slides" :key="index">
                     <img
                          :src="image.url" 
-                         alt="" 
+                         :alt="image.alt || ''"
                          class="menu-card-image mci-big" 
                          style="cursor: default;"
                          onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNzY4IiBoZWlnaHQ9IjUxMiIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">

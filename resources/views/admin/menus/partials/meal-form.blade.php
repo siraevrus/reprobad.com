@@ -30,6 +30,7 @@
                         <button x-show="menuData.{{ $mealKey }}.image" @click.prevent="menuData.{{ $mealKey }}.image = ''" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white text-xs rounded">&times;</button>
                     </label>
                 </div>
+                <input type="text" x-model="menuData.{{ $mealKey }}.image_alt" class="mt-1 w-full p-2 border rounded text-sm" placeholder="Alt текст для изображения">
             </div>
             
             <!-- Большое изображение -->
@@ -46,6 +47,7 @@
                         <button x-show="menuData.{{ $mealKey }}.image_big" @click.prevent="menuData.{{ $mealKey }}.image_big = ''" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white text-xs rounded">&times;</button>
                     </label>
                 </div>
+                <input type="text" x-model="menuData.{{ $mealKey }}.image_big_alt" class="mt-1 w-full p-2 border rounded text-sm" placeholder="Alt текст для большого изображения">
             </div>
             
             <!-- Маленькое изображение -->
@@ -62,6 +64,7 @@
                         <button x-show="menuData.{{ $mealKey }}.image_small" @click.prevent="menuData.{{ $mealKey }}.image_small = ''" class="absolute top-0 right-0 py-1 px-2 bg-red-500 text-white text-xs rounded">&times;</button>
                     </label>
                 </div>
+                <input type="text" x-model="menuData.{{ $mealKey }}.image_small_alt" class="mt-1 w-full p-2 border rounded text-sm" placeholder="Alt текст для маленького изображения">
             </div>
         </div>
         

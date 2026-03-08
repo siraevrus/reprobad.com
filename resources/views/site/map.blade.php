@@ -215,22 +215,7 @@
                         </div>
                     </div>
                     <div data-w-tab="Карта" class="map-tab-pane w-tab-pane">
-                        <div class="map-search-wrap"><input name="search" placeholder="Ваш адрес" class="map-search">
-                            <div class="suggest-view">
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                                <a href="#" class="suggest-link">Link</a>
-                            </div>
-                        </div>
+                        <div class="map-search-wrap"><input name="search" placeholder="Ваш адрес" class="map-search"></div>
                         <div class="map-wrap">
                             <div id="map" class="map-container"></div>
                             <div class="map-info-overlay"></div>
@@ -259,10 +244,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="map-objects">
-                <div class="map-marker"></div>
-                <div class="map-cluster">3</div>
             </div>
         </div>
     </section>
