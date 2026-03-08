@@ -91,7 +91,7 @@
                                 <p>Загрузить</p>
                                 <p class="text-[10px] mt-1">768×512px</p>
                             </div>
-                            <img :src="img.url" alt="" class="max-w-full max-h-full object-cover rounded" x-show="img.url">
+                            <img :src="img.url" :alt="img.alt || ''" class="max-w-full max-h-full object-cover rounded" x-show="img.url">
                             <label class="absolute inset-0 cursor-pointer" x-show="!img.url">
                                 <input type="file" @change="openImageCropperForGallery($event, '{{ $mealKey }}', imgIndex, 768, 512)" class="hidden" accept="image/jpeg,image/png,image/webp">
                             </label>
@@ -101,8 +101,8 @@
                                 <input type="file" @change="openImageCropperForGallery($event, '{{ $mealKey }}', imgIndex, 768, 512)" class="hidden" accept="image/jpeg,image/png,image/webp">
                             </label>
                         </div>
-                        <div class="mt-2 text-xs text-center text-gray-600" x-show="img.url">
-                            Изображение <span x-text="imgIndex + 1"></span>
+                        <div class="mt-2" x-show="img.url">
+                            <input type="text" x-model="img.alt" class="w-full p-2 border rounded text-xs" placeholder="Alt текст для изображения">
                         </div>
                     </div>
                 </template>

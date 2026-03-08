@@ -531,9 +531,9 @@ function menuApp() {
                         if (Array.isArray(merged[key].images)) {
                             merged[key].images = merged[key].images.map(img => {
                                 if (typeof img === 'string') {
-                                    return { url: img };
+                                    return { url: img, alt: '' };
                                 }
-                                return img;
+                                return { ...img, alt: img.alt ?? '' };
                             });
                         }
                         // Миграция recipe_table -> recipe_tables
@@ -867,7 +867,7 @@ function menuApp() {
             if (!this.menuData[mealKey].images) {
                 this.menuData[mealKey].images = [];
             }
-            this.menuData[mealKey].images.push({ url: '' });
+            this.menuData[mealKey].images.push({ url: '', alt: '' });
         },
         removeImageFromGallery(mealKey, imgIndex) {
             if (this.menuData[mealKey].images) {
@@ -1322,7 +1322,8 @@ function menuApp() {
                 if (this.menuData[this.cropperModal.mealKey]) {
                     if (this.cropperModal.field && this.cropperModal.field.startsWith('images[') && typeof this.cropperModal.imgIndex !== 'undefined') {
                         if (!this.menuData[this.cropperModal.mealKey].images) this.menuData[this.cropperModal.mealKey].images = [];
-                        if (!this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex]) this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex] = { url: '' };
+                        const existing = this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex];
+                        if (!existing) this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex] = { url: '', alt: '' };
                         this.menuData[this.cropperModal.mealKey].images[this.cropperModal.imgIndex].url = url;
                     } else {
                         this.menuData[this.cropperModal.mealKey][this.cropperModal.field] = url;
