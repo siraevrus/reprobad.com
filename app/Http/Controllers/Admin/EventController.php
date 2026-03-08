@@ -214,13 +214,25 @@ class EventController extends Controller
 
     /**
      * Преобразует относительные пути к файлам в абсолютные URL для корректной загрузки в админке.
+     * Не трогает base64 (data:...) и уже абсолютные URL.
      */
     protected function makeAssetUrlsAbsolute(array $data, array $fields): array
     {
         foreach ($fields as $field) {
-            if (!empty($data[$field]) && is_string($data[$field]) && !str_starts_with($data[$field], 'http')) {
-                $data[$field] = url($data[$field]);
+            $val = $data[$field] ?? null;
+            if (empty($val) || !is_string($val)) {
+                continue;
             }
+            // base64 data URL — оставляем как есть (для img src подходит)
+            if (str_starts_with($val, 'data:')) {
+                continue;
+            }
+            // уже абсолютный URL — не меняем
+            if (str_starts_with($val, 'http')) {
+                continue;
+            }
+            // относительный путь — делаем абсолютный URL
+            $data[$field] = asset(ltrim($val, '/'));
         }
         return $data;
     }

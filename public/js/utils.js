@@ -14,7 +14,7 @@ const variables = {
     initVariables() {
         this.route = location.pathname.split('/')[2];
         this.action = location.pathname.split('/')[3];
-        this.url = location.pathname.replace('create', '').replace('edit', '');
+        this.url = location.pathname.replace('/create', '').replace(/\/edit$/, '').replace(/\/$/, '');
         this.token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     }
 }
@@ -263,11 +263,10 @@ const save = {
         this._saving = true;
         this.loading = true;
         
-        // Убеждаемся, что поля с изображениями всегда передаются (даже если null)
+        // base64 при новой загрузке, URL при пересохранении без изменений
         const formData = { ...this.form };
-        const imageFields = ['image', 'logo', 'file'];
-        imageFields.forEach(field => {
-            if (!(field in formData)) {
+        ['image', 'logo', 'file'].forEach(field => {
+            if (!(field in formData) || formData[field] === undefined) {
                 formData[field] = null;
             }
         });
