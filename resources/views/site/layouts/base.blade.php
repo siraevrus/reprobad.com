@@ -346,6 +346,7 @@
             align-self: flex-start;
             display: flex;
             flex-direction: column;
+            padding-top: 2rem;
         }
         .subscribe-block-wrapper .socials-card {
             width: 100% !important;
