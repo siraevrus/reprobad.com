@@ -23,9 +23,31 @@ if (!function_exists('canonical_url')) {
             return null;
         }
 
-        $base = rtrim(config('app.url'), '/');
         $path = request()->path();
+        $pathNormalized = trim($path, '/');
 
+        // Страницы без canonical
+        $noCanonicalPaths = [
+            '',
+            'about',
+            'products',
+            'company',
+            'contacts',
+            'faq',
+            'map',
+            'menu/day_1',
+            'menu/day_2',
+            'menu/day_3',
+            'menu/day_4',
+            'menu/day_5',
+            'menu/day_6',
+            'menu/day_7',
+        ];
+        if (in_array($pathNormalized, $noCanonicalPaths, true)) {
+            return null;
+        }
+
+        $base = rtrim(config('app.url'), '/');
         if ($path === '' || $path === '/') {
             return $base;
         }

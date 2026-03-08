@@ -129,7 +129,7 @@ class AdviseController extends Controller
             $forceDynamic = true;
         } else {
             $title = 'Советы и статьи';
-            if ($hasPagination) {
+            if ($lastPage > 1) {
                 $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
                 $forceDynamic = true;
             }

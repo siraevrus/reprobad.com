@@ -129,7 +129,7 @@ class ArticleController extends Controller
             $forceDynamic = true;
         } else {
             $title = 'Статьи и советы';
-            if ($hasPagination) {
+            if ($lastPage > 1) {
                 $title .= '. Страница ' . $currentPage . ' из ' . $lastPage;
                 $forceDynamic = true;
             }
