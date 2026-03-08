@@ -2,7 +2,7 @@
     $iconSrc = $item->icon ?? 'images/bolt.svg';
     $iconAlt = match(true) {
         str_contains($iconSrc, 'brain.svg') => 'иконка мозг',
-        str_contains($iconSrc, 'ic-heart.svg') => 'иконка сердце',
+        str_contains($iconSrc, 'ic-heart.svg') => 'иконка Сердец',
         str_contains($iconSrc, 'bolt.svg') => 'Иконка молния',
         default => 'Иконка',
     };

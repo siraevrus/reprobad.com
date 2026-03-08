@@ -5,7 +5,12 @@
     $paginationCurrentPage = $resources->currentPage();
     $paginationLastPage = $resources->lastPage();
     $paginationQuery = request()->query();
+    // Убеждаемся, что page всегда присутствует в query для canonical (включая первую страницу)
+    $canonicalQuery = array_merge($paginationQuery, ['page' => $paginationCurrentPage]);
+    $queryString = http_build_query($canonicalQuery);
+    $canonicalUrl = config('app.url') . route('site.advises.index', [], false) . ($queryString ? '?' . $queryString : '');
 @endphp
+<link rel="canonical" href="{{ $canonicalUrl }}">
 @if($paginationLastPage > 1)
     @if($paginationCurrentPage > 1)
         <link rel="prev" href="{{ route('site.advises.index', array_merge($paginationQuery, ['page' => $paginationCurrentPage - 1])) }}">
@@ -65,7 +70,7 @@
                                     $advIconSrc = $item->icon ?? '';
                                     $advIconAlt = match(true) {
                                         str_contains($advIconSrc, 'brain.svg') => 'иконка мозг',
-                                        str_contains($advIconSrc, 'ic-heart.svg') => 'иконка сердце',
+                                        str_contains($advIconSrc, 'ic-heart.svg') => 'иконка Сердец',
                                         str_contains($advIconSrc, 'bolt.svg') => 'Иконка молния',
                                         default => 'Иконка',
                                     };
@@ -93,7 +98,7 @@
                                     $advIconSrc2 = $item->icon;
                                     $advIconAlt2 = match(true) {
                                         str_contains($advIconSrc2, 'brain.svg') => 'иконка мозг',
-                                        str_contains($advIconSrc2, 'ic-heart.svg') => 'иконка сердце',
+                                        str_contains($advIconSrc2, 'ic-heart.svg') => 'иконка Сердец',
                                         str_contains($advIconSrc2, 'bolt.svg') => 'Иконка молния',
                                         default => 'Иконка',
                                     };

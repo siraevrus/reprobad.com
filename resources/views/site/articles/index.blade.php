@@ -5,7 +5,12 @@
     $paginationCurrentPage = $resources->currentPage();
     $paginationLastPage = $resources->lastPage();
     $paginationQuery = request()->query();
+    // Убеждаемся, что page всегда присутствует в query для canonical (включая первую страницу)
+    $canonicalQuery = array_merge($paginationQuery, ['page' => $paginationCurrentPage]);
+    $queryString = http_build_query($canonicalQuery);
+    $canonicalUrl = config('app.url') . route('site.articles.index', [], false) . ($queryString ? '?' . $queryString : '');
 @endphp
+<link rel="canonical" href="{{ $canonicalUrl }}">
 @if($paginationLastPage > 1)
     @if($paginationCurrentPage > 1)
         <link rel="prev" href="{{ route('site.articles.index', array_merge($paginationQuery, ['page' => $paginationCurrentPage - 1])) }}">
