@@ -54,16 +54,13 @@
   "@context": "https://schema.org",
   "@type": "Event",
   "name": {!! json_encode(strip_tags($resource->title)) !!},
-  "description": {!! json_encode(strip_tags($resource->description ?? '')) !!},
-  @if($eventImage)"image": {!! json_encode($eventImage) !!},
-  @endif
-  @if($eventStartDate)"startDate": "{{ $eventStartDate }}",
-  @endif
-  @if($resource->address)"location": {
+  "description": {!! json_encode(strip_tags($resource->description ?? '')) !!}@if($eventImage),
+  "image": {!! json_encode($eventImage) !!}@endif@if($eventStartDate),
+  "startDate": "{{ $eventStartDate }}"@endif@if($resource->address),
+  "location": {
     "@type": "Place",
     "name": {!! json_encode(strip_tags($resource->address)) !!}
-  },
-  @endif
+  }@endif,
   "organizer": {
     "@type": "Organization",
     "name": "Система РЕПРО"

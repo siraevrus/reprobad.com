@@ -235,26 +235,26 @@
                             <div id="map" class="map-container"></div>
                             <div class="map-info-overlay"></div>
                             <div class="map-info">
-                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="images/x.svg" alt="закрыть" class="map-info-close-icon"></a><img loading="lazy" src="images/enc.png" alt="" class="map-info-logo">
-                                <div class="place-title">Аптека при клинике «Доктор Озон»</div>
-                                <div class="place-subtitle">на Бульваре Дм. Донского</div>
-                                <div class="place-address">г. Москва, ул. Старокачаловская, д. 6</div>
-                                <div class="place-metro-wrap"><img width="14" loading="lazy" alt="" src="images/M.svg" class="metro-logo">
-                                    <div class="place-metro">Бульвар Дмитрия Донского, Улица Старокачаловская</div>
+                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="images/x.svg" alt="закрыть" class="map-info-close-icon"></a><img loading="lazy" src="" alt="" class="map-info-logo" style="display: none;">
+                                <div class="place-title"></div>
+                                <div class="place-subtitle"></div>
+                                <div class="place-address"></div>
+                                <div class="place-metro-wrap" style="display: none;"><img width="14" loading="lazy" alt="" src="images/M.svg" class="metro-logo">
+                                    <div class="place-metro"></div>
                                 </div>
-                                <div class="place-text">В медцентре «Доктор Озон» клиенты могут получить медицинское обслуживание по таким профилям, как кардиология, терапия, маммология, эндокринология, трихология, отоларингология, косметология, офтальмология.</div>
+                                <div class="place-text" style="display: none;"></div>
                                 <div class="map-info-contacts">
                                     <div class="map-info-contacts-col">
-                                        <a href="#" class="place-phone">8 (495) 135-38-48</a>
+                                        <a href="#" class="place-phone" style="display: none;"></a>
                                     </div>
                                     <div class="map-info-working-time">
                                         <div class="map-info-work">
-                                            <div class="map-info-work-day">пн-пт</div>
-                                            <div class="map-info-work-hours">7:00 - 21:00</div>
+                                            <div class="map-info-work-day"></div>
+                                            <div class="map-info-work-hours"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="#" target="_blank" class="map-info-button w-button">Сайт аптеки —&gt;</a>
+                                <a href="#" target="_blank" class="map-info-button w-button" style="display: none;">Сайт аптеки —&gt;</a>
                             </div>
                         </div>
                     </div>

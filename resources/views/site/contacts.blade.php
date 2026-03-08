@@ -55,7 +55,7 @@
                 <div class="contacts-head">
                     <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="images/RFarmLogo.svg" alt="" class="rfarm-green-logo"></div>
                     <h1 class="contacts-h1">Контакты</h1>
-                    <div>
+                    <div style="max-width: 300px;">
                         {{ config('address') }}<br>
                         <a href="https://yandex.ru/maps/213/moscow/?ll=37.510402%2C55.661594&amp;mode=poi&amp;poi%5Bpoint%5D=37.509937%2C55.661575&amp;poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D1167776098&amp;z=15.75" target="_blank" class="contacts-map-link">на карте —&gt;</a>
                     </div>
