@@ -800,10 +800,10 @@ function menuApp() {
 
                 const normalizeHeader = (header) => header.toLowerCase().replace(/,/g, '').replace(/\s+/g, ' ').trim();
                 const headerMap = {
-                    'продукт': 'product', 'product': 'product', 'вес (гр)': 'weight', 'вес гр': 'weight', 'вес': 'weight', 'weight': 'weight',
-                    'белки': 'proteins', 'бел гр': 'proteins', 'бел': 'proteins', 'proteins': 'proteins',
-                    'жиры': 'fats', 'жир гр': 'fats', 'жир': 'fats', 'fats': 'fats',
-                    'углеводы': 'carbs', 'угл гр': 'carbs', 'угл': 'carbs', 'carbs': 'carbs',
+                    'продукт': 'product', 'product': 'product', 'вес (гр)': 'weight', 'вес (г)': 'weight', 'вес гр': 'weight', 'вес, гр': 'weight', 'вес, г': 'weight', 'вес': 'weight', 'weight': 'weight',
+                    'белки': 'proteins', 'бел гр': 'proteins', 'бел, гр': 'proteins', 'бел, г': 'proteins', 'бел': 'proteins', 'proteins': 'proteins',
+                    'жиры': 'fats', 'жир гр': 'fats', 'жир, гр': 'fats', 'жир, г': 'fats', 'жир': 'fats', 'fats': 'fats',
+                    'углеводы': 'carbs', 'угл гр': 'carbs', 'угл, гр': 'carbs', 'угл, г': 'carbs', 'угл': 'carbs', 'carbs': 'carbs',
                     'калории': 'calories', 'кал ккал': 'calories', 'ккал': 'calories', 'calories': 'calories'
                 };
                 const headers = parseCsvLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
@@ -1032,19 +1032,28 @@ function menuApp() {
                     'продукт': 'product',
                     'product': 'product',
                     'вес (гр)': 'weight',
+                    'вес (г)': 'weight',
                     'вес гр': 'weight',
+                    'вес, гр': 'weight',
+                    'вес, г': 'weight',
                     'вес': 'weight',
                     'weight': 'weight',
                     'белки': 'proteins',
                     'бел гр': 'proteins',
+                    'бел, гр': 'proteins',
+                    'бел, г': 'proteins',
                     'бел': 'proteins',
                     'proteins': 'proteins',
                     'жиры': 'fats',
                     'жир гр': 'fats',
+                    'жир, гр': 'fats',
+                    'жир, г': 'fats',
                     'жир': 'fats',
                     'fats': 'fats',
                     'углеводы': 'carbs',
                     'угл гр': 'carbs',
+                    'угл, гр': 'carbs',
+                    'угл, г': 'carbs',
                     'угл': 'carbs',
                     'carbs': 'carbs',
                     'калории': 'calories',

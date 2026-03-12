@@ -208,7 +208,7 @@
                         <thead>
                             <tr class="bg-gray-100">
                                 <th class="border p-2 text-left">Продукт</th>
-                                <th class="border p-2 text-left">Вес (гр)</th>
+                                <th class="border p-2 text-left">Вес (г)</th>
                                 <th class="border p-2 text-left">Белки</th>
                                 <th class="border p-2 text-left">Жиры</th>
                                 <th class="border p-2 text-left">Углеводы</th>
@@ -329,7 +329,7 @@
                                         <thead>
                                             <tr class="bg-gray-100">
                                                 <th class="border p-2 text-left">Продукт</th>
-                                                <th class="border p-2 text-left">Вес (гр)</th>
+                                                <th class="border p-2 text-left">Вес (г)</th>
                                                 <th class="border p-2 text-left">Белки</th>
                                                 <th class="border p-2 text-left">Жиры</th>
                                                 <th class="border p-2 text-left">Углеводы</th>

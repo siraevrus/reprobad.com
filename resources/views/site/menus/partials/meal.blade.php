@@ -122,10 +122,10 @@
                 <div class="menu-table-scroller">
                     <div class="menu-table-row mtr-head">
                         <div class="menu-table-cell first">продукт</div>
-                        <div class="menu-table-cell">вес, гр</div>
-                        <div class="menu-table-cell">бел, гр</div>
-                        <div class="menu-table-cell">жир, гр</div>
-                        <div class="menu-table-cell">угл, гр</div>
+                        <div class="menu-table-cell">вес, г</div>
+                        <div class="menu-table-cell">бел, г</div>
+                        <div class="menu-table-cell">жир, г</div>
+                        <div class="menu-table-cell">угл, г</div>
                         <div class="menu-table-cell">ккал</div>
                     </div>
                     @foreach($recipeTable['rows'] as $row)
@@ -186,10 +186,10 @@
                                         <div class="menu-table-scroller">
                                             <div class="menu-table-row mtr-head">
                                                 <div class="menu-table-cell first">продукт</div>
-                                                <div class="menu-table-cell">вес, гр</div>
-                                                <div class="menu-table-cell">бел, гр</div>
-                                                <div class="menu-table-cell">жир, гр</div>
-                                                <div class="menu-table-cell">угл, гр</div>
+                                                <div class="menu-table-cell">вес, г</div>
+                                                <div class="menu-table-cell">бел, г</div>
+                                                <div class="menu-table-cell">жир, г</div>
+                                                <div class="menu-table-cell">угл, г</div>
                                                 <div class="menu-table-cell">ккал</div>
                                             </div>
                                             @foreach($expTable['rows'] as $row)
