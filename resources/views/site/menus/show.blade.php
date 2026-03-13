@@ -544,21 +544,21 @@
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['proteins'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['proteins'] ?? 0) }} г</div>
                                 <div>белки</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['fats'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['fats'] ?? 0) }} г</div>
                                 <div>жиры</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['carbs'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($dailyKbju['carbs'] ?? 0) }} г</div>
                                 <div>углеводы</div>
                             </div>
                         </div>
@@ -577,21 +577,21 @@
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/belki-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['proteins'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['proteins'] ?? 0) }} г</div>
                                 <div>белки</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/zhiry-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['fats'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['fats'] ?? 0) }} г</div>
                                 <div>жиры</div>
                             </div>
                         </div>
                         <div class="menu-card-info-item mci-small">
                             <div class="mci-lavender"><img src="/menu-images/uglevody-white.svg" loading="lazy" width="14" alt="" class="menu-card-icon mci-white-small"></div>
                             <div class="menu-card-label mcl-big">
-                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['carbs'] ?? 0) }}</div>
+                                <div class="menu-card-value mcv-small">{{ formatMenuNumber($withoutSnackKbju['carbs'] ?? 0) }} г</div>
                                 <div>углеводы</div>
                             </div>
                         </div>
