@@ -154,9 +154,15 @@ use App\Http\Controllers\Site\BotController;
 Route::post('/bot/ask', [BotController::class, 'ask'])->name('site.bot.ask');
 Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name('site.bot.clearHistory');
 
-// Тест "Репродуктивное здоровье"
-Route::get('/test', [SiteTestController::class, 'index'])->name('site.test.index');
-Route::post('/test/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
-Route::post('/test/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
-Route::post('/test/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
+// Тест «Репродуктивное здоровье» (основной URL — /checkup)
+Route::get('/checkup', [SiteTestController::class, 'index'])->name('site.test.index');
+Route::post('/checkup/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
+Route::post('/checkup/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
+Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
+
+// Старый адрес /test → редирект на /checkup (GET); POST оставлены для кэшированных страниц
+Route::redirect('/test', '/checkup', 301);
+Route::post('/test/calculate', [SiteTestController::class, 'calculate']);
+Route::post('/test/update-email', [SiteTestController::class, 'updateEmail']);
+Route::post('/test/subscribe', [SiteTestController::class, 'subscribe']);
 
