@@ -145,7 +145,7 @@
 
     @if(isset($meal['expandables']) && is_array($meal['expandables']))
         @foreach($meal['expandables'] as $expandable)
-            <div class="expandable {{ $loop->first ? 'open' : '' }}">
+            <div class="expandable open">
                 <div class="expandable-head">
                     <div>{!! $expandable['title'] ?? '' !!}<br></div>
                     <div class="expandable-plus w-embed">
