@@ -5775,7 +5775,8 @@ figcaption {
   width: 15rem;
   display: block;
   position: absolute;
-  inset: -23% auto auto -31%;
+  top: -64px;
+  left: 164px;
 }
 
 .widget-image-2 {
@@ -5786,7 +5787,8 @@ figcaption {
   width: 10rem;
   display: block;
   position: absolute;
-  inset: 19% auto auto 44%;
+  top: 50px;
+  left: 300px;
 }
 
 .widget-image-3 {
@@ -5797,7 +5799,8 @@ figcaption {
   width: 6.5rem;
   display: block;
   position: absolute;
-  inset: 65% auto auto -3%;
+  top: 96px;
+  left: 216px;
 }
 
 .reprotest-block-h {

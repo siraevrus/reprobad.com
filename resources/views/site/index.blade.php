@@ -72,36 +72,22 @@
                 @include('site.components.events.item', ['item' => $item])
             @endforeach
         </div>
-        <div class="widgets-column">
-            {{--
-            <form class="map-widget" action="{{ route('site.map') }}">
-                <h2 class="widget-h"><strong>Купить СИСТЕМУ РЕПРО</strong> <span class="inline-text-block">в ближайшей к вам аптеке</span></h2><img src="images/widget-map.webp" loading="lazy" sizes="(max-width: 767px) 100vw, 33vw" srcset="images/widget-map-p-500.webp 500w, images/widget-map.webp 680w" alt="" class="map-widget-image">
-                <div class="map-widget-input-wrap"><input type="text" name="search" placeholder="Ваш адрес" autocomplete="off" class="input">
-                    <button type="submit" class="map-widget-button w-button"><span class="hide-on-mobile">Найти </span>—&gt;</button>
-                </div>
-            </form>
-            --}}
-            {{--
-            <div class="shpargalka-widget">
-                <h2 class="widget-h"><strong>Шпаргалка: каких врачей нужно пройти </strong>перед процедурой ЭКО</h2><img src="images/shpargalka.webp" loading="lazy" sizes="(max-width: 767px) 91vw, 49vw" srcset="images/shpargalka-p-500.webp 500w, images/shpargalka-p-800.webp 800w, images/shpargalka.webp 900w" alt="" class="shpargalka-image">
-                <div class="shpargalka-docs">
-                    <div class="shpargalka-doc"><strong class="shpargalka-doc-title">Терапевт</strong> анализы крови, ЭКГ</div>
-                    <div class="shpargalka-doc"><strong class="shpargalka-doc-title">Эндокринолог </strong>анализ крови на гормоны и УЗИ щитовидной железы</div>
-                    <div class="shpargalka-doc"><strong class="shpargalka-doc-title">Маммолог</strong> женщинам до 40 лет УЗИ молочных желез на 6-10 день цикла, после 40 маммография в 1 фазе цикла</div>
-                </div>
-                <div class="shpargalka-list">
-                    <div class="shpargalka-list-item"><img src="images/man.svg" loading="lazy" alt="" class="shpargalka-list-icon">
-                        <div><strong>Для мужа: </strong>консультация андролога является обязательной <br>при наличии мужского фактора бесплодия</div>
+        <div class="widgets-row widgets-row--repromenu-full">
+            <div class="widgets-column widgets-column--full">
+                <div data-w-id="8f4e031f-1a14-8225-f62f-dd5b11c6253e" class="widget widget-repro-menu widget-repro-menu--fullwidth">
+                    <div class="widget-content">
+                        <h2 class="widget-heading"><strong>РЕПРО</strong>меню</h2>
+                        <p class="widget-p">Ваше репродуктивное здоровье начинается&nbsp;с тарелки: мы подготовили рецепты на всю&nbsp;неделю</p>
+                        <div class="flex-spacer"></div>
+                        <a href="{{ route('site.menus.index') }}" class="button w-button">Смотреть —&gt;</a>
                     </div>
-                    <div class="shpargalka-list-item"><img src="images/Plus-Circle.svg" loading="lazy" alt="" class="shpargalka-list-icon">
-                        <div><strong>Консультации специалистов, </strong>которые могут быть рекомендованы: психолог, гематолог, генетик, онколог, иммунолог, кардиолог</div>
+                    <div class="repromenu-widget-images">
+                        <img src="{{ asset('images/menu-2.webp') }}" loading="lazy" alt="" class="widget-image-3">
+                        <img src="{{ asset('images/menu-3.webp') }}" loading="lazy" alt="" class="widget-image-2">
+                        <img src="{{ asset('images/menu-4.webp') }}" loading="lazy" alt="" class="widget-image-1">
                     </div>
-                </div>
-                <div class="widget-footer">
-                    <a href="{{ route('site.articles.index') }}" class="button w-button">Подробнее —&gt;</a>
                 </div>
             </div>
-            --}}
         </div>
         {{--
         <div class="widgets-column _2">
