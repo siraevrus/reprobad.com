@@ -3801,31 +3801,13 @@ figcaption {
 }
 
 @media screen and (min-width: 768px) {
-  /* Полноширинный баннер: привязка к правому краю в % — зазоры между кругами
-     масштабируются с шириной области, без «слипания» на больших экранах */
+  /* РЕПРОменю: круги с рецептами только на мобильной версии; планшет и веб — без изображений */
   .widget-repro-menu--fullwidth .repromenu-widget-images {
-    transform: translateX(-3%);
+    display: none;
   }
 
-  .widget-repro-menu--fullwidth .widget-image-1 {
-    left: auto;
-    right: 2%;
-    top: -10%;
-    width: clamp(10rem, 26%, 15rem);
-  }
-
-  .widget-repro-menu--fullwidth .widget-image-2 {
-    left: auto;
-    right: 24%;
-    top: 14%;
-    width: clamp(7rem, 17%, 10rem);
-  }
-
-  .widget-repro-menu--fullwidth .widget-image-3 {
-    left: auto;
-    right: 40%;
-    top: 30%;
-    width: clamp(4.5rem, 11%, 6.5rem);
+  .widget.widget-repro-menu--fullwidth .widget-content {
+    max-width: none;
   }
 }
 
