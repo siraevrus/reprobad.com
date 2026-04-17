@@ -18,8 +18,21 @@ use Illuminate\View\View;
 
 class TestController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View|RedirectResponse
     {
+        $signedRedirect = $this->consumeSignedResultRedirect($request);
+        if ($signedRedirect !== null) {
+            return $signedRedirect;
+        }
+
+        $id = $request->session()->get('latest_test_result_id');
+        if ($id) {
+            $view = $this->tryRenderResultView($request, (int) $id);
+            if ($view !== null) {
+                return $view;
+            }
+        }
+
         $resource = (object) [
             'title' => 'Тест «Репродуктивное здоровье»',
             'description' => 'Ответьте на 24 вопроса, получите оценку по важным категориям вашего здоровья',
@@ -33,32 +46,54 @@ class TestController extends Controller
         return view('site.test.index', compact('resource', 'pageType', 'questions', 'activeQuestionCount', 'questionsConfigured'));
     }
 
-    public function result(Request $request): View|RedirectResponse
+    /**
+     * Старый URL /test: подпись выдана для этого пути — обрабатываем здесь и ведём на /checkup.
+     * Без подписи и с сессией результата — 301 на /checkup (тот же экран результата).
+     */
+    public function result(Request $request): RedirectResponse
     {
-        // Подписанный URL после AJAX (когда сессия не дошла): один раз проверяем, пишем в сессию и уводим на чистый /test без ?result=&signature= в адресной строке.
-        if ($request->has('signature')) {
-            if (! $request->hasValidSignature()) {
-                abort(403);
-            }
-            $id = (int) $request->query('result', 0);
-            if ($id <= 0 || ! TestResult::query()->whereKey($id)->exists()) {
-                return redirect()->route('site.test.index');
-            }
-            $request->session()->put('latest_test_result_id', $id);
-
-            return redirect()->route('site.test.result');
+        $signedRedirect = $this->consumeSignedResultRedirect($request);
+        if ($signedRedirect !== null) {
+            return $signedRedirect;
         }
 
-        $id = $request->session()->get('latest_test_result_id');
-        if (! $id) {
+        if ($request->session()->get('latest_test_result_id')) {
+            return redirect(route('site.test.index'), 301);
+        }
+
+        return redirect()->route('site.test.index');
+    }
+
+    /**
+     * Подписанный URL после AJAX: проверяем подпись, пишем id в сессию, редирект на чистый /checkup.
+     */
+    private function consumeSignedResultRedirect(Request $request): ?RedirectResponse
+    {
+        if (! $request->has('signature')) {
+            return null;
+        }
+
+        if (! $request->hasValidSignature()) {
+            abort(403);
+        }
+
+        $id = (int) $request->query('result', 0);
+        if ($id <= 0 || ! TestResult::query()->whereKey($id)->exists()) {
             return redirect()->route('site.test.index');
         }
 
+        $request->session()->put('latest_test_result_id', $id);
+
+        return redirect()->route('site.test.index');
+    }
+
+    private function tryRenderResultView(Request $request, int $id): ?View
+    {
         $testResult = TestResult::query()->find($id);
         if (! $testResult) {
             $request->session()->forget('latest_test_result_id');
 
-            return redirect()->route('site.test.index');
+            return null;
         }
 
         $resource = (object) [
@@ -152,7 +187,7 @@ class TestController extends Controller
 
             // Подписанный URL: после AJAX сессия на части хостингов не доходит до GET /test — редирект всё равно открывает результат.
             $redirectUrl = URL::temporarySignedRoute(
-                'site.test.result',
+                'site.test.index',
                 now()->addHours(12),
                 ['result' => $testResult->id]
             );

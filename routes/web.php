@@ -159,10 +159,11 @@ Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name(
 Route::get('/checkup', [SiteTestController::class, 'index'])->name('site.test.index');
 Route::post('/checkup/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
 Route::post('/checkup/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
-Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe']);
+Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
 
+// Совместимость: старые ссылки и подписи для /test
 Route::get('/test', [SiteTestController::class, 'result'])->name('site.test.result');
 Route::get('/test/preview', [SiteTestController::class, 'resultPreview'])->name('site.test.result.preview');
 Route::post('/test/calculate', [SiteTestController::class, 'calculate']);
 Route::post('/test/update-email', [SiteTestController::class, 'updateEmail']);
-Route::post('/test/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
+Route::post('/test/subscribe', [SiteTestController::class, 'subscribe']);
