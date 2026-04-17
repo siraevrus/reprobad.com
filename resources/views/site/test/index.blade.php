@@ -442,6 +442,7 @@ Webflow.push(function() {
     $.ajax({
       url: '{{ route("site.test.calculate") }}',
       method: 'POST',
+      dataType: 'json',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },

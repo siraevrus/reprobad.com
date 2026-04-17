@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -34,7 +35,17 @@ class TestController extends Controller
 
     public function result(Request $request): View|RedirectResponse
     {
-        $id = $request->session()->get('latest_test_result_id');
+        if ($request->has('signature') && ! $request->hasValidSignature()) {
+            abort(403);
+        }
+
+        $id = null;
+        if ($request->hasValidSignature()) {
+            $id = (int) $request->query('result', 0);
+        }
+        if (! $id) {
+            $id = $request->session()->get('latest_test_result_id');
+        }
         if (! $id) {
             return redirect()->route('site.test.index');
         }
@@ -135,11 +146,18 @@ class TestController extends Controller
 
             $request->session()->put('latest_test_result_id', $testResult->id);
 
+            // Подписанный URL: после AJAX сессия на части хостингов не доходит до GET /test — редирект всё равно открывает результат.
+            $redirectUrl = URL::temporarySignedRoute(
+                'site.test.result',
+                now()->addHours(12),
+                ['result' => $testResult->id]
+            );
+
             return response()->json([
                 'success' => true,
                 'data' => $calculationResult,
                 'result_id' => $testResult->id,
-                'redirect' => route('site.test.result'),
+                'redirect' => $redirectUrl,
             ]);
         } catch (\Exception $e) {
             return response()->json([
