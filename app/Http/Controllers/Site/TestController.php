@@ -35,17 +35,21 @@ class TestController extends Controller
 
     public function result(Request $request): View|RedirectResponse
     {
-        if ($request->has('signature') && ! $request->hasValidSignature()) {
-            abort(403);
+        // Подписанный URL после AJAX (когда сессия не дошла): один раз проверяем, пишем в сессию и уводим на чистый /test без ?result=&signature= в адресной строке.
+        if ($request->has('signature')) {
+            if (! $request->hasValidSignature()) {
+                abort(403);
+            }
+            $id = (int) $request->query('result', 0);
+            if ($id <= 0 || ! TestResult::query()->whereKey($id)->exists()) {
+                return redirect()->route('site.test.index');
+            }
+            $request->session()->put('latest_test_result_id', $id);
+
+            return redirect()->route('site.test.result');
         }
 
-        $id = null;
-        if ($request->hasValidSignature()) {
-            $id = (int) $request->query('result', 0);
-        }
-        if (! $id) {
-            $id = $request->session()->get('latest_test_result_id');
-        }
+        $id = $request->session()->get('latest_test_result_id');
         if (! $id) {
             return redirect()->route('site.test.index');
         }
