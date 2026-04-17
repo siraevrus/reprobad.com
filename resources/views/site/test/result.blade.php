@@ -360,10 +360,6 @@
 
     <section class="section test-res-prod-section">
       <div class="container">
-        <div class="test-res-prod-head">
-          <h2 class="test-res-h2-prod">Мы подобрали рекомендации с&nbsp;учетом ваших ответов</h2>
-          <div>Это поможет улучшить нервную систему, повысить энергичность и снизить стресс</div>
-        </div>
         <div class="test-res-items">
           <div class="test-res-item"><img src="{{ asset('images/1.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
