@@ -13,8 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //$middleware->append(Authenticate::class);
+        // $middleware->append(Authenticate::class);
         $middleware->append(\App\Http\Middleware\StaticCacheHeaders::class);
+        $middleware->append(\App\Http\Middleware\DisableCacheForCheckupPage::class);
         $middleware->validateCsrfTokens(except: [
             '/bot/ask',
             '/bot/clear-history',
