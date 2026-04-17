@@ -257,88 +257,6 @@
       @endfor
     </section>
 
-    <section class="section test-res-prod-section">
-      <div class="container">
-        <div class="test-res-prod-head">
-          <h2 class="test-res-h2-prod">Мы подобрали рекомендации с&nbsp;учетом ваших ответов</h2>
-          <div>Это поможет улучшить нервную систему, повысить энергичность и снизить стресс</div>
-        </div>
-        <div class="test-res-items">
-          <div class="test-res-item"><img src="{{ asset('images/1.svg') }}" loading="lazy" alt="" class="step-item-number">
-            <div class="step-item-content">
-              <h2 class="step-h">Психо-эмоциональное равновесие</h2>
-              <p class="step-description">Защита от стресса и&nbsp;нормализация сна</p>
-              <div class="step-products">
-                <a href="{{ $complexUrl('protect', 'first') }}" class="step-product-left w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-relax-1.webp') }}" loading="lazy" alt="РЕПРО РЕЛАКС" class="sache-image"></div>
-                  <div class="step-product-shadow"></div>
-                </a>
-                <a href="{{ $complexUrl('protect', 'second') }}" class="step-product-right w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-relax-2.webp') }}" loading="lazy" alt="РЕПРО РЕЛАКС" class="sache-image"></div>
-                  <div class="step-product-shadow gipokortizol"></div>
-                </a>
-              </div>
-              <a href="{{ $complexUrl('protect') }}" class="step-button w-button">Подробнее —&gt;</a>
-            </div>
-            <div class="step-item-overlay"></div>
-          </div>
-          <div class="test-res-item _2"><img src="{{ asset('images/2.svg') }}" loading="lazy" alt="" class="step-item-number">
-            <div class="step-item-content">
-              <h2 class="step-h">Очищение <br>организма</h2>
-              <p class="step-description">Нормализация кишечной микрофлоры и поддержка печени</p>
-              <div class="step-products">
-                <a href="{{ $complexUrl('detoxi', 'first') }}" class="step-product-left w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-detoxi.webp') }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="sache-image"></div>
-                  <div class="step-product-shadow detoxi"></div>
-                </a>
-                <a href="{{ $complexUrl('detoxi', 'second') }}" class="step-product-right w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-biom.webp') }}" loading="lazy" alt="РЕПРО БИОМ" class="sache-image"></div>
-                  <div class="step-product-shadow biom"></div>
-                </a>
-              </div>
-              <a href="{{ $complexUrl('detoxi') }}" class="step-button _2 w-button">Подробнее —&gt;</a>
-            </div>
-            <div class="step-item-overlay _2"></div>
-          </div>
-          <div class="test-res-item _3"><img src="{{ asset('images/3.svg') }}" loading="lazy" alt="" class="step-item-number">
-            <div class="step-item-content">
-              <h2 class="step-h">Общий метаболизм и&nbsp;углеводный обмен</h2>
-              <p class="step-description">Коррекция энергетического обмена и нормализация метаболизма</p>
-              <div class="step-products">
-                <a href="{{ $complexUrl('energy', 'first') }}" class="step-product-left w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-metabo.webp') }}" loading="lazy" alt="РЕПРО МЕТАБО" class="sache-image"></div>
-                  <div class="step-product-shadow metabo"></div>
-                </a>
-                <a href="{{ $complexUrl('energy', 'second') }}" class="step-product-right w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-energy.webp') }}" loading="lazy" alt="РЕПРО ЭНЕРДЖИ" class="sache-image"></div>
-                  <div class="step-product-shadow energy"></div>
-                </a>
-              </div>
-              <a href="{{ $complexUrl('energy') }}" class="step-button _3 w-button">Подробнее —&gt;</a>
-            </div>
-            <div class="step-item-overlay _3"></div>
-          </div>
-          <div class="test-res-item _4"><img src="{{ asset('images/4.svg') }}" loading="lazy" alt="" class="step-item-number">
-            <div class="step-item-content">
-              <h2 class="step-h">Здоровая наследственность</h2>
-              <p class="step-description">Поддержка репродуктивного здоровья</p>
-              <div class="step-products">
-                <a href="{{ $complexUrl('embrio', 'first') }}" class="step-product-left repro-embrio w-inline-block">
-                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-embrio.webp') }}" loading="lazy" alt="РЕПРО ЭМБРИО" class="sache-image"></div>
-                  <div class="step-product-shadow embrio"></div>
-                </a>
-                <a href="{{ $complexUrl('embrio', 'second') }}" class="step-product-right repro-genom w-inline-block">
-                  <div class="bottle-image-element"><img loading="lazy" src="{{ asset('images/repro-genom.webp') }}" alt="" class="bottle-image"></div>
-                </a>
-              </div>
-              <a href="{{ $complexUrl('embrio') }}" class="step-button _4 w-button">Подробнее —&gt;</a>
-            </div>
-            <div class="step-item-overlay _4"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <div class="section">
       <div class="container reprotest-result-container">
         <div class="reprotest-cta">
@@ -435,6 +353,88 @@
               <h3 class="reprotest-adv-item-h"><strong>Репродуктивное здоровье</strong></h3>
               <p class="reprotest-p">Поддержка репродуктивной функции</p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section test-res-prod-section">
+      <div class="container">
+        <div class="test-res-prod-head">
+          <h2 class="test-res-h2-prod">Мы подобрали рекомендации с&nbsp;учетом ваших ответов</h2>
+          <div>Это поможет улучшить нервную систему, повысить энергичность и снизить стресс</div>
+        </div>
+        <div class="test-res-items">
+          <div class="test-res-item"><img src="{{ asset('images/1.svg') }}" loading="lazy" alt="" class="step-item-number">
+            <div class="step-item-content">
+              <h2 class="step-h">Психо-эмоциональное равновесие</h2>
+              <p class="step-description">Защита от стресса и&nbsp;нормализация сна</p>
+              <div class="step-products">
+                <a href="{{ $complexUrl('protect', 'first') }}" class="step-product-left w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-relax-1.webp') }}" loading="lazy" alt="РЕПРО РЕЛАКС" class="sache-image"></div>
+                  <div class="step-product-shadow"></div>
+                </a>
+                <a href="{{ $complexUrl('protect', 'second') }}" class="step-product-right w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-relax-2.webp') }}" loading="lazy" alt="РЕПРО РЕЛАКС" class="sache-image"></div>
+                  <div class="step-product-shadow gipokortizol"></div>
+                </a>
+              </div>
+              <a href="{{ $complexUrl('protect') }}" class="step-button w-button">Подробнее —&gt;</a>
+            </div>
+            <div class="step-item-overlay"></div>
+          </div>
+          <div class="test-res-item _2"><img src="{{ asset('images/2.svg') }}" loading="lazy" alt="" class="step-item-number">
+            <div class="step-item-content">
+              <h2 class="step-h">Очищение <br>организма</h2>
+              <p class="step-description">Нормализация кишечной микрофлоры и поддержка печени</p>
+              <div class="step-products">
+                <a href="{{ $complexUrl('detoxi', 'first') }}" class="step-product-left w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-detoxi.webp') }}" loading="lazy" alt="РЕПРО ДЕТОКСИ" class="sache-image"></div>
+                  <div class="step-product-shadow detoxi"></div>
+                </a>
+                <a href="{{ $complexUrl('detoxi', 'second') }}" class="step-product-right w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-biom.webp') }}" loading="lazy" alt="РЕПРО БИОМ" class="sache-image"></div>
+                  <div class="step-product-shadow biom"></div>
+                </a>
+              </div>
+              <a href="{{ $complexUrl('detoxi') }}" class="step-button _2 w-button">Подробнее —&gt;</a>
+            </div>
+            <div class="step-item-overlay _2"></div>
+          </div>
+          <div class="test-res-item _3"><img src="{{ asset('images/3.svg') }}" loading="lazy" alt="" class="step-item-number">
+            <div class="step-item-content">
+              <h2 class="step-h">Общий метаболизм и&nbsp;углеводный обмен</h2>
+              <p class="step-description">Коррекция энергетического обмена и нормализация метаболизма</p>
+              <div class="step-products">
+                <a href="{{ $complexUrl('energy', 'first') }}" class="step-product-left w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-metabo.webp') }}" loading="lazy" alt="РЕПРО МЕТАБО" class="sache-image"></div>
+                  <div class="step-product-shadow metabo"></div>
+                </a>
+                <a href="{{ $complexUrl('energy', 'second') }}" class="step-product-right w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-energy.webp') }}" loading="lazy" alt="РЕПРО ЭНЕРДЖИ" class="sache-image"></div>
+                  <div class="step-product-shadow energy"></div>
+                </a>
+              </div>
+              <a href="{{ $complexUrl('energy') }}" class="step-button _3 w-button">Подробнее —&gt;</a>
+            </div>
+            <div class="step-item-overlay _3"></div>
+          </div>
+          <div class="test-res-item _4"><img src="{{ asset('images/4.svg') }}" loading="lazy" alt="" class="step-item-number">
+            <div class="step-item-content">
+              <h2 class="step-h">Здоровая наследственность</h2>
+              <p class="step-description">Поддержка репродуктивного здоровья</p>
+              <div class="step-products">
+                <a href="{{ $complexUrl('embrio', 'first') }}" class="step-product-left repro-embrio w-inline-block">
+                  <div class="sache-image-element"><img src="{{ asset('images/sache.webp') }}" loading="lazy" alt="" class="sache-overlay"><img src="{{ asset('images/repro-embrio.webp') }}" loading="lazy" alt="РЕПРО ЭМБРИО" class="sache-image"></div>
+                  <div class="step-product-shadow embrio"></div>
+                </a>
+                <a href="{{ $complexUrl('embrio', 'second') }}" class="step-product-right repro-genom w-inline-block">
+                  <div class="bottle-image-element"><img loading="lazy" src="{{ asset('images/repro-genom.webp') }}" alt="" class="bottle-image"></div>
+                </a>
+              </div>
+              <a href="{{ $complexUrl('embrio') }}" class="step-button _4 w-button">Подробнее —&gt;</a>
+            </div>
+            <div class="step-item-overlay _4"></div>
           </div>
         </div>
       </div>
