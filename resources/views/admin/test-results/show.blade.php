@@ -29,75 +29,60 @@
         </div>
     </div>
 
-    @if(isset($resource->results['scores']))
+    @php $r = $resource->results ?? []; @endphp
+
     <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <h2 class="text-xl font-semibold text-gray-700 mb-4">Баллы по категориям</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="bg-blue-50 p-4 rounded">
-                <label class="block text-sm font-medium text-gray-500">Психоэмоциональное состояние</label>
-                <p class="mt-1 text-2xl font-bold text-blue-600">
-                    {{ $resource->results['scores']['category1'] ?? 0 }}
-                </p>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Расчёт</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+                <span class="text-gray-500">ИБГБ:</span>
+                <span class="font-semibold">{{ (int) ($r['ibhb'] ?? 0) }}%</span>
             </div>
-            <div class="bg-green-50 p-4 rounded">
-                <label class="block text-sm font-medium text-gray-500">Микрофлора и детоксикация</label>
-                <p class="mt-1 text-2xl font-bold text-green-600">
-                    {{ $resource->results['scores']['category2'] ?? 0 }}
-                </p>
+            <div>
+                <span class="text-gray-500">Сумма S:</span>
+                <span class="font-semibold">{{ (int) ($r['S'] ?? 0) }}</span>
             </div>
-            <div class="bg-yellow-50 p-4 rounded">
-                <label class="block text-sm font-medium text-gray-500">Метаболизм и энергия</label>
-                <p class="mt-1 text-2xl font-bold text-yellow-600">
-                    {{ $resource->results['scores']['category3'] ?? 0 }}
-                </p>
+            <div class="md:col-span-2">
+                <span class="text-gray-500">Активные кодирования:</span>
+                <span class="font-mono">{{ isset($r['active_codings']) ? implode(', ', $r['active_codings']) : '—' }}</span>
             </div>
-            <div class="bg-purple-50 p-4 rounded">
-                <label class="block text-sm font-medium text-gray-500">Репродуктивное здоровье</label>
-                <p class="mt-1 text-2xl font-bold text-purple-600">
-                    {{ $resource->results['scores']['category4'] ?? 0 }}
-                </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+            @foreach([1 => 'B₁ / IDX₁', 2 => 'B₂ / IDX₂', 3 => 'B₃ / IDX₃', 4 => 'B₄ / IDX₄'] as $bn => $label)
+            <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                <div class="text-xs text-gray-500">{{ $label }}</div>
+                <div class="text-lg font-bold text-gray-800">{{ (int) (($r['B'][$bn] ?? 0)) }} / {{ (int) (($r['IDX'][$bn] ?? 0)) }}%</div>
             </div>
+            @endforeach
+        </div>
+    </div>
+
+    @if(!empty($r['items']) && is_array($r['items']))
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Рекомендации по полям ({{ count($r['items']) }})</h2>
+        <div class="space-y-4">
+            @foreach($r['items'] as $item)
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="text-sm text-gray-500 mb-1">Поле №{{ $item['field_number'] ?? '?' }}</div>
+                <div class="text-gray-800 text-sm">{!! $item['description'] ?? '' !!}</div>
+            </div>
+            @endforeach
         </div>
     </div>
     @endif
 
-    @if(isset($resource->results['results']) && is_array($resource->results['results']) && count($resource->results['results']) > 0)
+    @if(!empty($r['blocks']) && is_array($r['blocks']))
     <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <h2 class="text-xl font-semibold text-gray-700 mb-4">Рекомендации ({{ count($resource->results['results']) }})</h2>
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Блоки на экране результата</h2>
         <div class="space-y-4">
-            @foreach($resource->results['results'] as $index => $result)
-            <div class="border border-gray-200 rounded-lg p-4 {{ isset($result['color']) ? 'bg-' . $result['color'] . '-50' : '' }}">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-lg font-semibold text-gray-800">
-                        Кодирование {{ $result['coding'] ?? ($index + 1) }}
-                    </h3>
-                    @if(isset($result['score']))
-                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">
-                        Балл: {{ $result['score'] }}
-                    </span>
-                    @endif
-                </div>
-                <h4 class="font-medium text-gray-700 mb-2">{{ $result['title'] ?? '' }}</h4>
-                <p class="text-gray-600 mb-3">{{ $result['description'] ?? '' }}</p>
-                
-                @if(isset($result['products']) && is_array($result['products']) && count($result['products']) > 0)
-                <div class="mt-3">
-                    <p class="text-sm font-medium text-gray-500 mb-2">Рекомендуемые продукты:</p>
-                    <ul class="list-disc list-inside space-y-1">
-                        @foreach($result['products'] as $product)
-                        <li class="text-gray-700">
-                            <strong>{{ $product['name'] ?? '' }}</strong>
-                            @if(isset($product['duration']))
-                                <span class="text-gray-500">({{ $product['duration'] }})</span>
-                            @endif
-                            @if(isset($product['link']))
-                                <a href="{{ $product['link'] }}" target="_blank" class="text-blue-500 hover:text-blue-700 ml-2">
-                                    → Ссылка
-                                </a>
-                            @endif
-                        </li>
-                        @endforeach
-                    </ul>
+            @foreach($r['blocks'] as $bn => $block)
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="font-semibold text-gray-800 mb-2">Блок {{ $bn }} — IDX {{ (int) ($block['idx'] ?? 0) }}%</div>
+                @if(!empty($block['paragraphs']))
+                <div class="text-sm text-gray-600 space-y-1 mb-2">
+                    @foreach($block['paragraphs'] as $p)
+                    <div class="border-l-2 border-gray-200 pl-2">{!! $p !!}</div>
+                    @endforeach
                 </div>
                 @endif
             </div>

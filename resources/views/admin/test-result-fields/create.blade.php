@@ -46,8 +46,22 @@
                           rows="5" 
                           required
                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 editor">{{ old('description') }}</textarea>
-                <p class="mt-1 text-xs text-gray-500">Этот текст будет вставлен в &lt;p class="reprotest-p"&gt;</p>
+                <p class="mt-1 text-xs text-gray-500">Этот текст будет вставлен в &lt;p class="test-res-p"&gt; на странице результата.</p>
                 @error('description')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    HTML для модального окна «Подробнее»
+                </label>
+                <textarea name="popup_html"
+                          id="popup-html-input"
+                          rows="8"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm">{{ old('popup_html') }}</textarea>
+                <p class="mt-1 text-xs text-gray-500">Необязательно. Отображается во всплывающем окне на /test.</p>
+                @error('popup_html')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>

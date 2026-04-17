@@ -90,7 +90,14 @@ a[x-apple-data-detectors],
                   <td align="left" style="padding:20px;Margin:0;width:560px">
                    <table cellpadding="0" cellspacing="0" role="presentation" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
                      <tr>
-                      <td align="left" style="padding:0;Margin:0"><h5 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:24px;color:#333333"><strong style="font-weight:700 !important">Ознакомьтесь с рекомендациями:</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">Основываясь на ваших ответах, мы подготовили для вас персональные рекомендации. Они помогут понять, какие добавки могут быть полезны именно вам.</p></td>
+                      <td align="left" style="padding:0;Margin:0"><h5 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:24px;color:#333333"><strong style="font-weight:700 !important">Ознакомьтесь с рекомендациями:</strong></h5><p style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">Основываясь на ваших ответах, мы подготовили для вас персональные рекомендации. Они помогут понять, какие добавки могут быть полезны именно вам.</p>
+                      <p style="Margin:12px 0 0 0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px"><strong>Индекс биоэнергетического и гормонального баланса (ИБГБ):</strong> {{ $ibhb }}%</p>
+                      @if(!empty($idx) && is_array($idx))
+                      <p style="Margin:8px 0 0 0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
+                        Блоки: психоэмоциональное — {{ (int)($idx[1] ?? 0) }}%, микрофлора и детокс — {{ (int)($idx[2] ?? 0) }}%, метаболизм — {{ (int)($idx[3] ?? 0) }}%, репродуктивное здоровье — {{ (int)($idx[4] ?? 0) }}%.
+                      </p>
+                      @endif
+                      </td>
                      </tr>
                    </table></td>
                  </tr>
@@ -99,8 +106,8 @@ a[x-apple-data-detectors],
            </table></td>
          </tr>
        </table>
-       @if(count($results) > 0)
-         @foreach($results as $result)
+       @if(!empty($items) && count($items) > 0)
+         @foreach($items as $result)
          <table cellspacing="0" cellpadding="0" align="center" class="i" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important">
            <tr>
             <td align="center" bgcolor="transparent" style="padding:0;Margin:0">

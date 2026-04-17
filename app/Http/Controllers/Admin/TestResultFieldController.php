@@ -17,6 +17,7 @@ class TestResultFieldController extends Controller
     public array $rules = [
         'field_number' => 'required|integer|min:1|max:9',
         'description' => 'required|string|max:5000',
+        'popup_html' => 'nullable|string|max:100000',
         'email_description' => 'nullable|string|max:10000',
         'color' => 'nullable|string|in:green,lavender,orange',
         'image1' => 'nullable|string', // base64 или путь к существующему файлу
@@ -36,7 +37,7 @@ class TestResultFieldController extends Controller
             ->ordered()
             ->paginate(env('PAGINATION_LIMIT', 50));
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json($resources);
         }
 
@@ -62,14 +63,15 @@ class TestResultFieldController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
-        $validated['active'] = $request->has('active') ? (bool)$request->input('active') : true;
+        $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
         $validated['order'] = $request->input('order', 0);
 
         // Проверяем уникальность field_number
@@ -78,9 +80,10 @@ class TestResultFieldController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => ['field_number' => ['Поле с таким номером уже существует']]
+                    'errors' => ['field_number' => ['Поле с таким номером уже существует']],
                 ], 422);
             }
+
             return back()->withErrors(['field_number' => 'Поле с таким номером уже существует'])->withInput();
         }
 
@@ -88,6 +91,7 @@ class TestResultFieldController extends Controller
         $resource = TestResultField::query()->create([
             'field_number' => $validated['field_number'],
             'description' => $validated['description'],
+            'popup_html' => $validated['popup_html'] ?? null,
             'email_description' => $validated['email_description'] ?? null,
             'color' => $validated['color'] ?? null,
             'active' => $validated['active'],
@@ -95,13 +99,13 @@ class TestResultFieldController extends Controller
         ]);
 
         // Загружаем изображения через InputService только если они переданы и не пустые
-        if ($request->filled('image1') && !empty($request->image1)) {
+        if ($request->filled('image1') && ! empty($request->image1)) {
             InputService::uploadFile($request->image1, $resource, 'image1');
         }
-        if ($request->filled('image2') && !empty($request->image2)) {
+        if ($request->filled('image2') && ! empty($request->image2)) {
             InputService::uploadFile($request->image2, $resource, 'image2');
         }
-        
+
         // Сохраняем ссылки
         if ($request->filled('link1')) {
             $resource->link1 = $request->link1;
@@ -114,7 +118,7 @@ class TestResultFieldController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'resource' => $resource
+                'resource' => $resource,
             ]);
         }
 
@@ -129,7 +133,7 @@ class TestResultFieldController extends Controller
     {
         $resource = TestResultField::query()->findOrFail($id);
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json($resource);
         }
 
@@ -142,6 +146,7 @@ class TestResultFieldController extends Controller
     public function edit($id): View
     {
         $resource = TestResultField::query()->findOrFail($id);
+
         return view('admin.test-result-fields.edit', compact('resource'));
     }
 
@@ -151,21 +156,22 @@ class TestResultFieldController extends Controller
     public function update(Request $request, $id): JsonResponse|RedirectResponse
     {
         $rules = $this->rules;
-        
+
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
-        $validated['active'] = $request->has('active') ? (bool)$request->input('active') : true;
+        $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
         $validated['order'] = $request->input('order', 0);
 
         $resource = TestResultField::query()->findOrFail($id);
@@ -178,9 +184,10 @@ class TestResultFieldController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => ['field_number' => ['Поле с таким номером уже существует']]
+                    'errors' => ['field_number' => ['Поле с таким номером уже существует']],
                 ], 422);
             }
+
             return back()->withErrors(['field_number' => 'Поле с таким номером уже существует'])->withInput();
         }
 
@@ -188,12 +195,13 @@ class TestResultFieldController extends Controller
         $resource->fill([
             'field_number' => $validated['field_number'],
             'description' => $validated['description'],
+            'popup_html' => $validated['popup_html'] ?? null,
             'email_description' => $validated['email_description'] ?? null,
             'color' => $validated['color'] ?? null,
             'active' => $validated['active'],
             'order' => $validated['order'],
         ]);
-        
+
         // Обновляем ссылки
         $resource->link1 = $request->input('link1');
         $resource->link2 = $request->input('link2');
@@ -210,7 +218,7 @@ class TestResultFieldController extends Controller
             $resource->save();
         } else {
             // Загружаем новое изображение только если оно передано и не пустое
-            if ($request->filled('image1') && !empty($request->image1)) {
+            if ($request->filled('image1') && ! empty($request->image1)) {
                 InputService::uploadFile($request->image1, $resource, 'image1');
             }
         }
@@ -225,7 +233,7 @@ class TestResultFieldController extends Controller
             $resource->save();
         } else {
             // Загружаем новое изображение только если оно передано и не пустое
-            if ($request->filled('image2') && !empty($request->image2)) {
+            if ($request->filled('image2') && ! empty($request->image2)) {
                 InputService::uploadFile($request->image2, $resource, 'image2');
             }
         }
@@ -233,7 +241,7 @@ class TestResultFieldController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'resource' => $resource
+                'resource' => $resource,
             ]);
         }
 

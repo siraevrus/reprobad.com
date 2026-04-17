@@ -6,121 +6,261 @@ use App\Models\TestResultField;
 
 class TestCalculationService
 {
+    private const M = [1 => 18, 2 => 24, 3 => 15, 4 => 15];
+
+    private const M_TOTAL = 72;
+
+    /** Кодирования по блокам (порядок внутри блока) */
+    private const BLOCK_CODINGS = [
+        1 => [1, 2],
+        2 => [3, 4, 5],
+        3 => [6, 7],
+        4 => [8, 9],
+    ];
+
     /**
-     * Рассчитать результаты теста на основе ответов
-     * 
-     * @param array $answers Массив из 24 ответов (индексы 0-23)
-     * @return array Массив с результатами
+     * @param  array<int, int>  $answers  Индексы 0..23 — ответы q1..q24
+     * @return array<string, mixed>
      */
     public function calculate(array $answers): array
     {
-        // Проверяем, что все 24 ответа присутствуют
         if (count($answers) !== 24) {
             throw new \InvalidArgumentException('Должно быть ровно 24 ответа');
         }
 
-        $results = [];
-        $scores = [];
+        $a = array_map(static fn (int $v): int => max(0, min(3, $v)), array_map('intval', $answers));
 
-        // Категория 1: Вопросы 1-6 (индексы 0-5) - Психоэмоциональное состояние
-        $category1 = array_sum(array_slice($answers, 0, 6));
-        $scores['category1'] = $category1;
+        $B1 = $a[0] + $a[1] + $a[2] + $a[3] + $a[4] + $a[5];
+        $B2 = $a[6] + $a[7] + $a[8] + $a[9] + $a[10] + $a[11] + $a[12] + $a[13];
+        $B3 = $a[14] + $a[15] + $a[16] + $a[17] + $a[18];
+        $B4 = $a[19] + $a[20] + $a[21] + $a[22] + $a[23];
 
-        // Категория 2: Вопросы 7-14 (индексы 6-13) - Микрофлора кишечника и детоксикация
-        $category2 = array_sum(array_slice($answers, 6, 8));
-        $scores['category2'] = $category2;
+        $B = [1 => $B1, 2 => $B2, 3 => $B3, 4 => $B4];
+        $S = $B1 + $B2 + $B3 + $B4;
 
-        // Категория 3: Вопросы 15-19 (индексы 14-18) - Метаболизм и энергия
-        $category3 = array_sum(array_slice($answers, 14, 5));
-        $scores['category3'] = $category3;
+        $IDX = [
+            1 => $this->idx($B1, self::M[1]),
+            2 => $this->idx($B2, self::M[2]),
+            3 => $this->idx($B3, self::M[3]),
+            4 => $this->idx($B4, self::M[4]),
+        ];
 
-        // Категория 4: Вопросы 20-24 (индексы 19-23) - Репродуктивное здоровье
-        $category4 = array_sum(array_slice($answers, 19, 5));
-        $scores['category4'] = $category4;
+        $ibhb = (int) round(100 - ($S / self::M_TOTAL) * 100);
 
-        // Получаем все активные поля из БД
-        $fields = TestResultField::active()->ordered()->get();
+        $b1_36 = $a[2] + $a[3] + $a[4] + $a[5];
 
-        // Проверяем условия для полей 1-9
-        foreach ($fields as $field) {
-            $score = null;
-            $shouldAdd = false;
+        $activeCodings = [];
+        if ($a[0] + $a[1] >= 4) {
+            $activeCodings[] = 1;
+        }
+        if ($b1_36 >= 6 && $b1_36 <= 8) {
+            $activeCodings[] = 2;
+        }
+        if ($b1_36 >= 9) {
+            $activeCodings[] = 3;
+        }
+        if ($B2 >= 15 && $B2 <= 20) {
+            $activeCodings[] = 4;
+        }
+        if ($B2 >= 21) {
+            $activeCodings[] = 5;
+        }
+        if ($B3 >= 8 && $B3 <= 11) {
+            $activeCodings[] = 6;
+        }
+        if ($B3 >= 12) {
+            $activeCodings[] = 7;
+        }
+        if ($B4 >= 8 && $B4 <= 12) {
+            $activeCodings[] = 8;
+        }
+        if ($B4 >= 13) {
+            $activeCodings[] = 9;
+        }
 
-            switch ($field->field_number) {
-                case 1:
-                    // Поле 1: Сумма ответов на вопросы 1-2 (индексы 0-1) ≥ 4
-                    $score = $answers[0] + $answers[1];
-                    $shouldAdd = $score >= 4;
-                    break;
+        $hasCodings = $activeCodings !== [];
 
-                case 2:
-                    // Поле 2: Сумма ответов на вопросы 3-6 (индексы 2-5) = 6-8
-                    $score = array_sum(array_slice($answers, 2, 4));
-                    $shouldAdd = $score >= 6 && $score <= 8;
-                    break;
+        $fieldsByNumber = TestResultField::query()
+            ->active()
+            ->whereIn('field_number', range(1, 9))
+            ->orderBy('order')
+            ->orderBy('field_number')
+            ->get()
+            ->keyBy('field_number');
 
-                case 3:
-                    // Поле 3: Сумма ответов на вопросы 3-6 (индексы 2-5) ≥ 9
-                    $score = array_sum(array_slice($answers, 2, 4));
-                    $shouldAdd = $score >= 9;
-                    break;
-
-                case 4:
-                    // Поле 4: Сумма ответов на вопросы 7-14 (индексы 6-13) = 15-20
-                    $score = array_sum(array_slice($answers, 6, 8));
-                    $shouldAdd = $score >= 15 && $score <= 20;
-                    break;
-
-                case 5:
-                    // Поле 5: Сумма ответов на вопросы 7-14 (индексы 6-13) ≥ 21
-                    $score = array_sum(array_slice($answers, 6, 8));
-                    $shouldAdd = $score >= 21;
-                    break;
-
-                case 6:
-                    // Поле 6: Сумма ответов на вопросы 15-19 (индексы 14-18) = 8-11
-                    $score = array_sum(array_slice($answers, 14, 5));
-                    $shouldAdd = $score >= 8 && $score <= 11;
-                    break;
-
-                case 7:
-                    // Поле 7: Вопросы 15-19 (индексы 14-18), сумма >= 12
-                    $score = array_sum(array_slice($answers, 14, 5));
-                    $shouldAdd = $score >= 12;
-                    break;
-
-                case 8:
-                    // Поле 8: Вопросы 20-24 (индексы 19-23), сумма 8-12
-                    $score = array_sum(array_slice($answers, 19, 5));
-                    $shouldAdd = $score >= 8 && $score <= 12;
-                    break;
-
-                case 9:
-                    // Поле 9: Вопросы 20-24 (индексы 19-23), сумма >= 13
-                    $score = array_sum(array_slice($answers, 19, 5));
-                    $shouldAdd = $score >= 13;
-                    break;
-            }
-
-            if ($shouldAdd) {
-                $results[] = [
-                    'field_number' => $field->field_number,
-                    'description' => $field->description,  // для сайта
-                    'email_description' => $field->email_description ?? $field->description, // для email (fallback на description)
-                    'color' => $field->color,
-                    'image1' => $field->image1,
-                    'link1' => $field->link1,
-                    'image2' => $field->image2,
-                    'link2' => $field->link2,
-                    'score' => $score,
-                ];
+        $items = [];
+        foreach ($activeCodings as $num) {
+            $f = $fieldsByNumber->get($num);
+            if ($f) {
+                $items[] = $this->serializeField($f);
             }
         }
 
+        $blocks = [];
+        foreach (self::BLOCK_CODINGS as $blockNum => $codings) {
+            $blockFields = [];
+            $paragraphs = [];
+            foreach ($codings as $c) {
+                if (! in_array($c, $activeCodings, true)) {
+                    continue;
+                }
+                $f = $fieldsByNumber->get($c);
+                if (! $f) {
+                    continue;
+                }
+                $blockFields[] = $this->serializeField($f);
+                $paragraphs[] = $this->fieldParagraphHtml($f);
+            }
+
+            $showPopup = false;
+            foreach ($blockFields as $f) {
+                if (trim((string) ($f['popup_html'] ?? '')) !== '' || ! empty($f['image1']) || ! empty($f['image2'])) {
+                    $showPopup = true;
+                    break;
+                }
+            }
+
+            $blocks[$blockNum] = [
+                'idx' => $IDX[$blockNum],
+                'title' => (string) config('repro_test.block_titles.'.$blockNum, ''),
+                'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
+                'paragraphs' => array_values(array_filter($paragraphs, static fn ($p) => $p !== '')),
+                'fields' => $blockFields,
+                'show_popup' => $showPopup,
+            ];
+        }
+
         return [
-            'scores' => $scores,
-            'results' => $results,
-            'hasResults' => count($results) > 0,
+            'B' => $B,
+            'S' => $S,
+            'IDX' => $IDX,
+            'ibhb' => $ibhb,
+            'active_codings' => $activeCodings,
+            'has_codings' => $hasCodings,
+            'blocks' => $blocks,
+            'items' => $items,
+        ];
+    }
+
+    /**
+     * Данные для страницы результата: тексты под шкалами берутся из актуальных записей test_result_fields,
+     * а проценты (idx) и флаги расчёта — из сохранённого JSON (снимок на момент прохождения теста).
+     * Так правки в админке видны без повторного прохождения теста.
+     *
+     * @param  array<string, mixed>  $storedResults
+     * @return array<string, mixed>
+     */
+    public function resultsForView(array $storedResults): array
+    {
+        $r = $storedResults;
+        $active = $r['active_codings'] ?? [];
+        if (! is_array($active)) {
+            $active = [];
+        }
+        // После JSON из БД номера могут быть строками; in_array(..., true) иначе не находит кодирование.
+        $active = array_values(array_unique(array_map(static fn ($v): int => (int) $v, $active)));
+
+        $live = TestResultField::query()
+            ->active()
+            ->whereIn('field_number', range(1, 9))
+            ->orderBy('order')
+            ->orderBy('field_number')
+            ->get()
+            ->keyBy('field_number');
+
+        $IDX = is_array($r['IDX'] ?? null) ? $r['IDX'] : [];
+        $prevBlocks = is_array($r['blocks'] ?? null) ? $r['blocks'] : [];
+        $blocks = [];
+
+        foreach (self::BLOCK_CODINGS as $blockNum => $codings) {
+            $prev = [];
+            if (isset($prevBlocks[$blockNum]) && is_array($prevBlocks[$blockNum])) {
+                $prev = $prevBlocks[$blockNum];
+            } elseif (isset($prevBlocks[(string) $blockNum]) && is_array($prevBlocks[(string) $blockNum])) {
+                $prev = $prevBlocks[(string) $blockNum];
+            }
+            $idx = (int) ($prev['idx'] ?? $IDX[$blockNum] ?? $IDX[(string) $blockNum] ?? 0);
+
+            $blockFields = [];
+            $paragraphs = [];
+
+            foreach ($codings as $c) {
+                if (! in_array($c, $active, true)) {
+                    continue;
+                }
+                $model = $live->get($c);
+                if (! $model) {
+                    continue;
+                }
+                $blockFields[] = $this->serializeField($model);
+                $paragraphs[] = $this->fieldParagraphHtml($model);
+            }
+
+            $showPopup = false;
+            foreach ($blockFields as $f) {
+                if (trim((string) ($f['popup_html'] ?? '')) !== '' || ! empty($f['image1']) || ! empty($f['image2'])) {
+                    $showPopup = true;
+                    break;
+                }
+            }
+
+            $blocks[$blockNum] = [
+                'idx' => $idx,
+                'title' => (string) ($prev['title'] ?? config('repro_test.block_titles.'.$blockNum, '')),
+                'css' => $prev['css'] ?? config('repro_test.block_css.'.$blockNum, 'psih'),
+                'paragraphs' => array_values(array_filter($paragraphs, static fn ($p) => $p !== '')),
+                'fields' => $blockFields,
+                'show_popup' => $showPopup,
+            ];
+        }
+
+        $r['blocks'] = $blocks;
+
+        $items = [];
+        foreach ($active as $num) {
+            $model = $live->get($num);
+            if ($model) {
+                $items[] = $this->serializeField($model);
+            }
+        }
+        $r['items'] = $items;
+
+        return $r;
+    }
+
+    private function idx(int $Bk, int $Mk): int
+    {
+        return (int) round(100 - ($Bk / $Mk) * 100);
+    }
+
+    /**
+     * Текст под полоской прогресса: основное описание поля, при пустом — расширенное для email.
+     */
+    private function fieldParagraphHtml(TestResultField $f): string
+    {
+        $primary = trim((string) ($f->description ?? ''));
+        if ($primary !== '') {
+            return $primary;
+        }
+
+        return trim((string) ($f->email_description ?? ''));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function serializeField(TestResultField $f): array
+    {
+        return [
+            'field_number' => $f->field_number,
+            'description' => $f->description,
+            'email_description' => $f->email_description ?? $f->description,
+            'popup_html' => $f->popup_html ?? '',
+            'color' => $f->color,
+            'image1' => $f->image1,
+            'link1' => $f->link1,
+            'image2' => $f->image2,
+            'link2' => $f->link2,
         ];
     }
 }

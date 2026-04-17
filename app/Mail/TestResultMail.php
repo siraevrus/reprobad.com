@@ -20,12 +20,16 @@ class TestResultMail extends Mailable
 
     public function build()
     {
+        $r = $this->testResult->results ?? [];
+
         return $this->view('mail.test-result')
             ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
             ->subject('Система РЕПРО: Результаты теста «Репродуктивное здоровье»')
             ->with([
                 'testResult' => $this->testResult,
-                'results' => $this->testResult->results['results'] ?? [],
+                'ibhb' => (int) ($r['ibhb'] ?? 0),
+                'idx' => $r['IDX'] ?? [],
+                'items' => $r['items'] ?? [],
             ]);
     }
 }

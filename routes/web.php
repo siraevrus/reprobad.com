@@ -2,43 +2,43 @@
 
 use App\Http\Controllers\Admin\AdviseController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\ChatHistoryController;
 use App\Http\Controllers\Admin\ComplexController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\FileManagerController;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PointController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\SeoController;
+use App\Http\Controllers\Admin\ShortLinkController;
 use App\Http\Controllers\Admin\StepController;
 use App\Http\Controllers\Admin\SubscribeController;
+use App\Http\Controllers\Admin\TestQuestionController;
+use App\Http\Controllers\Admin\TestResultController;
+use App\Http\Controllers\Admin\TestResultFieldController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\TestResultController;
-use App\Http\Controllers\Admin\TestQuestionController;
-use App\Http\Controllers\Admin\TestResultFieldController;
-use App\Http\Controllers\Admin\ChatHistoryController;
-use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\ShortLinkController;
-use App\Http\Controllers\Site\FormController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Site\ArticleController as SiteArticleController;
-use App\Http\Controllers\Site\IndexController as SiteIndexController;
-use App\Http\Controllers\Site\EventController as SiteEventController;
-use App\Http\Controllers\Site\ProductController as SiteProductController;
-use App\Http\Controllers\Site\ComplexController as SiteComplexController;
-use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
-use App\Http\Controllers\Site\TextController as SiteTextController;
-use App\Http\Controllers\Site\PageController as SitePageController;
-use App\Http\Controllers\Site\MapController as SiteMapController;
-use App\Http\Controllers\Site\FaqController as SiteFaqController;
-use App\Http\Controllers\Site\MenuController as SiteMenuController;
-use App\Http\Controllers\Site\TestController as SiteTestController;
 use App\Http\Controllers\ShortLinkRedirectController;
+use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
+use App\Http\Controllers\Site\ArticleController as SiteArticleController;
+use App\Http\Controllers\Site\ComplexController as SiteComplexController;
+use App\Http\Controllers\Site\EventController as SiteEventController;
+use App\Http\Controllers\Site\FaqController as SiteFaqController;
+use App\Http\Controllers\Site\FormController;
+use App\Http\Controllers\Site\IndexController as SiteIndexController;
+use App\Http\Controllers\Site\MapController as SiteMapController;
+use App\Http\Controllers\Site\MenuController as SiteMenuController;
+use App\Http\Controllers\Site\PageController as SitePageController;
+use App\Http\Controllers\Site\ProductController as SiteProductController;
+use App\Http\Controllers\Site\TestController as SiteTestController;
+use App\Http\Controllers\Site\TextController as SiteTextController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name('short.redirect');
 
@@ -123,7 +123,7 @@ Route::get('/articles/{alias}', [SiteArticleController::class, 'show'])->name('s
 Route::get('/events', [SiteEventController::class, 'index'])->name('site.events.index');
 Route::get('/events/{alias}', [SiteEventController::class, 'show'])->name('site.events.show');
 Route::get('/products', [SiteProductController::class, 'index'])->name('site.products.index');
-//Route::get('/products/{alias}', [SiteProductController::class, 'show'])->name('site.products.show');
+// Route::get('/products/{alias}', [SiteProductController::class, 'show'])->name('site.products.show');
 Route::get('/complex', [SiteComplexController::class, 'index'])->name('site.complex.index');
 Route::get('/complex/{alias}', [SiteComplexController::class, 'show'])->name('site.complex.show');
 Route::get('/text', [SiteTextController::class, 'index'])->name('site.text.index');
@@ -151,6 +151,7 @@ Route::post('/usefully-tips/{alias}/like', [SiteAdviseController::class, 'like']
 
 // Чат-бот на сайте
 use App\Http\Controllers\Site\BotController;
+
 Route::post('/bot/ask', [BotController::class, 'ask'])->name('site.bot.ask');
 Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name('site.bot.clearHistory');
 
@@ -158,11 +159,10 @@ Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name(
 Route::get('/checkup', [SiteTestController::class, 'index'])->name('site.test.index');
 Route::post('/checkup/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
 Route::post('/checkup/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
-Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
+Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe']);
 
-// Старый адрес /test → редирект на /checkup (GET); POST оставлены для кэшированных страниц
-Route::redirect('/test', '/checkup', 301);
+Route::get('/test', [SiteTestController::class, 'result'])->name('site.test.result');
+Route::get('/test/preview', [SiteTestController::class, 'resultPreview'])->name('site.test.result.preview');
 Route::post('/test/calculate', [SiteTestController::class, 'calculate']);
 Route::post('/test/update-email', [SiteTestController::class, 'updateEmail']);
-Route::post('/test/subscribe', [SiteTestController::class, 'subscribe']);
-
+Route::post('/test/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
