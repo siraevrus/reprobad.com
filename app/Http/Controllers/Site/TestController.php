@@ -20,15 +20,17 @@ class TestController extends Controller
 {
     public function index(Request $request): View|RedirectResponse
     {
+        // Если пришли через кнопку "Пройти тест ещё раз" — очищаем сессию и сразу показываем форму.
+        if ($request->query('start') === '1') {
+            $request->session()->forget('latest_test_result_id');
+            $request->session()->save();
+
+            return $this->renderTestForm($request);
+        }
+
         $signedRedirect = $this->consumeSignedResultRedirect($request);
         if ($signedRedirect !== null) {
             return $signedRedirect;
-        }
-
-        // Принудительно очищаем старый ID результата при переходе через /checkup/reset
-        if ($request->has('reset') || $request->query('reset') === '1') {
-            $request->session()->forget('latest_test_result_id');
-            $request->session()->save();
         }
 
         $id = $request->session()->get('latest_test_result_id');
@@ -39,6 +41,11 @@ class TestController extends Controller
             }
         }
 
+        return $this->renderTestForm($request);
+    }
+
+    private function renderTestForm(Request $request): View
+    {
         $resource = (object) [
             'title' => 'Тест «Репродуктивное здоровье»',
             'description' => 'Ответьте на 24 вопроса, получите оценку по важным категориям вашего здоровья',
@@ -310,18 +317,14 @@ class TestController extends Controller
     }
 
     /**
-     * Сброс теста — очищаем сессию с результатом и переходим на начало тестирования.
-     * Используется кнопкой "Пройти тест ещё раз" на странице результата.
+     * Сброс теста — очищаем сессию и редиректим на /checkup?start=1.
+     * Параметр start=1 гарантирует, что index() не читает сессию и сразу показывает форму.
      */
     public function reset(Request $request): RedirectResponse
     {
-        // Полностью очищаем данные теста из сессии
         $request->session()->forget('latest_test_result_id');
-        $request->session()->forget('test_answers'); // на всякий случай
-
-        // Принудительно сохраняем изменения в сессии
         $request->session()->save();
 
-        return redirect()->route('site.test.index');
+        return redirect()->route('site.test.index', ['start' => '1']);
     }
 }

@@ -17,7 +17,7 @@ class DisableCacheForCheckupPage
     {
         $response = $next($request);
 
-        if (! $request->routeIs('site.test.index')) {
+        if (! $request->routeIs('site.test.index') && ! $request->routeIs('site.test.reset')) {
             return $response;
         }
 

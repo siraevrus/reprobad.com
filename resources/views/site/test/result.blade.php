@@ -291,7 +291,7 @@
           </div>
           @endif
           <div class="share">
-            <a href="{{ route('site.test.reset') }}?reset=1" class="reprotest-reset w-button"><strong>Пройти тест ещё раз —&gt;</strong></a>
+            <a href="{{ route('site.test.reset') }}" class="reprotest-reset w-button"><strong>Пройти тест ещё раз —&gt;</strong></a>
             <div class="reprotest-share-buttons">
               <div class="a2a-code-embed w-embed w-script">
                 <script async="" src="https://static.addtoany.com/menu/page.js"></script>
