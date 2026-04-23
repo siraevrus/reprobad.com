@@ -39,4 +39,8 @@ return [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
     ],
 
+    'webbot' => [
+        'signing_key' => env('WEBBOT_SIGNING_KEY'),
+    ],
+
 ];

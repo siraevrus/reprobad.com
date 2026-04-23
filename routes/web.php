@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\TestResultFieldController;
 use App\Http\Controllers\Admin\TextController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ShortLinkRedirectController;
+use App\Http\Controllers\WellKnown\BotAuthController;
 use App\Http\Controllers\Site\AdviseController as SiteAdviseController;
 use App\Http\Controllers\Site\ArticleController as SiteArticleController;
 use App\Http\Controllers\Site\ComplexController as SiteComplexController;
@@ -39,6 +40,10 @@ use App\Http\Controllers\Site\ProductController as SiteProductController;
 use App\Http\Controllers\Site\TestController as SiteTestController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
 use Illuminate\Support\Facades\Route;
+
+// Web Bot Auth key directory (draft-meunier-http-message-signatures-directory)
+Route::get('/.well-known/http-message-signatures-directory', [BotAuthController::class, 'signaturesDirectory'])
+    ->name('well-known.bot-auth');
 
 Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name('short.redirect');
 
