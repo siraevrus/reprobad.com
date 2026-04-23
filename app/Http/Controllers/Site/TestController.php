@@ -25,6 +25,12 @@ class TestController extends Controller
             return $signedRedirect;
         }
 
+        // Принудительно очищаем старый ID результата при переходе через /checkup/reset
+        if ($request->has('reset') || $request->query('reset') === '1') {
+            $request->session()->forget('latest_test_result_id');
+            $request->session()->save();
+        }
+
         $id = $request->session()->get('latest_test_result_id');
         if ($id) {
             $view = $this->tryRenderResultView($request, (int) $id);
@@ -309,7 +315,12 @@ class TestController extends Controller
      */
     public function reset(Request $request): RedirectResponse
     {
+        // Полностью очищаем данные теста из сессии
         $request->session()->forget('latest_test_result_id');
+        $request->session()->forget('test_answers'); // на всякий случай
+
+        // Принудительно сохраняем изменения в сессии
+        $request->session()->save();
 
         return redirect()->route('site.test.index');
     }
