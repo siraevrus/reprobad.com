@@ -45,6 +45,7 @@ return [
 
     'hydraai' => [
         'key' => env('AI_TOKEN') ?: env('HYDRA_AI_KEY'),
+        'model' => env('HYDRA_AI_MODEL', 'deepseek-v3.2'),
     ],
 
 ];

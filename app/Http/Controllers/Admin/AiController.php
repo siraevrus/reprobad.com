@@ -46,13 +46,15 @@ class AiController extends Controller
             return response()->json(['success' => false, 'error' => 'AI_TOKEN (или HYDRA_AI_KEY) не задан в .env'], 500);
         }
 
+        $model = config('services.hydraai.model', 'deepseek-v3.2');
+
         $response = Http::timeout(60)
             ->withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Content-Type'  => 'application/json',
             ])
             ->post('https://api.hydraai.ru/v1/chat/completions', [
-                'model'       => 'gpt-4o-mini',
+                'model'       => $model,
                 'messages'    => [
                     ['role' => 'user', 'content' => $prompt],
                 ],
