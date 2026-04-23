@@ -53,7 +53,13 @@ jobs:
           php artisan cache:clear
           php artisan config:clear
           php artisan view:clear
+          php artisan route:clear
           php artisan route:cache
+
+          # Перезапуск PHP-FPM для сброса OPcache
+          echo "Перезапуск PHP-FPM..."
+          systemctl restart php8.4-fpm
+          echo "✅ PHP-FPM перезапущен, OPcache сброшен"
 
           # Генерация sitemap.xml
           echo "Генерация sitemap.xml..."
