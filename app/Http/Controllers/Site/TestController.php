@@ -302,4 +302,15 @@ class TestController extends Controller
             'message' => 'Результаты теста отправлены!',
         ]);
     }
+
+    /**
+     * Сброс теста — очищаем сессию с результатом и переходим на начало тестирования.
+     * Используется кнопкой "Пройти тест ещё раз" на странице результата.
+     */
+    public function reset(Request $request): RedirectResponse
+    {
+        $request->session()->forget('latest_test_result_id');
+
+        return redirect()->route('site.test.index');
+    }
 }

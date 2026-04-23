@@ -160,6 +160,7 @@ Route::get('/checkup', [SiteTestController::class, 'index'])->name('site.test.in
 Route::post('/checkup/calculate', [SiteTestController::class, 'calculate'])->name('site.test.calculate');
 Route::post('/checkup/update-email', [SiteTestController::class, 'updateEmail'])->name('site.test.update-email');
 Route::post('/checkup/subscribe', [SiteTestController::class, 'subscribe'])->name('site.test.subscribe');
+Route::get('/checkup/reset', [SiteTestController::class, 'reset'])->name('site.test.reset');
 
 // Совместимость: старые ссылки и подписи для /test
 Route::get('/test', [SiteTestController::class, 'result'])->name('site.test.result');
