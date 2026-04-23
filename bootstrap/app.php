@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(Authenticate::class);
         $middleware->append(\App\Http\Middleware\StaticCacheHeaders::class);
         $middleware->append(\App\Http\Middleware\DisableCacheForCheckupPage::class);
+        $middleware->append(\App\Http\Middleware\AgentDiscoveryHeaders::class);
         $middleware->validateCsrfTokens(except: [
             '/bot/ask',
             '/bot/clear-history',
