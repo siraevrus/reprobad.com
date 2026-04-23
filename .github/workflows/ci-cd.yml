@@ -80,6 +80,6 @@ jobs:
 
           # Проверка что всё работает
           echo "Проверка приложения..."
-          php artisan route:list --compact
+          php artisan route:list | head -20
 
           echo "Деплой завершен успешно!"
