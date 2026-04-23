@@ -135,10 +135,18 @@ return new class extends Migration
                 $table->index('active', 'events_active_index');
             });
         }
-        if (!$hasIndex('events', 'events_sort_index')) {
-            Schema::table('events', function (Blueprint $table) {
-                $table->index('sort', 'events_sort_index');
-            });
+        // Индексы по sort только если колонка существует
+        if (Schema::hasColumn('events', 'sort')) {
+            if (!$hasIndex('events', 'events_sort_index')) {
+                Schema::table('events', function (Blueprint $table) {
+                    $table->index('sort', 'events_sort_index');
+                });
+            }
+            if (!$hasIndex('events', 'events_active_sort_index')) {
+                Schema::table('events', function (Blueprint $table) {
+                    $table->index(['active', 'sort'], 'events_active_sort_index');
+                });
+            }
         }
         if (!$hasIndex('events', 'events_home_index')) {
             Schema::table('events', function (Blueprint $table) {
@@ -148,11 +156,6 @@ return new class extends Migration
         if (!$hasIndex('events', 'events_created_at_index')) {
             Schema::table('events', function (Blueprint $table) {
                 $table->index('created_at', 'events_created_at_index');
-            });
-        }
-        if (!$hasIndex('events', 'events_active_sort_index')) {
-            Schema::table('events', function (Blueprint $table) {
-                $table->index(['active', 'sort'], 'events_active_sort_index');
             });
         }
         if (!$hasIndex('events', 'events_active_created_at_index')) {
@@ -203,10 +206,12 @@ return new class extends Migration
         // Удаление индексов для events
         Schema::table('events', function (Blueprint $table) {
             $table->dropIndex('events_active_index');
-            $table->dropIndex('events_sort_index');
+            if (Schema::hasColumn('events', 'sort')) {
+                $table->dropIndex('events_sort_index');
+                $table->dropIndex('events_active_sort_index');
+            }
             $table->dropIndex('events_home_index');
             $table->dropIndex('events_created_at_index');
-            $table->dropIndex('events_active_sort_index');
             $table->dropIndex('events_active_created_at_index');
         });
     }
