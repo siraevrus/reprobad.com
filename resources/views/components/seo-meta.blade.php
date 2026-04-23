@@ -1,4 +1,4 @@
-@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'resource' => null, 'forceDynamic' => false])
+@props(['pageType', 'defaultTitle' => null, 'defaultDescription' => null, 'resource' => null, 'forceDynamic' => false, 'customKeywords' => null])
 
 @php
     // Принудительно приводим forceDynamic к булевому типу
@@ -35,6 +35,8 @@
     if ($selectedCity && !empty($selectedCity) && $finalOgDescription) {
         $finalOgDescription = $finalOgDescription . ': ' . trim($selectedCity);
     }
+
+    $finalKeywords = filled($customKeywords) ? $customKeywords : ($seoData['keywords'] ?? null);
 @endphp
 
 @if($finalTitle)
@@ -45,8 +47,8 @@
     <meta name="description" content="{{ $finalDescription }}">
 @endif
 
-@if($seoData['keywords'])
-    <meta name="keywords" content="{{ $seoData['keywords'] }}">
+@if($finalKeywords)
+    <meta name="keywords" content="{{ $finalKeywords }}">
 @endif
 
 @if($finalOgTitle)

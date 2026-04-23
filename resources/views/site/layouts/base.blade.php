@@ -33,6 +33,7 @@
             :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
             :defaultDescription="$resource->seo_description ?? $resource->description ?? ''"
             :resource="$resource"
+            :customKeywords="data_get($resource, 'seo_keywords')"
             :forceDynamic="$forceDynamic ?? ($pageType === 'Menu' ? true : false)"
         />
     @elseif(isset($resource))

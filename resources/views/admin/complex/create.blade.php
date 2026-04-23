@@ -36,6 +36,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
 
+            <div>@include('admin.components.textarea-input', ['title' => 'Meta Keywords', 'field' => 'seo_keywords', 'rows' => 2, 'no_editor' => true])</div>
+
             <div>@include('admin.components.textarea-input', ['title' => 'Описание товара', 'field' => 'content'])</div>
 
             @include('admin.components.buttons')

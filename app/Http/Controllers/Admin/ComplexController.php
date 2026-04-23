@@ -35,6 +35,7 @@ class ComplexController extends Controller
         'images' => 'array|nullable',
         'product_ids' => 'string|nullable',
         'seo_description' => 'string|nullable',
+        'seo_keywords' => 'string|nullable',
         'anchor_left' => 'string|nullable',
         'anchor_right' => 'string|nullable',
     ];
