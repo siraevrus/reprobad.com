@@ -16,9 +16,31 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
-            <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block font-semibold">SEO description</label>
+                    <button type="button" @click="generateAi('description')"
+                            :disabled="aiLoading.description"
+                            class="flex items-center gap-1 px-3 py-1 text-sm bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white rounded transition">
+                        <span x-show="!aiLoading.description">✨ AI</span>
+                        <span x-show="aiLoading.description">⏳ Генерирую...</span>
+                    </button>
+                </div>
+                @include('admin.components.text-input', ['title' => '', 'field' => 'seo_description'])
+            </div>
 
-            <div>@include('admin.components.textarea-input', ['title' => 'Meta Keywords', 'field' => 'seo_keywords', 'rows' => 2, 'no_editor' => true])</div>
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block font-semibold">Meta Keywords</label>
+                    <button type="button" @click="generateAi('keywords')"
+                            :disabled="aiLoading.keywords"
+                            class="flex items-center gap-1 px-3 py-1 text-sm bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white rounded transition">
+                        <span x-show="!aiLoading.keywords">✨ AI</span>
+                        <span x-show="aiLoading.keywords">⏳ Генерирую...</span>
+                    </button>
+                </div>
+                @include('admin.components.textarea-input', ['title' => '', 'field' => 'seo_keywords', 'rows' => 2, 'no_editor' => true])
+            </div>
 
             <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => ['1' => 'Да', '0' => 'Нет']])</div>
 
@@ -61,6 +83,46 @@
                 ...init,
                 form: {
                     active: 1,
+                },
+                aiLoading: {
+                    keywords: false,
+                    description: false,
+                },
+                async generateAi(type) {
+                    const content = this.form.content || '';
+                    if (!content.trim()) {
+                        this.showAlert('Заполните поле «Содержание» перед генерацией', true);
+                        return;
+                    }
+                    this.aiLoading[type] = true;
+                    try {
+                        const response = await fetch('/admin/ai/generate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': this.token,
+                            },
+                            body: JSON.stringify({
+                                type,
+                                content,
+                                title: this.form.title || '',
+                            }),
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            if (type === 'keywords') {
+                                this.form.seo_keywords = data.result;
+                            } else {
+                                this.form.seo_description = data.result;
+                            }
+                        } else {
+                            this.showAlert(data.error || 'Ошибка генерации', true);
+                        }
+                    } catch (e) {
+                        this.showAlert('Ошибка запроса к AI: ' + e.message, true);
+                    } finally {
+                        this.aiLoading[type] = false;
+                    }
                 },
             }
         }

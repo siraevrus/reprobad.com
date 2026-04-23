@@ -43,4 +43,8 @@ return [
         'signing_key' => env('WEBBOT_SIGNING_KEY'),
     ],
 
+    'hydraai' => [
+        'key' => env('AI_TOKEN') ?: env('HYDRA_AI_KEY'),
+    ],
+
 ];

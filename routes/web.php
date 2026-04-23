@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdviseController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ChatHistoryController;
+use App\Http\Controllers\Admin\AiController;
 use App\Http\Controllers\Admin\ComplexController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\EventController;
@@ -70,6 +71,9 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::resource('/admin/test-results', TestResultController::class)->only(['index', 'show', 'destroy']);
     Route::resource('/admin/test-questions', TestQuestionController::class);
     Route::resource('/admin/test-result-fields', TestResultFieldController::class);
+
+    // AI генерация SEO полей
+    Route::post('/admin/ai/generate', [AiController::class, 'generate'])->name('ai.generate');
 
     // Загрузка файлов (AJAX)
     Route::post('/admin/upload', [FileManagerController::class, 'upload'])->name('upload');
