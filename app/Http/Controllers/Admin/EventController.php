@@ -20,6 +20,7 @@ class EventController extends Controller
         'description' => 'string|nullable',
         'seo_title' => 'string|nullable',
         'seo_description' => 'string|nullable',
+        'seo_keywords' => 'string|nullable',
         'image' => 'string|nullable',
         'image_alt' => 'string|nullable',
         'images' => 'array|nullable',

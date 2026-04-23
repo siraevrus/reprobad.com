@@ -18,6 +18,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'SEO description', 'field' => 'seo_description'])</div>
 
+            <div>@include('admin.components.textarea-input', ['title' => 'Meta Keywords', 'field' => 'seo_keywords', 'rows' => 2, 'no_editor' => true])</div>
+
             <div>@include('admin.components.select-input', ['title' => 'Активно', 'field' => 'active', 'options' => ['1' => 'Да', '0' => 'Нет']])</div>
 
             <div>

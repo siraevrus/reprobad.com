@@ -25,6 +25,8 @@
 
             <div>@include('admin.components.text-input', ['title' => 'Seo описание', 'field' => 'seo_description'])</div>
 
+            <div>@include('admin.components.textarea-input', ['title' => 'Meta Keywords', 'field' => 'seo_keywords', 'rows' => 2, 'no_editor' => true])</div>
+
             <div>@include('admin.components.text-input', ['title' => 'Алиас', 'field' => 'alias'])</div>
 
             <div>@include('admin.components.text-input', ['title' => 'Даты проведения', 'field' => 'dates'])</div>

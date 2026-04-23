@@ -26,6 +26,7 @@ class ArticleController extends Controller
         'time' => 'string|nullable',
         'active' => 'boolean|required',
         'seo_description' => 'string|nullable',
+        'seo_keywords' => 'string|nullable',
     ];
 
     public function index(Request $request): View|JsonResponse

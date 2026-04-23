@@ -26,6 +26,7 @@ class AdviseController extends Controller
         'category' => 'string|nullable',
         'time' => 'string|nullable',
         'seo_description' => 'string|nullable',
+        'seo_keywords' => 'string|nullable',
     ];
 
     public function index(Request $request): View|JsonResponse
