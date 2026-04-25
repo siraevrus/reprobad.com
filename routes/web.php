@@ -124,8 +124,7 @@ Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
 });
 
 Route::get('/', [SiteIndexController::class, 'index'])->name('site.index');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
-Route::get('/login', [LoginController::class, 'form'])->name('login.form');
+Route::post('/login', [LoginController::class, 'authenticate'])->middleware('throttle:5,1')->name('login.auth');
 Route::get('/login', [LoginController::class, 'form'])->name('login');
 Route::get('/articles', [SiteArticleController::class, 'index'])->name('site.articles.index');
 Route::get('/articles/{alias}', [SiteArticleController::class, 'show'])->name('site.articles.show');
@@ -152,17 +151,17 @@ Route::get('/about.html', function () {
 Route::get('/contacts', [SitePageController::class, 'contacts'])->name('site.text.contacts');
 Route::get('/map', [SiteMapController::class, 'index'])->name('site.map');
 
-Route::post('/forms/feedback', [FormController::class, 'feedback'])->name('site.form.feedback');
-Route::post('/forms/subscribe', [FormController::class, 'subscribe'])->name('site.form.subscribe');
-Route::post('/forms/city', [FormController::class, 'setCity'])->name('site.form.city');
+Route::post('/forms/feedback', [FormController::class, 'feedback'])->middleware('throttle:5,1')->name('site.form.feedback');
+Route::post('/forms/subscribe', [FormController::class, 'subscribe'])->middleware('throttle:5,1')->name('site.form.subscribe');
+Route::post('/forms/city', [FormController::class, 'setCity'])->middleware('throttle:10,1')->name('site.form.city');
 Route::post('/articles/{alias}/like', [SiteArticleController::class, 'like'])->name('site.articles.like');
 Route::post('/usefully-tips/{alias}/like', [SiteAdviseController::class, 'like'])->name('site.advises.like');
 
 // Чат-бот на сайте
 use App\Http\Controllers\Site\BotController;
 
-Route::post('/bot/ask', [BotController::class, 'ask'])->name('site.bot.ask');
-Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->name('site.bot.clearHistory');
+Route::post('/bot/ask', [BotController::class, 'ask'])->middleware('throttle:10,1')->name('site.bot.ask');
+Route::post('/bot/clear-history', [BotController::class, 'clearHistory'])->middleware('throttle:10,1')->name('site.bot.clearHistory');
 
 // Тест «Репродуктивное здоровье» (основной URL — /checkup)
 Route::get('/checkup', [SiteTestController::class, 'index'])->name('site.test.index');

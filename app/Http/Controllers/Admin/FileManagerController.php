@@ -30,7 +30,7 @@ class FileManagerController extends Controller
     {
         try {
             $request->validate([
-                'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,svg,pdf|max:10240',
+                'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,pdf|max:10240',
             ]);
 
             $file = $request->file('file');
@@ -61,10 +61,11 @@ class FileManagerController extends Controller
                 'url' => url('/uploads/' . $fileName),
             ]);
         } catch (\Throwable $e) {
+            \Log::error('File upload error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'errors' => [
-                    'file' => ['Ошибка загрузки файла: ' . $e->getMessage()],
+                    'file' => ['Ошибка загрузки файла'],
                 ],
             ], 500);
         }
@@ -97,7 +98,7 @@ class FileManagerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:10240', // максимум 10MB
+            'file' => 'required|file|mimes:jpg,jpeg,png,gif,webp,pdf|max:10240',
         ]);
 
         $file = $request->file('file');
@@ -111,6 +112,10 @@ class FileManagerController extends Controller
 
     public function destroy($filename)
     {
+        if (str_contains($filename, '/') || str_contains($filename, '..') || str_contains($filename, '\\')) {
+            abort(403, 'Invalid filename');
+        }
+
         $path = 'uploads/' . $filename;
         
         if (Storage::disk('public')->exists($path)) {

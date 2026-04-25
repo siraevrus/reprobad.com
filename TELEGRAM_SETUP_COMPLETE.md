@@ -4,7 +4,7 @@
 
 1. **Добавлен токен в .env:**
    ```
-   TELEGRAM_BOT_TOKEN=8384124270:AAFC6InbJbYG3FwrQ4nas5qHAYNeBcvu_6g
+   TELEGRAM_BOT_TOKEN=<задаётся через .env>
    ```
 
 2. **Webhook настроен:**
@@ -59,7 +59,7 @@ ssh repro "cd /var/www/repro && tail -50 storage/logs/laravel.log"
 ### Проверка webhook статуса:
 
 ```bash
-curl -s "https://api.telegram.org/bot8384124270:AAFC6InbJbYG3FwrQ4nas5qHAYNeBcvu_6g/getWebhookInfo" | python3 -m json.tool
+curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" | python3 -m json.tool
 ```
 
 ## 🔍 Если бот не отвечает:
@@ -92,7 +92,7 @@ ssh repro "cd /var/www/repro && php artisan tinker --execute='echo class_exists(
 
 - **Username:** @reprobad_bot
 - **ID:** 8384124270
-- **Token:** 8384124270:AAFC6InbJbYG3FwrQ4nas5qHAYNeBcvu_6g
+- **Token:** <задаётся через .env>
 - **Webhook:** https://reprobad.com/api/telegram/webhook
 - **Статус:** Активен
 

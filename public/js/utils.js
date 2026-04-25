@@ -80,7 +80,7 @@ const userIsNotActive = {
         setInterval(async () => {
             idleTime++;
             if (idleTime >= idleLimit) {
-                console.log('Пользователь неактивен');
+                
                 await this.save(true);
             }
         }, 1000);
@@ -111,16 +111,16 @@ const imageUpload = {
     },
     
     openImageCropper(event, field, targetWidth = 1280, targetHeight = 853) {
-        console.log('openImageCropper called', field, targetWidth, targetHeight);
+        
         const file = event.target.files[0];
         if (!file) {
-            console.log('No file selected');
+            
             return;
         }
         
         const reader = new FileReader();
         reader.onload = (e) => {
-            console.log('File loaded, setting cropperModal');
+            
             this.cropperModal.imageUrl = e.target.result;
             this.cropperModal.field = field;
             this.cropperModal.show = true;
@@ -128,13 +128,11 @@ const imageUpload = {
             this.cropperModal.targetHeight = targetHeight;
             this.$nextTick(() => {
                 const imageElement = document.getElementById(`cropper-image-${field}`);
-                console.log('Image element:', imageElement);
                 if (imageElement) {
                     if (this.cropperModal.cropper) {
                         this.cropperModal.cropper.destroy();
                     }
                     if (typeof Cropper === 'undefined') {
-                        console.error('Cropper.js is not loaded!');
                         alert('Ошибка: библиотека Cropper.js не загружена. Пожалуйста, обновите страницу.');
                         return;
                     }
@@ -150,9 +148,7 @@ const imageUpload = {
                         cropBoxMovable: true,
                         cropBoxResizable: true,
                     });
-                    console.log('Cropper initialized');
                 } else {
-                    console.error('Image element not found:', `cropper-image-${field}`);
                 }
             });
         };
@@ -229,11 +225,11 @@ const showAlert = {
             if (errorObject.hasOwnProperty(key)) {
                 const value = errorObject[key];
                 if (Array.isArray(value)) {
-                    messages += value.join("<br>") + "<br>";
+                    messages += value.join("\n") + "\n";
                 } else if (typeof value === 'string') {
-                    messages += value + "<br>";
+                    messages += value + "\n";
                 } else {
-                    messages += String(value) + "<br>";
+                    messages += String(value) + "\n";
                 }
             }
         }
@@ -342,7 +338,7 @@ const get = {
             this.loading = false;
         }
         catch (e) {
-            console.log(e)
+            
         }
         finally {
             this.loading = false;

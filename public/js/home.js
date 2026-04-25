@@ -4,7 +4,7 @@ Webflow.push(function() {
     event.preventDefault();
     const inputValue = $('input[name="search"]').val();
     if(inputValue?.length > 0) {
-      window.location.href = `/map?search=${inputValue}`;
+      window.location.href = `/map?search=${encodeURIComponent(inputValue)}`;
     }
   })
 });

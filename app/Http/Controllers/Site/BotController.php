@@ -59,8 +59,7 @@ class BotController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Bot chat error: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString(),
-                'request' => $request->all()
+                'user_id' => $request->input('user_id'),
             ]);
 
             return response()->json([

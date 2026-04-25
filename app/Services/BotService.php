@@ -275,7 +275,7 @@ class BotService {
             $contextualQuery = $historyContext . $query;
         }
 
-        $apikey = env('AI_TOKEN');
+        $apikey = config('services.hydraai.key');
         
         $headers = array(
             "Authorization: Bearer $apikey",

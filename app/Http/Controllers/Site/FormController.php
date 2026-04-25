@@ -34,12 +34,11 @@ class FormController extends Controller
         ]);
 
         // Отправляем email только если указан получатель
-        $mailTo = env('MAIL_TO') ?? env('MAIL_TO_ADDRESS');
+        $mailTo = config('mail.to');
         if ($mailTo) {
             try {
                 Mail::to($mailTo)->send(new DefaultMail($validator->validated()));
             } catch (\Exception $e) {
-                // Логируем ошибку, но не прерываем выполнение
                 \Log::error('Ошибка отправки email: ' . $e->getMessage());
             }
         }
@@ -62,7 +61,6 @@ class FormController extends Controller
             'agree' => 'required'
         ]);
         
-        // Проверяем, что согласие дано (может быть 1, true, "1", "true" и т.д.)
         if ($request->has('agree') && !in_array($request->get('agree'), [1, '1', true, 'true', 'on', 'yes'], true)) {
             return response()->json([
                 'success' => false,
@@ -79,7 +77,6 @@ class FormController extends Controller
 
         $validated = $validator->validated();
         
-        // Сохраняем вопрос в базу данных
         Feedback::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -87,8 +84,7 @@ class FormController extends Controller
             'message' => $validated['message'],
         ]);
 
-        // Отправляем email только если указан получатель
-        $mailTo = env('MAIL_TO') ?? env('MAIL_TO_ADDRESS');
+        $mailTo = config('mail.to');
         if ($mailTo) {
             try {
                 Mail::to($mailTo)->send(new DefaultMail($validated));

@@ -67,7 +67,7 @@ class TelegramController extends Controller
                 $this->sendMessage($chatId, '⚠️ Произошла ошибка при обработке запроса.');
             }
 
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'error', 'message' => 'Internal server error'], 500);
         }
     }
 
@@ -76,7 +76,7 @@ class TelegramController extends Controller
      */
     protected function sendMessage(int $chatId, string $text): void
     {
-        $botToken = env('TELEGRAM_BOT_TOKEN');
+        $botToken = config('services.telegram.bot_token');
         
         if (!$botToken) {
             Log::error('Telegram bot token not configured');
