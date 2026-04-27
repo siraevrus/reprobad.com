@@ -33,7 +33,6 @@ if (!function_exists('canonical_url')) {
             'products',
             'company',
             'contacts',
-            'faq',
             'map',
             'menu/day_1',
             'menu/day_2',

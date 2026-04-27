@@ -17,11 +17,14 @@ class FaqController extends Controller
             ->take(2)
             ->get();
         $pageType = 'Faq';
+        $forceDynamic = true;
         $resource = (object)[
             'title' => 'Вопрос-ответ',
-            'description' => 'Вопрос-ответ'
+            'description' => 'Вопрос-ответ',
+            'seo_title' => 'Вопросы и ответы — Репробад',
+            'seo_description' => 'Ответы на частые вопросы о системе РЕПРО и продуктах: применение, рекомендации и важные нюансы.'
         ];
 
-        return view('site.faq', compact('resource', 'pageType', 'resources', 'events'));
+        return view('site.faq', compact('resource', 'pageType', 'forceDynamic', 'resources', 'events'));
     }
 }

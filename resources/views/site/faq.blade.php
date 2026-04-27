@@ -64,15 +64,30 @@
                     <div class="article-accordion">
                         @foreach($resources as $resource)
                         <div class="accordion-item">
-                          <div class="accordion-header">
-                            <button class="accordion-title accordion-toggle" aria-expanded="false" aria-controls="article-accordion-1">
+                          @php
+                            $faqIndex = $loop->iteration;
+                            $questionId = 'faq-q-' . $faqIndex;
+                            $answerId = 'faq-a-' . $faqIndex;
+                          @endphp
+                          <h2 class="accordion-header">
+                            <button
+                              id="{{ $questionId }}"
+                              class="accordion-title accordion-toggle"
+                              type="button"
+                              aria-expanded="false"
+                              aria-controls="{{ $answerId }}"
+                            >
                               {{ $resource->title }}
+                              <img src="images/path_down.svg" alt="" aria-hidden="true" class="accordion-arrow">
                             </button>
-                            <button class="accordion-toggle" aria-expanded="false" aria-controls="article-accordion-1">
-                              <img src="images/path_down.svg" alt="Раскрыть" class="accordion-arrow">
-                            </button>
-                          </div>
-                          <div class="accordion-content" id="article-accordion-1">
+                          </h2>
+                          <div
+                            class="accordion-content"
+                            id="{{ $answerId }}"
+                            role="region"
+                            aria-labelledby="{{ $questionId }}"
+                            hidden
+                          >
                             {!! $resource->content !!}
                           </div>
                         </div>
@@ -206,12 +221,11 @@
         top: 0;bottom: 0;margin: auto; 
     }
     .article-accordion .accordion-content { 
-        display: none; 
         padding-top: 0.5rem; 
     }
-    .article-accordion .accordion-item.open .accordion-content { 
-        display: block;
-     }
+    .article-accordion .accordion-content[hidden] {
+        display: none;
+    }
     .article-accordion .accordion-item.open .accordion-arrow { 
         transform: rotate(180deg);
     }
@@ -230,12 +244,24 @@
             if (!toggles || !toggles.length) return;
             toggles.forEach(function(toggle) {
               toggle.addEventListener('click', function(event) {
-                event.preventDefault();
                 var item = toggle.closest('.accordion-item');
                 if (!item) return;
+                var panelId = toggle.getAttribute('aria-controls');
+                if (!panelId) return;
+                var panel = document.getElementById(panelId);
+                if (!panel) return;
+
                 var expanded = toggle.getAttribute('aria-expanded') === 'true';
-                toggle.setAttribute('aria-expanded', (!expanded).toString());
-                item.classList.toggle('open');
+                var nextExpanded = !expanded;
+                toggle.setAttribute('aria-expanded', nextExpanded.toString());
+
+                if (nextExpanded) {
+                  panel.hidden = false;
+                  item.classList.add('open');
+                } else {
+                  panel.hidden = true;
+                  item.classList.remove('open');
+                }
               });
             });
           }
