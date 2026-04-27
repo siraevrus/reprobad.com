@@ -135,7 +135,7 @@
                 <div class="side">
                     <div class="side-promo">
                         <a href="//www.eapteka.ru/search/?q=репро" target="_blank">
-                            <img src="images/banner.png" style="width:100%" alt="Купить в Eapteka">
+                            <img src="{{ asset('images/banner.png') }}" style="width:100%" alt="Купить в Eapteka">
                         </a>
                     </div>
                     @if(!empty($other))
@@ -215,10 +215,10 @@
     </style>
     <script>
         const promoData = [
-            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner1.jpg' },
-            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner2.jpg' },
-            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner3.jpg' },
-            { href: '//www.eapteka.ru/search/?q=репро', img: 'images/banner4.jpg' }
+            { href: '//www.eapteka.ru/search/?q=репро', img: @json(asset('images/banner1.png')) },
+            { href: '//www.eapteka.ru/search/?q=репро', img: @json(asset('images/banner2.png')) },
+            { href: '//www.eapteka.ru/search/?q=репро', img: @json(asset('images/banner3.png')) },
+            { href: '//www.eapteka.ru/search/?q=репро', img: @json(asset('images/banner4.png')) }
         ];
 
         let current = 0;
