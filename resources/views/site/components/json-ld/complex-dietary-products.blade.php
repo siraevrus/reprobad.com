@@ -26,7 +26,51 @@
 
     $graph = [];
 
+    $matchSchemaDescription = static function (\App\Models\Product $product) use ($plainText): ?string {
+        $title = mb_strtolower($plainText($product->title ?? ''), 'UTF-8');
+        if ($title === '') {
+            return null;
+        }
+        foreach (config('dietary_supplement_schema.product_descriptions', []) as $row) {
+            if (empty($row['keywords']) || empty($row['description'])) {
+                continue;
+            }
+            foreach ($row['keywords'] as $kw) {
+                if (! str_contains($title, mb_strtolower($kw, 'UTF-8'))) {
+                    continue 2;
+                }
+            }
+
+            return $row['description'];
+        }
+
+        return null;
+    };
+
+    $matchOfferUrl = static function (\App\Models\Product $product) use ($plainText): ?string {
+        $title = mb_strtolower($plainText($product->title ?? ''), 'UTF-8');
+        if ($title === '') {
+            return null;
+        }
+        foreach (config('dietary_supplement_schema.product_offer_urls', []) as $row) {
+            if (empty($row['keywords']) || empty($row['url'])) {
+                continue;
+            }
+            foreach ($row['keywords'] as $kw) {
+                if (! str_contains($title, mb_strtolower($kw, 'UTF-8'))) {
+                    continue 2;
+                }
+            }
+
+            return $row['url'];
+        }
+
+        return null;
+    };
+
     foreach ($resource->products ?? [] as $product) {
+        $description = $matchSchemaDescription($product);
+        if ($description === null || $description === '') {
         $descSource = $plainText($product->seo_description ?? '');
         if ($descSource === '') {
             $descSource = $plainText($product->description ?? '');
@@ -53,8 +97,12 @@
                 . strip_tags((string) $product->title)
                 . '» линейки Система РЕПРО для программы подготовки пары к беременности.';
         }
+        }
 
-        $offerUrl = $product->link;
+        $offerUrl = $matchOfferUrl($product);
+        if (empty($offerUrl)) {
+            $offerUrl = $product->link;
+        }
         if (empty($offerUrl)) {
             $offerUrl = 'https://www.eapteka.ru/search/?q=' . rawurlencode(strip_tags((string) $product->title));
         }
