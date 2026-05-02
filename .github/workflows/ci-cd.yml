@@ -38,10 +38,17 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          command_timeout: 30m
+          # Включите при отладке SSH: подробный лог подключения
+          debug: false
           # port: по умолчанию 22; для другого порта раскомментируйте и задайте secrets.SSH_PORT
           # port: ${{ secrets.SSH_PORT }}
           script: |
             set -euo pipefail
+            echo "=== Кто выполняет деплой: $(whoami) ($(id -u)) ==="
+            echo "=== php: $(command -v php 2>/dev/null || echo 'нет в PATH') ==="
+            echo "=== composer: $(command -v composer 2>/dev/null || echo 'нет в PATH') ==="
+
             cd /var/www/repro
 
             echo "=== Git: stash / pull master ==="

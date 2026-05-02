@@ -23,16 +23,18 @@ done
 cd "$APP_ROOT" || { echo "❌ Нет каталога $APP_ROOT"; exit 1; }
 
 restart_php_fpm() {
-    local restarted=false
+    local found_active=false
     for svc in php8.4-fpm php8.3-fpm php8.2-fpm; do
         if systemctl is-active --quiet "${svc}" 2>/dev/null; then
+            found_active=true
             echo "   Перезапуск ${svc} (сброс OPcache в workers)..."
-            systemctl restart "${svc}"
-            restarted=true
+            if ! systemctl restart "${svc}" 2>/dev/null; then
+                echo "   ⚠️  systemctl restart ${svc} не выполнен (нужен root или sudo для systemd). Перезапустите PHP-FPM вручную."
+            fi
             break
         fi
     done
-    if [[ "$restarted" != true ]]; then
+    if [[ "$found_active" != true ]]; then
         echo "   ⚠️  Активный сервис php*-fpm не найден; при необходимости перезапустите PHP-FPM вручную."
     fi
 }
