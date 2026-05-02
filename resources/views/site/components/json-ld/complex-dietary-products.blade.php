@@ -26,86 +26,9 @@
 
     $graph = [];
 
-    $matchSchemaDescription = static function (\App\Models\Product $product) use ($plainText): ?string {
-        $title = mb_strtolower($plainText($product->title ?? ''), 'UTF-8');
-        if ($title === '') {
-            return null;
-        }
-        foreach (config('dietary_supplement_schema.product_descriptions', []) as $row) {
-            if (empty($row['keywords']) || empty($row['description'])) {
-                continue;
-            }
-            foreach ($row['keywords'] as $kw) {
-                if (! str_contains($title, mb_strtolower($kw, 'UTF-8'))) {
-                    continue 2;
-                }
-            }
-
-            return $row['description'];
-        }
-
-        return null;
-    };
-
-    $matchOfferUrl = static function (\App\Models\Product $product) use ($plainText): ?string {
-        $title = mb_strtolower($plainText($product->title ?? ''), 'UTF-8');
-        if ($title === '') {
-            return null;
-        }
-        foreach (config('dietary_supplement_schema.product_offer_urls', []) as $row) {
-            if (empty($row['keywords']) || empty($row['url'])) {
-                continue;
-            }
-            foreach ($row['keywords'] as $kw) {
-                if (! str_contains($title, mb_strtolower($kw, 'UTF-8'))) {
-                    continue 2;
-                }
-            }
-
-            return $row['url'];
-        }
-
-        return null;
-    };
-
     foreach ($resource->products ?? [] as $product) {
-        $description = $matchSchemaDescription($product);
-        if ($description === null || $description === '') {
-        $descSource = $plainText($product->seo_description ?? '');
-        if ($descSource === '') {
-            $descSource = $plainText($product->description ?? '');
-        }
-        if ($descSource === '') {
-            $descSource = $plainText($product->content ?? '');
-        }
-        if ($descSource === '') {
-            $descSource = $plainText($product->about ?? '');
-        }
-        if ($descSource === '') {
-            $descSource = $plainText(($resource->subtitle ?? '') . ' ' . ($resource->content ?? ''));
-        }
-        if ($descSource === '') {
-            $descSource = $plainText($resource->seo_description ?? '');
-        }
-
-        $description = $takeSentencesRu($descSource);
-        if ($description === '' || mb_strlen($description) < 60) {
-            $description = \Illuminate\Support\Str::limit($descSource, 520);
-        }
-        if ($description === '') {
-            $description = 'Биологически активная добавка к питанию «'
-                . strip_tags((string) $product->title)
-                . '» линейки Система РЕПРО для программы подготовки пары к беременности.';
-        }
-        }
-
-        $offerUrl = $matchOfferUrl($product);
-        if (empty($offerUrl)) {
-            $offerUrl = $product->link;
-        }
-        if (empty($offerUrl)) {
-            $offerUrl = 'https://www.eapteka.ru/search/?q=' . rawurlencode(strip_tags((string) $product->title));
-        }
+        $description = \App\Support\DietarySupplementJsonLd::resolveDescription($product, $resource);
+        $offerUrl = \App\Support\DietarySupplementJsonLd::resolveOfferUrl($product);
 
         $offer = [
             '@type' => 'Offer',
@@ -136,10 +59,13 @@
         ];
 
         $img = null;
-        if (! empty($product->images) && is_array($product->images)) {
-            $first = reset($product->images);
-            if (is_array($first) && ! empty($first['url'])) {
-                $img = $first['url'];
+        $imagesForLd = $product->images;
+        if (! empty($imagesForLd) && is_array($imagesForLd)) {
+            foreach ($imagesForLd as $row) {
+                if (is_array($row) && ! empty($row['url'])) {
+                    $img = $row['url'];
+                }
+                break;
             }
         }
         if (! $img && ! empty($product->photo)) {

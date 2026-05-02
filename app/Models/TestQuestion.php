@@ -14,6 +14,7 @@ class TestQuestion extends Model
     protected $casts = [
         'answers' => 'array',
         'active' => 'boolean',
+        'block_number' => 'integer',
     ];
 
     public function scopeActive(Builder $query): void

@@ -32,6 +32,28 @@
                 @enderror
             </div>
 
+            @php
+                $editFn = (int) old('field_number', $resource->field_number);
+                $defaultResultBlockEdit = \App\Support\ReproTestBlocks::blockForFieldNumber($editFn) ?? 1;
+            @endphp
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Блок теста *
+                </label>
+                <select name="block_number"
+                        id="block-number-input"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @foreach(\App\Support\ReproTestBlocks::titles() as $num => $label)
+                        <option value="{{ $num }}" {{ (int) old('block_number', $resource->block_number ?? $defaultResultBlockEdit) === (int) $num ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <p class="mt-1 text-xs text-gray-500">Должен соответствовать номеру поля: 1–2 — блок&nbsp;1, 3–5 — блок&nbsp;2, 6–7 — блок&nbsp;3, 8–9 — блок&nbsp;4. При смене «Номер поля» подставляется автоматически.</p>
+                @error('block_number')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     Описание рекомендации *
@@ -234,6 +256,22 @@
     </form>
 
     <script>
+        const codingToBlock = @json(config('repro_test.coding_to_block'));
+        function syncResultBlock() {
+            const fn = document.getElementById('field-number-input');
+            const bn = document.getElementById('block-number-input');
+            if (!fn || !bn || !fn.value) return;
+            const mapped = codingToBlock[fn.value];
+            if (mapped != null) bn.value = String(mapped);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const fnEl = document.getElementById('field-number-input');
+            if (fnEl) {
+                fnEl.addEventListener('change', syncResultBlock);
+            }
+            syncResultBlock();
+        });
+
         function handleImageUpload(input, imageNumber) {
             const file = input.files[0];
             if (!file) return;
@@ -292,14 +330,18 @@
         }
 
         // Инициализация TinyMCE для полей description и email_description
+        const tinyMceBase = 'https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.5.0';
         const tinyMceConfig = {
             license_key: 'gpl',
+            base_url: tinyMceBase,
+            suffix: '.min',
             height: 300,
             menubar: false,
             language: 'ru',
-            language_url: '/js/ru.min.js',
+            language_url: 'https://cdn.jsdelivr.net/npm/tinymce-i18n/langs7/ru.min.js',
             plugins: 'advlist autolink lists link image charmap preview anchor code',
             toolbar1: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat link code',
+            promotion: false,
             setup: (editor) => {
                 editor.on('change', () => {
                     document.getElementById(editor.id).value = editor.getContent();

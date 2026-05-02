@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\TestQuestion;
+use App\Support\ReproTestBlocks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class TestQuestionController extends Controller
     public array $rules = [
         'question_text' => 'required|string',
         'order' => 'required|integer|min:1|max:24',
+        'block_number' => 'required|integer|in:1,2,3,4',
         'answers' => 'required|array|min:2',
         'answers.*.text' => 'required|string',
         'answers.*.value' => 'required|integer|min:0|max:3',
@@ -30,7 +32,7 @@ class TestQuestionController extends Controller
             ->ordered()
             ->paginate(env('PAGINATION_LIMIT', 50));
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json($resources);
         }
 
@@ -56,14 +58,28 @@ class TestQuestionController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
-        $validated['active'] = $request->has('active') ? (bool)$request->input('active') : true;
+        $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
+
+        $expectedBlock = ReproTestBlocks::blockForQuestionOrder((int) $validated['order']);
+        if ((int) $validated['block_number'] !== $expectedBlock) {
+            $msg = 'Блок должен соответствовать номеру вопроса: 1–6 → блок 1, 7–14 → 2, 15–19 → 3, 20–24 → 4.';
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['block_number' => [$msg]],
+                ], 422);
+            }
+
+            return back()->withErrors(['block_number' => $msg])->withInput();
+        }
 
         // Проверяем уникальность порядка
         $existing = TestQuestion::where('order', $validated['order'])->first();
@@ -71,9 +87,10 @@ class TestQuestionController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => ['order' => ['Вопрос с таким порядком уже существует']]
+                    'errors' => ['order' => ['Вопрос с таким порядком уже существует']],
                 ], 422);
             }
+
             return back()->withErrors(['order' => 'Вопрос с таким порядком уже существует'])->withInput();
         }
 
@@ -82,7 +99,7 @@ class TestQuestionController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'resource' => $resource
+                'resource' => $resource,
             ]);
         }
 
@@ -97,7 +114,7 @@ class TestQuestionController extends Controller
     {
         $resource = TestQuestion::query()->findOrFail($id);
 
-        if(request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json($resource);
         }
 
@@ -110,6 +127,7 @@ class TestQuestionController extends Controller
     public function edit($id): View
     {
         $resource = TestQuestion::query()->findOrFail($id);
+
         return view('admin.test-questions.edit', compact('resource'));
     }
 
@@ -127,14 +145,28 @@ class TestQuestionController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors(),
                 ], 422);
             }
+
             return back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
-        $validated['active'] = $request->has('active') ? (bool)$request->input('active') : true;
+        $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
+
+        $expectedBlock = ReproTestBlocks::blockForQuestionOrder((int) $validated['order']);
+        if ((int) $validated['block_number'] !== $expectedBlock) {
+            $msg = 'Блок должен соответствовать номеру вопроса: 1–6 → блок 1, 7–14 → 2, 15–19 → 3, 20–24 → 4.';
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['block_number' => [$msg]],
+                ], 422);
+            }
+
+            return back()->withErrors(['block_number' => $msg])->withInput();
+        }
 
         $resource = TestQuestion::query()->findOrFail($id);
 
@@ -146,9 +178,10 @@ class TestQuestionController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => ['order' => ['Вопрос с таким порядком уже существует']]
+                    'errors' => ['order' => ['Вопрос с таким порядком уже существует']],
                 ], 422);
             }
+
             return back()->withErrors(['order' => 'Вопрос с таким порядком уже существует'])->withInput();
         }
 
@@ -158,7 +191,7 @@ class TestQuestionController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
-                'resource' => $resource
+                'resource' => $resource,
             ]);
         }
 

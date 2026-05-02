@@ -1,0 +1,9 @@
+; Опционально для Ubuntu/Debian PHP-FPM (PHP 8.4):
+;   sudo cp deployment/php-fpm-opcache-revalidate.ini.example /etc/php/8.4/fpm/conf.d/zz-opcache-revalidate.ini
+;   sudo systemctl reload php8.4-fpm
+;
+; При validate_timestamps=1 PHP подхватывает изменения файлов без перезапуска FPM.
+; Небольшая дополнительная нагрузка на диск — обычно приемлемо для типичного сайта.
+
+opcache.validate_timestamps=1
+opcache.revalidate_freq=2

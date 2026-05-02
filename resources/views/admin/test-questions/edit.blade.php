@@ -20,12 +20,31 @@
                 </label>
                 <input type="number" 
                        name="order" 
+                       id="order-input"
                        value="{{ old('order', $resource->order) }}" 
                        min="1" 
                        max="24" 
                        required
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @error('order')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Блок теста *
+                </label>
+                <select name="block_number"
+                        id="block-number-input"
+                        required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @foreach(\App\Support\ReproTestBlocks::titles() as $num => $label)
+                        <option value="{{ $num }}" {{ (int) old('block_number', $resource->block_number ?? 1) === (int) $num ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <p class="mt-1 text-xs text-gray-500">Должен совпадать с диапазоном вопроса: 1–6 — блок&nbsp;1, 7–14 — блок&nbsp;2, 15–19 — блок&nbsp;3, 20–24 — блок&nbsp;4. При смене «Порядок» подставляется автоматически.</p>
+                @error('block_number')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -181,5 +200,26 @@
         });
 
         updateRemoveButtons();
+
+        function blockFromOrder(o) {
+            o = parseInt(o, 10) || 1;
+            if (o >= 1 && o <= 6) return '1';
+            if (o >= 7 && o <= 14) return '2';
+            if (o >= 15 && o <= 19) return '3';
+            if (o >= 20 && o <= 24) return '4';
+            return '1';
+        }
+        const orderInputEl = document.getElementById('order-input');
+        const blockSelectEl = document.getElementById('block-number-input');
+        function syncQuestionBlock() {
+            if (orderInputEl && blockSelectEl) {
+                blockSelectEl.value = blockFromOrder(orderInputEl.value);
+            }
+        }
+        if (orderInputEl) {
+            orderInputEl.addEventListener('change', syncQuestionBlock);
+            orderInputEl.addEventListener('input', syncQuestionBlock);
+        }
+        document.addEventListener('DOMContentLoaded', syncQuestionBlock);
     </script>
 @endsection

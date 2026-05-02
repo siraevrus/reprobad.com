@@ -278,15 +278,15 @@
           </div>
           <div class="reprotest-adv-grid">
             <div class="div-block"><img src="{{ asset("images/test/reprotest-ic-1.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Психоэмоциональное равновесие</h3>
+              <h3 class="reprotest-adv-item-h">Психоэмоциональное состояние</h3>
               <p class="reprotest-p">Защита от стресса и нормализация сна</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-2.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Очищение организма</h3>
+              <h3 class="reprotest-adv-item-h">Микрофлора кишечника и детоксикация</h3>
               <p class="reprotest-p">Нормализация кишечной микрофлоры и поддержка печени</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-3.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Общий метаболизм и углеводный обмен</h3>
+              <h3 class="reprotest-adv-item-h">Метаболизм и энергия</h3>
               <p class="reprotest-p">Коррекция энергетического обмена и нормализация метаболизма</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-4.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
@@ -439,14 +439,16 @@ Webflow.push(function() {
         answers.push(0);
       }
     });
+    const csrf = $('meta[name="csrf-token"]').attr('content') || '';
     $.ajax({
       url: '{{ route("site.test.calculate") }}',
       method: 'POST',
       dataType: 'json',
       headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': csrf
       },
       data: {
+        _token: csrf,
         answers: answers,
         email: null
       },

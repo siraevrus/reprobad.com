@@ -10,11 +10,16 @@
         </div>
     </div>
 
+    @php
+        $blockTitles = \App\Support\ReproTestBlocks::titles();
+    @endphp
+
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-200">
             <thead>
             <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                 <th class="py-3 px-6 text-left">Номер поля</th>
+                <th class="py-3 px-6 text-left">Блок</th>
                 <th class="py-3 px-6 text-left">Цвет</th>
                 <th class="py-3 px-6 text-left">Продукты</th>
                 <th class="py-3 px-6 text-center">Статус</th>
@@ -27,6 +32,11 @@
                     <td class="py-3 px-6">
                         <span class="bg-purple-200 text-purple-700 px-2 py-1 rounded text-xs font-bold">
                             Поле {{ $resource->field_number }}
+                        </span>
+                    </td>
+                    <td class="py-3 px-6">
+                        <span class="bg-indigo-50 text-indigo-800 px-2 py-1 rounded text-xs max-w-xs inline-block">
+                            {{ $blockTitles[(int) $resource->block_number] ?? ('Блок ' . (int) $resource->block_number) }}
                         </span>
                     </td>
                     <td class="py-3 px-6">
@@ -85,7 +95,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="py-8 text-center text-gray-500">
+                    <td colspan="6" class="py-8 text-center text-gray-500">
                         Результаты пока не настроены. <a href="{{ route('admin.test-result-fields.create') }}" class="text-blue-500 hover:text-blue-700">Создать первый результат</a>
                     </td>
                 </tr>

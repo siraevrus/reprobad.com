@@ -16,6 +16,13 @@
                 <p class="mt-1 text-gray-900 text-lg font-bold">{{ $resource->order }}</p>
             </div>
             <div>
+                <label class="block text-sm font-medium text-gray-500">Блок теста</label>
+                <p class="mt-1 text-gray-900">
+                    @php($bt = \App\Support\ReproTestBlocks::titles())
+                    {{ $bt[(int) $resource->block_number] ?? ('Блок ' . (int) $resource->block_number) }}
+                </p>
+            </div>
+            <div>
                 <label class="block text-sm font-medium text-gray-500">Статус</label>
                 <p class="mt-1">
                     @if($resource->active)

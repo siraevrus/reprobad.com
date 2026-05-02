@@ -143,6 +143,49 @@ class TestCalculationService
     }
 
     /**
+     * «Зелёный» профиль ответов для копирайта на странице результата:
+     * либо на каждый вопрос только 0 или 1 балл, либо одновременно:
+     * вопросы 1–2 сумма ≤ 3, 3–6 < 6, 7–14 < 15, 15–19 < 8, 20–24 < 8 (индексы массива ответов 0..23).
+     * При заполненных текстах в админке это совпадает с отсутствием срабатывания кодирований в calculate().
+     *
+     * @param  array<int, int|string>  $answers  Ровно 24 элемента — q1..q24
+     */
+    public function isExcellentScoreProfile(array $answers): bool
+    {
+        if (count($answers) !== 24) {
+            return false;
+        }
+
+        $a = array_map(static fn ($v): int => max(0, min(3, (int) $v)), array_values($answers));
+
+        $onlyZeroOrOne = true;
+        foreach ($a as $v) {
+            if ($v !== 0 && $v !== 1) {
+                $onlyZeroOrOne = false;
+                break;
+            }
+        }
+        if ($onlyZeroOrOne) {
+            return true;
+        }
+
+        $sum = static function (array $a, int $from, int $to): int {
+            $s = 0;
+            for ($i = $from; $i <= $to; $i++) {
+                $s += $a[$i];
+            }
+
+            return $s;
+        };
+
+        return $sum($a, 0, 1) <= 3
+            && $sum($a, 2, 5) < 6
+            && $sum($a, 6, 13) < 15
+            && $sum($a, 14, 18) < 8
+            && $sum($a, 19, 23) < 8;
+    }
+
+    /**
      * Данные для страницы результата: тексты под шкалами берутся из актуальных записей test_result_fields,
      * а проценты (idx) и флаги расчёта — из сохранённого JSON (снимок на момент прохождения теста).
      * Так правки в админке видны без повторного прохождения теста.

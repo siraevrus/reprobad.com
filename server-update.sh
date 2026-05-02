@@ -1,60 +1,115 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# Полное обновление приложения на продакшене (git pull + composer + migrate + кеши + PHP-FPM).
+# Использование:
+#   sudo -u www-data bash server-update.sh              # полный цикл с git pull
+#   sudo bash server-update.sh --skip-pull              # только Laravel после уже выполненного git pull
+# Переменные окружения:
+#   APP_ROOT   каталог приложения (по умолчанию /var/www/repro)
+#
+set -euo pipefail
 
-echo "=== ОБНОВЛЕНИЕ КОДА НА СЕРВЕРЕ ==="
+APP_ROOT="${APP_ROOT:-/var/www/repro}"
+SKIP_PULL=false
+
+while [[ "${1:-}" == --* ]]; do
+    case "$1" in
+        --skip-pull) SKIP_PULL=true ;;
+        *) echo "Неизвестный аргумент: $1"; exit 1 ;;
+    esac
+    shift
+done
+
+cd "$APP_ROOT" || { echo "❌ Нет каталога $APP_ROOT"; exit 1; }
+
+restart_php_fpm() {
+    local restarted=false
+    for svc in php8.4-fpm php8.3-fpm php8.2-fpm; do
+        if systemctl is-active --quiet "${svc}" 2>/dev/null; then
+            echo "   Перезапуск ${svc} (сброс OPcache в workers)..."
+            systemctl restart "${svc}"
+            restarted=true
+            break
+        fi
+    done
+    if [[ "$restarted" != true ]]; then
+        echo "   ⚠️  Активный сервис php*-fpm не найден; при необходимости перезапустите PHP-FPM вручную."
+    fi
+}
+
+laravel_refresh() {
+    echo ""
+    echo "=== Composer ==="
+    if [[ -f composer.lock ]]; then
+        composer install --no-dev --optimize-autoloader --no-interaction
+    else
+        echo "   (composer.lock нет, пропуск)"
+    fi
+
+    echo ""
+    echo "=== Миграции ==="
+    php artisan migrate --force
+
+    echo ""
+    echo "=== Сброс кешей Laravel ==="
+    php artisan optimize:clear
+
+    echo ""
+    echo "=== Сборка оптимизированных кешей (config, routes, events, views) ==="
+    php artisan optimize
+
+    echo ""
+    echo "=== PHP-FPM ==="
+    restart_php_fpm
+
+    echo ""
+    echo "=== Sitemap (если команда есть) ==="
+    if php artisan list | grep -q 'sitemap:generate'; then
+        php artisan sitemap:generate
+    else
+        echo "   (команда sitemap:generate отсутствует, пропуск)"
+    fi
+}
+
+echo "=== ОБНОВЛЕНИЕ: $APP_ROOT ==="
+
+if [[ "$SKIP_PULL" == true ]]; then
+    echo "Режим --skip-pull: git не трогаем."
+    laravel_refresh
+    echo ""
+    echo "✅ Готово."
+    exit 0
+fi
+
 echo ""
-
-# Переход в директорию проекта
-cd /var/www/repro || { echo "❌ Ошибка: директория /var/www/repro не найдена"; exit 1; }
-
-# Удаление конфликтующих неотслеживаемых файлов
-echo "1. Проверка и удаление конфликтующих файлов..."
-CONFLICT_FILES=$(git status --porcelain | grep "^??" | awk '{print $2}' | grep -E "(left-arrow\.svg|right-arrow\.svg)" || true)
-
-if [ -n "$CONFLICT_FILES" ]; then
-    echo "$CONFLICT_FILES" | while read file; do
-        if [ -f "$file" ]; then
+echo "1. Удаление конфликтующих неотслеживаемых файлов (стрелки слайдера)..."
+CONFLICT_FILES=$(git status --porcelain 2>/dev/null | grep '^??' | awk '{print $2}' | grep -E '(left-arrow\.svg|right-arrow\.svg)' || true)
+if [[ -n "$CONFLICT_FILES" ]]; then
+    while IFS= read -r file; do
+        [[ -z "$file" ]] && continue
+        if [[ -f "$file" ]]; then
             echo "   Удаление: $file"
             rm -f "$file"
         fi
-    done
-    echo "   ✅ Конфликтующие файлы удалены"
+    done <<< "$CONFLICT_FILES"
 else
-    echo "   ✅ Конфликтующих файлов не найдено"
+    echo "   Нет конфликтующих файлов."
 fi
 
-# Обновление кода из git
 echo ""
-echo "2. Обновление кода из git..."
+echo "2. Git: fetch / pull master..."
 git fetch origin
-
-# Проверка наличия изменений
 LOCAL=$(git rev-parse HEAD)
 REMOTE=$(git rev-parse origin/master)
 
-if [ "$LOCAL" = "$REMOTE" ]; then
-    echo "   ✅ Код уже актуален (коммит: ${LOCAL:0:8})"
+if [[ "$LOCAL" == "$REMOTE" ]]; then
+    echo "   Код уже совпадает с origin/master (${LOCAL:0:8})."
 else
-    echo "   Обновление с ${LOCAL:0:8} до ${REMOTE:0:8}..."
+    echo "   Обновление ${LOCAL:0:8} → ${REMOTE:0:8}..."
     git pull origin master
-
-# Проверка результата
-if [ $? -eq 0 ]; then
-    echo "   ✅ Код успешно обновлен"
-    CURRENT_COMMIT=$(git rev-parse HEAD)
-    echo "   Текущий коммит: ${CURRENT_COMMIT:0:8}"
-else
-    echo "   ❌ Ошибка при обновлении кода"
-    exit 1
 fi
 
-# Очистка кеша Laravel
-echo ""
-echo "3. Очистка кеша Laravel..."
-php artisan view:clear
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-echo "   ✅ Кеш очищен"
+laravel_refresh
 
 echo ""
-echo "=== ОБНОВЛЕНИЕ ЗАВЕРШЕНО ==="
+echo "✅ ОБНОВЛЕНИЕ ЗАВЕРШЕНО"

@@ -38,10 +38,11 @@
                         <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
                         <p class="product-head-text"> </p>
 
-                        @if($product->images)
+                        @php $sliderImages = $product->images; @endphp
+                        @if($sliderImages)
                             <div class="slider-block product-head-image {{ $idx % 2 == 0 ? 'right-side' : '' }}">
                                 <div class="main-slider main-slider{{ $product->id }}">
-                                    @foreach($product->images as $imageIndex => $image)
+                                    @foreach($sliderImages as $imageIndex => $image)
                                         <div class="">
                                             <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}">
                                                 <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">
@@ -50,7 +51,7 @@
                                     @endforeach
                                 </div>
                                 <div class="thumbs-slider thumbs-slider{{ $product->id }}" data-thumbs-gallery="gallery{{ $product->id }}">
-                                    @foreach($product->images as $imageIndex => $image)
+                                    @foreach($sliderImages as $imageIndex => $image)
                                         <div class="thumb-item" data-thumb-index="{{ $imageIndex }}">
                                             <a href="{{ $image['url'] }}" data-fslightbox="gallery{{ $product->id }}" data-source-index="{{ $imageIndex }}" class="thumb-link" onclick="event.stopPropagation(); return true;">
                                                 <img src="{{ $image['url'] }}" alt="{{ $image['alt'] ?? '' }}">

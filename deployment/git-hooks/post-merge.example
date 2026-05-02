@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Установка на сервере (один раз):
+#   cp deployment/git-hooks/post-merge.example /var/www/repro/.git/hooks/post-merge
+#   chmod +x /var/www/repro/.git/hooks/post-merge
+#
+# После каждого успешного `git pull` в /var/www/repro выполняется обслуживание Laravel
+# без повторного pull (он уже выполнен).
+
+set -euo pipefail
+exec bash /var/www/repro/server-update.sh --skip-pull

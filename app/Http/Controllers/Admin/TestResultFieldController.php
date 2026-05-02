@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TestResultField;
 use App\Services\InputService;
+use App\Support\ReproTestBlocks;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class TestResultFieldController extends Controller
 {
     public array $rules = [
         'field_number' => 'required|integer|min:1|max:9',
+        'block_number' => 'required|integer|in:1,2,3,4',
         'description' => 'required|string|max:5000',
         'popup_html' => 'nullable|string|max:100000',
         'email_description' => 'nullable|string|max:10000',
@@ -71,6 +73,19 @@ class TestResultFieldController extends Controller
         }
 
         $validated = $validator->validated();
+        $expectedBlock = ReproTestBlocks::blockForFieldNumber((int) $validated['field_number']);
+        if ($expectedBlock !== null && (int) $validated['block_number'] !== $expectedBlock) {
+            $msg = 'Блок должен соответствовать номеру поля: поля 1–2 → блок 1, 3–5 → 2, 6–7 → 3, 8–9 → 4.';
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['block_number' => [$msg]],
+                ], 422);
+            }
+
+            return back()->withErrors(['block_number' => $msg])->withInput();
+        }
+
         $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
         $validated['order'] = $request->input('order', 0);
 
@@ -90,6 +105,7 @@ class TestResultFieldController extends Controller
         // Создаем ресурс
         $resource = TestResultField::query()->create([
             'field_number' => $validated['field_number'],
+            'block_number' => $validated['block_number'],
             'description' => $validated['description'],
             'popup_html' => $validated['popup_html'] ?? null,
             'email_description' => $validated['email_description'] ?? null,
@@ -171,6 +187,19 @@ class TestResultFieldController extends Controller
         }
 
         $validated = $validator->validated();
+        $expectedBlock = ReproTestBlocks::blockForFieldNumber((int) $validated['field_number']);
+        if ($expectedBlock !== null && (int) $validated['block_number'] !== $expectedBlock) {
+            $msg = 'Блок должен соответствовать номеру поля: поля 1–2 → блок 1, 3–5 → 2, 6–7 → 3, 8–9 → 4.';
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['block_number' => [$msg]],
+                ], 422);
+            }
+
+            return back()->withErrors(['block_number' => $msg])->withInput();
+        }
+
         $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
         $validated['order'] = $request->input('order', 0);
 
@@ -194,6 +223,7 @@ class TestResultFieldController extends Controller
         // Обновляем основные поля
         $resource->fill([
             'field_number' => $validated['field_number'],
+            'block_number' => $validated['block_number'],
             'description' => $validated['description'],
             'popup_html' => $validated['popup_html'] ?? null,
             'email_description' => $validated['email_description'] ?? null,

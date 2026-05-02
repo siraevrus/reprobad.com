@@ -50,6 +50,14 @@
       }
       $blockHasContent[$i] = $has;
   }
+  $hasRecommendationsToShow = in_array(true, $blockHasContent, true);
+  $answersRaw = $testResult->answers ?? [];
+  $answersRaw = is_array($answersRaw) ? array_values($answersRaw) : [];
+  $scoreExcellentProfile = count($answersRaw) === 24
+      ? app(\App\Services\TestCalculationService::class)->isExcellentScoreProfile($answersRaw)
+      : false;
+  // Персональные абзацы важнее: при их наличии — аналитический вводный текст. Иначе — «на высоте» (при заполненной админке совпадает с $scoreExcellentProfile).
+  $showPositiveHeroText = ! $hasRecommendationsToShow;
   $B = isset($r['B']) && is_array($r['B']) ? $r['B'] : [];
   $Svis = 0;
   $Mvis = 0;
@@ -197,7 +205,11 @@
         <img src="{{ asset('images/test-results/test-p.webp') }}" loading="lazy" alt="" class="test-res-head-img">
         <div class="test-res-hero-content">
           <h1 class="test-res-h1">Ваши персональные результаты</h1>
+          @if (! $showPositiveHeroText)
           <p class="test-res-p">Мы проанализировали ваши ответы в&nbsp;тесте «Репродуктивное здоровье». Вот&nbsp;что происходит с&nbsp;вашим организмом, на что важно обратить внимание и&nbsp;какие шаги мы рекомендуем для&nbsp;улучшения вашего самочувствия.</p>
+          @else
+          <p class="test-res-p">Ваши результаты на&nbsp;высоте, это говорит о&nbsp;вашем внимании к&nbsp;себе и&nbsp;отличных привычках. Продолжайте в&nbsp;том же духе: поддерживайте баланс, прислушивайтесь к&nbsp;своему организму и&nbsp;не забывайте о&nbsp;поддержке.</p>
+          @endif
         </div>
         <div class="test-score">
           <img src="{{ asset('images/test-results/test-heart.webp') }}" loading="lazy" alt="" class="test-score-img">
@@ -261,10 +273,12 @@
       <div class="container reprotest-result-container">
         <div class="reprotest-cta">
           @if(!empty($preview))
+            @if($hasRecommendationsToShow)
           <div class="reprotest-subscribe-wrap w-form">
             <p class="test-res-p" style="margin:0;opacity:0.75;">Предпросмотр вёрстки: форма подписки и отправка на почту отключены.</p>
           </div>
-          @else
+            @endif
+          @elseif($hasRecommendationsToShow)
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" method="post" class="reprotest-form" action="{{ route('site.test.subscribe') }}">
               @csrf
@@ -338,15 +352,15 @@
           </div>
           <div class="reprotest-adv-grid">
             <div class="div-block"><img src="{{ asset('images/test/reprotest-ic-1.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Психоэмоциональное равновесие</h3>
+              <h3 class="reprotest-adv-item-h">Психоэмоциональное состояние</h3>
               <p class="reprotest-p">Защита от стресса и&nbsp;нормализация&nbsp;сна</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-2.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Очищение организма</h3>
+              <h3 class="reprotest-adv-item-h">Микрофлора кишечника и детоксикация</h3>
               <p class="reprotest-p">Нормализация кишечной микрофлоры и поддержка печени</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-3.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Общий метаболизм и&nbsp;углеводный обмен</h3>
+              <h3 class="reprotest-adv-item-h">Метаболизм и энергия</h3>
               <p class="reprotest-p">Коррекция энергетического обмена и&nbsp;нормализация метаболизма</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-4.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
@@ -363,7 +377,7 @@
         <div class="test-res-items">
           <div class="test-res-item"><img src="{{ asset('images/1.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Психо-эмоциональное равновесие</h2>
+              <h2 class="step-h">Психоэмоциональное состояние</h2>
               <p class="step-description">Защита от стресса и&nbsp;нормализация сна</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('protect', 'first') }}" class="step-product-left w-inline-block">
@@ -381,7 +395,7 @@
           </div>
           <div class="test-res-item _2"><img src="{{ asset('images/2.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Очищение <br>организма</h2>
+              <h2 class="step-h">Микрофлора кишечника и детоксикация</h2>
               <p class="step-description">Нормализация кишечной микрофлоры и поддержка печени</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('detoxi', 'first') }}" class="step-product-left w-inline-block">
@@ -399,7 +413,7 @@
           </div>
           <div class="test-res-item _3"><img src="{{ asset('images/3.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Общий метаболизм и&nbsp;углеводный обмен</h2>
+              <h2 class="step-h">Метаболизм и энергия</h2>
               <p class="step-description">Коррекция энергетического обмена и нормализация метаболизма</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('energy', 'first') }}" class="step-product-left w-inline-block">
@@ -417,7 +431,7 @@
           </div>
           <div class="test-res-item _4"><img src="{{ asset('images/4.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Здоровая наследственность</h2>
+              <h2 class="step-h">Репродуктивное здоровье</h2>
               <p class="step-description">Поддержка репродуктивного здоровья</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('embrio', 'first') }}" class="step-product-left repro-embrio w-inline-block">

@@ -13,6 +13,7 @@ class TestResultField extends Model
 
     protected $casts = [
         'active' => 'boolean',
+        'block_number' => 'integer',
     ];
 
     public function scopeActive(Builder $query): void

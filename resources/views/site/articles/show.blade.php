@@ -67,6 +67,29 @@
   }
 }
 </script>
+@php
+    $medicalWebPageSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'MedicalWebPage',
+        '@id' => route('site.articles.show', $resource->alias),
+        'about' => [
+            '@type' => 'MedicalCondition',
+            'name' => 'Нарушения репродуктивной функции',
+        ],
+        'audience' => [
+            '@type' => 'Patient',
+        ],
+        'reviewedBy' => [
+            '@type' => 'Organization',
+            'name' => 'Медицинское бюро АО «Р-Фарм»',
+            'url' => rtrim(config('app.url'), '/') . '/editorial-policy',
+        ],
+        'lastReviewed' => '2026-04-01',
+    ];
+@endphp
+<script type="application/ld+json">
+{!! json_encode($medicalWebPageSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
 @endsection
 
 @section('content')
