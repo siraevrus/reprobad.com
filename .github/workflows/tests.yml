@@ -15,9 +15,12 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    env:
+      # См. предупреждение GitHub Actions про Node 20 на раннере (checkout и др.)
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         php: [8.2, 8.3]
 
