@@ -40,7 +40,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           # port: по умолчанию 22; для другого порта раскомментируйте и задайте secrets.SSH_PORT
           # port: ${{ secrets.SSH_PORT }}
-          script_stop: true
           script: |
             set -euo pipefail
             cd /var/www/repro
