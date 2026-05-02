@@ -51,6 +51,18 @@ jobs:
 
             cd /var/www/repro
 
+            echo "=== Git: убрать неотслеживаемые файлы, мешающие merge ==="
+            U=$(git status --porcelain 2>/dev/null | grep '^??' | awk '{print $2}' | grep -E '(left-arrow\.svg|right-arrow\.svg|deployment/git-hooks/post-merge\.example|deployment/php-fpm-opcache-revalidate\.ini\.example|deployment/GITHUB_ACTIONS_DEPLOY_SCRIPT\.yml)' || true)
+            if [[ -n "$U" ]]; then
+              while IFS= read -r file; do
+                [[ -z "$file" ]] && continue
+                if [[ -f "$file" ]]; then
+                  echo "Удаление неотслеживаемого: $file"
+                  rm -f "$file"
+                fi
+              done <<< "$U"
+            fi
+
             echo "=== Git: stash / pull master ==="
             git stash push -m "github-actions-pre-pull-$(date +%s)" 2>/dev/null || true
             git fetch origin

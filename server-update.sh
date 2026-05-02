@@ -84,8 +84,9 @@ if [[ "$SKIP_PULL" == true ]]; then
 fi
 
 echo ""
-echo "1. Удаление конфликтующих неотслеживаемых файлов (стрелки слайдера)..."
-CONFLICT_FILES=$(git status --porcelain 2>/dev/null | grep '^??' | awk '{print $2}' | grep -E '(left-arrow\.svg|right-arrow\.svg)' || true)
+echo "1. Удаление конфликтующих неотслеживаемых файлов (мешают git pull)..."
+# Локальные копии путей, которые уже есть в репозитории, дают: "would be overwritten by merge"
+CONFLICT_FILES=$(git status --porcelain 2>/dev/null | grep '^??' | awk '{print $2}' | grep -E '(left-arrow\.svg|right-arrow\.svg|deployment/git-hooks/post-merge\.example|deployment/php-fpm-opcache-revalidate\.ini\.example|deployment/GITHUB_ACTIONS_DEPLOY_SCRIPT\.yml)' || true)
 if [[ -n "$CONFLICT_FILES" ]]; then
     while IFS= read -r file; do
         [[ -z "$file" ]] && continue
