@@ -1,85 +1,61 @@
-name: CI/CD Pipeline
+# Деплой на прод после push в master (и вручную: Actions → Deploy production → Run workflow).
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   HOST       — IP или хост сервера (например 45.131.41.102)
+#   USERNAME   — SSH-пользователь (например root)
+#   SSH_KEY    — приватный ключ (полное содержимое id_rsa / ed25519)
+#
+# Опционально:
+#   SSH_PORT   — если пусто, используется 22
+#
+# Environments → production: можно включить required reviewers для подтверждения деплоя.
+#
+# На сервере один раз: репозиторий в /var/www/repro, доступ по ключу, chmod +x server-update.sh
+
+name: Deploy production
 
 on:
   push:
-    branches: [ master, develop ]
-  pull_request:
-    branches: [ master ]
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
     environment: production
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          # port: по умолчанию 22; для другого порта раскомментируйте и задайте secrets.SSH_PORT
+          # port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            cd /var/www/repro
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, dom, filter, gd, iconv, json, mbstring, pdo, xml, zip
+            echo "=== Git: stash / pull master ==="
+            git stash push -m "github-actions-pre-pull-$(date +%s)" 2>/dev/null || true
+            git fetch origin
+            git pull origin master
 
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v0.1.5
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd /var/www/repro
+            echo "=== Laravel: composer, migrate, caches, php-fpm, sitemap ==="
+            chmod +x server-update.sh 2>/dev/null || true
+            bash ./server-update.sh --skip-pull
 
-          # Проверка статуса приложения
-          echo "Проверка статуса приложения..."
-          php artisan --version
+            echo "=== Smoke check ==="
+            php artisan --version
+            php artisan migrate:status --no-interaction | tail -n 5
 
-          # Безопасный git pull
-          echo "Получение изменений из git..."
-          git stash
-          git pull origin master
-
-          # Проверка миграций перед запуском
-          echo "Проверка миграций..."
-          php artisan migrate:status
-
-          # Безопасный запуск миграций
-          echo "Запуск миграций..."
-          php artisan migrate --force
-
-          # Очистка кэша
-          echo "Очистка кэша..."
-          php artisan cache:clear
-          php artisan config:clear
-          php artisan view:clear
-          php artisan route:clear
-          php artisan route:cache
-
-          # Перезапуск PHP-FPM для сброса OPcache
-          echo "Перезапуск PHP-FPM..."
-          systemctl restart php8.4-fpm
-          echo "✅ PHP-FPM перезапущен, OPcache сброшен"
-
-          # Генерация sitemap.xml
-          echo "Генерация sitemap.xml..."
-          php artisan sitemap:generate
-
-          # Проверка настроек cron для Laravel Scheduler
-          echo "Проверка настроек cron..."
-          CRON_CHECK=$(crontab -l 2>/dev/null | grep -c "schedule:run" || echo "0")
-          if [ "$CRON_CHECK" -eq "0" ]; then
-            echo "⚠️  ВНИМАНИЕ: Laravel Scheduler (cron) не настроен!"
-            echo "   Для настройки выполните на сервере:"
-            echo "   crontab -e"
-            echo "   Добавьте: * * * * * cd /var/www/repro && php artisan schedule:run >> /dev/null 2>&1"
-          else
-            echo "✅ Laravel Scheduler (cron) настроен корректно"
-            crontab -l 2>/dev/null | grep "schedule:run"
-          fi
-
-          # Проверка что всё работает
-          echo "Проверка приложения..."
-          php artisan route:list | head -20
-
-          echo "Деплой завершен успешно!"
+            echo "✅ Деплой завершён"

@@ -1,21 +1,4 @@
-# Фрагмент для вставки в .github/workflows/ci-cd.yml вместо блока `script: |` шага Deploy (если файл недоступен для автоправки).
+# Устарело: деплой настроен в репозитории в `.github/workflows/ci-cd.yml`.
 #
-# Замените целиком содержимое script: | от `cd /var/www/repro` до строк перед проверкой cron.
-
-        script: |
-          cd /var/www/repro
-
-          echo "Проверка статуса приложения..."
-          php artisan --version
-
-          echo "Получение изменений из git..."
-          git stash
-          git pull origin master
-
-          echo "Проверка миграций (до деплоя)..."
-          php artisan migrate:status
-
-          chmod +x server-update.sh 2>/dev/null || true
-          bash ./server-update.sh --skip-pull
-
-          echo "Проверка настроек cron..."
+# На сервере выполняется: `git pull` в `/var/www/repro`, затем `bash ./server-update.sh --skip-pull`
+# (composer, migrate, optimize, php-fpm, sitemap — см. `server-update.sh` в корне репо).
