@@ -38,6 +38,16 @@ return [
     'telegram' => [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        /*
+         * Исходящие запросы к Telegram API через HTTP-прокси (см. https://api.dashboard.proxy.market/docs).
+         * Либо TELEGRAM_HTTP_PROXY целиком, либо host/port + user/password.
+         * Хост и порт — из ответа POST /dev-api/list/{api_key}: поля ip и http_port.
+         */
+        'http_proxy' => env('TELEGRAM_HTTP_PROXY'),
+        'proxy_host' => env('TELEGRAM_PROXY_HOST'),
+        'proxy_port' => env('TELEGRAM_PROXY_PORT'),
+        'proxy_user' => env('TELEGRAM_PROXY_USER'),
+        'proxy_password' => env('TELEGRAM_PROXY_PASSWORD'),
     ],
 
     'webbot' => [

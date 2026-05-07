@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Services\BotService;
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
@@ -78,6 +79,49 @@ class TelegramController extends Controller
     }
 
     /**
+     * HTTP-клиент для вызовов api.telegram.org (опционально через прокси из config).
+     */
+    protected function telegramOutgoingHttp(int $timeoutSeconds): PendingRequest
+    {
+        $request = Http::timeout($timeoutSeconds);
+        $proxyOptions = $this->telegramProxyGuzzleOptions();
+        if ($proxyOptions !== []) {
+            $request = $request->withOptions($proxyOptions);
+        }
+
+        return $request;
+    }
+
+    /**
+     * Опции Guzzle для HTTP(S)-прокси с авторизацией.
+     *
+     * @return array{proxy?: string}
+     */
+    protected function telegramProxyGuzzleOptions(): array
+    {
+        $proxy = config('services.telegram.http_proxy');
+        if (! is_string($proxy) || $proxy === '') {
+            $host = config('services.telegram.proxy_host');
+            $port = config('services.telegram.proxy_port');
+            if (is_string($host) && $host !== '' && $port !== null && $port !== '') {
+                $user = config('services.telegram.proxy_user');
+                $password = config('services.telegram.proxy_password');
+                $auth = '';
+                if (is_string($user) && $user !== '') {
+                    $auth = rawurlencode($user) . ':' . rawurlencode((string) $password) . '@';
+                }
+                $proxy = 'http://' . $auth . $host . ':' . (int) $port;
+            }
+        }
+
+        if (! is_string($proxy) || $proxy === '') {
+            return [];
+        }
+
+        return ['proxy' => $proxy];
+    }
+
+    /**
      * Отправка сообщения в Telegram
      */
     protected function sendMessage(int $chatId, string $text): void
@@ -147,7 +191,7 @@ class TelegramController extends Controller
                 }
                 
                 try {
-                    $response = Http::timeout(10)->post($apiUrl, [
+                    $response = $this->telegramOutgoingHttp(10)->post($apiUrl, [
                         'chat_id' => $chatId,
                         'text' => $message,
                         'parse_mode' => 'HTML',
@@ -168,7 +212,7 @@ class TelegramController extends Controller
             }
         } else {
             try {
-                $response = Http::timeout(10)->post($apiUrl, [
+                $response = $this->telegramOutgoingHttp(10)->post($apiUrl, [
                     'chat_id' => $chatId,
                     'text' => $text,
                     'parse_mode' => 'HTML',
@@ -200,7 +244,7 @@ class TelegramController extends Controller
         $apiUrl = "https://api.telegram.org/bot{$botToken}/sendChatAction";
 
         try {
-            Http::timeout(5)->post($apiUrl, [
+            $this->telegramOutgoingHttp(5)->post($apiUrl, [
                 'chat_id' => $chatId,
                 'action' => $action,
             ]);
