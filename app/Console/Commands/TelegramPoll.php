@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\BotService;
+use App\Jobs\ProcessTelegramMessage;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +17,7 @@ class TelegramPoll extends Command
 
     private int $offset = 0;
 
-    public function __construct(private BotService $botService)
+    public function __construct()
     {
         parent::__construct();
     }
@@ -108,115 +108,15 @@ class TelegramPoll extends Command
             return;
         }
 
-        Log::info('Telegram polling: incoming message', [
+        Log::info('Telegram polling: dispatching job', [
             'chat_id' => $chatId,
             'text'    => $messageText,
         ]);
 
-        $this->info("[{$chatId}] → {$messageText}");
+        $this->info("[{$chatId}] → {$messageText} (dispatched to queue)");
 
-        // Показываем индикатор «печатает»
-        $this->sendChatAction($chatId, 'typing');
-
-        // Обрабатываем через BotService
-        $response = $this->botService->handle($messageText, (string) $chatId, 'telegram');
-
-        if (! is_array($response) || ! isset($response['choices'][0]['message']['content'])) {
-            Log::error('Telegram polling: invalid BotService response', ['response' => $response]);
-            $this->sendMessage($chatId, '❌ Ошибка генерации ответа. Попробуйте позже.');
-            return;
-        }
-
-        $reply = $this->botService->markdownToTelegramHtml($response['choices'][0]['message']['content']);
-
-        Log::info('Telegram polling: sending reply', [
-            'chat_id'      => $chatId,
-            'reply_length' => strlen($reply),
-        ]);
-
-        $this->sendMessage($chatId, $reply);
-
-        $this->info("[{$chatId}] ← " . mb_substr(strip_tags($reply), 0, 80) . '...');
-    }
-
-    private function sendMessage(int $chatId, string $text): void
-    {
-        $token  = config('services.telegram.bot_token');
-        $apiUrl = "https://api.telegram.org/bot{$token}/sendMessage";
-
-        $maxLength = 4000;
-
-        if (strlen($text) <= $maxLength) {
-            $this->postToTelegram($apiUrl, [
-                'chat_id'    => $chatId,
-                'text'       => $text,
-                'parse_mode' => 'HTML',
-            ]);
-            return;
-        }
-
-        // Разбиваем длинное сообщение по абзацам
-        $messages = [];
-        $current  = '';
-
-        foreach (explode("\n\n", $text) as $paragraph) {
-            if (strlen($current) + strlen($paragraph) + 2 > $maxLength) {
-                if ($current !== '') {
-                    $messages[] = trim($current);
-                }
-                $current = strlen($paragraph) > $maxLength
-                    ? mb_substr($paragraph, 0, $maxLength)
-                    : $paragraph;
-            } else {
-                $current .= ($current ? "\n\n" : '') . $paragraph;
-            }
-        }
-
-        if ($current !== '') {
-            $messages[] = trim($current);
-        }
-
-        foreach ($messages as $i => $part) {
-            if ($i > 0) {
-                usleep(500_000);
-            }
-            $this->postToTelegram($apiUrl, [
-                'chat_id'    => $chatId,
-                'text'       => $part,
-                'parse_mode' => 'HTML',
-            ]);
-        }
-    }
-
-    private function sendChatAction(int $chatId, string $action = 'typing'): void
-    {
-        $token  = config('services.telegram.bot_token');
-        $apiUrl = "https://api.telegram.org/bot{$token}/sendChatAction";
-
-        try {
-            $this->telegramHttp(5)->post($apiUrl, [
-                'chat_id' => $chatId,
-                'action'  => $action,
-            ]);
-        } catch (\Exception $e) {
-            Log::debug('Telegram sendChatAction failed: ' . $e->getMessage());
-        }
-    }
-
-    private function postToTelegram(string $url, array $payload): void
-    {
-        try {
-            $response = $this->telegramHttp(10)->post($url, $payload);
-
-            if (! $response->successful()) {
-                Log::error('Telegram sendMessage failed', [
-                    'status' => $response->status(),
-                    'error'  => $response->json(),
-                ]);
-            }
-        } catch (\Exception $e) {
-            Log::error('Telegram sendMessage exception: ' . $e->getMessage());
-        }
+        // Диспатчим в очередь — обработка параллельная, polling не блокируется
+        ProcessTelegramMessage::dispatch($chatId, $messageText);
     }
 
     private function deleteWebhook(string $token): void
