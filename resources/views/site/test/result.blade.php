@@ -28,47 +28,19 @@
 <body>
 @php
   $r = $resultsForView ?? ($testResult->results ?? []);
-  $ibhbStored = (int) ($r['ibhb'] ?? 0);
+  $calcService = app(\App\Services\TestCalculationService::class);
   $hasCodings = !empty($r['has_codings']);
-  $blockMaxSum = (array) (config('repro_test.block_max_sum') ?? []);
-  $blockHasContent = [];
-  for ($i = 1; $i <= 4; $i++) {
-      $blk = \Illuminate\Support\Arr::get($r, 'blocks.'.$i, []);
-      $blk = is_array($blk) ? $blk : [];
-      $paragraphs = isset($blk['paragraphs']) && is_array($blk['paragraphs']) ? $blk['paragraphs'] : [];
-      $fields = isset($blk['fields']) && is_array($blk['fields']) ? $blk['fields'] : [];
-      $has = count($paragraphs) > 0;
-      if (! $has && count($fields) > 0) {
-          foreach ($fields as $fld) {
-              $pd = trim((string) ($fld['description'] ?? ''));
-              $pe = trim((string) ($fld['email_description'] ?? ''));
-              if ($pd !== '' || $pe !== '') {
-                  $has = true;
-                  break;
-              }
-          }
-      }
-      $blockHasContent[$i] = $has;
-  }
+  $blockHasContent = $calcService->blocksWithRecommendationContent($r);
   $hasRecommendationsToShow = in_array(true, $blockHasContent, true);
   $answersRaw = $testResult->answers ?? [];
   $answersRaw = is_array($answersRaw) ? array_values($answersRaw) : [];
   $scoreExcellentProfile = count($answersRaw) === 24
-      ? app(\App\Services\TestCalculationService::class)->isExcellentScoreProfile($answersRaw)
+      ? $calcService->isExcellentScoreProfile($answersRaw)
       : false;
   // Персональные абзацы важнее: при их наличии — аналитический вводный текст. Иначе — «на высоте» (при заполненной админке совпадает с $scoreExcellentProfile).
   $showPositiveHeroText = ! $hasRecommendationsToShow;
-  $B = isset($r['B']) && is_array($r['B']) ? $r['B'] : [];
-  $Svis = 0;
-  $Mvis = 0;
-  for ($i = 1; $i <= 4; $i++) {
-      if (empty($blockHasContent[$i])) {
-          continue;
-      }
-      $Svis += (int) \Illuminate\Support\Arr::get($B, $i, \Illuminate\Support\Arr::get($B, (string) $i, 0));
-      $Mvis += (int) ($blockMaxSum[$i] ?? 0);
-  }
-  $ibhb = $Mvis > 0 ? (int) round(100 - ($Svis / $Mvis) * 100) : $ibhbStored;
+  $ibhb = $calcService->displayIbhbForResults($r);
+  $allClearPhrases = ! $hasRecommendationsToShow ? $calcService->pickRandomAllClearPhrases() : [];
   $icons = (array) (config('repro_test.block_icons') ?? []);
   $img = static function (?string $path): string {
       if (!$path) {
@@ -219,7 +191,7 @@
       </div>
 
       @for ($bn = 1; $bn <= 4; $bn++)
-        @if(!empty($blockHasContent[$bn]))
+        @if($hasRecommendationsToShow && !empty($blockHasContent[$bn]))
         @php
           $block = \Illuminate\Support\Arr::get($r, 'blocks.'.$bn, []);
           $block = is_array($block) ? $block : [];
@@ -261,6 +233,32 @@
                 <div class="test-res-p w-richtext">{!! $para !!}</div>
                 @endif
               @endforeach
+            </div>
+            @endif
+          </div>
+        </div>
+        @elseif(! $hasRecommendationsToShow)
+        @php
+          $titleAllClear = trim((string) config('repro_test.block_all_clear_titles.'.$bn, ''));
+          if ($titleAllClear === '') {
+              $titleAllClear = (string) config('repro_test.block_titles.'.$bn, '');
+          }
+          $bcss = config('repro_test.block_css.'.$bn, 'psih');
+          $phraseAllClear = trim((string) (\Illuminate\Support\Arr::get($allClearPhrases, $bn, \Illuminate\Support\Arr::get($allClearPhrases, (string) $bn, ''))));
+        @endphp
+        <div class="container test-score-container">
+          <img src="{{ $img(\Illuminate\Support\Arr::get($icons, $bn) ?: \Illuminate\Support\Arr::get($icons, (string) $bn)) }}" loading="lazy" alt="" class="test-score-icon">
+          <div class="test-score-content">
+            <div class="test-score-c-head">
+              <h2 class="test-score-h">{{ $titleAllClear }}</h2>
+              <h2 class="test-score-percent {{ $bcss }}">100%</h2>
+            </div>
+            <div class="test-score-progress">
+              <div class="test-score-bar {{ $bcss }}" style="width: 100%;"></div>
+            </div>
+            @if($phraseAllClear !== '')
+            <div class="test-score-decription">
+              <div class="test-res-p">{{ $phraseAllClear }}</div>
             </div>
             @endif
           </div>

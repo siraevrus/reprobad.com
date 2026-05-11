@@ -96,6 +96,18 @@ a[x-apple-data-detectors],
                       <p style="Margin:8px 0 0 0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
                         Блоки: психоэмоциональное — {{ (int)($idx[1] ?? 0) }}%, микрофлора и детокс — {{ (int)($idx[2] ?? 0) }}%, метаболизм — {{ (int)($idx[3] ?? 0) }}%, репродуктивное здоровье — {{ (int)($idx[4] ?? 0) }}%.
                       </p>
+                      @if(!empty($allClearPhrases) && is_array($allClearPhrases))
+                      @foreach([1,2,3,4] as $bn)
+                      @php
+                        $fTitle = trim((string) config('repro_test.block_all_clear_titles.'.$bn, ''));
+                        if ($fTitle === '') { $fTitle = (string) config('repro_test.block_titles.'.$bn, ''); }
+                        $fPhrase = trim((string) ($allClearPhrases[$bn] ?? $allClearPhrases[(string)$bn] ?? ''));
+                      @endphp
+                      @if($fTitle !== '' || $fPhrase !== '')
+                      <p style="Margin:10px 0 0 0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">@if($fTitle !== '')<strong>{{ $fTitle }}</strong>@if($fPhrase !== '')<br>@endif @endif @if($fPhrase !== ''){{ $fPhrase }}@endif</p>
+                      @endif
+                      @endforeach
+                      @endif
                       @endif
                       </td>
                      </tr>

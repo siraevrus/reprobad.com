@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\TestResultField;
+use Illuminate\Support\Arr;
 
 class TestCalculationService
 {
@@ -269,6 +270,92 @@ class TestCalculationService
         $r['items'] = $items;
 
         return $r;
+    }
+
+    /**
+     * ИБГБ для отображения (страница и письмо): если есть блоки с персональными рекомендациями —
+     * считаем 100 − (сумма набранных по этим блокам / сумма их максимумов)·100, как на сайте.
+     * Иначе — сохранённое значение из расчёта по всем 72 макс. баллам теста.
+     *
+     * @param  array<string, mixed>  $r  Данные после {@see resultsForView()} или сырой JSON результатов.
+     */
+    public function displayIbhbForResults(array $r): int
+    {
+        $ibhbStored = (int) ($r['ibhb'] ?? 0);
+        $flags = $this->blocksWithRecommendationContent($r);
+        if (! in_array(true, $flags, true)) {
+            return $ibhbStored;
+        }
+
+        $blockMaxSum = (array) (config('repro_test.block_max_sum') ?? []);
+        $B = isset($r['B']) && is_array($r['B']) ? $r['B'] : [];
+        $Svis = 0;
+        $Mvis = 0;
+        for ($i = 1; $i <= 4; $i++) {
+            if (empty($flags[$i])) {
+                continue;
+            }
+            $Svis += (int) Arr::get($B, $i, Arr::get($B, (string) $i, 0));
+            $Mvis += (int) ($blockMaxSum[$i] ?? 0);
+        }
+
+        return $Mvis > 0 ? (int) round(100 - ($Svis / $Mvis) * 100) : $ibhbStored;
+    }
+
+    /**
+     * Блоки, для которых на странице показываются рекомендации (тот же критерий, что в result.blade.php).
+     *
+     * @param  array<string, mixed>  $r
+     * @return array<int, bool>
+     */
+    public function blocksWithRecommendationContent(array $r): array
+    {
+        $blockHasContent = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $blk = Arr::get($r, 'blocks.'.$i, []);
+            $blk = is_array($blk) ? $blk : [];
+            $paragraphs = isset($blk['paragraphs']) && is_array($blk['paragraphs']) ? $blk['paragraphs'] : [];
+            $fields = isset($blk['fields']) && is_array($blk['fields']) ? $blk['fields'] : [];
+            $has = count($paragraphs) > 0;
+            if (! $has && count($fields) > 0) {
+                foreach ($fields as $fld) {
+                    $pd = trim((string) ($fld['description'] ?? ''));
+                    $pe = trim((string) ($fld['email_description'] ?? ''));
+                    if ($pd !== '' || $pe !== '') {
+                        $has = true;
+                        break;
+                    }
+                }
+            }
+            $blockHasContent[$i] = $has;
+        }
+
+        return $blockHasContent;
+    }
+
+    /**
+     * По одной случайной фразе на блок (для экрана/письма без кодирований).
+     *
+     * @return array<int, string> ключи 1..4
+     */
+    public function pickRandomAllClearPhrases(): array
+    {
+        $picked = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $phrases = config("repro_test.block_all_clear_phrases.$i", []);
+            if (! is_array($phrases)) {
+                $phrases = [];
+            }
+            $phrases = array_values(array_filter($phrases, static fn ($p): bool => trim((string) $p) !== ''));
+            if ($phrases === []) {
+                $picked[$i] = '';
+
+                continue;
+            }
+            $picked[$i] = $phrases[random_int(0, count($phrases) - 1)];
+        }
+
+        return $picked;
     }
 
     private function idx(int $Bk, int $Mk): int
