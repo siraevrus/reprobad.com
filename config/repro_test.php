@@ -14,10 +14,10 @@ return [
         4 => 'gorm',
     ],
     'block_icons' => [
-        1 => 'images/test-1.webp',
-        2 => 'images/test-2.webp',
-        3 => 'images/test-3.webp',
-        4 => 'images/test-4.webp',
+        1 => 'images/test-1.svg',
+        2 => 'images/test-2.svg',
+        3 => 'images/test-3.svg',
+        4 => 'images/test-4.svg',
     ],
     /** Максимум суммы баллов по вопросам блока (как в TestCalculationService::M). */
     'block_max_sum' => [
