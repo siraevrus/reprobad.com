@@ -19,6 +19,23 @@ return [
         3 => 'images/test-3.svg',
         4 => 'images/test-4.svg',
     ],
+
+    /**
+     * Базовый URL для картинок в email-шаблоне результатов. Используется, чтобы письма всегда
+     * ссылались на прод-домен, даже когда отправляются с localhost/staging. Если null — asset().
+     */
+    'mail_asset_base_url' => env('MAIL_ASSET_BASE_URL', 'https://reprobad.com'),
+
+    /**
+     * Иконки блоков для email (отдельные от иконок на сайте, поэтому можно держать их в /storage).
+     * Значения склеиваются с {@see mail_asset_base_url}; абсолютные URL пропускаются как есть.
+     */
+    'block_icons_email' => [
+        1 => 'storage/email/result/test-1.svg',
+        2 => 'storage/email/result/test-2.svg',
+        3 => 'storage/email/result/test-3.svg',
+        4 => 'storage/email/result/test-4.svg',
+    ],
     /** Максимум суммы баллов по вопросам блока (как в TestCalculationService::M). */
     'block_max_sum' => [
         1 => 18,
