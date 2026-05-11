@@ -109,30 +109,29 @@
 
         @for ($bn = 1; $bn <= 4; $bn++)
           @php
+            $block = is_array($blocks[$bn] ?? null) ? $blocks[$bn] : (is_array($blocks[(string) $bn] ?? null) ? $blocks[(string) $bn] : []);
+            $bcss = (string) ($block['css'] ?? ($blockCss[$bn] ?? 'psih'));
+            $paragraphs = isset($block['paragraphs']) && is_array($block['paragraphs']) ? $block['paragraphs'] : [];
+            $fields = isset($block['fields']) && is_array($block['fields']) ? $block['fields'] : [];
+            $hasPersonalText = count($paragraphs) > 0;
+            if (! $hasPersonalText) {
+                foreach ($fields as $fld) {
+                    $pd = trim((string) ($fld['description'] ?? ''));
+                    $pe = trim((string) ($fld['email_description'] ?? ''));
+                    if ($pd !== '' || $pe !== '') { $hasPersonalText = true; break; }
+                }
+            }
+
             if ($hasRecommendations) {
-                $block = is_array($blocks[$bn] ?? null) ? $blocks[$bn] : (is_array($blocks[(string) $bn] ?? null) ? $blocks[(string) $bn] : []);
                 $idx = (int) ($block['idx'] ?? 0);
                 $title = trim((string) ($block['title'] ?? '')) ?: (string) ($blockTitles[$bn] ?? '');
-                $bcss = (string) ($block['css'] ?? ($blockCss[$bn] ?? 'psih'));
-                $paragraphs = isset($block['paragraphs']) && is_array($block['paragraphs']) ? $block['paragraphs'] : [];
-                $fields = isset($block['fields']) && is_array($block['fields']) ? $block['fields'] : [];
-                $hasPersonalText = count($paragraphs) > 0;
-                if (! $hasPersonalText) {
-                    foreach ($fields as $fld) {
-                        $pd = trim((string) ($fld['description'] ?? ''));
-                        $pe = trim((string) ($fld['email_description'] ?? ''));
-                        if ($pd !== '' || $pe !== '') { $hasPersonalText = true; break; }
-                    }
-                }
             } else {
                 $idx = 100;
                 $title = trim((string) ($blockAllClearTitles[$bn] ?? '')) ?: (string) ($blockTitles[$bn] ?? '');
-                $bcss = (string) ($blockCss[$bn] ?? 'psih');
-                $paragraphs = [];
-                $fields = [];
-                $hasPersonalText = false;
             }
-            $clearPhrase = ! $hasRecommendations ? trim((string) (\Illuminate\Support\Arr::get($allClearPhrases, $bn, \Illuminate\Support\Arr::get($allClearPhrases, (string) $bn, '')))) : '';
+            $clearPhrase = ! $hasPersonalText
+                ? trim((string) (\Illuminate\Support\Arr::get($allClearPhrases, $bn, \Illuminate\Support\Arr::get($allClearPhrases, (string) $bn, ''))))
+                : '';
             $colors = $cssColors[$bcss] ?? $cssColors['psih'];
             $iconPath = $blockIconsEmail[$bn] ?? ($blockIconsEmail[(string) $bn] ?? ($blockIcons[$bn] ?? ($blockIcons[(string) $bn] ?? null)));
             $iconUrl = $imgUrl($iconPath);
@@ -181,7 +180,7 @@
                       </tr>
                     </table>
 
-                    @if($hasRecommendations && $hasPersonalText)
+                    @if($hasPersonalText)
                       @if(count($fields) > 0)
                         @foreach($fields as $fldIndex => $fld)
                           @php
@@ -267,7 +266,7 @@
                           </tr>
                         </table>
                       @endif
-                    @elseif(! $hasRecommendations && $clearPhrase !== '')
+                    @elseif($clearPhrase !== '')
                       <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-top:14px;">
                         <tr>
                           <td style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:14px;line-height:21px;color:#333333;">

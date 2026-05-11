@@ -24,7 +24,6 @@ class TestResultMail extends Mailable
         $calc = app(TestCalculationService::class);
         $r = $calc->resultsForView($this->testResult->results ?? []);
         $hasRecommendations = in_array(true, $calc->blocksWithRecommendationContent($r), true);
-        $allClearPhrases = $hasRecommendations ? [] : $calc->pickRandomAllClearPhrases();
 
         return $this->view('mail.test-result')
             ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
@@ -34,7 +33,7 @@ class TestResultMail extends Mailable
                 'r' => $r,
                 'ibhb' => $calc->displayIbhbForResults($r),
                 'hasRecommendations' => $hasRecommendations,
-                'allClearPhrases' => $allClearPhrases,
+                'allClearPhrases' => $calc->pickRandomAllClearPhrases(),
             ]);
     }
 }

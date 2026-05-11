@@ -40,7 +40,7 @@
   // Персональные абзацы важнее: при их наличии — аналитический вводный текст. Иначе — «на высоте» (при заполненной админке совпадает с $scoreExcellentProfile).
   $showPositiveHeroText = ! $hasRecommendationsToShow;
   $ibhb = $calcService->displayIbhbForResults($r);
-  $allClearPhrases = ! $hasRecommendationsToShow ? $calcService->pickRandomAllClearPhrases() : [];
+  $allClearPhrases = $calcService->pickRandomAllClearPhrases();
   $icons = (array) (config('repro_test.block_icons') ?? []);
   $img = static function (?string $path): string {
       if (!$path) {
@@ -191,20 +191,34 @@
       </div>
 
       @for ($bn = 1; $bn <= 4; $bn++)
-        @if($hasRecommendationsToShow && !empty($blockHasContent[$bn]))
         @php
           $block = \Illuminate\Support\Arr::get($r, 'blocks.'.$bn, []);
           $block = is_array($block) ? $block : [];
-          $idx = (int) ($block['idx'] ?? \Illuminate\Support\Arr::get($r, 'IDX.'.$bn, 0));
-          $title = trim((string) ($block['title'] ?? ''));
-          if ($title === '') {
-              $title = (string) config('repro_test.block_titles.'.$bn, '');
+          $blockIdx = (int) ($block['idx'] ?? \Illuminate\Support\Arr::get($r, 'IDX.'.$bn, 0));
+          $hasPersonalText = ! empty($blockHasContent[$bn]);
+
+          // Если ни у одного блока нет персонального текста — режим «всё в норме»: 100% и торжественные заголовки.
+          if (! $hasRecommendationsToShow) {
+              $idx = 100;
+              $title = trim((string) config('repro_test.block_all_clear_titles.'.$bn, ''));
+              if ($title === '') {
+                  $title = (string) config('repro_test.block_titles.'.$bn, '');
+              }
+          } else {
+              $idx = $blockIdx;
+              $title = trim((string) ($block['title'] ?? ''));
+              if ($title === '') {
+                  $title = (string) config('repro_test.block_titles.'.$bn, '');
+              }
           }
           $bcss = $block['css'] ?? config('repro_test.block_css.'.$bn, 'psih');
           $paragraphs = $block['paragraphs'] ?? [];
           $paragraphs = is_array($paragraphs) ? $paragraphs : [];
           $fields = $block['fields'] ?? [];
           $fields = is_array($fields) ? $fields : [];
+          $phraseAllClear = ! $hasPersonalText
+              ? trim((string) (\Illuminate\Support\Arr::get($allClearPhrases, $bn, \Illuminate\Support\Arr::get($allClearPhrases, (string) $bn, ''))))
+              : '';
         @endphp
         <div class="container test-score-container">
           <img src="{{ $img(\Illuminate\Support\Arr::get($icons, $bn) ?: \Illuminate\Support\Arr::get($icons, (string) $bn)) }}" loading="lazy" alt="" class="test-score-icon">
@@ -216,7 +230,7 @@
             <div class="test-score-progress">
               <div class="test-score-bar {{ $bcss }}" style="width: {{ min(100, max(0, $idx)) }}%;"></div>
             </div>
-            @if($hasCodings && count($paragraphs) > 0)
+            @if($hasPersonalText && $hasCodings && count($paragraphs) > 0)
             <div class="test-score-decription">
               @foreach($paragraphs as $para)
                 @php $para = trim((string) $para); @endphp
@@ -225,7 +239,7 @@
                 @endif
               @endforeach
             </div>
-            @elseif($hasCodings && count($fields) > 0)
+            @elseif($hasPersonalText && $hasCodings && count($fields) > 0)
             <div class="test-score-decription">
               @foreach($fields as $fld)
                 @php $para = trim((string) ($fld['description'] ?? '')); if ($para === '') { $para = trim((string) ($fld['email_description'] ?? '')); } @endphp
@@ -234,36 +248,13 @@
                 @endif
               @endforeach
             </div>
-            @endif
-          </div>
-        </div>
-        @elseif(! $hasRecommendationsToShow)
-        @php
-          $titleAllClear = trim((string) config('repro_test.block_all_clear_titles.'.$bn, ''));
-          if ($titleAllClear === '') {
-              $titleAllClear = (string) config('repro_test.block_titles.'.$bn, '');
-          }
-          $bcss = config('repro_test.block_css.'.$bn, 'psih');
-          $phraseAllClear = trim((string) (\Illuminate\Support\Arr::get($allClearPhrases, $bn, \Illuminate\Support\Arr::get($allClearPhrases, (string) $bn, ''))));
-        @endphp
-        <div class="container test-score-container">
-          <img src="{{ $img(\Illuminate\Support\Arr::get($icons, $bn) ?: \Illuminate\Support\Arr::get($icons, (string) $bn)) }}" loading="lazy" alt="" class="test-score-icon">
-          <div class="test-score-content">
-            <div class="test-score-c-head">
-              <h2 class="test-score-h">{{ $titleAllClear }}</h2>
-              <h2 class="test-score-percent {{ $bcss }}">100%</h2>
-            </div>
-            <div class="test-score-progress">
-              <div class="test-score-bar {{ $bcss }}" style="width: 100%;"></div>
-            </div>
-            @if($phraseAllClear !== '')
+            @elseif($phraseAllClear !== '')
             <div class="test-score-decription">
               <div class="test-res-p">{{ $phraseAllClear }}</div>
             </div>
             @endif
           </div>
         </div>
-        @endif
       @endfor
     </section>
 
