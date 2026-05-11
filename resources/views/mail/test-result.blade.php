@@ -28,6 +28,8 @@
       .hero-cell--right { padding-top: 16px !important; }
       .block-icon-cell { width: 60px !important; }
       .block-percent { font-size: 22px !important; }
+      .adv-cell { display: block !important; width: 100% !important; padding: 0 0 18px 0 !important; }
+      .adv-cell--last { padding-bottom: 0 !important; }
     }
   </style>
 </head>
@@ -283,6 +285,79 @@
         @endfor
 
         <tr><td style="height:8px;line-height:8px;font-size:0;">&nbsp;</td></tr>
+
+        @php
+          $advItems = [
+              ['icon' => 'images/test/reprotest-ic-1.svg', 'title' => 'Психоэмоциональное состояние', 'text' => 'Защита от стресса и&nbsp;нормализация&nbsp;сна'],
+              ['icon' => 'images/test/reprotest-ic-2.svg', 'title' => 'Микрофлора кишечника и детоксикация', 'text' => 'Нормализация кишечной микрофлоры и поддержка печени'],
+              ['icon' => 'images/test/reprotest-ic-3.svg', 'title' => 'Метаболизм и энергия', 'text' => 'Коррекция энергетического обмена и&nbsp;нормализация метаболизма'],
+              ['icon' => 'images/test/reprotest-ic-4.svg', 'title' => 'Репродуктивное здоровье', 'text' => 'Поддержка репродуктивной функции'],
+          ];
+        @endphp
+
+        <tr>
+          <td style="padding:0 20px 16px 20px;">
+            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #ecf2f7;border-radius:16px;">
+              <tr>
+                <td style="padding:24px;">
+                  <h2 style="margin:0 0 10px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:700;color:#1a1a1a;">
+                    Позаботьтесь о вашем организме с системой РЕПРО!
+                  </h2>
+                  <p style="margin:0 0 8px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:15px;line-height:22px;color:#333333;font-weight:600;">
+                    Программа подойдет и тем, кто не&nbsp;планирует беременность, но хочет понимать, что&nbsp;организм работает как&nbsp;часы.
+                  </p>
+                  <p style="margin:0 0 18px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:14px;line-height:21px;color:#333333;">
+                    Восстановление проходит на&nbsp;нескольких этапах:
+                  </p>
+
+                  <!--[if mso]>
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <tr>
+                  <![endif]-->
+                  @foreach($advItems as $i => $item)
+                    @php
+                      $isLeft = $i % 2 === 0;
+                      $cellPadding = $isLeft ? 'padding:0 8px 18px 0;' : 'padding:0 0 18px 8px;';
+                      $advIconUrl = $imgUrl($item['icon']);
+                      $isLast = $i === count($advItems) - 1;
+                      $cellClass = 'adv-cell' . ($isLast ? ' adv-cell--last' : '');
+                    @endphp
+                    @if($isLeft && $i > 0)
+                      <!--[if mso]></tr><tr><![endif]-->
+                    @endif
+                    <!--[if mso]>
+                    <td valign="top" width="50%" style="width:50%;{{ $cellPadding }}">
+                    <![endif]-->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="{{ $isLeft ? 'left' : 'right' }}" width="48%" class="{{ $cellClass }}" style="width:48%;mso-hide:all;">
+                      <tr>
+                        <td valign="top" style="padding:0;">
+                          @if($advIconUrl !== '')
+                          <img src="{{ $advIconUrl }}" alt="" width="56" height="56" style="display:block;border:0;outline:none;text-decoration:none;width:56px;height:56px;margin:0 0 10px 0;">
+                          @endif
+                          <h3 style="margin:0 0 6px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:15px;line-height:20px;font-weight:700;color:#1a1a1a;">
+                            {!! $item['title'] !!}
+                          </h3>
+                          <p style="margin:0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:13px;line-height:19px;color:#4e515c;">
+                            {!! $item['text'] !!}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                    <!--[if mso]></td><![endif]-->
+                    @if(! $isLeft)
+                      <div style="clear:both;font-size:0;line-height:0;">&nbsp;</div>
+                    @endif
+                  @endforeach
+                  <!--[if mso]>
+                    </tr>
+                  </table>
+                  <![endif]-->
+                  <div style="clear:both;font-size:0;line-height:0;">&nbsp;</div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
         <tr>
           <td align="center" style="padding:0 20px 10px 20px;">
