@@ -197,15 +197,14 @@
           $blockIdx = (int) ($block['idx'] ?? \Illuminate\Support\Arr::get($r, 'IDX.'.$bn, 0));
           $hasPersonalText = ! empty($blockHasContent[$bn]);
 
-          // Если ни у одного блока нет персонального текста — режим «всё в норме»: 100% и торжественные заголовки.
+          // Процент и шкала всегда фактические ($blockIdx). Торжественные заголовки — только когда нет ни одной персональной рекомендации.
+          $idx = $blockIdx;
           if (! $hasRecommendationsToShow) {
-              $idx = 100;
               $title = trim((string) config('repro_test.block_all_clear_titles.'.$bn, ''));
               if ($title === '') {
                   $title = (string) config('repro_test.block_titles.'.$bn, '');
               }
           } else {
-              $idx = $blockIdx;
               $title = trim((string) ($block['title'] ?? ''));
               if ($title === '') {
                   $title = (string) config('repro_test.block_titles.'.$bn, '');

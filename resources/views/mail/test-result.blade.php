@@ -124,11 +124,10 @@
                 }
             }
 
+            $idx = (int) ($block['idx'] ?? 0);
             if ($hasRecommendations) {
-                $idx = (int) ($block['idx'] ?? 0);
                 $title = trim((string) ($block['title'] ?? '')) ?: (string) ($blockTitles[$bn] ?? '');
             } else {
-                $idx = 100;
                 $title = trim((string) ($blockAllClearTitles[$bn] ?? '')) ?: (string) ($blockTitles[$bn] ?? '');
             }
             $clearPhrase = ! $hasPersonalText
