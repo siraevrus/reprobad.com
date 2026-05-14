@@ -24,6 +24,27 @@ class TestQuestionController extends Controller
     ];
 
     /**
+     * Проверить, что баллы вариантов уникальны (каждое значение 0..3 встречается не более одного раза).
+     * После прохождения проверки массив возвращается отсортированным по value ASC.
+     *
+     * @param  array<int, array<string, mixed>>  $answers
+     * @return array{0: bool, 1: array<int, array<string, mixed>>|string}
+     */
+    private function normalizeAnswersOrFail(array $answers): array
+    {
+        $seen = [];
+        foreach ($answers as $a) {
+            $v = (int) ($a['value'] ?? 0);
+            if (isset($seen[$v])) {
+                return [false, 'Баллы вариантов должны быть уникальными. Используйте 0, 1, 2, 3 — каждый ровно один раз.'];
+            }
+            $seen[$v] = true;
+        }
+
+        return [true, TestQuestion::normalizeAnswers($answers)];
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(): View|JsonResponse
@@ -67,6 +88,19 @@ class TestQuestionController extends Controller
 
         $validated = $validator->validated();
         $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
+
+        [$ok, $payload] = $this->normalizeAnswersOrFail($validated['answers']);
+        if (! $ok) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['answers' => [$payload]],
+                ], 422);
+            }
+
+            return back()->withErrors(['answers' => $payload])->withInput();
+        }
+        $validated['answers'] = $payload;
 
         $expectedBlock = ReproTestBlocks::blockForQuestionOrder((int) $validated['order']);
         if ((int) $validated['block_number'] !== $expectedBlock) {
@@ -154,6 +188,19 @@ class TestQuestionController extends Controller
 
         $validated = $validator->validated();
         $validated['active'] = $request->has('active') ? (bool) $request->input('active') : true;
+
+        [$ok, $payload] = $this->normalizeAnswersOrFail($validated['answers']);
+        if (! $ok) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => ['answers' => [$payload]],
+                ], 422);
+            }
+
+            return back()->withErrors(['answers' => $payload])->withInput();
+        }
+        $validated['answers'] = $payload;
 
         $expectedBlock = ReproTestBlocks::blockForQuestionOrder((int) $validated['order']);
         if ((int) $validated['block_number'] !== $expectedBlock) {

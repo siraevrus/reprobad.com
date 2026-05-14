@@ -238,9 +238,10 @@
                   <div class="reprotest-question-content">
                     <p class="reprotest-question-text">{!! $question->question_text !!}</p>
                     <div class="reprotest-slide-buttons">
-                      @if(is_array($question->answers))
+                      @php $sortedAnswers = $question->sorted_answers; @endphp
+                      @if(count($sortedAnswers) > 0)
                         @php $firstVisibleAnswer = true; @endphp
-                        @foreach($question->answers as $answerIndex => $answer)
+                        @foreach($sortedAnswers as $answerIndex => $answer)
                           @if((int) $question->order === 10 && ! in_array((int) ($answer['value'] ?? -1), [0, 3], true))
                             @continue
                           @endif

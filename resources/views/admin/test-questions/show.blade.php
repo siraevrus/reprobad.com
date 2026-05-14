@@ -41,12 +41,14 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-500 mb-2">Варианты ответов</label>
-            @if(is_array($resource->answers) && count($resource->answers) > 0)
+            @php $sortedAnswers = $resource->sorted_answers; @endphp
+            @if(count($sortedAnswers) > 0)
+                <p class="mb-2 text-xs text-gray-500">Отсортировано по баллу: 1‑й вариант — 0&nbsp;баллов, 2‑й — 1, 3‑й — 2, 4‑й — 3.</p>
                 <div class="space-y-2">
-                    @foreach($resource->answers as $answer)
+                    @foreach($sortedAnswers as $idx => $answer)
                         <div class="bg-gray-50 p-3 rounded border border-gray-200">
                             <div class="flex justify-between items-center">
-                                <span class="text-gray-900 font-medium">{{ $answer['text'] ?? '' }}</span>
+                                <span class="text-gray-900 font-medium">{{ $idx + 1 }}. {{ $answer['text'] ?? '' }}</span>
                                 <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">
                                     Балл: {{ $answer['value'] ?? 0 }}
                                 </span>
