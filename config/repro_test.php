@@ -9,8 +9,8 @@ return [
     ],
     'block_css' => [
         1 => 'psih',
-        2 => 'energy',
-        3 => 'meta',
+        2 => 'meta',
+        3 => 'energy',
         4 => 'gorm',
     ],
     'block_icons' => [

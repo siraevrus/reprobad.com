@@ -210,7 +210,7 @@
                   $title = (string) config('repro_test.block_titles.'.$bn, '');
               }
           }
-          $bcss = $block['css'] ?? config('repro_test.block_css.'.$bn, 'psih');
+          $bcss = config('repro_test.block_css.'.$bn, 'psih');
           $paragraphs = $block['paragraphs'] ?? [];
           $paragraphs = is_array($paragraphs) ? $paragraphs : [];
           $fields = $block['fields'] ?? [];

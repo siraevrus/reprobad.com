@@ -251,7 +251,7 @@ class TestCalculationService
             $blocks[$blockNum] = [
                 'idx' => $idx,
                 'title' => (string) ($prev['title'] ?? config('repro_test.block_titles.'.$blockNum, '')),
-                'css' => $prev['css'] ?? config('repro_test.block_css.'.$blockNum, 'psih'),
+                'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
                 'paragraphs' => array_values(array_filter($paragraphs, static fn ($p) => $p !== '')),
                 'fields' => $blockFields,
                 'show_popup' => $showPopup,
