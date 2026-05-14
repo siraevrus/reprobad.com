@@ -66,11 +66,9 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                     Варианты ответов *
                 </label>
-                <p class="mb-2 text-xs text-gray-500">При сохранении варианты автоматически сортируются по баллу по возрастанию (0, 1, 2, 3). Каждое значение балла должно быть уникальным.</p>
                 <div id="answers-container" class="space-y-2">
-                    @php $sortedAnswers = $resource->sorted_answers; @endphp
-                    @if(count($sortedAnswers) > 0)
-                        @foreach($sortedAnswers as $index => $answer)
+                    @if(is_array($resource->answers))
+                        @foreach($resource->answers as $index => $answer)
                             <div class="answer-item flex gap-2 items-center">
                                 <input type="text" 
                                        name="answers[{{ $index }}][text]" 
