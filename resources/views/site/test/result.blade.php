@@ -261,12 +261,11 @@
       <div class="container reprotest-result-container">
         <div class="reprotest-cta">
           @if(!empty($preview))
-            @if($hasRecommendationsToShow)
           <div class="reprotest-subscribe-wrap w-form">
-            <p class="test-res-p" style="margin:0;opacity:0.75;">Предпросмотр вёрстки: форма подписки и отправка на почту отключены.</p>
+            <div class="subscribe-head-label"><strong>Получите расширенный отчет на вашу электронную почту:</strong></div>
+            <p class="test-res-p" style="margin:0.75rem 0 0 0;opacity:0.75;">Предпросмотр вёрстки: форма подписки и отправка на почту отключены.</p>
           </div>
-            @endif
-          @elseif($hasRecommendationsToShow)
+          @else
           <div class="reprotest-subscribe-wrap w-form">
             <form id="wf-form-Subscribe-Form" name="wf-form-Subscribe-Form" method="post" class="reprotest-form" action="{{ route('site.test.subscribe') }}">
               @csrf
