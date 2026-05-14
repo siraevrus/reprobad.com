@@ -2,10 +2,12 @@
 <html data-wf-page="697729df64c8f65c7ff4c2e1" data-wf-site="67040316492967a9326aebb1">
 <head>
   <meta charset="utf-8">
-  <title>{{ strip_tags($resource->title ?? 'Результаты теста') }}</title>
-  <meta content="{{ strip_tags($resource->title ?? '') }}" property="og:title">
-  <meta content="{{ strip_tags($resource->title ?? '') }}" property="twitter:title">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <x-seo-meta
+    :pageType="$pageType"
+    :defaultTitle="strip_tags($resource->title ?? '')"
+    :defaultDescription="strip_tags($resource->description ?? '')"
+  />
   <meta content="Webflow" name="generator">
   <link href="{{ asset('css/normalize.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('css/webflow.css') }}" rel="stylesheet" type="text/css">

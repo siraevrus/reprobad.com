@@ -56,6 +56,12 @@
                                         @case('Complex')
                                             Комплексы
                                             @break
+                                        @case('Test')
+                                            Тест (/checkup)
+                                            @break
+                                        @case('TestResult')
+                                            Результаты теста
+                                            @break
                                         @default
                                             {{ $seo->page_type }}
                                     @endswitch

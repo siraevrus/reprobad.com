@@ -29,6 +29,8 @@ class SeoController extends Controller
             'Contacts' => 'Контакты',
             'Map' => 'Карта',
             'Company' => 'Компания',
+            'Test' => 'Тест «Репродуктивное здоровье» (/checkup)',
+            'TestResult' => 'Результаты теста (персональная страница)',
         ];
 
         return view('admin.seo.create', compact('pageTypes'));
@@ -67,6 +69,8 @@ class SeoController extends Controller
             'Contacts' => 'Контакты',
             'Map' => 'Карта',
             'Company' => 'Компания',
+            'Test' => 'Тест «Репродуктивное здоровье» (/checkup)',
+            'TestResult' => 'Результаты теста (персональная страница)',
         ];
 
         return view('admin.seo.edit', compact('seo', 'pageTypes'));
