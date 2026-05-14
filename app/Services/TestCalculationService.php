@@ -113,6 +113,8 @@ class TestCalculationService
                 $paragraphs[] = $this->fieldParagraphHtml($f);
             }
 
+            [$blockFields, $paragraphs] = $this->keepLastRecommendationPerBlockOnly($blockFields, $paragraphs);
+
             $showPopup = false;
             foreach ($blockFields as $f) {
                 if (trim((string) ($f['popup_html'] ?? '')) !== '' || ! empty($f['image1']) || ! empty($f['image2'])) {
@@ -240,6 +242,8 @@ class TestCalculationService
                 $paragraphs[] = $this->fieldParagraphHtml($model);
             }
 
+            [$blockFields, $paragraphs] = $this->keepLastRecommendationPerBlockOnly($blockFields, $paragraphs);
+
             $showPopup = false;
             foreach ($blockFields as $f) {
                 if (trim((string) ($f['popup_html'] ?? '')) !== '' || ! empty($f['image1']) || ! empty($f['image2'])) {
@@ -361,6 +365,28 @@ class TestCalculationService
     private function idx(int $Bk, int $Mk): int
     {
         return (int) round(100 - ($Bk / $Mk) * 100);
+    }
+
+    /**
+     * Если в блоке сработало несколько кодирований (порядок как в BLOCK_CODINGS),
+     * на сайте и в блоке сохранённого JSON оставляем только последнее — одна рекомендация на блок.
+     *
+     * @param  array<int, array<string, mixed>>  $blockFields
+     * @param  array<int, string>  $paragraphs
+     * @return array{0: array<int, array<string, mixed>>, 1: array<int, string>}
+     */
+    private function keepLastRecommendationPerBlockOnly(array $blockFields, array $paragraphs): array
+    {
+        $n = count($blockFields);
+        if ($n <= 1) {
+            return [$blockFields, $paragraphs];
+        }
+        $last = $n - 1;
+
+        return [
+            [$blockFields[$last]],
+            array_key_exists($last, $paragraphs) ? [$paragraphs[$last]] : [],
+        ];
     }
 
     /**
