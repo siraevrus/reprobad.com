@@ -319,7 +319,9 @@
                   @foreach($advItems as $i => $item)
                     @php
                       $isLeft = $i % 2 === 0;
-                      $cellPadding = $isLeft ? 'padding:0 8px 18px 0;' : 'padding:0 0 18px 8px;';
+                      $rowGapTop = $i >= 2 ? '50px' : '0';
+                      $cellPadding = $isLeft ? 'padding:'.$rowGapTop.' 8px 18px 0;' : 'padding:'.$rowGapTop.' 0 18px 8px;';
+                      $floatTableTop = $i >= 2 ? 'margin-top:50px;' : '';
                       $advIconUrl = $imgUrl($item['icon']);
                       $isLast = $i === count($advItems) - 1;
                       $cellClass = 'adv-cell' . ($isLast ? ' adv-cell--last' : '');
@@ -330,7 +332,7 @@
                     <!--[if mso]>
                     <td valign="top" width="50%" style="width:50%;{{ $cellPadding }}">
                     <![endif]-->
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="{{ $isLeft ? 'left' : 'right' }}" width="48%" class="{{ $cellClass }}" style="width:48%;mso-hide:all;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="{{ $isLeft ? 'left' : 'right' }}" width="48%" class="{{ $cellClass }}" style="width:48%;mso-hide:all;{{ $floatTableTop }}">
                       <tr>
                         <td valign="top" style="padding:0;">
                           @if($advIconUrl !== '')
