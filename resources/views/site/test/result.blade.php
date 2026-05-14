@@ -229,19 +229,34 @@
             <div class="test-score-progress">
               <div class="test-score-bar {{ $bcss }}" style="width: {{ min(100, max(0, $idx)) }}%;"></div>
             </div>
-            @if($hasPersonalText && $hasCodings && count($paragraphs) > 0)
+            @if($hasPersonalText && $hasCodings && count($fields) > 0)
             <div class="test-score-decription">
+              @php $seenSiteBodies = []; $renderedFromFields = false; @endphp
+              @foreach($fields as $fld)
+                @php
+                  $para = trim((string) ($fld['description'] ?? ''));
+                  if ($para === '') {
+                      $para = trim((string) ($fld['email_description'] ?? ''));
+                  }
+                @endphp
+                @if($para !== '' && empty($seenSiteBodies[$para]))
+                  @php $seenSiteBodies[$para] = true; $renderedFromFields = true; @endphp
+                <div class="test-res-p w-richtext">{!! $para !!}</div>
+                @endif
+              @endforeach
+              @if(! $renderedFromFields && count($paragraphs) > 0)
               @foreach($paragraphs as $para)
                 @php $para = trim((string) $para); @endphp
                 @if($para !== '')
                 <div class="test-res-p w-richtext">{!! $para !!}</div>
                 @endif
               @endforeach
+              @endif
             </div>
-            @elseif($hasPersonalText && $hasCodings && count($fields) > 0)
+            @elseif($hasPersonalText && $hasCodings && count($paragraphs) > 0)
             <div class="test-score-decription">
-              @foreach($fields as $fld)
-                @php $para = trim((string) ($fld['description'] ?? '')); if ($para === '') { $para = trim((string) ($fld['email_description'] ?? '')); } @endphp
+              @foreach($paragraphs as $para)
+                @php $para = trim((string) $para); @endphp
                 @if($para !== '')
                 <div class="test-res-p w-richtext">{!! $para !!}</div>
                 @endif

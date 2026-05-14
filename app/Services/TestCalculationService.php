@@ -125,7 +125,7 @@ class TestCalculationService
                 'idx' => $IDX[$blockNum],
                 'title' => (string) config('repro_test.block_titles.'.$blockNum, ''),
                 'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
-                'paragraphs' => array_values(array_filter($paragraphs, static fn ($p) => $p !== '')),
+                'paragraphs' => $this->dedupeNonEmptyTrimmed($paragraphs),
                 'fields' => $blockFields,
                 'show_popup' => $showPopup,
             ];
@@ -252,7 +252,7 @@ class TestCalculationService
                 'idx' => $idx,
                 'title' => (string) ($prev['title'] ?? config('repro_test.block_titles.'.$blockNum, '')),
                 'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
-                'paragraphs' => array_values(array_filter($paragraphs, static fn ($p) => $p !== '')),
+                'paragraphs' => $this->dedupeNonEmptyTrimmed($paragraphs),
                 'fields' => $blockFields,
                 'show_popup' => $showPopup,
             ];
@@ -361,6 +361,32 @@ class TestCalculationService
     private function idx(int $Bk, int $Mk): int
     {
         return (int) round(100 - ($Bk / $Mk) * 100);
+    }
+
+    /**
+     * Убирает пустые и полностью совпадающие (после trim) фрагменты HTML —
+     * иначе при нескольких кодированиях в одном блоке или дублях в админке короткий текст «удваивается».
+     *
+     * @param  array<int, string>  $strings
+     * @return array<int, string>
+     */
+    private function dedupeNonEmptyTrimmed(array $strings): array
+    {
+        $out = [];
+        $seen = [];
+        foreach ($strings as $s) {
+            $t = trim((string) $s);
+            if ($t === '') {
+                continue;
+            }
+            if (isset($seen[$t])) {
+                continue;
+            }
+            $seen[$t] = true;
+            $out[] = $t;
+        }
+
+        return $out;
     }
 
     /**
