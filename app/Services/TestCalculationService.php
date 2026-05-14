@@ -123,14 +123,14 @@ class TestCalculationService
                 }
             }
 
-            $blocks[$blockNum] = [
+            $blocks[$blockNum] = $this->clipBlockToLastRecommendationOnly([
                 'idx' => $IDX[$blockNum],
                 'title' => (string) config('repro_test.block_titles.'.$blockNum, ''),
                 'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
                 'paragraphs' => $this->dedupeNonEmptyTrimmed($paragraphs),
                 'fields' => $blockFields,
                 'show_popup' => $showPopup,
-            ];
+            ]);
         }
 
         return [
@@ -252,14 +252,14 @@ class TestCalculationService
                 }
             }
 
-            $blocks[$blockNum] = [
+            $blocks[$blockNum] = $this->clipBlockToLastRecommendationOnly([
                 'idx' => $idx,
                 'title' => (string) ($prev['title'] ?? config('repro_test.block_titles.'.$blockNum, '')),
                 'css' => config('repro_test.block_css.'.$blockNum, 'psih'),
                 'paragraphs' => $this->dedupeNonEmptyTrimmed($paragraphs),
                 'fields' => $blockFields,
                 'show_popup' => $showPopup,
-            ];
+            ]);
         }
 
         $r['blocks'] = $blocks;
@@ -387,6 +387,29 @@ class TestCalculationService
             [$blockFields[$last]],
             array_key_exists($last, $paragraphs) ? [$paragraphs[$last]] : [],
         ];
+    }
+
+    /**
+     * Страховочный шаг: в сохранённом блоке не больше одного элемента в fields и paragraphs
+     * (последний по порядку), если вдруг массивы разъехались или данные старые.
+     *
+     * @param  array<string, mixed>  $block
+     * @return array<string, mixed>
+     */
+    private function clipBlockToLastRecommendationOnly(array $block): array
+    {
+        foreach (['fields', 'paragraphs'] as $key) {
+            if (! isset($block[$key]) || ! is_array($block[$key])) {
+                continue;
+            }
+            $v = array_values($block[$key]);
+            $n = count($v);
+            if ($n > 1) {
+                $block[$key] = [$v[$n - 1]];
+            }
+        }
+
+        return $block;
     }
 
     /**
