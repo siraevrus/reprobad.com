@@ -31,10 +31,10 @@ return [
      * Значения склеиваются с {@see mail_asset_base_url}; абсолютные URL пропускаются как есть.
      */
     'block_icons_email' => [
-        1 => 'storage/email/result/test-1.svg',
-        2 => 'storage/email/result/test-2.svg',
-        3 => 'storage/email/result/test-3.svg',
-        4 => 'storage/email/result/test-4.svg',
+        1 => 'storage/email/result/test-1.png',
+        2 => 'storage/email/result/test-2.png',
+        3 => 'storage/email/result/test-3.png',
+        4 => 'storage/email/result/test-4.png',
     ],
     /** Максимум суммы баллов по вопросам блока (как в TestCalculationService::M). */
     'block_max_sum' => [
