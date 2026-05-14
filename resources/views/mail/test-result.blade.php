@@ -305,8 +305,11 @@
                   <p style="margin:0 0 8px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:15px;line-height:22px;color:#333333;font-weight:600;">
                     Программа подойдет и тем, кто не&nbsp;планирует беременность, но хочет понимать, что&nbsp;организм работает как&nbsp;часы.
                   </p>
+                  <p style="margin:0 0 8px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:14px;line-height:21px;color:#333333;">
+                    Система рекомендаций от линейки продуктов РЕПРО – это программа, которая нормализует дефициты и помогает восстановить важные функции в&nbsp;организме женщины и мужчины, может повысить шансы на успешное зачатие, в&nbsp;том числе методом ЭКО.
+                  </p>
                   <p style="margin:0 0 18px 0;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;font-size:14px;line-height:21px;color:#333333;">
-                    Восстановление проходит на&nbsp;нескольких этапах:
+                    Восстановление организма проходит на&nbsp;нескольких этапах:
                   </p>
 
                   <!--[if mso]>
