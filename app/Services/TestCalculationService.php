@@ -11,10 +11,10 @@ class TestCalculationService
 
     private const M_TOTAL = 72;
 
-    /** Кодирования по блокам (порядок внутри блока) */
+    /** Кодирования по блокам (порядок внутри блока); должен совпадать с config('repro_test.coding_to_block'). */
     private const BLOCK_CODINGS = [
-        1 => [1, 2],
-        2 => [3, 4, 5],
+        1 => [1, 2, 3],
+        2 => [4, 5],
         3 => [6, 7],
         4 => [8, 9],
     ];

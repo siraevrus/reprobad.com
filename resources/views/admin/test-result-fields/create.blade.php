@@ -55,7 +55,7 @@
                         <option value="{{ $num }}" {{ (int) old('block_number', $defaultResultBlock) === (int) $num ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
-                <p class="mt-1 text-xs text-gray-500">Должен соответствовать номеру поля: 1–2 — блок&nbsp;1, 3–5 — блок&nbsp;2, 6–7 — блок&nbsp;3, 8–9 — блок&nbsp;4. При смене «Номер поля» подставляется автоматически.</p>
+                <p class="mt-1 text-xs text-gray-500">Должен соответствовать номеру поля: 1–3 — блок&nbsp;1, 4–5 — блок&nbsp;2, 6–7 — блок&nbsp;3, 8–9 — блок&nbsp;4. При смене «Номер поля» подставляется автоматически.</p>
                 @error('block_number')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror

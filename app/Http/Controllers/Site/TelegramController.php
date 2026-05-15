@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use App\Services\BotService;
+use App\Support\TelegramApiLog;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -66,7 +67,7 @@ class TelegramController extends Controller
             return response()->json(['status' => 'ok']);
 
         } catch (\Exception $e) {
-            Log::error('Telegram webhook error: ' . $e->getMessage(), [
+            Log::error('Telegram webhook error: ' . TelegramApiLog::redact($e->getMessage()), [
                 'trace' => $e->getTraceAsString()
             ]);
 
@@ -207,7 +208,7 @@ class TelegramController extends Controller
                         ]);
                     }
                 } catch (\Exception $e) {
-                    Log::error('Failed to send Telegram message part: ' . $e->getMessage());
+                    Log::error('Failed to send Telegram message part: ' . TelegramApiLog::redact($e->getMessage()));
                 }
             }
         } else {
@@ -225,7 +226,7 @@ class TelegramController extends Controller
                     ]);
                 }
             } catch (\Exception $e) {
-                Log::error('Failed to send Telegram message: ' . $e->getMessage());
+                Log::error('Failed to send Telegram message: ' . TelegramApiLog::redact($e->getMessage()));
             }
         }
     }
@@ -249,7 +250,7 @@ class TelegramController extends Controller
                 'action' => $action,
             ]);
         } catch (\Exception $e) {
-            Log::debug('Failed to send chat action: ' . $e->getMessage());
+            Log::debug('Failed to send chat action: ' . TelegramApiLog::redact($e->getMessage()));
         }
     }
 }

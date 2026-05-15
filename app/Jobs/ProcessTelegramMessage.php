@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Services\BotService;
+use App\Support\TelegramApiLog;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -63,7 +64,7 @@ class ProcessTelegramMessage implements ShouldQueue
     {
         Log::error('TelegramJob: failed', [
             'chat_id' => $this->chatId,
-            'error'   => $e->getMessage(),
+            'error'   => TelegramApiLog::redact($e->getMessage()),
         ]);
 
         $this->sendMessage($this->chatId, '⚠️ Произошла ошибка при обработке запроса.');
@@ -123,7 +124,7 @@ class ProcessTelegramMessage implements ShouldQueue
                 ['chat_id' => $chatId, 'action' => $action]
             );
         } catch (\Exception $e) {
-            Log::debug('TelegramJob: sendChatAction failed: ' . $e->getMessage());
+            Log::debug('TelegramJob: sendChatAction failed: ' . TelegramApiLog::redact($e->getMessage()));
         }
     }
 
@@ -138,7 +139,7 @@ class ProcessTelegramMessage implements ShouldQueue
                 ]);
             }
         } catch (\Exception $e) {
-            Log::error('TelegramJob: post exception: ' . $e->getMessage());
+            Log::error('TelegramJob: post exception: ' . TelegramApiLog::redact($e->getMessage()));
         }
     }
 

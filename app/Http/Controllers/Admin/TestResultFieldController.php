@@ -75,7 +75,7 @@ class TestResultFieldController extends Controller
         $validated = $validator->validated();
         $expectedBlock = ReproTestBlocks::blockForFieldNumber((int) $validated['field_number']);
         if ($expectedBlock !== null && (int) $validated['block_number'] !== $expectedBlock) {
-            $msg = 'Блок должен соответствовать номеру поля: поля 1–2 → блок 1, 3–5 → 2, 6–7 → 3, 8–9 → 4.';
+            $msg = 'Блок должен соответствовать номеру поля: поля 1–3 → блок 1, 4–5 → 2, 6–7 → 3, 8–9 → 4.';
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
@@ -189,7 +189,7 @@ class TestResultFieldController extends Controller
         $validated = $validator->validated();
         $expectedBlock = ReproTestBlocks::blockForFieldNumber((int) $validated['field_number']);
         if ($expectedBlock !== null && (int) $validated['block_number'] !== $expectedBlock) {
-            $msg = 'Блок должен соответствовать номеру поля: поля 1–2 → блок 1, 3–5 → 2, 6–7 → 3, 8–9 → 4.';
+            $msg = 'Блок должен соответствовать номеру поля: поля 1–3 → блок 1, 4–5 → 2, 6–7 → 3, 8–9 → 4.';
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,

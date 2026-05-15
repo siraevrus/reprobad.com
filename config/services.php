@@ -38,6 +38,8 @@ return [
     'telegram' => [
         'bot_token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET'),
+        /** Общий секрет с промежуточным сервером (реле): POST /api/telegram/relay/process, Authorization: Bearer … */
+        'relay_inbound_secret' => env('TELEGRAM_RELAY_INBOUND_SECRET'),
         /*
          * Исходящие запросы к Telegram API через HTTP-прокси (см. https://api.dashboard.proxy.market/docs).
          * Либо TELEGRAM_HTTP_PROXY целиком, либо host/port + user/password.

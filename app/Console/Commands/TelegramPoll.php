@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\ProcessTelegramMessage;
+use App\Support\TelegramApiLog;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +36,7 @@ class TelegramPoll extends Command
         $sleepOnError = (int) $this->option('sleep');
 
         $this->info('Telegram polling запущен. Ctrl+C для остановки.');
-        $this->info("Bot token: {$token}");
+        $this->info('TELEGRAM_BOT_TOKEN загружен из конфигурации.');
 
         // Удаляем webhook, чтобы он не конфликтовал с polling
         $this->deleteWebhook($token);
@@ -54,8 +55,9 @@ class TelegramPoll extends Command
                     $this->offset = $update['update_id'] + 1;
                 }
             } catch (\Exception $e) {
-                Log::error('Telegram polling error: ' . $e->getMessage());
-                $this->error('Ошибка: ' . $e->getMessage());
+                $safe = TelegramApiLog::redact($e->getMessage());
+                Log::error('Telegram polling error: ' . $safe);
+                $this->error('Ошибка: ' . $safe);
                 sleep($sleepOnError);
             }
         }
@@ -90,7 +92,7 @@ class TelegramPoll extends Command
             return $data['result'] ?? [];
 
         } catch (\Exception $e) {
-            Log::error('Telegram getUpdates exception: ' . $e->getMessage());
+            Log::error('Telegram getUpdates exception: ' . TelegramApiLog::redact($e->getMessage()));
             return null;
         }
     }
@@ -132,7 +134,7 @@ class TelegramPoll extends Command
                 Log::info('Telegram: webhook deleted, polling started');
             }
         } catch (\Exception $e) {
-            Log::warning('Telegram: failed to delete webhook: ' . $e->getMessage());
+            Log::warning('Telegram: failed to delete webhook: ' . TelegramApiLog::redact($e->getMessage()));
         }
     }
 
