@@ -191,6 +191,8 @@
         justify-content: space-between; 
         gap: 1rem; 
         position: relative; 
+        margin: 0;
+        width: 100%;
     }
     .article-accordion .accordion-title { 
         color: #8577B7; 
@@ -209,10 +211,14 @@
         display: flex; 
         background: none; 
         border: 0; 
-        padding: 0; 
+        padding: 0 2.5rem 0 0;
         margin: 0; 
         line-height: 150%; cursor: pointer; 
         position: relative; 
+        width: 100%;
+        box-sizing: border-box;
+        align-items: center;
+        min-height: 1.5rem;
     }
     .article-accordion .accordion-arrow { 
         width: 1rem; 
