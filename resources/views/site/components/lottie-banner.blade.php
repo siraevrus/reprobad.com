@@ -4,7 +4,7 @@
 --}}
 <div id="floating-banner-desktop" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
-    <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <img
             src="{{ asset('images/floating-banner-desktop.png') }}"
             alt="Система Репро — скидка 30%, купить"
@@ -18,7 +18,7 @@
 
 <div id="floating-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
-    <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <img
             src="{{ asset('images/floating-banner-mobile.png') }}"
             alt="Система Репро — скидка 30%, купить"
