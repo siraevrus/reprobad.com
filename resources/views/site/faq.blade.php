@@ -182,6 +182,9 @@
         background-color: var(--white, #fff);
         position: relative; 
     }
+    .article-accordion .accordion-item:not(:last-child) {
+        border-bottom: 2px solid #E1EFF5;
+    }
     .article-accordion .accordion-header { 
         display: flex; 
         align-items: center; 
