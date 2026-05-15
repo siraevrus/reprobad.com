@@ -1,13 +1,19 @@
+{{--
+  Запасная копия интерактивного баннера (Lottie + @lottiefiles/dotlottie-wc).
+  Вернуть: в base.blade.php замените @include('site.components.lottie-banner')
+  на @include('site.components.lottie-banner-lottie-legacy').
+  Нужны файлы public/images/weUkdnuK0x.lottie и public/images/qk8EQOxYwW.lottie.
+--}}
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/voronezh/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_futer_banner&utm_campaign=eapteka" target="_blank">
-        <dotlottie-wc 
+        <dotlottie-wc
             id="lottie-desktop"
-            src="images/weUkdnuK0x.lottie" 
-            speed="1" 
-            style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;" 
-            mode="forward" 
-            loop 
+            src="images/weUkdnuK0x.lottie"
+            speed="1"
+            style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
+            mode="forward"
+            loop
             autoplay>
         </dotlottie-wc>
     </a>
@@ -104,12 +110,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let lottieLoaded = false;
-    
-    // Ленивая загрузка Lottie скрипта только когда баннер нужен
+
     function loadLottieScript() {
         if (lottieLoaded) return;
         lottieLoaded = true;
-        
+
         const script = document.createElement('script');
         script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js';
         script.type = 'module';
@@ -117,12 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
         script.defer = true;
         document.head.appendChild(script);
     }
-    
+
     const bannerDesktop = document.getElementById('lottie-banner');
     const bannerMobile = document.getElementById('lottie-banner-mobile');
     const closeDesktop = bannerDesktop.querySelector('.close');
     const closeMobile = bannerMobile.querySelector('.close');
-    
+
     function hideBanners() {
         bannerDesktop.style.opacity = '0';
         bannerDesktop.style.visibility = 'hidden';
@@ -132,25 +137,24 @@ document.addEventListener('DOMContentLoaded', function() {
         bannerMobile.style.bottom = '-200px';
         window.closedBanner = true;
     }
-    
+
     closeDesktop.addEventListener('click', function(e) {
         e.preventDefault();
         hideBanners();
     });
-    
+
     closeMobile.addEventListener('click', function(e) {
         e.preventDefault();
         hideBanners();
     });
-    
+
     function checkScroll() {
         if(window.closedBanner) return;
 
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const shouldShow = scrollTop >= 1000;
         const isMobile = window.innerWidth <= 768;
-        
-        // На мобильной версии баннер не показываем
+
         if (isMobile) {
             requestAnimationFrame(() => {
                 bannerDesktop.style.visibility = 'hidden';
@@ -160,12 +164,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             return;
         }
-        
+
         requestAnimationFrame(() => {
             if (shouldShow) {
-                // Загружаем Lottie скрипт только когда баннер должен показаться
                 loadLottieScript();
-                
+
                 bannerDesktop.style.visibility = 'visible';
                 bannerDesktop.style.bottom = '60px';
                 bannerMobile.style.visibility = 'hidden';
@@ -178,8 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // Throttle функция для оптимизации обработчика scroll
+
     let scrollTimeout = null;
     function throttledCheckScroll() {
         if (!scrollTimeout) {
@@ -189,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-    
+
     checkScroll();
     window.addEventListener('scroll', throttledCheckScroll, { passive: true });
     window.addEventListener('resize', throttledCheckScroll, { passive: true });
