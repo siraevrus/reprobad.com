@@ -198,7 +198,7 @@
         margin: 0; 
         cursor: pointer; 
         text-align: left; 
-        font-size: inherit; 
+        font-size: 0.85em;
         font-family: inherit;
         position: relative; 
     }

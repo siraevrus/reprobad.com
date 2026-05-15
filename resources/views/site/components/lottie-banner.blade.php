@@ -9,7 +9,7 @@
             src="{{ asset('images/floating-banner-desktop.png') }}"
             alt="Система Репро — скидка 30%, купить"
             width="1024"
-            height="85"
+            height="86"
             decoding="async"
             class="floating-banner-img"
         />
@@ -22,8 +22,8 @@
         <img
             src="{{ asset('images/floating-banner-mobile.png') }}"
             alt="Система Репро — скидка 30%, купить"
-            width="390"
-            height="96"
+            width="780"
+            height="192"
             decoding="async"
             class="floating-banner-img"
         />
@@ -47,7 +47,7 @@
     #floating-banner-desktop a {
         display: block;
         overflow: hidden;
-        aspect-ratio: 1024 / 85;
+        aspect-ratio: 1024 / 86;
         width: 100%;
         position: relative;
         pointer-events: auto;
@@ -55,7 +55,7 @@
     #floating-banner-mobile a {
         display: block;
         overflow: hidden;
-        aspect-ratio: 390 / 96;
+        aspect-ratio: 780 / 192;
         width: 100%;
         position: relative;
         pointer-events: auto;
