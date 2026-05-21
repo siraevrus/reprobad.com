@@ -203,8 +203,8 @@
             <p style="margin:0;">Для работы теста в админке должно быть ровно 24 активных вопроса. Сейчас активных: {{ $activeQuestionCount ?? 0 }}.</p>
           </div>
           @endif
-          <h1 class="reprotest-h"><span class="inline-text-block">Пройдите тест </span>«Репродуктивное здоровье»</h1>
-          <p class="reprotest-big-p">Ответьте на 24 вопроса, получите оценку по важным категориям вашего здоровья:</p>
+          <h1 class="reprotest-h">Пройдите тест</h1>
+          <p class="reprotest-big-p">Ответьте на 24 вопроса и получите оценку по важным категориям вашего здоровья:</p>
           <div class="reprotest-list">
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
               <p class="reprotest-list-p">Психоэмоциональное состояние</p>
