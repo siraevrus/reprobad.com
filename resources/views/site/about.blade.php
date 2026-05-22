@@ -29,6 +29,13 @@
     .about-repro-h1 .sistema-repro-semibold {
         margin-right: -5px;
     }
+    .about-schema-p.about-schema-p-footnotes {
+        text-align: left;
+        margin-left: 0;
+        margin-right: auto;
+        align-self: flex-start;
+        max-width: 100%;
+    }
 </style>
 @endsection
 
@@ -55,7 +62,7 @@
                     @if($block['data']['subtitle'])<p class="about-schema-p">{!! $block['data']['subtitle'] !!}</p>@endif
                     @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema">@endif
                     @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema mob">@endif
-                    @if($block['data']['text'])<p class="about-schema-p">{!! $block['data']['text'] !!}</p>@endif
+                    @if($block['data']['text'])<p class="about-schema-p about-schema-p-footnotes">{!! $block['data']['text'] !!}</p>@endif
                 </div>
             </section>
         @endif
