@@ -13,7 +13,7 @@
                 <th class="py-3 px-6 text-left">Email</th>
                 <th class="py-3 px-6 text-left">Телефон</th>
                 <th class="py-3 px-6 text-left">Дата</th>
-                <th class="py-3 px-6 text-left">Действия</th>
+                <th class="py-3 px-6 text-center">Действия</th>
             </tr>
             </thead>
             <tbody class="text-gray-600 text-sm font-light">
@@ -24,13 +24,19 @@
                     <td class="py-3 px-6">{{ $resource->email }}</td>
                     <td class="py-3 px-6">{{ $resource->phone ?? '-' }}</td>
                     <td class="py-3 px-6">{{ $resource->date }}</td>
-                    <td class="py-3 px-6">
-                        <a href="{{ route('admin.feedbacks.show', $resource->id) }}" class="text-blue-600 hover:text-blue-800 mr-2">Просмотр</a>
-                        <form action="{{ route('admin.feedbacks.destroy', $resource->id) }}" method="POST" class="inline" onsubmit="return confirm('Вы уверены, что хотите удалить этот вопрос?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-800">Удалить</button>
-                        </form>
+                    <td class="py-3 px-6 text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('admin.feedbacks.show', $resource->id) }}" class="text-blue-500 hover:text-blue-700 inline-flex" title="Просмотр">
+                                <span class="material-icons text-xl">visibility</span>
+                            </a>
+                            <form action="{{ route('admin.feedbacks.destroy', $resource->id) }}" method="POST" class="inline-flex" onsubmit="return confirm('Вы уверены, что хотите удалить этот вопрос?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 inline-flex p-0 border-0 bg-transparent cursor-pointer" title="Удалить">
+                                    <span class="material-icons text-xl">delete</span>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach

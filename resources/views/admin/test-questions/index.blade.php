@@ -64,24 +64,27 @@
                         @endif
                     </td>
                     <td class="py-3 px-6 text-center">
-                        <div class="flex justify-center gap-2">
-                            <a href="{{ route('admin.test-questions.show', $resource->id) }}" 
-                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                                Просмотр
+                        <div class="flex items-center justify-center gap-2">
+                            <a href="{{ route('admin.test-questions.show', $resource->id) }}"
+                               class="text-blue-500 hover:text-blue-700 inline-flex"
+                               title="Просмотр">
+                                <span class="material-icons text-xl">visibility</span>
                             </a>
-                            <a href="{{ route('admin.test-questions.edit', $resource->id) }}" 
-                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm">
-                                Редактировать
+                            <a href="{{ route('admin.test-questions.edit', $resource->id) }}"
+                               class="text-blue-500 hover:text-blue-700 inline-flex"
+                               title="Редактировать">
+                                <span class="material-icons text-xl">edit</span>
                             </a>
-                            <form action="{{ route('admin.test-questions.destroy', $resource->id) }}" 
-                                  method="POST" 
-                                  class="inline"
+                            <form action="{{ route('admin.test-questions.destroy', $resource->id) }}"
+                                  method="POST"
+                                  class="inline-flex"
                                   onsubmit="return confirm('Вы уверены, что хотите удалить этот вопрос?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
-                                    Удалить
+                                <button type="submit"
+                                        class="text-red-500 hover:text-red-700 inline-flex p-0 border-0 bg-transparent cursor-pointer"
+                                        title="Удалить">
+                                    <span class="material-icons text-xl">delete</span>
                                 </button>
                             </form>
                         </div>

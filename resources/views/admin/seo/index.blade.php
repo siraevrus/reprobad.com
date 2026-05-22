@@ -27,7 +27,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Тип страницы</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -72,21 +72,25 @@
                                 <td class="px-6 py-4 text-sm text-gray-500">
                                     {{ Str::limit($seo->description, 80) }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <a href="{{ route('admin.seo.edit', $seo->id) }}" 
-                                       class="text-blue-600 hover:text-blue-900">
-                                        Редактировать
-                                    </a>
-                                    <form action="{{ route('admin.seo.destroy', $seo->id) }}" 
-                                          method="POST" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="text-red-600 hover:text-red-900 ml-2"
-                                                onclick="return confirm('Вы уверены, что хотите удалить эти SEO данные?')">
-                                            Удалить
-                                        </button>
-                                    </form>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="{{ route('admin.seo.edit', $seo->id) }}"
+                                           class="text-blue-500 hover:text-blue-700 inline-flex"
+                                           title="Редактировать">
+                                            <span class="material-icons text-xl">edit</span>
+                                        </a>
+                                        <form action="{{ route('admin.seo.destroy', $seo->id) }}"
+                                              method="POST" class="inline-flex">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="text-red-500 hover:text-red-700 inline-flex p-0 border-0 bg-transparent cursor-pointer"
+                                                    title="Удалить"
+                                                    onclick="return confirm('Вы уверены, что хотите удалить эти SEO данные?')">
+                                                <span class="material-icons text-xl">delete</span>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
