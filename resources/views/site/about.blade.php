@@ -29,12 +29,20 @@
     .about-repro-h1 .sistema-repro-semibold {
         margin-right: -5px;
     }
-    .about-schema-p.about-schema-p-footnotes {
-        text-align: left;
-        margin-left: 0;
-        margin-right: auto;
-        align-self: flex-start;
-        max-width: 100%;
+    .about-schema-footnotes {
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        align-self: flex-start !important;
+        max-width: 100% !important;
+        width: 100%;
+        font-size: 1.25rem;
+    }
+    .about-schema-footnotes p,
+    .about-schema-footnotes div,
+    .about-schema-footnotes li,
+    .about-schema-footnotes span {
+        text-align: left !important;
     }
 </style>
 @endsection
@@ -62,7 +70,7 @@
                     @if($block['data']['subtitle'])<p class="about-schema-p">{!! $block['data']['subtitle'] !!}</p>@endif
                     @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema">@endif
                     @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema mob">@endif
-                    @if($block['data']['text'])<p class="about-schema-p about-schema-p-footnotes">{!! $block['data']['text'] !!}</p>@endif
+                    @if($block['data']['text'])<div class="about-schema-footnotes">{!! $block['data']['text'] !!}</div>@endif
                 </div>
             </section>
         @endif

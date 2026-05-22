@@ -4764,6 +4764,24 @@ figcaption {
   font-size: 1.25rem;
 }
 
+.about-schema-footnotes {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+  align-self: flex-start;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+.about-schema-footnotes p,
+.about-schema-footnotes div,
+.about-schema-footnotes li,
+.about-schema-footnotes span {
+  text-align: left;
+}
+
 .about-second-schema {
   grid-column-gap: 2rem;
   grid-row-gap: 2rem;
@@ -6966,6 +6984,10 @@ figcaption {
   }
 
   .about-schema-p {
+    font-size: 1rem;
+  }
+
+  .about-schema-footnotes {
     font-size: 1rem;
   }
 
