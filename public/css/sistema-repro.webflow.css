@@ -5315,6 +5315,10 @@ figcaption {
   margin-bottom: 0;
 }
 
+.reprotest-intro > .reprotest-h + .reprotest-big-p {
+  margin-top: -0.75rem;
+}
+
 .reprotest-question-slide {
   justify-content: flex-start;
   align-items: flex-start;
@@ -8574,6 +8578,10 @@ figcaption {
 
   .reprotest-h {
     line-height: 1.15;
+  }
+
+  .reprotest-intro > .reprotest-h + .reprotest-big-p {
+    margin-top: -0.5rem;
   }
 
   .reprotest-question-slide {
