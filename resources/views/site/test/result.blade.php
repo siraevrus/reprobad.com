@@ -343,7 +343,7 @@
       <div class="container">
         <div class="sr-heading-reprotest">
           <h2 class="sistema-repro-h1 srh1-reprotest"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> </h2>
-          <p class="sistema-repro-p">Система рекомендаций от линейки продуктов РЕПРО – это программа, которая нормализует дефициты и помогает восстановить важные функции в&nbsp;организме женщины и мужчины, может повысить шансы на успешное зачатие, в&nbsp;том числе методом ЭКО.</p>
+          <p class="sistema-repro-p">Система РЕПРО – это программа, которая нормализует дефициты и помогает восстановить важные функции в&nbsp;организме женщины и мужчины, может повысить шансы на успешное зачатие, в&nbsp;том числе методом ЭКО.</p>
           <p class="reprotest-small-p">(с применением вспомогательных репродуктивных технологий)</p>
         </div>
       </div>
@@ -351,7 +351,7 @@
         <div class="reprotest-block rtb-advs">
           <div class="reprotest-adv-wrap">
             <h2 class="reprotest-adv-h2">Позаботьтесь о вашем организме с системой РЕПРО!</h2>
-            <p class="reprotest-big-p-2">Программа подойдет и тем, кто не&nbsp;планирует беременность, но хочет понимать, что&nbsp;организм работает как&nbsp;часы.</p>
+            <p class="reprotest-big-p-2">Программа подойдет и тем, кто не&nbsp;планирует беременность, но хочет, чтобы&nbsp;организм работал как&nbsp;часы.</p>
             <p class="reprotest-p">Восстановление организма проходит на&nbsp;нескольких этапах:</p>
           </div>
           <div class="reprotest-adv-grid">
