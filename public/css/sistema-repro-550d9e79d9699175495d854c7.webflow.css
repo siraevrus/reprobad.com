@@ -4769,10 +4769,13 @@ figcaption {
   margin-left: 0;
   margin-right: auto;
   align-self: flex-start;
-  max-width: 100%;
+  max-width: 45%;
   width: 100%;
   margin-bottom: 0;
-  font-size: 1.25rem;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.375;
 }
 
 .about-schema-footnotes p,
@@ -4780,6 +4783,10 @@ figcaption {
 .about-schema-footnotes li,
 .about-schema-footnotes span {
   text-align: left;
+  font-family: Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.375;
 }
 
 .about-second-schema {
@@ -6988,7 +6995,7 @@ figcaption {
   }
 
   .about-schema-footnotes {
-    font-size: 1rem;
+    max-width: 100%;
   }
 
   .about-second-schema {

@@ -29,20 +29,22 @@
     .about-repro-h1 .sistema-repro-semibold {
         margin-right: -5px;
     }
-    .about-schema-footnotes {
-        text-align: left !important;
-        margin-left: 0 !important;
-        margin-right: auto !important;
-        align-self: flex-start !important;
-        max-width: 100% !important;
-        width: 100%;
-        font-size: 1.25rem;
-    }
+    .about-schema-footnotes,
     .about-schema-footnotes p,
     .about-schema-footnotes div,
     .about-schema-footnotes li,
     .about-schema-footnotes span {
+        font-family: Inter, sans-serif;
+        font-size: 1rem !important;
+        font-weight: 500;
+        line-height: 1.375;
         text-align: left !important;
+    }
+    .about-schema-footnotes {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+        align-self: flex-start !important;
+        margin-bottom: 0;
     }
 </style>
 @endsection
