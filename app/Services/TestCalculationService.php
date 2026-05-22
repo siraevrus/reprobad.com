@@ -9,8 +9,6 @@ class TestCalculationService
 {
     private const M = [1 => 18, 2 => 24, 3 => 15, 4 => 15];
 
-    private const M_TOTAL = 72;
-
     /** Кодирования по блокам (порядок внутри блока); должен совпадать с config('repro_test.coding_to_block'). */
     private const BLOCK_CODINGS = [
         1 => [1, 2, 3],
@@ -46,7 +44,7 @@ class TestCalculationService
             4 => $this->idx($B4, self::M[4]),
         ];
 
-        $ibhb = (int) round(100 - ($S / self::M_TOTAL) * 100);
+        $ibhb = $this->averageBlockIdx($IDX);
 
         $b1_36 = $a[2] + $a[3] + $a[4] + $a[5];
 
@@ -277,33 +275,19 @@ class TestCalculationService
     }
 
     /**
-     * ИБГБ для отображения (страница и письмо): если есть блоки с персональными рекомендациями —
-     * считаем 100 − (сумма набранных по этим блокам / сумма их максимумов)·100, как на сайте.
-     * Иначе — сохранённое значение из расчёта по всем 72 макс. баллам теста.
+     * ИБГБ для отображения (страница и письмо): среднее четырёх процентов блоков (IDX₁…IDX₄).
+     * Для старых записей без IDX пересчитываем из сумм B по блокам.
      *
      * @param  array<string, mixed>  $r  Данные после {@see resultsForView()} или сырой JSON результатов.
      */
     public function displayIbhbForResults(array $r): int
     {
-        $ibhbStored = (int) ($r['ibhb'] ?? 0);
-        $flags = $this->blocksWithRecommendationContent($r);
-        if (! in_array(true, $flags, true)) {
-            return $ibhbStored;
+        $idx = $this->resolveBlockIdxFromResults($r);
+        if ($idx !== []) {
+            return $this->averageBlockIdx($idx);
         }
 
-        $blockMaxSum = (array) (config('repro_test.block_max_sum') ?? []);
-        $B = isset($r['B']) && is_array($r['B']) ? $r['B'] : [];
-        $Svis = 0;
-        $Mvis = 0;
-        for ($i = 1; $i <= 4; $i++) {
-            if (empty($flags[$i])) {
-                continue;
-            }
-            $Svis += (int) Arr::get($B, $i, Arr::get($B, (string) $i, 0));
-            $Mvis += (int) ($blockMaxSum[$i] ?? 0);
-        }
-
-        return $Mvis > 0 ? (int) round(100 - ($Svis / $Mvis) * 100) : $ibhbStored;
+        return (int) ($r['ibhb'] ?? 0);
     }
 
     /**
@@ -365,6 +349,57 @@ class TestCalculationService
     private function idx(int $Bk, int $Mk): int
     {
         return (int) round(100 - ($Bk / $Mk) * 100);
+    }
+
+    /**
+     * ИБГБ = среднее арифметическое IDX по четырём блокам (как проценты на странице результата).
+     *
+     * @param  array<int|string, int>  $idxByBlock  ключи 1–4
+     */
+    private function averageBlockIdx(array $idxByBlock): int
+    {
+        $sum = 0;
+        for ($i = 1; $i <= 4; $i++) {
+            $sum += (int) Arr::get($idxByBlock, $i, Arr::get($idxByBlock, (string) $i, 0));
+        }
+
+        return (int) round($sum / 4);
+    }
+
+    /**
+     * @param  array<string, mixed>  $r
+     * @return array<int, int>
+     */
+    private function resolveBlockIdxFromResults(array $r): array
+    {
+        $raw = $r['IDX'] ?? null;
+        if (is_array($raw) && $raw !== []) {
+            $out = [];
+            for ($i = 1; $i <= 4; $i++) {
+                if (array_key_exists($i, $raw) || array_key_exists((string) $i, $raw)) {
+                    $out[$i] = (int) Arr::get($raw, $i, Arr::get($raw, (string) $i, 0));
+                }
+            }
+            if (count($out) === 4) {
+                return $out;
+            }
+        }
+
+        $B = isset($r['B']) && is_array($r['B']) ? $r['B'] : [];
+        if ($B === []) {
+            return [];
+        }
+
+        $out = [];
+        for ($i = 1; $i <= 4; $i++) {
+            $bk = (int) Arr::get($B, $i, Arr::get($B, (string) $i, -1));
+            if ($bk < 0) {
+                return [];
+            }
+            $out[$i] = $this->idx($bk, self::M[$i]);
+        }
+
+        return $out;
     }
 
     /**

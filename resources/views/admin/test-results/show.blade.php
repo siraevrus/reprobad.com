@@ -29,14 +29,17 @@
         </div>
     </div>
 
-    @php $r = $resource->results ?? []; @endphp
+    @php
+        $r = $resource->results ?? [];
+        $ibhbDisplay = app(\App\Services\TestCalculationService::class)->displayIbhbForResults($r);
+    @endphp
 
     <div class="bg-white shadow rounded-lg p-6 mb-6">
         <h2 class="text-xl font-semibold text-gray-700 mb-4">Расчёт</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
                 <span class="text-gray-500">ИБГБ:</span>
-                <span class="font-semibold">{{ (int) ($r['ibhb'] ?? 0) }}%</span>
+                <span class="font-semibold">{{ $ibhbDisplay }}%</span>
             </div>
             <div>
                 <span class="text-gray-500">Сумма S:</span>
