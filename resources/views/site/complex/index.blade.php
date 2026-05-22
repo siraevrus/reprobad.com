@@ -5,7 +5,7 @@
         <div class="container">
             <div class="sistema-repro-heading products-page-heading">
                 <h1 class="sistema-repro-h1"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="sistema-repro-h1-descriptor">подготовка пары к беременности</span></h1>
-                <p class="sistema-repro-p">Современным трендом преконцептуальной подготовки к успешному зачатию и вынашиванию беременности является совместная подготовка пары и гармонизация здоровья женщины и мужчины</p>
+                <p class="sistema-repro-p">Современным трендом преконцепционной подготовки к успешному зачатию и вынашиванию беременности является совместная подготовка пары и гармонизация здоровья женщины и мужчины</p>
             </div>
             <div class="spacer desktop-2-rem"></div>
             <div class="products-grid">
