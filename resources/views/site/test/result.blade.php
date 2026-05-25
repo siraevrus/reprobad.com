@@ -360,11 +360,11 @@
               <p class="reprotest-p">Защита от стресса и&nbsp;нормализация&nbsp;сна</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-2.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Микрофлора кишечника и детоксикация</h3>
+              <h3 class="reprotest-adv-item-h">Очищение организма</h3>
               <p class="reprotest-p">Нормализация кишечной микрофлоры и поддержка печени</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-3.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Метаболизм и энергия</h3>
+              <h3 class="reprotest-adv-item-h">Общий метаболизм и углеводный обмен</h3>
               <p class="reprotest-p">Коррекция энергетического обмена и&nbsp;нормализация метаболизма</p>
             </div>
             <div><img src="{{ asset('images/test/reprotest-ic-4.svg') }}" loading="lazy" alt="" class="reprotest-adv-ic">
@@ -399,7 +399,7 @@
           </div>
           <div class="test-res-item _2"><img src="{{ asset('images/2.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Микрофлора кишечника и детоксикация</h2>
+              <h2 class="step-h">Очищение организма</h2>
               <p class="step-description">Нормализация кишечной микрофлоры и поддержка печени</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('detoxi', 'first') }}" class="step-product-left w-inline-block">
@@ -417,7 +417,7 @@
           </div>
           <div class="test-res-item _3"><img src="{{ asset('images/3.svg') }}" loading="lazy" alt="" class="step-item-number">
             <div class="step-item-content">
-              <h2 class="step-h">Метаболизм и энергия</h2>
+              <h2 class="step-h">Общий метаболизм и углеводный обмен</h2>
               <p class="step-description">Коррекция энергетического обмена и нормализация метаболизма</p>
               <div class="step-products">
                 <a href="{{ $complexUrl('energy', 'first') }}" class="step-product-left w-inline-block">

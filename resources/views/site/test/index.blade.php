@@ -210,10 +210,10 @@
               <p class="reprotest-list-p">Психоэмоциональное состояние</p>
             </div>
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
-              <p class="reprotest-list-p"><strong>Микрофлора кишечника и детоксикация</strong></p>
+              <p class="reprotest-list-p"><strong>Очищение организма</strong></p>
             </div>
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
-              <p class="reprotest-list-p"><strong>Метаболизм и энергия</strong></p>
+              <p class="reprotest-list-p"><strong>Общий метаболизм и углеводный обмен</strong></p>
             </div>
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
               <p class="reprotest-list-p"><strong>Репродуктивное здоровье</strong></p>
@@ -284,11 +284,11 @@
               <p class="reprotest-p">Защита от стресса и нормализация сна</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-2.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Микрофлора кишечника и детоксикация</h3>
+              <h3 class="reprotest-adv-item-h">Очищение организма</h3>
               <p class="reprotest-p">Нормализация кишечной микрофлоры и поддержка печени</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-3.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
-              <h3 class="reprotest-adv-item-h">Метаболизм и энергия</h3>
+              <h3 class="reprotest-adv-item-h">Общий метаболизм и углеводный обмен</h3>
               <p class="reprotest-p">Коррекция энергетического обмена и нормализация метаболизма</p>
             </div>
             <div><img src="{{ asset("images/test/reprotest-ic-4.svg") }}" loading="lazy" alt="" class="reprotest-adv-ic">
