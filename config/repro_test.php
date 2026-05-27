@@ -32,8 +32,8 @@ return [
      */
     'block_icons_email' => [
         1 => 'storage/email/result/test-1.png',
-        2 => 'storage/email/result/test-2.png',
-        3 => 'storage/email/result/test-3.png',
+        2 => 'storage/email/result/test-3.png',
+        3 => 'storage/email/result/test-2.png',
         4 => 'storage/email/result/test-4.png',
     ],
     /** Максимум суммы баллов по вопросам блока (как в TestCalculationService::M). */

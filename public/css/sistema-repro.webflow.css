@@ -5316,7 +5316,7 @@ figcaption {
 }
 
 .reprotest-intro > .reprotest-h + .reprotest-big-p {
-  margin-top: -0.75rem;
+  margin-top: -1.125rem;
 }
 
 .reprotest-question-slide {
@@ -8581,7 +8581,7 @@ figcaption {
   }
 
   .reprotest-intro > .reprotest-h + .reprotest-big-p {
-    margin-top: -0.5rem;
+    margin-top: -0.75rem;
   }
 
   .reprotest-question-slide {
