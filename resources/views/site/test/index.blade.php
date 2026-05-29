@@ -204,6 +204,7 @@
           </div>
           @endif
           <h1 class="reprotest-h">Пройдите тест</h1>
+          <p class="reprotest-big-p">(Женщины 18-45 лет, мужчины 18-50 лет)</p>
           <p class="reprotest-big-p">Ответьте на 24 вопроса и получите оценку по важным категориям вашего здоровья:</p>
           <div class="reprotest-list">
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
