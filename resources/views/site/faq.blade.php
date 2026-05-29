@@ -203,7 +203,7 @@
         margin: 0; 
         cursor: pointer; 
         text-align: left; 
-        font-size: 0.85em;
+        font-size: calc(0.85em * 0.7);
         font-family: inherit;
         position: relative; 
     }
