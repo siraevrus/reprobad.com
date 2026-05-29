@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'telegram.relay' => \App\Http\Middleware\VerifyTelegramRelaySecret::class,
         ]);
         // $middleware->append(Authenticate::class);
+        $middleware->prepend(\App\Http\Middleware\NormalizeCheckupPathCase::class);
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
         $middleware->append(\App\Http\Middleware\StaticCacheHeaders::class);
         $middleware->append(\App\Http\Middleware\DisableCacheForCheckupPage::class);
