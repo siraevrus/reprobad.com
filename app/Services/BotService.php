@@ -40,16 +40,20 @@ class BotService {
     {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_HTTPHEADER     => array_merge(["Content-Type: application/json"], $headers),
-            CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_RETURNTRANSFER    => true,
+            CURLOPT_POST              => true,
+            CURLOPT_HTTPHEADER        => array_merge(["Content-Type: application/json"], $headers),
+            CURLOPT_POSTFIELDS        => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_CONNECTTIMEOUT    => 5,
+            CURLOPT_TIMEOUT           => 30,
         ]);
         $response = curl_exec($ch);
         if ($response === false) {
-            Log::error("CURL error: " . curl_error($ch));
+            Log::error('CURL error: ' . curl_error($ch), ['url' => $url]);
+            curl_close($ch);
             return '';
         }
+        curl_close($ch);
         return $response;
     }
 
