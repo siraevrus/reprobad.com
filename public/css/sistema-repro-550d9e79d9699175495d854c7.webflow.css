@@ -3816,26 +3816,27 @@ figcaption {
 
   /* Компактный РЕПРОменю в колонке: круги с процентными позициями */
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .repromenu-widget-images {
-    transform: translateX(-22%);
+    margin: 2px 14px;
+    transform: translateX(100%);
     transform-origin: right center;
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-1 {
-    width: 7rem;
+    width: 8.75rem;
     top: auto;
     left: auto;
     inset: -18% auto auto -8%;
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-2 {
-    width: 5rem;
+    width: 6.25rem;
     top: auto;
     left: auto;
     inset: 28% auto auto 18%;
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-3 {
-    width: 3.25rem;
+    width: 4.0625rem;
     top: auto;
     left: auto;
     inset: 58% auto auto -5%;
