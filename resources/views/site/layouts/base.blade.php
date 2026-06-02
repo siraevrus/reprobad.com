@@ -182,11 +182,9 @@
         html.w-mod-js body.css-loaded{visibility:visible;opacity:1;transition:opacity 0.15s ease-in}
         *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
     </style>
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/webflow.css">
-    <link rel="preload" href="css/normalize.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="css/normalize.css" rel="stylesheet" type="text/css"></noscript>
-    <link rel="preload" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css" rel="stylesheet" type="text/css"></noscript>
+    <link rel="stylesheet" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
@@ -209,31 +207,25 @@
     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
     <script>
     (function() {
+        var criticalStylesheets = [
+            'css/normalize.css',
+            'css/webflow.css',
+            'css/sistema-repro-550d9e79d9699175495d854c7.webflow.css'
+        ];
+
         function isCSSLoaded() {
-            var styleSheets = document.styleSheets;
-            var webflowLoaded = false;
-            for (var i = 0; i < styleSheets.length; i++) {
-                try {
-                    var href = styleSheets[i].href || '';
-                    if (href.indexOf('webflow.css') !== -1) {
-                        webflowLoaded = true;
-                        break;
-                    }
-                } catch(e) {
-                }
-            }
-            var webflowLink = document.querySelector('link[href*="webflow.css"]');
-            if (webflowLink && webflowLink.sheet) {
-                webflowLoaded = true;
-            }
-            
-            return webflowLoaded;
+            return criticalStylesheets.every(function(href) {
+                var link = document.querySelector('link[rel="stylesheet"][href="' + href + '"]');
+                return link && link.sheet;
+            });
         }
+
         function showContent() {
             if (document.body) {
                 document.body.classList.add('css-loaded');
             }
         }
+
         function hidePageBg() {
             var pageBgs = document.querySelectorAll('.page-background');
             for (var i = 0; i < pageBgs.length; i++) {
@@ -241,26 +233,39 @@
                 pageBgs[i].style.visibility = 'hidden';
             }
         }
+
         function checkAndShow() {
-            if (isCSSLoaded() || document.querySelector('link[href*="webflow.css"]')) {
+            if (!isCSSLoaded()) {
+                return false;
+            }
+
+            showContent();
+            hidePageBg();
+            return true;
+        }
+
+        function initContentDisplay() {
+            if (checkAndShow()) {
+                return;
+            }
+
+            // Страховка: если CSS не применился (сбой сети), не держать страницу скрытой вечно.
+            setTimeout(function() {
+                if (!document.body || document.body.classList.contains('css-loaded')) {
+                    return;
+                }
+
                 showContent();
                 hidePageBg();
-                return true;
-            }
-            return false;
+            }, 5000);
         }
-        function initContentDisplay() {
-            setTimeout(function() {
-                if (!checkAndShow()) {
-                    setTimeout(showContent, 100);
-                }
-            }, 10);
-        }
+
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initContentDisplay);
         } else {
             initContentDisplay();
         }
+
         hidePageBg();
         setTimeout(hidePageBg, 0);
         setTimeout(hidePageBg, 10);
@@ -795,17 +800,50 @@
 <script src="/js/home.js?v={{ md5_file(public_path('js/home.js')) }}" type="text/javascript" defer></script>
 <script>
 (function() {
+    var overlayScrollOffset = 50;
+
+    function syncNavbarOverlay() {
+        var overlay = document.querySelector('.navbar-overlay');
+        if (!overlay) {
+            return;
+        }
+
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        var opacity = scrollY <= 0 ? 0 : Math.min(1, scrollY / overlayScrollOffset);
+        overlay.style.opacity = String(opacity);
+    }
+
+    function refreshNavbarOverlayState() {
+        syncNavbarOverlay();
+        window.dispatchEvent(new Event('scroll'));
+    }
+
+    function scheduleNavbarOverlaySync() {
+        refreshNavbarOverlayState();
+        requestAnimationFrame(function() {
+            requestAnimationFrame(refreshNavbarOverlayState);
+        });
+        [0, 50, 200, 600, 1500].forEach(function(delay) {
+            setTimeout(refreshNavbarOverlayState, delay);
+        });
+    }
+
+    window.addEventListener('pageshow', scheduleNavbarOverlaySync);
+    window.addEventListener('load', scheduleNavbarOverlaySync);
+
     function loadWebflow() {
         if (document.querySelector('script[src="/js/webflow.js"]')) {
+            scheduleNavbarOverlaySync();
             return;
         }
         if (typeof jQuery === 'undefined') {
             setTimeout(loadWebflow, 50);
             return;
         }
-        
+
         var script = document.createElement('script');
         script.src = '/js/webflow.js';
+        script.onload = scheduleNavbarOverlaySync;
         document.head.appendChild(script);
     }
     function initWebflow() {
@@ -826,9 +864,11 @@
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
+            syncNavbarOverlay();
             setTimeout(initWebflow, 100);
         });
     } else {
+        syncNavbarOverlay();
         setTimeout(initWebflow, 100);
     }
 })();
