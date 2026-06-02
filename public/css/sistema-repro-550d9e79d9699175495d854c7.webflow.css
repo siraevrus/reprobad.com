@@ -3760,87 +3760,35 @@ figcaption {
 }
 
 .repromenu-widget-images {
-  flex: 1;
-  position: relative;
-  margin-left: auto;
-  min-width: 0;
-  /* вся группа у правого края виджета; сдвиг влево от края карточки, геометрия кругов не меняется */
-  transform: translateX(-4%);
-  transform-origin: right center;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: auto;
+  min-width: 10.75rem;
+  aspect-ratio: 784 / 694;
+  box-sizing: content-box;
+  overflow: visible;
 }
 
-.widget-image-1 {
-  z-index: 0;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 100rem;
-  width: 15rem;
+.repromenu-widget-img {
+  object-fit: contain;
+  object-position: right center;
+  width: 100%;
+  height: 100%;
   display: block;
-  position: absolute;
-  top: -64px;
-  left: 164px;
-}
-
-.widget-image-2 {
-  z-index: 1;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 100rem;
-  width: 10rem;
-  display: block;
-  position: absolute;
-  top: 50px;
-  left: 300px;
-}
-
-.widget-image-3 {
-  z-index: 2;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 100rem;
-  width: 6.5rem;
-  display: block;
-  position: absolute;
-  top: 96px;
-  left: 216px;
 }
 
 @media screen and (min-width: 768px) {
-  /* РЕПРОменю: круги с рецептами только на мобильной версии; планшет и веб — без изображений */
+  /* РЕПРОменю: изображение на планшете и веб; на мобильной — скрыто */
   .widget-repro-menu--fullwidth .repromenu-widget-images {
     display: none;
   }
 
   .widget.widget-repro-menu--fullwidth .widget-content {
     max-width: none;
-  }
-
-  /* Компактный РЕПРОменю в колонке: круги с процентными позициями */
-  .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .repromenu-widget-images {
-    margin: 2px 14px;
-    transform: translateX(50%);
-    transform-origin: right center;
-  }
-
-  .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-1 {
-    width: 92px;
-    top: -11px;
-    left: -22px;
-    inset: auto;
-  }
-
-  .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-2 {
-    width: 65px;
-    top: 52px;
-    left: 9px;
-    inset: auto;
-  }
-
-  .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-3 {
-    width: 49px;
-    top: 94px;
-    left: -26px;
-    inset: auto;
   }
 }
 
@@ -6542,46 +6490,7 @@ figcaption {
   }
 
   .repromenu-widget-images {
-    order: -9999;
-    padding-top: 1.5rem;
-    padding-bottom: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    margin-left: 0;
-    transform: translateX(-3%);
-    transform-origin: right center;
-    padding-right: 0.25rem;
-  }
-
-  .widget-image-1 {
-    flex: none;
-    order: -9999;
-    width: 40vw;
-    height: 40vw;
-    margin-left: 1rem;
-    position: relative;
-    inset: auto;
-  }
-
-  .widget-image-2 {
-    flex: none;
-    width: 40vw;
-    height: 40vw;
-    margin-left: -14vw;
-    position: relative;
-    inset: auto;
-  }
-
-  .widget-image-3 {
-    flex: none;
-    order: 9999;
-    width: 40vw;
-    height: 40vw;
-    margin-left: -14vw;
-    position: relative;
-    inset: auto;
+    display: none;
   }
 
   .map-widget, .shpargalka-widget {

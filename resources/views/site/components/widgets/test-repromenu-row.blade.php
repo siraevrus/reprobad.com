@@ -19,9 +19,7 @@
                 <a href="{{ route('site.menus.index') }}" class="button w-button">Смотреть —&gt;</a>
             </div>
             <div class="repromenu-widget-images">
-                <img src="{{ asset('images/menu-2.webp') }}" loading="lazy" alt="" class="widget-image-3">
-                <img src="{{ asset('images/menu-3.webp') }}" loading="lazy" alt="" class="widget-image-2">
-                <img src="{{ asset('images/menu-4.webp') }}" loading="lazy" alt="" class="widget-image-1">
+                <img src="{{ asset('images/repromenu-widget.png') }}" loading="lazy" alt="" class="repromenu-widget-img">
             </div>
         </div>
     </div>
