@@ -3818,7 +3818,7 @@ figcaption {
   /* Компактный РЕПРОменю в колонке: круги с процентными позициями */
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .repromenu-widget-images {
     margin: 2px 14px;
-    transform: translateX(75%);
+    transform: translateX(50%);
     transform-origin: right center;
   }
 
