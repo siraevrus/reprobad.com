@@ -155,7 +155,7 @@
     </section>
 
     <section class="section short-events-in-article">
-        <div class="container">
+        <div class="container widgets-container">
             <div class="short-events"><img loading="lazy" src="images/bg-cal.svg" alt="иконка календарь" class="short-events-bg-image">
                 <div class="section-head-with-detali-button short-events-section">
                     <h2 class="big-section-h">События и мероприятия</h2>
@@ -165,6 +165,7 @@
                     @include('site.components.events.item', ['item' => $item])
                 @endforeach
             </div>
+            @include('site.components.widgets.test-repromenu-row')
         </div>
     </section>
 @endsection

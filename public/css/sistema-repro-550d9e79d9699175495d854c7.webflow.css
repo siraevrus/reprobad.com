@@ -3681,6 +3681,10 @@ figcaption {
   margin-top: 1rem;
 }
 
+.widgets-container > .short-events + .widgets-row {
+  margin-top: 1rem;
+}
+
 .widgets-column--full {
   max-width: 100%;
   flex: 1 1 100%;
@@ -5132,7 +5136,7 @@ figcaption {
   }
 
   .section.short-events-in-article {
-    padding: 3rem 0 1rem;
+    padding: 3rem 0 3rem;
   }
 
   .section.map-section {

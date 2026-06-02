@@ -72,23 +72,7 @@
                 @include('site.components.events.item', ['item' => $item])
             @endforeach
         </div>
-        <div class="widgets-row widgets-row--repromenu-full">
-            <div class="widgets-column widgets-column--full">
-                <div data-w-id="8f4e031f-1a14-8225-f62f-dd5b11c6253e" class="widget widget-repro-menu widget-repro-menu--fullwidth">
-                    <div class="widget-content">
-                        <h2 class="widget-heading"><strong>РЕПРО</strong>меню</h2>
-                        <p class="widget-p">Ваше репродуктивное здоровье начинается&nbsp;с тарелки: мы подготовили рецепты на всю&nbsp;неделю</p>
-                        <div class="flex-spacer"></div>
-                        <a href="{{ route('site.menus.index') }}" class="button w-button">Смотреть —&gt;</a>
-                    </div>
-                    <div class="repromenu-widget-images">
-                        <img src="{{ asset('images/menu-2.webp') }}" loading="lazy" alt="" class="widget-image-3">
-                        <img src="{{ asset('images/menu-3.webp') }}" loading="lazy" alt="" class="widget-image-2">
-                        <img src="{{ asset('images/menu-4.webp') }}" loading="lazy" alt="" class="widget-image-1">
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('site.components.widgets.test-repromenu-row')
         {{--
         <div class="widgets-column _2">
             <div class="questions-widget">
