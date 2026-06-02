@@ -3681,7 +3681,8 @@ figcaption {
   margin-top: 1rem;
 }
 
-.widgets-container > .short-events + .widgets-row {
+.widgets-container > .short-events + .widgets-row,
+.widgets-container > .widgets-row + .short-events {
   margin-top: 1rem;
 }
 
