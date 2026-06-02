@@ -3823,24 +3823,24 @@ figcaption {
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-1 {
-    width: 8.75rem;
-    top: auto;
-    left: auto;
-    inset: -18% auto auto -8%;
+    width: 92px;
+    top: -11px;
+    left: -22px;
+    inset: auto;
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-2 {
-    width: 6.25rem;
-    top: auto;
-    left: auto;
-    inset: 28% auto auto 18%;
+    width: 65px;
+    top: 52px;
+    left: 9px;
+    inset: auto;
   }
 
   .widget.widget-repro-menu:not(.widget-repro-menu--fullwidth) .widget-image-3 {
-    width: 4.0625rem;
-    top: auto;
-    left: auto;
-    inset: 58% auto auto -5%;
+    width: 49px;
+    top: 94px;
+    left: -26px;
+    inset: auto;
   }
 }
 
