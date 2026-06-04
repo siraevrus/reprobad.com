@@ -77,7 +77,7 @@ class AdviseController extends Controller
             $items = $allResources->slice(($currentPage - 1) * $perPage, $perPage)->all();
             $resources = new \Illuminate\Pagination\LengthAwarePaginator($items, $allResources->count(), $perPage, $currentPage, [
                 'path' => $request->url(),
-                'query' => $request->query(),
+                'query' => $request->only(['query', 'category']),
             ]);
         } else {
             $resources = Advise::where('active', 1);
@@ -85,7 +85,7 @@ class AdviseController extends Controller
                 $resources = $resources->where('category', $request->get('category'));
             }
 
-            $resources = $resources->orderBy('created_at', 'desc')->paginate(11)->withQueryString();
+            $resources = $resources->orderBy('created_at', 'desc')->paginate(11)->appends($request->only(['query', 'category']));
         }
         $categories = Advise::where('active', 1)
             ->whereNotNull('category')

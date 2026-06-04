@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\App\Http\Middleware\DisableCacheForCheckupPage::class);
         $middleware->append(\App\Http\Middleware\AgentDiscoveryHeaders::class);
         $middleware->append(\App\Http\Middleware\MarkdownNegotiation::class);
+        $middleware->append(\App\Http\Middleware\SeoMetaTags::class);
         $middleware->validateCsrfTokens();
     })
     ->withExceptions(function (Exceptions $exceptions) {
