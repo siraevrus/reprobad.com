@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Services\BotService;
 use App\Support\TelegramApiLog;
+use App\Support\TelegramProxy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -153,23 +154,6 @@ class ProcessTelegramMessage implements ShouldQueue
 
     private function proxyOptions(): array
     {
-        $proxy = config('services.telegram.http_proxy');
-
-        if (! is_string($proxy) || $proxy === '') {
-            $host = config('services.telegram.proxy_host');
-            $port = config('services.telegram.proxy_port');
-
-            if (is_string($host) && $host !== '' && $port !== null && $port !== '') {
-                $user     = config('services.telegram.proxy_user');
-                $password = config('services.telegram.proxy_password');
-                $auth     = is_string($user) && $user !== ''
-                    ? rawurlencode($user) . ':' . rawurlencode((string) $password) . '@'
-                    : '';
-
-                $proxy = 'http://' . $auth . $host . ':' . (int) $port;
-            }
-        }
-
-        return is_string($proxy) && $proxy !== '' ? ['proxy' => $proxy] : [];
+        return TelegramProxy::guzzleOptions();
     }
 }

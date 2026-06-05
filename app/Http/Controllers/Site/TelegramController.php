@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use App\Http\Controllers\Controller;
 use App\Services\BotService;
 use App\Support\TelegramApiLog;
+use App\Support\TelegramProxy;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -93,33 +94,9 @@ class TelegramController extends Controller
         return $request;
     }
 
-    /**
-     * Опции Guzzle для HTTP(S)-прокси с авторизацией.
-     *
-     * @return array{proxy?: string}
-     */
     protected function telegramProxyGuzzleOptions(): array
     {
-        $proxy = config('services.telegram.http_proxy');
-        if (! is_string($proxy) || $proxy === '') {
-            $host = config('services.telegram.proxy_host');
-            $port = config('services.telegram.proxy_port');
-            if (is_string($host) && $host !== '' && $port !== null && $port !== '') {
-                $user = config('services.telegram.proxy_user');
-                $password = config('services.telegram.proxy_password');
-                $auth = '';
-                if (is_string($user) && $user !== '') {
-                    $auth = rawurlencode($user) . ':' . rawurlencode((string) $password) . '@';
-                }
-                $proxy = 'http://' . $auth . $host . ':' . (int) $port;
-            }
-        }
-
-        if (! is_string($proxy) || $proxy === '') {
-            return [];
-        }
-
-        return ['proxy' => $proxy];
+        return TelegramProxy::guzzleOptions();
     }
 
     /**

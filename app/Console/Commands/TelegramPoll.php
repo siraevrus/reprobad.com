@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\ProcessTelegramMessage;
 use App\Support\TelegramApiLog;
+use App\Support\TelegramProxy;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -155,29 +156,6 @@ class TelegramPoll extends Command
 
     private function buildProxyOptions(): array
     {
-        $proxy = config('services.telegram.http_proxy');
-
-        if (! is_string($proxy) || $proxy === '') {
-            $host = config('services.telegram.proxy_host');
-            $port = config('services.telegram.proxy_port');
-
-            if (is_string($host) && $host !== '' && $port !== null && $port !== '') {
-                $user     = config('services.telegram.proxy_user');
-                $password = config('services.telegram.proxy_password');
-                $auth     = '';
-
-                if (is_string($user) && $user !== '') {
-                    $auth = rawurlencode($user) . ':' . rawurlencode((string) $password) . '@';
-                }
-
-                $proxy = 'http://' . $auth . $host . ':' . (int) $port;
-            }
-        }
-
-        if (! is_string($proxy) || $proxy === '') {
-            return [];
-        }
-
-        return ['proxy' => $proxy];
+        return TelegramProxy::guzzleOptions();
     }
 }
