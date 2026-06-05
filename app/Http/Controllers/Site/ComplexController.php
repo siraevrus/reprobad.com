@@ -32,14 +32,8 @@ class ComplexController extends Controller
         $articles = Article::active()->orderBy('created_at', 'desc')->take(5)->get();
         $resources = Complex::active()->get();
 
-        $pageType = 'Complex';
-        $forceDynamic = true;
+        $pageType = '';
 
-        $titlePlain = strip_tags($resource->title);
-        $resource->seo_title = $titlePlain . ' | Система РЕПРО';
-        $resource->seo_description = $resource->subtitle
-            ?: strip_tags($resource->seo_description ?? $resource->description ?? '');
-
-        return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType', 'forceDynamic'));
+        return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType'));
     }
 }
