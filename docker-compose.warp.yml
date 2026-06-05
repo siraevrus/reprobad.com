@@ -13,12 +13,11 @@
 services:
   warp:
     container_name: warp-proxy
-    image: ghcr.io/ccbkkb/microwarp:latest
+    image: caomingjun/warp
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
+    environment:
+      - WARP_SLEEP=2
     ports:
       - "127.0.0.1:1080:1080"
