@@ -1,0 +1,17 @@
+[Unit]
+Description=Telegram Bot Polling (reprobad)
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/repro
+ExecStart=/usr/bin/php artisan telegram:poll
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/www/repro/storage/logs/telegram-poll.log
+StandardError=append:/var/www/repro/storage/logs/telegram-poll.log
+
+[Install]
+WantedBy=multi-user.target
