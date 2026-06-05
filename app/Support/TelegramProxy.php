@@ -28,15 +28,9 @@ class TelegramProxy
         }
 
         if (str_starts_with($proxy, 'socks5')) {
-            $parsed = parse_url($proxy);
-            $host   = $parsed['host'] ?? '127.0.0.1';
-            $port   = $parsed['port'] ?? 1080;
-            $type   = str_starts_with($proxy, 'socks5h') ? CURLPROXY_SOCKS5_HOSTNAME : CURLPROXY_SOCKS5;
-
             return [
                 'curl' => [
-                    CURLOPT_PROXYTYPE => $type,
-                    CURLOPT_PROXY     => "{$host}:{$port}",
+                    CURLOPT_PROXY => $proxy,
                 ],
             ];
         }
