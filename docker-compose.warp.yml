@@ -1,0 +1,24 @@
+# WARP SOCKS5-прокси для обхода блокировки api.telegram.org на российском VPS.
+#
+# Запуск (один раз, на продакшн-сервере):
+#   docker compose -f docker-compose.warp.yml up -d
+#
+# В production .env добавить:
+#   TELEGRAM_HTTP_PROXY=socks5h://127.0.0.1:1080
+#
+# Проверка:
+#   docker exec warp-proxy curl -s -o /dev/null -w "%{http_code}" https://api.telegram.org
+#   curl --socks5-hostname 127.0.0.1:1080 https://api.telegram.org  # → 200
+
+services:
+  warp:
+    container_name: warp-proxy
+    image: ghcr.io/ccbkkb/microwarp:latest
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    ports:
+      - "127.0.0.1:1080:1080"
