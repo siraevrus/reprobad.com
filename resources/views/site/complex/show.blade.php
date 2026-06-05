@@ -35,6 +35,7 @@
                 <div class="container product-container">
                     <div class="product-head {{ $idx % 2 == 0 ? 'left-side' : '' }}">
                         <div class="product-head-logo"><img src="{{ $product->logo }}" loading="lazy" alt="{{ $product->logo_alt ?? $product->title }}" class="repro-detoxi-logo"></div>
+                        <h2 class="product-h1 small">{{ product_section_heading($product, $resource, $idx) }}</h2>
                         <p class="product-head-descriptor" style="color: {{ $product->color }}">{!! $product->description !!}</p>
                         <p class="product-head-text"> </p>
 
@@ -138,7 +139,7 @@
     <section class="section sistema-section">
         <div class="container">
             <div class="sistema-repro-heading">
-                <h1 class="sistema-repro-h1"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="sistema-repro-h1-descriptor">подготовка пары к беременности</span></h1>
+                <h2 class="sistema-repro-h1"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="sistema-repro-h1-descriptor">подготовка пары к беременности</span></h2>
                 <p class="sistema-repro-steps-p">4 важных шага</p>
             </div>
             <div>
