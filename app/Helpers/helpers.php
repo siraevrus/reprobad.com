@@ -124,3 +124,28 @@ if (!function_exists('canonical_query_string')) {
         return http_build_query($params);
     }
 }
+
+if (!function_exists('product_section_heading')) {
+    /**
+     * Заголовок секции продукта на странице комплекса (для h2).
+     *
+     * Приоритет: alt_left/alt_right комплекса по порядку → logo_alt → title продукта.
+     */
+    function product_section_heading(\App\Models\Product $product, \App\Models\Complex $complex, int $index): string
+    {
+        $anchorAlts = array_values(array_filter([
+            $complex->alt_left,
+            $complex->alt_right,
+        ]));
+
+        $heading = $anchorAlts[$index - 1]
+            ?? $product->logo_alt
+            ?? $product->title
+            ?? '';
+
+        $heading = strip_tags((string) $heading);
+        $heading = preg_replace('/^(САШЕ|БАНКА)\s*"/u', '', $heading) ?? $heading;
+
+        return trim($heading, " \t\n\r\0\x0B\"");
+    }
+}
