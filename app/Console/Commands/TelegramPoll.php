@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 class TelegramPoll extends Command
 {
     protected $signature = 'telegram:poll
-                            {--timeout=25 : Long-polling таймаут (сек), макс. 30}
+                            {--timeout=5 : Long-polling таймаут (сек), уменьшен для стабильности SOCKS5-прокси}
                             {--sleep=1 : Пауза между итерациями при ошибке (сек)}';
 
     protected $description = 'Получает обновления от Telegram через long-polling (вместо webhook)';
