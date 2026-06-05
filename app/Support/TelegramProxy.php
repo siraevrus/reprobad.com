@@ -28,10 +28,11 @@ class TelegramProxy
         }
 
         if (str_starts_with($proxy, 'socks5')) {
+            // Guzzle по умолчанию использует CurlMultiHandler (async), который не поддерживает SOCKS5.
+            // 'synchronous' => true переключает на CurlHandler (single handle) — работает корректно.
             return [
-                'curl' => [
-                    CURLOPT_PROXY => $proxy,
-                ],
+                'synchronous' => true,
+                'curl'        => [CURLOPT_PROXY => $proxy],
             ];
         }
 
