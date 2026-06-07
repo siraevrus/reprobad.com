@@ -15,6 +15,7 @@ class BotService {
     protected $kbUrl;
     protected $systemPrompt;
     protected $model;
+    protected $fallbackModel;
     protected $maxTokens;
     protected $temperature;
     protected $topP;
@@ -22,15 +23,16 @@ class BotService {
 
     public function __construct()
     {
-        $configs = Config::whereIn('key', ['ai_model', 'system_prompt', 'max_tokens', 'temperature', 'top_p'])
+        $configs = Config::whereIn('key', ['ai_model', 'ai_model_fallback', 'system_prompt', 'max_tokens', 'temperature', 'top_p'])
             ->pluck('value', 'key');
         
-        $this->kbUrl       = 'https://api.hydraai.ru/v1/chat/completions';
-        $this->model       = $configs->get('ai_model') ?? 'deepseek-v3.2';
-        $this->systemPrompt = $configs->get('system_prompt');
-        $this->maxTokens   = (int)($configs->get('max_tokens') ?? 1000);
-        $this->temperature = (float)($configs->get('temperature') ?? 0.8);
-        $this->topP        = (float)($configs->get('top_p') ?? 0.9);
+        $this->kbUrl          = 'https://api.hydraai.ru/v1/chat/completions';
+        $this->model          = $configs->get('ai_model') ?? 'deepseek-v3.2';
+        $this->fallbackModel  = $configs->get('ai_model_fallback') ?? 'gpt-4o-mini';
+        $this->systemPrompt   = $configs->get('system_prompt');
+        $this->maxTokens      = (int)($configs->get('max_tokens') ?? 1000);
+        $this->temperature    = (float)($configs->get('temperature') ?? 0.8);
+        $this->topP           = (float)($configs->get('top_p') ?? 0.9);
     }
 
     /**
@@ -55,6 +57,37 @@ class BotService {
         }
         curl_close($ch);
         return $response;
+    }
+
+    /**
+     * Запрос с автоматическим переключением на резервную модель при сбое основной.
+     * Основная модель считается упавшей, если ответ не содержит choices[0].message.content.
+     */
+    protected function requestWithFallback(array $data, array $headers): ?array
+    {
+        $primaryModel = $data['model'] ?? $this->model;
+
+        $response = $this->request($this->kbUrl, $data, $headers);
+        $result   = json_decode($response, true);
+
+        if (isset($result['choices'][0]['message']['content'])) {
+            return $result;
+        }
+
+        // Основная модель не ответила — пробуем резервную
+        if ($this->fallbackModel && $this->fallbackModel !== $primaryModel) {
+            Log::warning('BotService: primary model failed, switching to fallback', [
+                'primary_model'  => $primaryModel,
+                'fallback_model' => $this->fallbackModel,
+                'raw_response'   => mb_substr((string) $response, 0, 300),
+            ]);
+
+            $data['model'] = $this->fallbackModel;
+            $response = $this->request($this->kbUrl, $data, $headers);
+            $result   = json_decode($response, true);
+        }
+
+        return $result ?: null;
     }
 
     // ============================================
@@ -298,9 +331,7 @@ class BotService {
             "stream" => false
         ];
 
-        $response = $this->request($this->kbUrl, $data, $headers);
-
-        $result = json_decode($response, true);
+        $result = $this->requestWithFallback($data, $headers);
 
         // Сохраняем в историю, если есть userId и успешный ответ
         if ($userId && isset($result['choices'][0]['message']['content'])) {
