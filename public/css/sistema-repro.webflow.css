@@ -5320,6 +5320,7 @@ figcaption {
 
 .reprotest-intro > .reprotest-h + .reprotest-big-p {
   margin-top: -1.125rem;
+  margin-bottom: 13px;
 }
 
 .reprotest-question-slide {
