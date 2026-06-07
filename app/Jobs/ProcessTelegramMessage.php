@@ -21,7 +21,12 @@ class ProcessTelegramMessage implements ShouldQueue
     /**
      * Максимум попыток при сбое (AI-сервис, сеть).
      */
-    public int $tries = 2;
+    public int $tries = 3;
+
+    /**
+     * Пауза между повторными попытками (сек).
+     */
+    public int $backoff = 10;
 
     /**
      * Таймаут выполнения одного задания (сек).
@@ -46,9 +51,11 @@ class ProcessTelegramMessage implements ShouldQueue
         $response = $botService->handle($this->messageText, (string) $this->chatId, 'telegram');
 
         if (! is_array($response) || ! isset($response['choices'][0]['message']['content'])) {
-            Log::error('TelegramJob: invalid BotService response', ['response' => $response]);
-            $this->sendMessage($this->chatId, '❌ Ошибка генерации ответа. Попробуйте позже.');
-            return;
+            Log::warning('TelegramJob: invalid BotService response, will retry', [
+                'attempt'  => $this->attempts(),
+                'response' => $response,
+            ]);
+            throw new \RuntimeException('HydraAI returned invalid or empty response');
         }
 
         $reply = $botService->markdownToTelegramHtml($response['choices'][0]['message']['content']);
