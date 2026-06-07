@@ -45,7 +45,7 @@ class BotService {
             CURLOPT_HTTPHEADER        => array_merge(["Content-Type: application/json"], $headers),
             CURLOPT_POSTFIELDS        => json_encode($payload, JSON_UNESCAPED_UNICODE),
             CURLOPT_CONNECTTIMEOUT    => 5,
-            CURLOPT_TIMEOUT           => 30,
+            CURLOPT_TIMEOUT           => 55,
         ]);
         $response = curl_exec($ch);
         if ($response === false) {
