@@ -27,13 +27,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
 
-    @if(isset($resource) && isset($pageType))
+    @if(isset($pageType))
         <x-seo-meta
             :pageType="$pageType"
-            :defaultTitle="$resource->seo_title ?? $resource->title ?? ''"
-            :defaultDescription="$resource->seo_description ?? $resource->description ?? ''"
-            :resource="$resource"
-            :customKeywords="data_get($resource, 'seo_keywords')"
+            :defaultTitle="$resource?->seo_title ?? $resource?->title ?? ''"
+            :defaultDescription="$resource?->seo_description ?? $resource?->description ?? ''"
+            :resource="$resource ?? null"
+            :customKeywords="data_get($resource ?? null, 'seo_keywords')"
             :forceDynamic="$forceDynamic ?? ($pageType === 'Menu' ? true : false)"
         />
     @elseif(isset($resource))
