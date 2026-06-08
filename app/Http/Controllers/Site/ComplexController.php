@@ -35,10 +35,15 @@ class ComplexController extends Controller
         $pageType = 'Complex';
         $forceDynamic = true;
 
+        // Используем SEO-поля из БД; если они пусты — формируем автоматически
         $titlePlain = strip_tags($resource->title);
-        $resource->seo_title = $titlePlain . ' | Система РЕПРО';
-        $resource->seo_description = $resource->subtitle
-            ?: strip_tags($resource->seo_description ?? $resource->description ?? '');
+        if (empty(trim($resource->seo_title ?? ''))) {
+            $resource->seo_title = $titlePlain . ' | Система РЕПРО';
+        }
+        if (empty(trim($resource->seo_description ?? ''))) {
+            $resource->seo_description = $resource->subtitle
+                ?: strip_tags($resource->description ?? '');
+        }
 
         return view('site.complex.show', compact('resource', 'articles', 'resources', 'pageType', 'forceDynamic'));
     }
