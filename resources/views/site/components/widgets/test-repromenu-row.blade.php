@@ -7,7 +7,7 @@
                 <div class="flex-spacer"></div>
                 <a href="{{ route('site.test.index') }}" class="button w-button">ПРОЙТИ ТЕСТ —&gt;</a>
             </div>
-            <img src="{{ asset('images/test/test-cover.webp') }}" loading="lazy" sizes="(max-width: 767px) 100vw, 50vw" srcset="{{ asset('images/test/test-cover-p-500.webp') }} 500w, {{ asset('images/test/test-cover-p-800.webp') }} 800w, {{ asset('images/test/test-cover.webp') }} 1036w" alt="" class="opros-widget-img">
+            <img src="{{ asset('images/test/test-cover.webp') }}" loading="lazy" sizes="(max-width: 767px) 100vw, 50vw" srcset="{{ asset('images/test/test-cover-p-500.webp') }} 500w, {{ asset('images/test/test-cover-p-800.webp') }} 800w, {{ asset('images/test/test-cover.webp') }} 1036w" alt="счастливая семейная пара" class="opros-widget-img">
         </div>
     </div>
     <div class="widgets-column">
@@ -19,7 +19,7 @@
                 <a href="{{ route('site.menus.index') }}" class="button w-button">Смотреть —&gt;</a>
             </div>
             <div class="repromenu-widget-images">
-                <img src="{{ asset('images/repromenu-widget.png') }}" loading="lazy" alt="" class="repromenu-widget-img">
+                <img src="{{ asset('images/repromenu-widget.png') }}" loading="lazy" alt="стакан смузи" class="repromenu-widget-img">
             </div>
         </div>
     </div>

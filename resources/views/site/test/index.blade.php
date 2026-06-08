@@ -219,7 +219,7 @@
             <div class="reprotest-list-item"><img src="{{ asset("images/test/reprotest-check.svg") }}" loading="lazy" alt="" class="reprotest-check">
               <p class="reprotest-list-p"><strong>Репродуктивное здоровье</strong></p>
             </div>
-          </div><img src="{{ asset("images/test/test-cover.webp") }}" loading="lazy" sizes="100vw" srcset="{{ asset("images/test/test-cover-p-500.webp") }} 500w, {{ asset("images/test/test-cover-p-800.webp") }} 800w, {{ asset("images/test/test-cover.webp") }} 1036w" alt="" class="reprotest-cover-image">
+          </div><img src="{{ asset("images/test/test-cover.webp") }}" loading="lazy" sizes="100vw" srcset="{{ asset("images/test/test-cover-p-500.webp") }} 500w, {{ asset("images/test/test-cover-p-800.webp") }} 800w, {{ asset("images/test/test-cover.webp") }} 1036w" alt="счастливая семейная пара" class="reprotest-cover-image">
           <a href="#" class="reproptest-button w-button {{ empty($questionsConfigured) ? 'reprotest-config-disabled' : '' }}"><strong>Пройти тест</strong> —&gt;</a>
         </div>
       </div>
