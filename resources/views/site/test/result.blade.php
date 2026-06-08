@@ -342,7 +342,7 @@
       <div class="heart-bg reprotest-section"><img sizes="(max-width: 2000px) 100vw, 2000px" srcset="{{ asset('images/heart_1-p-500.webp') }} 500w, {{ asset('images/heart_1-p-800.webp') }} 800w, {{ asset('images/heart_1-p-1080.webp') }} 1080w, {{ asset('images/heart_1-p-1600.webp') }} 1600w, {{ asset('images/heart_1.webp') }} 2000w" alt="" loading="lazy" src="{{ asset('images/heart_1.webp') }}" class="heart-bg-image"></div>
       <div class="container">
         <div class="sr-heading-reprotest">
-          <h2 class="sistema-repro-h1 srh1-reprotest"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> </h2>
+          <h2 class="sistema-repro-h1 srh1-reprotest"><span class="sistema-repro-semibold">СИСТЕМА РЕПРО</span> </h2>
           <p class="sistema-repro-p">Система РЕПРО – это программа, которая нормализует дефициты и помогает восстановить важные функции в&nbsp;организме женщины и мужчины, может повысить шансы на успешное зачатие, в&nbsp;том числе методом ЭКО.</p>
           <p class="reprotest-small-p">(с применением вспомогательных репродуктивных технологий)</p>
         </div>

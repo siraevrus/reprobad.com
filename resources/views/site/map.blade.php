@@ -136,7 +136,7 @@
     <section class="section map-section" style="max-width:100%">
         <div class="container">
             <div class="inner-repro-head">
-                <h1 class="inner-repro-h1"><span class="sistema-repro-semibold">Купить СИСТЕМУ РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="inline-text-block">в ближайшей к вам аптеке</span></h1>
+                <h1 class="inner-repro-h1"><span class="sistema-repro-semibold">Купить СИСТЕМУ РЕПРО</span> <span class="inline-text-block">в ближайшей к вам аптеке</span></h1>
             </div>
             <div data-current="Список" data-easing="ease" data-duration-in="300" data-duration-out="100" class="map-tabs w-tabs">
                 <div class="map-tabs-menu w-tab-menu">

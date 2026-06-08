@@ -139,7 +139,7 @@
     <section class="section sistema-section">
         <div class="container">
             <div class="sistema-repro-heading">
-                <h2 class="sistema-repro-h1"><span class="sistema-repro-semibold">СИСТЕМА РЕПР</span><span class="o-span"><strong>О</strong></span> <span class="sistema-repro-h1-descriptor">подготовка пары к беременности</span></h2>
+                <h2 class="sistema-repro-h1"><span class="sistema-repro-semibold">СИСТЕМА РЕПРО</span> <span class="sistema-repro-h1-descriptor">подготовка пары к беременности</span></h2>
                 <p class="sistema-repro-steps-p">4 важных шага</p>
             </div>
             <div>
