@@ -3050,7 +3050,7 @@ figcaption {
   aspect-ratio: 72 / 27;
   object-fit: contain;
   object-position: 0% 50%;
-  width: 100%;
+  width: 70%;
   overflow: visible;
 }
 
