@@ -3091,7 +3091,7 @@ figcaption {
   aspect-ratio: 72 / 27;
   object-fit: contain;
   object-position: 0% 50%;
-  width: 70%;
+  width: 50%;
 }
 
 .repro-biom-logo {
