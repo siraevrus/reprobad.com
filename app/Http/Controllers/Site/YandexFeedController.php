@@ -37,7 +37,8 @@ class YandexFeedController extends Controller
         $products = Product::query()
             ->where('active', 1)
             ->whereHas('complex', fn ($q) => $q->where('active', 1))
-            ->with('complex:id,alias,title')
+            ->with('complex:id,alias,title,alt_left,alt_right')
+            ->orderBy('complex_id')
             ->orderBy('sort')
             ->get();
 
@@ -57,6 +58,8 @@ class YandexFeedController extends Controller
         $lines[] = '    </categories>';
         $lines[] = '    <offers>';
 
+        $indexByComplex = [];
+
         foreach ($products as $product) {
             $complex = $product->complex;
             if (! $complex || ! $complex->alias || ! $product->alias) {
@@ -68,7 +71,9 @@ class YandexFeedController extends Controller
                 continue;
             }
 
-            $name = strip_tags((string) ($product->title ?? ''));
+            $complexId = (int) $product->complex_id;
+            $indexByComplex[$complexId] = ($indexByComplex[$complexId] ?? 0) + 1;
+            $name = product_section_heading($product, $complex, $indexByComplex[$complexId]);
             if ($name === '') {
                 continue;
             }
