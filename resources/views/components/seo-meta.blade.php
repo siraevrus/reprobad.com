@@ -62,24 +62,27 @@
 @php
     // Определяем изображение для og:image
     $ogImage = $seoData['og_image'] ?? null;
-    
-    // Если нет изображения в SEO данных, используем изображение из ресурса
-    if (!$ogImage && $resource) {
-        $ogImage = $resource->image ?? $resource->logo ?? null;
+
+    if (! $ogImage && $resource) {
+        $ogImage = \App\Support\SeoImageUrl::forResource($resource);
     }
-    
+
     // Проверяем, является ли изображение base64 (data:image/...)
-    // Если да, используем дефолтное изображение вместо base64 для оптимизации
     if ($ogImage && str_starts_with($ogImage, 'data:image')) {
         $ogImage = null;
     }
-    
-    // Если все еще нет изображения, используем дефолтное
-    if (!$ogImage) {
+
+    // SVG не подходит для сниппетов Яндекса — только растровые форматы
+    if ($ogImage && ! \App\Support\ProductImageUrl::isSuitableForSnippet(
+        str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'))
+    )) {
+        $ogImage = null;
+    }
+
+    if (! $ogImage) {
         $ogImage = config('app.url') . '/images/lgog-gold.svg';
     }
-    
-    // Формируем полный URL
+
     $ogImageUrl = str_starts_with($ogImage, 'http') ? $ogImage : (config('app.url') . '/' . ltrim($ogImage, '/'));
 @endphp
 <meta property="og:image" content="{{ $ogImageUrl }}">

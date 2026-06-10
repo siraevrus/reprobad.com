@@ -40,6 +40,7 @@ use App\Http\Controllers\Site\PageController as SitePageController;
 use App\Http\Controllers\Site\ProductController as SiteProductController;
 use App\Http\Controllers\Site\TestController as SiteTestController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
+use App\Http\Controllers\Site\YandexFeedController;
 use Illuminate\Support\Facades\Route;
 
 // Web Bot Auth key directory (draft-meunier-http-message-signatures-directory)
@@ -47,6 +48,7 @@ Route::get('/.well-known/http-message-signatures-directory', [BotAuthController:
     ->name('well-known.bot-auth');
 
 Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name('short.redirect');
+Route::get('/feeds/yandex.yml', YandexFeedController::class)->name('site.feeds.yandex');
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
