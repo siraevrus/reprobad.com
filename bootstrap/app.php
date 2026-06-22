@@ -4,6 +4,8 @@ use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'telegram.relay' => \App\Http\Middleware\VerifyTelegramRelaySecret::class,
         ]);
+        $middleware->trustProxies(at: '*');
         // $middleware->append(Authenticate::class);
         $middleware->prepend(\App\Http\Middleware\NormalizeCheckupPathCase::class);
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
@@ -27,5 +30,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (TokenMismatchException $e, Request $request) {
+            $message = 'Сессия истекла. Обновите страницу и войдите снова.';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 419);
+            }
+
+            if ($request->is('login') || $request->routeIs('login', 'login.auth')) {
+                return redirect()->route('login')->with('error', $message);
+            }
+
+            if ($request->is('admin*')) {
+                return redirect()->back()->withInput()->with('error', $message);
+            }
+
+            return redirect()->route('login')->with('error', $message);
+        });
     })->create();

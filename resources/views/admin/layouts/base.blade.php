@@ -77,6 +77,12 @@
                 </div>
             @endif
 
+            @if(Session::has('error'))
+                <div class="shadow rounded-lg py-2 px-4 mb-4 bg-red-100 border text-red-700 border-red-300">
+                    <p>{{ session()->get('error') }}</p>
+                </div>
+            @endif
+
             <div class="bg-white shadow rounded-lg p-6">
                 @yield('content')
             </div>
