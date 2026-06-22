@@ -236,13 +236,84 @@ const showAlert = {
         return messages;
     },
 
+    humanizeServerMessage(message) {
+        if (!message || typeof message !== 'string') {
+            return '';
+        }
+
+        if (message.includes('Duplicate entry')) {
+            const match = message.match(/Duplicate entry '([^']+)'/);
+            return match
+                ? `Такой алиас уже используется: «${match[1]}». Выберите другой.`
+                : 'Такой алиас уже используется. Выберите другой.';
+        }
+
+        if (message.includes('Data too long for column')) {
+            const match = message.match(/Data too long for column '([^']+)'/);
+            const labels = {
+                alias: 'алиас',
+                description: 'короткий текст',
+                title: 'заголовок',
+                content: 'содержание',
+            };
+            const field = match ? (labels[match[1]] || match[1]) : null;
+
+            return field
+                ? `Поле «${field}» слишком длинное. Сократите текст или уберите форматирование.`
+                : 'Одно из полей слишком длинное. Сократите текст или уберите форматирование.';
+        }
+
+        if (message.includes('SQLSTATE') && message.includes('Integrity constraint')) {
+            return 'Нарушение ограничений данных. Проверьте уникальность алиаса и длину полей.';
+        }
+
+        if (message.includes('(Connection:')) {
+            return message.split('(Connection:')[0].trim();
+        }
+
+        return message;
+    },
+
+    formatSaveError(response, data) {
+        const parts = [];
+
+        if (data.errors) {
+            const fieldErrors = this.getErrorMessages(data.errors).trim();
+            if (fieldErrors) {
+                parts.push(fieldErrors);
+            }
+        }
+
+        const serverMessage = data.message || data.error;
+        if (serverMessage) {
+            const humanized = this.humanizeServerMessage(serverMessage);
+            if (humanized && !parts.includes(humanized)) {
+                parts.push(humanized);
+            }
+        }
+
+        if (parts.length > 0) {
+            return parts.join('\n');
+        }
+
+        if (response.status === 419) {
+            return 'Сессия истекла. Обновите страницу и попробуйте снова.';
+        }
+
+        if (response.status === 413) {
+            return 'Данные слишком большие (фото или текст). Уменьшите размер изображения.';
+        }
+
+        return `Ошибка сервера (${response.status} ${response.statusText})`;
+    },
+
     showAlert(message, error = false) {
         this.alert.show = false;
         this.$nextTick(() => {
             this.alert.show = true;
             this.alert.message = error ? this.getErrorMessages(message) : message;
             this.alert.error = error;
-            setTimeout(() => this.alert.show = false, 2500);
+            setTimeout(() => this.alert.show = false, error ? 8000 : 2500);
         });
     },
 }
@@ -277,16 +348,20 @@ const save = {
                 body: JSON.stringify(formData)
             });
 
-            let data;
+            let data = {};
             try {
                 data = await response.json();
             } catch (e) {
                 this.errors = {};
-                this.showAlert('Ошибка сервера: ' + response.status + ' ' + response.statusText, true);
+                if (response.status === 413) {
+                    this.showAlert('Данные слишком большие (фото или текст). Уменьшите размер изображения.', true);
+                } else {
+                    this.showAlert(`Ошибка сервера (${response.status} ${response.statusText})`, true);
+                }
                 return;
             }
 
-            if (data.success) {
+            if (response.ok && data.success) {
                 if (this.action === 'create') {
                     window.location.href = '/admin/' + this.route + '/';
                 } else {
@@ -295,7 +370,7 @@ const save = {
                 }
             } else {
                 this.errors = data.errors || {};
-                this.showAlert(data.errors || 'Ошибка при сохранении', true);
+                this.showAlert(this.formatSaveError(response, data), true);
             }
         }
         catch (e) {

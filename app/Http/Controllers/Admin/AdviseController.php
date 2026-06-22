@@ -2,24 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
 use App\Services\InputService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class AdviseController extends Controller
 {
+    use HandlesAdminSaveErrors;
 
     public array $rules = [
         'title' => 'required|string',
         'content' => 'required|string',
-        'alias' => 'required|unique:articles,alias',
-        'description' => 'string|nullable',
+        'alias' => 'required|unique:advises,alias',
+        'description' => 'string|nullable|max:255',
         'image' => 'string|nullable',
         'image_alt' => 'string|nullable',
         'icon' => 'string|nullable',
@@ -68,13 +70,10 @@ class AdviseController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), $this->rules);
+        $validator = $this->makeSaveValidator($request, $this->rules);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return $this->validationErrorResponse($validator);
         }
 
         $validated = $validator->validated();
@@ -83,15 +82,16 @@ class AdviseController extends Controller
         $imageFields = ['image'];
         $dataForSave = array_diff_key($validated, array_flip($imageFields));
 
-        $resource = Advise::query()
-            ->create($dataForSave);
-        
-        // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
-        
+        try {
+            $resource = Advise::query()->create($dataForSave);
+            InputService::uploadFile($request->image, $resource, 'image');
+        } catch (QueryException $e) {
+            return $this->saveErrorResponse($e);
+        }
+
         return response()->json([
             'success' => true,
-            'resource' => $resource
+            'resource' => $resource->fresh()
         ]);
     }
 
@@ -99,15 +99,12 @@ class AdviseController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), array_merge($this->rules, [
-            'alias' => 'required|unique:articles,alias,' . $id,
+        $validator = $this->makeSaveValidator($request, array_merge($this->rules, [
+            'alias' => 'required|unique:advises,alias,' . $id,
         ]));
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return $this->validationErrorResponse($validator);
         }
 
         $validated = $validator->validated();
@@ -117,15 +114,18 @@ class AdviseController extends Controller
         $dataForSave = array_diff_key($validated, array_flip($imageFields));
 
         $resource = Advise::query()->findOrFail($id);
-        $resource->fill($dataForSave);
-        $resource->save();
 
-        // Обработка изображений через InputService (конвертирует base64 в файлы)
-        InputService::uploadFile($request->image, $resource, 'image');
+        try {
+            $resource->fill($dataForSave);
+            $resource->save();
+            InputService::uploadFile($request->image, $resource, 'image');
+        } catch (QueryException $e) {
+            return $this->saveErrorResponse($e);
+        }
 
         return response()->json([
             'success' => true,
-            'resource' => $resource
+            'resource' => $resource->fresh()
         ]);
     }
 

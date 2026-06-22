@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    use HandlesAdminSaveErrors;
 
     public array $rules = [
         'title' => 'required|string',
         'content' => 'required|string',
         'alias' => 'required|unique:articles,alias',
-        'description' => 'string|nullable',
+        'description' => 'string|nullable|max:65535',
         'image' => 'string|nullable',
         'image_alt' => 'string|nullable',
         'icon' => 'string|nullable',
@@ -67,19 +69,20 @@ class ArticleController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), $this->rules);
+        $validator = $this->makeSaveValidator($request, $this->rules);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return $this->validationErrorResponse($validator);
         }
 
         $data = $validator->validated();
         $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
 
-        $resource = Article::query()->create($data);
+        try {
+            $resource = Article::query()->create($data);
+        } catch (QueryException $e) {
+            return $this->saveErrorResponse($e);
+        }
 
         return response()->json([
             'success' => true,
@@ -91,23 +94,25 @@ class ArticleController extends Controller
     {
         $request->headers->set('Accept', 'application/json');
 
-        $validator = Validator::make($request->all(), array_merge($this->rules, [
+        $validator = $this->makeSaveValidator($request, array_merge($this->rules, [
             'alias' => 'required|unique:articles,alias,' . $id,
         ]));
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return $this->validationErrorResponse($validator);
         }
 
         $data = $validator->validated();
         $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
 
         $resource = Article::query()->findOrFail($id);
-        $resource->fill($data);
-        $resource->save();
+
+        try {
+            $resource->fill($data);
+            $resource->save();
+        } catch (QueryException $e) {
+            return $this->saveErrorResponse($e);
+        }
 
         return response()->json([
             'success' => true,
