@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->trustProxies(at: '*');
         // $middleware->append(Authenticate::class);
+        $middleware->prepend(\App\Http\Middleware\NormalizeWwwHost::class);
         $middleware->prepend(\App\Http\Middleware\NormalizeCheckupPathCase::class);
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
         $middleware->append(\App\Http\Middleware\StaticCacheHeaders::class);
