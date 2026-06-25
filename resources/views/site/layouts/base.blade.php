@@ -400,14 +400,10 @@
     @isset($resource->color)
         <link rel="stylesheet" href="{{ asset('css/' . $resource->color . '.css') }}">
     @endisset
-</head>
-<body class="{{ isset($isHome) || request()->segment(1) == 'contacts' ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
 
-@if(isset($resource->color) && in_array($resource->color, ['blue', 'purple', 'orange', 'green', 'mandarin']))
-    @include('site.components.products.' . $resource->color)
-@else
-<div class="w-embed">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @if(isset($resource->color) && in_array($resource->color, ['blue', 'purple', 'orange', 'green', 'mandarin']))
+        @include('site.components.products.' . $resource->color)
+    @else
     <style>
         html { font-size: 1.333125rem; }
         @media screen and (max-width:1920px) { html { font-size: calc(0.0009480702515177741rem + 1.1101474414570685vw); } }
@@ -419,7 +415,7 @@
         .w-richtext > *:last-child { margin-bottom: 0; }
         .w-richtext figure img { border-radius: 1rem; }
         .w-richtext figure { --figure-width: 100%; width: var(--figure-width); max-width: var(--figure-width); }
-        .w-richtext figure div, .w-richtext figure img { width: 100% !important; !important; max-width: 100% !important; }
+        .w-richtext figure div, .w-richtext figure img { width: 100% !important; max-width: 100% !important; }
         .w-richtext {
             font-size: clamp(13px, 1rem, 1rem);
         }
@@ -554,9 +550,8 @@
         }
     </style>
     @endif
-</div>
-@endif
-<style>
+    @endif
+    <style>
     .custom-button-product {
         color: var(--p-first-color);
         text-align: center;
@@ -568,7 +563,11 @@
         line-height: 1.5;
         transition: color .15s, background-color .15s, transform .15s cubic-bezier(.175, .885, .32, 1.275), opacity .15s cubic-bezier(.175, .885, .32, 1.275);
     }
-</style>
+    </style>
+    <style>.input-error { border: 1px solid red; } [x-cloak] { display: none !important; }</style>
+</head>
+<body class="{{ isset($isHome) || request()->segment(1) == 'contacts' ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
+
 <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">

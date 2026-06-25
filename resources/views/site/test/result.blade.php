@@ -294,7 +294,7 @@
               <label class="w-checkbox reprotest-subscribe-checkbox">
                 <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                 <input type="checkbox" name="agree" id="agree" required checked style="opacity:0;position:absolute;z-index:-1">
-                <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ url('/privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a></span>
+                <span class="subscribe-checkbox-label w-form-label">Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ url('/privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a></span>
               </label>
               <input type="hidden" name="result_id" value="{{ $testResult->id }}">
             </form>

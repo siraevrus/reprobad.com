@@ -135,7 +135,7 @@
                                     <label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                                         <input type="checkbox" value="1" x-model="form.agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
-                                        <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
+                                        <span class="subscribe-checkbox-label w-form-label">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
                                     </label>
                                     <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
@@ -282,13 +282,7 @@
           }
         })();
     </script>
-
-    <style>
-        .input-error {
-            border: 1px solid red;
-        }
-    </style>
-    <script>
+<script>
         function app() {
             return {
                 form: {

@@ -90,28 +90,25 @@
 <script type="application/ld+json">
 {!! json_encode($medicalWebPageSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
+<style>
+    .article-icon-image {
+        mask-image: url('https://cdn.prod.website-files.com/67040316492967a9326aebb1/6704f8b64f300dd6400349c8_big-news-icon.svg');
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        mask-position: center;
+    }
+</style>
 @endsection
 
 @section('content')
     <section class="section article-section">
         <div class="container">
             <div class="breadcrumbs">
-                <a href="{{ route('site.articles.index') }}" nav="back" class="breadcrumb">&lt;- Статьи</a>
+                <a href="{{ route('site.articles.index') }}" data-nav="back" class="breadcrumb">&lt;- Статьи</a>
             </div>
             <div class="article-head">
                 <div class="article-icon">
-                    <div class="article-icon-image">
-                        <div class="w-embed">
-                            <style>
-                                .article-icon-image {
-                                    mask-image: url('https://cdn.prod.website-files.com/67040316492967a9326aebb1/6704f8b64f300dd6400349c8_big-news-icon.svg');
-                                    mask-size: contain;
-                                    mask-repeat: no-repeat;
-                                    mask-position: center;
-                                }
-                            </style>
-                        </div>
-                    </div>
+                    <div class="article-icon-image"></div>
                 </div>
                 <h1 class="article-h1"><strong>{{ $resource->title }}</strong></h1>
                 <p class="big-paragraph article-short">{!! strip_tags($resource->description ?? '', '<strong><em><b><i><a><br>') !!}</p>
@@ -195,7 +192,7 @@
                                     <label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                                         <input type="checkbox" value="1" x-model="form.agree" id="agree" data-name="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
-                                        <span class="subscribe-checkbox-label w-form-label" for="agree">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
+                                        <span class="subscribe-checkbox-label w-form-label">Даю согласие на получение рассылки с сайта «Репробад» и соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в отношении персональных данных</a></span>
                                     </label>
                                     <input type="submit" data-wait="Секундочку..." class="purple-button w-button" value="Подписаться">
                                 </form>
@@ -232,11 +229,6 @@
 
 @section('scripts')
     <script src="https://yastatic.net/share2/share.js"></script>
-    <style>
-        .input-error {
-            border: 1px solid red;
-        }
-    </style>
     <script>
         const promoData = [
             { href: '//www.eapteka.ru/search/?q=репро', img: @json(asset('images/banner1.png')) },

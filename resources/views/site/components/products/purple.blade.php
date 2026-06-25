@@ -1,6 +1,4 @@
-<div class="w-embed">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
+<style>
         html { font-size: 1.333125rem; }
         @media screen and (max-width:1920px) { html { font-size: calc(0.0009480702515177741rem + 1.1101474414570685vw); } }
         @media screen and (max-width:767px) { html { font-size: calc(-0.0026705287206266314rem + 4.27284595300261vw); } }
@@ -12,7 +10,7 @@
         .w-richtext > *:last-child { margin-bottom: 0; }
         .w-richtext figure img { border-radius: 1rem; }
         .w-richtext figure { --figure-width: 100%; width: var(--figure-width); max-width: var(--figure-width); }
-        .w-richtext figure div, .w-richtext figure img { width: 100% !important; !important; max-width: 100% !important; }
+        .w-richtext figure div, .w-richtext figure img { width: 100% !important; max-width: 100% !important; }
         ul li::marker { color: var(--lavender); }
         .o-span{ visibility: hidden; }
         .o-span::after {
@@ -52,9 +50,8 @@
             .mobile-hyphen::after { content: '-'; }
         }
     </style>
-</div>
-<div class="w-embed">
-    <style>
+</style>
+<style>
         /* цветовая схема страницы */
         body {
             --p-bg-color: #E9E6F5;
@@ -62,9 +59,8 @@
             --p-second-color: #8577B7;
         }
     </style>
-</div>
-<div class="w-embed">
-    <style>
+</style>
+<style>
         #first { --p-color: var(--p-first-color); }
         #second { --p-color: var(--p-second-color); }
         .product-section { background-color: var(--p-bg-color) !important; }
@@ -94,11 +90,10 @@
         @media screen and (max-width: 767px) {
             .product-section { background-color: transparent !important; }
             .product-container { background-color: var(--p-bg-color) !important; }
-            .product-options-tab.active:hover { background-color: transparent; !important }
+            .product-options-tab.active:hover { background-color: transparent !important }
             /*    .product-options-tab { border-top-color: color-mix(in srgb, var(--p-color) 50%, rgba(255, 255, 255, 0)) !important; }*/
             .product-options-tab:hover { background-color: color-mix(in srgb, var(--p-color) 10%, rgba(255, 255, 255, 0)); }
             .product-options-tab.active { position: relative; color: var(--p-color); background-color: var(--p-bg-color); }
             .product-options-tab.active:after { position: absolute; content: ' '; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; background-color: var(--p-color); opacity: 0.1; }
         }
     </style>
-</div>

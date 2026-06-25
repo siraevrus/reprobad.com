@@ -121,7 +121,7 @@
                             <label class="w-checkbox subscribe-checkbox black">
                                 <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                                 <input type="checkbox" value="1" x-model="form.agree" id="agree-2" style="opacity:0;position:absolute;z-index:-1" checked="">
-                                <span class="subscribe-checkbox-label w-form-label" for="agree-2">
+                                <span class="subscribe-checkbox-label w-form-label">
                                     Соглашаюсь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами политики конфиденциальности в отношении персональных данных</a>
                                 </span>
                             </label>
@@ -143,11 +143,6 @@
 @endsection
 
 @section('scripts')
-<style>
-.input-error {
-    border: 1px solid red;
-}
-</style>
 <script>
     function app() {
         return {

@@ -81,7 +81,7 @@
     <section class="section article-section">
         <div class="container">
             <div class="breadcrumbs">
-                <a href="{{ route('site.events.index') }}" nav="back" class="breadcrumb">&lt;- События</a>
+                <a href="{{ route('site.events.index') }}" data-nav="back" class="breadcrumb">&lt;- События</a>
             </div>
             <div class="article-head full-width">
                 <h1 class="article-h1">{{ $resource->title }}</h1>
@@ -145,7 +145,7 @@
                                     <label class="w-checkbox subscribe-checkbox black">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                                         <input type="checkbox" x-model="formFeedback.agree" id="agree-2" data-name="Agree 2" style="opacity:0;position:absolute;z-index:-1" checked="">
-                                        <span class="subscribe-checkbox-label w-form-label" for="agree-2">
+                                        <span class="subscribe-checkbox-label w-form-label">
                                             Соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link black">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a>
                                         </span>
                                     </label>
@@ -172,7 +172,7 @@
                                     <label class="w-checkbox subscribe-checkbox">
                                         <div class="w-checkbox-input w-checkbox-input--inputType-custom subscribe-checkbox-input w--redirected-checked"></div>
                                         <input type="checkbox" x-model="formSubscribe.agree" id="agree" required="" style="opacity:0;position:absolute;z-index:-1" checked="">
-                                        <span class="subscribe-checkbox-label w-form-label" for="agree">
+                                        <span class="subscribe-checkbox-label w-form-label">
                                             Даю согласие на получение рассылки с&nbsp;сайта «Репробад» и соглашаюсь с&nbsp;<a href="{{ route('site.text.privacy') }}" target="_blank" class="checkbox-link">правилами политики конфиденциальности в&nbsp;отношении персональных&nbsp;данных</a>
                                         </span>
                                     </label>
@@ -195,14 +195,6 @@
 @endsection
 
 @section('scripts')
-    <style>
-        .input-error {
-            border: 1px solid red;
-        }
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
     <script>
         function app() {
             return {
