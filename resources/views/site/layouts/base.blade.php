@@ -182,9 +182,9 @@
         html.w-mod-js body.css-loaded{visibility:visible;opacity:1;transition:opacity 0.15s ease-in}
         *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
     </style>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/webflow.css">
-    <link rel="stylesheet" href="css/sistema-repro-550d9e79d9699175495d854c7.webflow.css">
+    <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/webflow.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sistema-repro-550d9e79d9699175495d854c7.webflow.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript" async></script>
@@ -399,7 +399,7 @@
         !function(e){"use strict";var t=function(t,n,r){function o(){if(i){i=!1;for(var e in a)a[e].rel="stylesheet",a[e].onload=null}if("undefined"!=typeof n&&n.call)return n.call(this)}var i=!0,l=e.document,s=l.createElement("link");if(r)s.media="only x";else{var d=l.createElement("style");d.appendChild(l.createTextNode("@media only x { "+t+" }")),l.head.appendChild(d)}s.rel="preload",s.as="style",s.href=t,s.onloadcssdefined=o,s.onload=o,s.onreadystatechange=function(){"complete"===this.readyState&&o()},l.head.appendChild(s);var a=l.styleSheets;return s},"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
     </script>
     @isset($resource->color)
-        <link rel="stylesheet" href="css/{{ $resource->color }}.css">
+        <link rel="stylesheet" href="{{ asset('css/' . $resource->color . '.css') }}">
     @endisset
 </head>
 <body class="{{ isset($isHome) || request()->segment(1) == 'contacts' ? '' : 'lavender' }} {{ $bodyClass ?? '' }}">
@@ -578,11 +578,11 @@
             <div class="brand-text-mobile">готовимся <br><span style="white-space: nowrap;">к беременности</span> <br>вместе!</div>
         </a>
         <div class="nav-desktop-links">
-            <a href="about" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">Система РЕПРО</a>
-            <a href="products" class="nav-quick-link {{ request()->is('products') ? 'active' : '' }}">Продукты</a>
-            <a href="usefully-tips" class="nav-quick-link {{ request()->is('usefully-tips') ? 'active' : '' }}">Полезные советы</a>
-            <a href="articles" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
-            <a href="events" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
+            <a href="{{ route('site.text.about') }}" class="nav-quick-link {{ request()->is('about') ? 'active' : '' }}">Система РЕПРО</a>
+            <a href="{{ route('site.products.index') }}" class="nav-quick-link {{ request()->is('products') ? 'active' : '' }}">Продукты</a>
+            <a href="{{ route('site.advises.index') }}" class="nav-quick-link {{ request()->is('usefully-tips') ? 'active' : '' }}">Полезные советы</a>
+            <a href="{{ route('site.articles.index') }}" class="nav-quick-link {{ request()->is('articles') ? 'active' : '' }}">Статьи</a>
+            <a href="{{ route('site.events.index') }}" class="nav-quick-link  {{ request()->is('events') ? 'active' : '' }}">События</a>
         </div>
         @if(!isset($isHome))
             <a href="https://www.eapteka.ru/goods/brand/repro/?utm_source=products&utm_medium=direct_link&utm_content=menu_top_button&utm_campaign=eapteka" class="navbar-buy-button w-button">Купить</a>
@@ -596,39 +596,39 @@
                         <path d="M9.41421356,0.585786438 L16,7.17157288 L16,7.17157288 L0,7.17157288 L6.58578644,0.585786438 C7.36683502,-0.195262146 8.63316498,-0.195262146 9.41421356,0.585786438 Z" id="Rectangle" fill="#8577B7"></path>
                     </svg></div>
                 <div class="nav-menu-links">
-                    <a href="products" class="nav-link hide-desktop">Продукты</a>
-                    <a href="events" class="nav-link hide-desktop">События</a>
-                    <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
-                    <a href="articles" class="nav-link hide-desktop">Статьи</a>
+                    <a href="{{ route('site.products.index') }}" class="nav-link hide-desktop">Продукты</a>
+                    <a href="{{ route('site.events.index') }}" class="nav-link hide-desktop">События</a>
+                    <a href="{{ route('site.advises.index') }}" class="nav-link hide-desktop">Полезные советы</a>
+                    <a href="{{ route('site.articles.index') }}" class="nav-link hide-desktop">Статьи</a>
                     <div class="nav-link-divider"></div>
-                    <a href="company" class="nav-link">О компании</a>
+                    <a href="{{ route('site.text.company') }}" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
-                    <a href="contacts" class="nav-link">Контакты</a>
+                    <a href="{{ route('site.text.contacts') }}" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
-                    <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <a href="{{ route('site.faq.index') }}" class="nav-link">Вопрос-ответ</a>
                     <div class="nav-link-divider"></div>
-                    <a href="map" class="nav-link">Карта</a>
+                    <a href="{{ route('site.map') }}" class="nav-link">Карта</a>
                 </div>
             </nav>
         </div>
         <nav role="navigation" class="nav-menu w-nav-menu">
             <div class="nav-menu-wrap">
                 <div class="nav-menu-links">
-                    <a href="about" class="nav-link hide-desktop">Система Репро</a>
-                    <a href="products" class="nav-link hide-desktop">Продукты</a>
-                    <a href="usefully-tips" class="nav-link hide-desktop">Полезные советы</a>
-                    <a href="articles" class="nav-link hide-desktop">Статьи</a>
-                    <a href="events" class="nav-link hide-desktop">События</a>
+                    <a href="{{ route('site.text.about') }}" class="nav-link hide-desktop">Система Репро</a>
+                    <a href="{{ route('site.products.index') }}" class="nav-link hide-desktop">Продукты</a>
+                    <a href="{{ route('site.advises.index') }}" class="nav-link hide-desktop">Полезные советы</a>
+                    <a href="{{ route('site.articles.index') }}" class="nav-link hide-desktop">Статьи</a>
+                    <a href="{{ route('site.events.index') }}" class="nav-link hide-desktop">События</a>
 
-                    <a href="map" class="nav-link">&nbsp;</a>
+                    <a href="{{ route('site.map') }}" class="nav-link">&nbsp;</a>
                     <div class="nav-link-divider"></div>
-                    <a href="company" class="nav-link">О компании</a>
+                    <a href="{{ route('site.text.company') }}" class="nav-link">О компании</a>
                     <div class="nav-link-divider"></div>
-                    <a href="contacts" class="nav-link">Контакты</a>
+                    <a href="{{ route('site.text.contacts') }}" class="nav-link">Контакты</a>
                     <div class="nav-link-divider"></div>
-                    <a href="faq" class="nav-link">Вопрос-ответ</a>
+                    <a href="{{ route('site.faq.index') }}" class="nav-link">Вопрос-ответ</a>
                     <div class="nav-link-divider"></div>
-                    <a href="map" class="nav-link">Карта</a>
+                    <a href="{{ route('site.map') }}" class="nav-link">Карта</a>
                 </div>
                 <div class="nav-family-line"><img src="{{ asset('images/nav-family-line.svg') }}" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
                 <div class="nav-contacts">
@@ -715,17 +715,17 @@
         </div>
         <div class="footer-menu">
             <div class="footer-menu-column">
-                <a href="about" class="footer-menu-link">Система РЕПРО</a>
-                <a href="products" class="footer-menu-link">Продукты</a>
-                <a href="events" class="footer-menu-link">События</a>
-                <a href="usefully-tips" class="footer-menu-link">Полезные советы</a>
-                <a href="articles" class="footer-menu-link">Статьи</a>
+                <a href="{{ route('site.text.about') }}" class="footer-menu-link">Система РЕПРО</a>
+                <a href="{{ route('site.products.index') }}" class="footer-menu-link">Продукты</a>
+                <a href="{{ route('site.events.index') }}" class="footer-menu-link">События</a>
+                <a href="{{ route('site.advises.index') }}" class="footer-menu-link">Полезные советы</a>
+                <a href="{{ route('site.articles.index') }}" class="footer-menu-link">Статьи</a>
             </div>
             <div class="footer-menu-column">
-                {{-- <a href="map" class="footer-menu-link">Где купить</a> --}}
-                <a href="company" aria-current="page" class="footer-menu-link w--current">О компании</a>
-                <a href="faq" aria-current="page" class="footer-menu-link w--current">Вопросы-ответы</a>
-                <a href="contacts" class="footer-menu-link">Контакты</a>
+                {{-- <a href="{{ route('site.map') }}" class="footer-menu-link">Где купить</a> --}}
+                <a href="{{ route('site.text.company') }}" aria-current="page" class="footer-menu-link w--current">О компании</a>
+                <a href="{{ route('site.faq.index') }}" aria-current="page" class="footer-menu-link w--current">Вопросы-ответы</a>
+                <a href="{{ route('site.text.contacts') }}" class="footer-menu-link">Контакты</a>
             </div>
             <a href="{{ route('site.text.privacy') }}" target="_blank" class="footer-terms-link">Политика конфиденциальности в отношении персональных данных</a>
         </div>
@@ -753,7 +753,7 @@
     <div class="cookies-banner">
         <div class="cookies-wrap">
             <div class="cookies">
-                <div class="cookies-text">Этот веб-сайт использует файлы cookies, чтобы обеспечить удобную работу пользователей с ним и функциональные возможности сайта. Нажимая &quot;Я принимаю&quot; вы соглашаетесь с <a href="/privacy" target="_blank" class="cookies-text-link">условиями использования файлов cookies</a>
+                <div class="cookies-text">Этот веб-сайт использует файлы cookies, чтобы обеспечить удобную работу пользователей с ним и функциональные возможности сайта. Нажимая &quot;Я принимаю&quot; вы соглашаетесь с <a href="{{ route('site.text.privacy') }}" target="_blank" class="cookies-text-link">условиями использования файлов cookies</a>
                 </div>
                 <a href="#" class="accept-cookies w-button">Принимаю</a>
             </div>
