@@ -125,6 +125,32 @@ if (!function_exists('canonical_query_string')) {
     }
 }
 
+if (!function_exists('public_asset')) {
+    /**
+     * URL для статики: пути из public/, storage/ или legacy «images/...».
+     * http(s)://, data: и пути с ведущим «/» возвращаются без изменений.
+     */
+    function public_asset(?string $path): string
+    {
+        $path = trim((string) $path);
+        if ($path === '') {
+            return '';
+        }
+
+        if (str_starts_with($path, 'http://')
+            || str_starts_with($path, 'https://')
+            || str_starts_with($path, 'data:')) {
+            return $path;
+        }
+
+        if (str_starts_with($path, '/')) {
+            return $path;
+        }
+
+        return asset($path);
+    }
+}
+
 if (!function_exists('product_section_heading')) {
     /**
      * Заголовок секции продукта на странице комплекса (для h2).

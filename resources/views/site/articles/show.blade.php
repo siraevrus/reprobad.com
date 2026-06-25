@@ -156,7 +156,7 @@
                         @foreach($other as $item)
                         <div class="card side-card">
                             @if(isset($item->icon))
-                            <div class="card-head"><img src="{{ $item->icon ?? '' }}" loading="lazy" alt="" class="card-icon"></div>
+                            <div class="card-head"><img src="{{ public_asset($item->icon ?? '') }}" loading="lazy" alt="" class="card-icon"></div>
                             @endif
                             <div class="card-body">
                                 <a href="{{ route('site.articles.show', $item->alias) }}" aria-current="page" class="card-title w--current">{{ $item->title }}</a>

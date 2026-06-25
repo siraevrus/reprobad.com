@@ -313,7 +313,7 @@
                     <div class="menu-card">
                         @php
                             $breakfastImg = $menuData['breakfast']['image'] ?? null;
-                            $breakfastImgSrc = $breakfastImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                            $breakfastImgSrc = $breakfastImg ? public_asset($breakfastImg) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
                             $breakfastImgAlt = $menuData['breakfast']['image_alt'] ?? strip_tags($menuData['breakfast']['title'] ?? 'Завтрак');
                         @endphp
                         <img src="{{ $breakfastImgSrc }}" loading="lazy" alt="{{ $breakfastImgAlt }}" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
@@ -354,7 +354,7 @@
                     <div class="menu-card">
                         @php
                             $snackImg = $menuData['snack']['image'] ?? null;
-                            $snackImgSrc = $snackImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                            $snackImgSrc = $snackImg ? public_asset($snackImg) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
                             $snackImgAlt = $menuData['snack']['image_alt'] ?? strip_tags($menuData['snack']['title'] ?? 'Перекус');
                         @endphp
                         <img src="{{ $snackImgSrc }}" loading="lazy" alt="{{ $snackImgAlt }}" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
@@ -395,7 +395,7 @@
                     <div class="menu-card">
                         @php
                             $dinnerImg = $menuData['dinner']['image'] ?? null;
-                            $dinnerImgSrc = $dinnerImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                            $dinnerImgSrc = $dinnerImg ? public_asset($dinnerImg) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
                             $dinnerImgAlt = $menuData['dinner']['image_alt'] ?? strip_tags($menuData['dinner']['title'] ?? 'Обед');
                         @endphp
                         <img src="{{ $dinnerImgSrc }}" loading="lazy" alt="{{ $dinnerImgAlt }}" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
@@ -436,7 +436,7 @@
                     <div class="menu-card">
                         @php
                             $lunchImg = $menuData['lunch']['image'] ?? null;
-                            $lunchImgSrc = $lunchImg ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
+                            $lunchImgSrc = $lunchImg ? public_asset($lunchImg) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';
                             $lunchImgAlt = $menuData['lunch']['image_alt'] ?? strip_tags($menuData['lunch']['title'] ?? 'Ужин');
                         @endphp
                         <img src="{{ $lunchImgSrc }}" loading="lazy" alt="{{ $lunchImgAlt }}" class="menu-card-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2U1ZTVlNSIvPjwvc3ZnPg==';">
@@ -485,7 +485,7 @@
                         <a href="#{{ $breakfastAnchor }}" class="side-menu-link w-inline-block w--current">
                             @php
                                 $breakfastImageSmall = $menuData['breakfast']['image_small'] ?? $menuData['breakfast']['small_image'] ?? null;
-                                $breakfastImage = $breakfastImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                                $breakfastImage = $breakfastImageSmall ? public_asset($breakfastImageSmall) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
                                 $breakfastImageAlt = $menuData['breakfast']['image_small_alt'] ?? $menuData['breakfast']['image_alt'] ?? strip_tags($menuData['breakfast']['title'] ?? 'Завтрак');
                             @endphp
                             <img src="{{ $breakfastImage }}" loading="lazy" alt="{{ $breakfastImageAlt }}" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
@@ -499,7 +499,7 @@
                         <a href="#{{ $snackAnchor }}" class="side-menu-link w-inline-block">
                             @php
                                 $snackImageSmall = $menuData['snack']['image_small'] ?? $menuData['snack']['small_image'] ?? null;
-                                $snackImage = $snackImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                                $snackImage = $snackImageSmall ? public_asset($snackImageSmall) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
                                 $snackImageAlt = $menuData['snack']['image_small_alt'] ?? $menuData['snack']['image_alt'] ?? strip_tags($menuData['snack']['title'] ?? 'Перекус');
                             @endphp
                             <img src="{{ $snackImage }}" loading="lazy" alt="{{ $snackImageAlt }}" class="side-menu-image">
@@ -513,7 +513,7 @@
                         <a href="#{{ $dinnerAnchor }}" class="side-menu-link w-inline-block">
                             @php
                                 $dinnerImageSmall = $menuData['dinner']['image_small'] ?? $menuData['dinner']['small_image'] ?? null;
-                                $dinnerImage = $dinnerImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                                $dinnerImage = $dinnerImageSmall ? public_asset($dinnerImageSmall) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
                                 $dinnerImageAlt = $menuData['dinner']['image_small_alt'] ?? $menuData['dinner']['image_alt'] ?? strip_tags($menuData['dinner']['title'] ?? 'Обед');
                             @endphp
                             <img src="{{ $dinnerImage }}" loading="lazy" alt="{{ $dinnerImageAlt }}" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
@@ -527,7 +527,7 @@
                         <a href="#{{ $lunchAnchor }}" class="side-menu-link w-inline-block">
                             @php
                                 $lunchImageSmall = $menuData['lunch']['image_small'] ?? $menuData['lunch']['small_image'] ?? null;
-                                $lunchImage = $lunchImageSmall ?: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
+                                $lunchImage = $lunchImageSmall ? public_asset($lunchImageSmall) : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';
                                 $lunchImageAlt = $menuData['lunch']['image_small_alt'] ?? $menuData['lunch']['image_alt'] ?? strip_tags($menuData['lunch']['title'] ?? 'Ужин');
                             @endphp
                             <img src="{{ $lunchImage }}" loading="lazy" alt="{{ $lunchImageAlt }}" class="side-menu-image" onerror="this.style.backgroundColor='#e5e5e5'; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTUiIGhlaWdodD0iNTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjU1IiBoZWlnaHQ9IjU1IiBmaWxsPSIjZTVlNWU1Ii8+PC9zdmc+';">
@@ -657,7 +657,7 @@
                 <div class="next-day-items">
                     @foreach($menuData['next_day_recommendations']['meals'] as $nextMeal)
                         <div class="next-day-item">
-                            <img src="{{ $nextMeal['image'] ?? '/menu-images/next-day-1.webp' }}" loading="lazy" alt="" class="next-day-image">
+                            <img src="{{ public_asset($nextMeal['image'] ?? '/menu-images/next-day-1.webp') }}" loading="lazy" alt="" class="next-day-image">
                             <div class="next-day-title"><strong>{{ $nextMeal['title'] ?? '' }}</strong></div>
                             <div class="next-day-description">{{ $nextMeal['description'] ?? '' }}</div>
                         </div>

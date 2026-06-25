@@ -81,7 +81,7 @@
                     <div class="questions-slider-wrap">
                         @foreach($questions as $item)
                         <div class="questions-slide">
-                            <img src="{{ $item->icon }}" loading="lazy" alt="{{ $item->title }}" class="questions-slide-icon">
+                            <img src="{{ public_asset($item->icon) }}" loading="lazy" alt="{{ $item->title }}" class="questions-slide-icon">
                             <div class="questions-slide-h">{{ $item->title }}</div>
                             <div class="questions-slide-text">
                                 {{ $item->text }}

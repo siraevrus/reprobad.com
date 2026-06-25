@@ -1,8 +1,6 @@
 @php
     $iconPath = $item->icon ?? 'images/bolt.svg';
-    $iconSrc = str_starts_with($iconPath, 'http') || str_starts_with($iconPath, '/')
-        ? $iconPath
-        : asset($iconPath);
+    $iconSrc = public_asset($iconPath);
     $iconAlt = match(true) {
         str_contains($iconPath, 'brain.svg') => 'иконка мозг',
         str_contains($iconPath, 'ic-heart.svg') => 'иконка Сердец',

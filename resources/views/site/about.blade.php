@@ -55,7 +55,7 @@
             <section class="section about-page-hero">
                 <div class="container about-page-container">
                     <h1 class="about-repro-h1"><span class="sistema-repro-semibold">{{ $block['data']['title'] }}</span><span class="o-span about-o"><strong>О</strong></span> <span class="about-repro-h1-descriptor">{{ $block['data']['subtitle'] }}</span></h1>
-                </div><img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-hero-img">
+                </div><img src="{{ public_asset($block['data']['image']) }}" loading="lazy" alt="" class="about-hero-img">
             </section>
         @elseif($block['type'] == 'block14' && !$block['hide'])
             <section class="section">
@@ -70,8 +70,8 @@
                 <div class="container about-schema-container">
                     @if($block['data']['title'])<h2 class="about-schema-h2"><strong>{{ $block['data']['title'] }}</strong></h2>@endif
                     @if($block['data']['subtitle'])<p class="about-schema-p">{!! $block['data']['subtitle'] !!}</p>@endif
-                    @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema">@endif
-                    @if($block['data']['image'])<img src="{{ $block['data']['image'] }}" loading="lazy" alt="" class="about-schema mob">@endif
+                    @if($block['data']['image'])<img src="{{ public_asset($block['data']['image']) }}" loading="lazy" alt="" class="about-schema">@endif
+                    @if($block['data']['image'])<img src="{{ public_asset($block['data']['image']) }}" loading="lazy" alt="" class="about-schema mob">@endif
                     @if($block['data']['text'])<div class="about-schema-footnotes">{!! $block['data']['text'] !!}</div>@endif
                 </div>
             </section>
