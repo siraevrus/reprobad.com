@@ -10,7 +10,18 @@
             @csrf
 
             <div>@include('admin.components.image-crop-input', ['title' => 'Фото', 'field' => 'image', 'width' => 1280, 'height' => 853])</div>
-            <div>@include('admin.components.text-input', ['title' => 'Alt для фото', 'field' => 'image_alt'])</div>
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block font-semibold">Alt для фото</label>
+                    <button type="button" @click="generateAi('image_alt')"
+                            :disabled="aiLoading.image_alt"
+                            class="flex items-center gap-1 px-3 py-1 text-sm bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white rounded transition">
+                        <span x-show="!aiLoading.image_alt">✨ AI</span>
+                        <span x-show="aiLoading.image_alt">⏳ Генерирую...</span>
+                    </button>
+                </div>
+                @include('admin.components.text-input', ['title' => '', 'field' => 'image_alt'])
+            </div>
 
             <div>@include('admin.components.text-input', ['title' => 'Заголовок', 'field' => 'title'])</div>
 
@@ -87,31 +98,51 @@
                 aiLoading: {
                     keywords: false,
                     description: false,
+                    image_alt: false,
                 },
                 async generateAi(type) {
+                    const image = this.form.image || '';
                     const content = this.form.content || '';
-                    if (!content.trim()) {
+                    const description = this.form.description || '';
+
+                    if (type === 'image_alt') {
+                        if (!image.trim()) {
+                            this.showAlert('Загрузите фото перед генерацией alt', true);
+                            return;
+                        }
+                    } else if (!content.trim()) {
                         this.showAlert('Заполните поле «Содержание» перед генерацией', true);
                         return;
                     }
+
                     this.aiLoading[type] = true;
                     try {
+                        const payload = {
+                            type,
+                            title: this.form.title || '',
+                        };
+
+                        if (type === 'image_alt') {
+                            payload.image = image;
+                            payload.content = description || content;
+                        } else {
+                            payload.content = content;
+                        }
+
                         const response = await fetch('/admin/ai/generate', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': this.token,
                             },
-                            body: JSON.stringify({
-                                type,
-                                content,
-                                title: this.form.title || '',
-                            }),
+                            body: JSON.stringify(payload),
                         });
                         const data = await response.json();
                         if (data.success) {
                             if (type === 'keywords') {
                                 this.form.seo_keywords = data.result;
+                            } else if (type === 'image_alt') {
+                                this.form.image_alt = data.result;
                             } else {
                                 this.form.seo_description = data.result;
                             }

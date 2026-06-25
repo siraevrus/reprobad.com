@@ -59,6 +59,7 @@ return [
     'hydraai' => [
         'key' => env('AI_TOKEN') ?: env('HYDRA_AI_KEY'),
         'model' => env('HYDRA_AI_MODEL', 'deepseek-v3.2'),
+        'vision_model' => env('HYDRA_AI_VISION_MODEL', 'gpt-4o-mini'),
     ],
 
 ];
