@@ -207,14 +207,15 @@
     <script>
     (function() {
         var criticalStylesheets = [
-            'css/normalize.css',
-            'css/webflow.css',
-            'css/sistema-repro-550d9e79d9699175495d854c7.webflow.css'
+            {!! json_encode(asset('css/normalize.css')) !!},
+            {!! json_encode(asset('css/webflow.css')) !!},
+            {!! json_encode(asset('css/sistema-repro-550d9e79d9699175495d854c7.webflow.css')) !!}
         ];
 
         function isCSSLoaded() {
             return criticalStylesheets.every(function(href) {
-                var link = document.querySelector('link[rel="stylesheet"][href="' + href + '"]');
+                var link = document.querySelector('link[rel="stylesheet"][href="' + href + '"]')
+                    || Array.prototype.find.call(document.querySelectorAll('link[rel="stylesheet"]'), function(el) { return el.href === href; });
                 return link && link.sheet;
             });
         }
