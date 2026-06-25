@@ -204,8 +204,8 @@
     </section>
 @endsection
 
-@section('scripts')
-    <style>
+@section('styles')
+<style>
         .product-options-tab-content { display: none; }
         .product-options-tab-content.active { display: block; }
         @media screen and (max-width:767px) {
@@ -230,38 +230,7 @@
             pointer-events: none;
         }
     </style>
-    <script>
-        @if($resource->products)
-        @foreach($resource->products as $product)
-        function slider{{ $product->id }}() {
-            return {
-                slides: @json($product->images ?? []),
-                currentIndex: 0,
-                showVideo: false,
-                video: @json($product->video),
-                currentImage: '',
-                currentAlt: '',
-                open: false,
-
-                handleShowVideo() {
-                    this.showVideo = true;
-                },
-                setCurrentIndex(index) {
-                    this.currentIndex = index;
-                    this.showVideo = false;
-                },
-                prevImage() {
-                    this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
-                },
-                nextImage() {
-                    this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
-                }
-            };
-        }
-        @endforeach
-        @endif
-    </script>
-    <style>
+<style>
         .slider-container {
             margin: 0 auto;
             text-align: center;
@@ -356,7 +325,41 @@
             z-index: 100;
         }
     </style>
-    <script>
+@endsection
+
+@section('scripts')
+<script>
+        @if($resource->products)
+        @foreach($resource->products as $product)
+        function slider{{ $product->id }}() {
+            return {
+                slides: @json($product->images ?? []),
+                currentIndex: 0,
+                showVideo: false,
+                video: @json($product->video),
+                currentImage: '',
+                currentAlt: '',
+                open: false,
+
+                handleShowVideo() {
+                    this.showVideo = true;
+                },
+                setCurrentIndex(index) {
+                    this.currentIndex = index;
+                    this.showVideo = false;
+                },
+                prevImage() {
+                    this.currentIndex = (this.currentIndex === 0) ? this.slides.length - 1 : this.currentIndex - 1;
+                },
+                nextImage() {
+                    this.currentIndex = (this.currentIndex === this.slides.length - 1) ? 0 : this.currentIndex + 1;
+                }
+            };
+        }
+        @endforeach
+        @endif
+    </script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
             function initProductTabs() {
                 const tabs = document.querySelectorAll('.product-options-tab');

@@ -90,14 +90,6 @@
 <script type="application/ld+json">
 {!! json_encode($medicalWebPageSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
-<style>
-    .article-icon-image {
-        mask-image: url('https://cdn.prod.website-files.com/67040316492967a9326aebb1/6704f8b64f300dd6400349c8_big-news-icon.svg');
-        mask-size: contain;
-        mask-repeat: no-repeat;
-        mask-position: center;
-    }
-</style>
 @endsection
 
 @section('content')

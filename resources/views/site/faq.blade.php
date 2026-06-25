@@ -43,18 +43,7 @@
         <div class="container">
             <div class="article-head">
                 <div class="article-icon">
-                    <div class="article-icon-image">
-                        <div class="w-embed">
-                            <style>
-                                .article-icon-image {
-                                    mask-image: url('https://cdn.prod.website-files.com/67040316492967a9326aebb1/6704f8b64f300dd6400349c8_big-news-icon.svg');
-                                    mask-size: contain;
-                                    mask-repeat: no-repeat;
-                                    mask-position: center;
-                                }
-                            </style>
-                        </div>
-                    </div>
+                    <div class="article-icon-image"></div>
                 </div>
                 <h1 class="article-h1"><strong>Вопрос-ответ</strong></h1>
             </div>
@@ -170,8 +159,8 @@
     </section>
 @endsection
 
-@section('scripts')
-    <style>
+@section('styles')
+<style>
     .article-accordion { 
         margin: 1.5rem 0; 
         padding: 0; 
@@ -247,7 +236,10 @@
         }
     }
     </style>
-    <script type="text/javascript">
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
         (function() {
           function initArticleAccordion() {
             var toggles = document.querySelectorAll('.article-accordion .accordion-toggle');

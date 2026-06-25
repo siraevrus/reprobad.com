@@ -77,18 +77,7 @@
             </div>
             <div class="article-head">
                 <div class="article-icon">
-                    <div class="article-icon-image">
-                        <div class="w-embed">
-                            <style>
-                                .article-icon-image {
-                                    mask-image: url('https://cdn.prod.website-files.com/67040316492967a9326aebb1/6704f8b64f300dd6400349c8_big-news-icon.svg');
-                                    mask-size: contain;
-                                    mask-repeat: no-repeat;
-                                    mask-position: center;
-                                }
-                            </style>
-                        </div>
-                    </div>
+                    <div class="article-icon-image"></div>
                 </div>
                 <h1 class="article-h1"><strong>{{ $resource->title }}</strong></h1>
                 <p class="big-paragraph article-short">{!! strip_tags($resource->description ?? '', '<strong><em><b><i><a><br>') !!}</p>
