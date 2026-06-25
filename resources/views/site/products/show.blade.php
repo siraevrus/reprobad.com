@@ -89,7 +89,7 @@
                                         <img :src="image.url" :alt="image.alt || ''" :class="{'active': index === currentIndex}" @click="setCurrentIndex(index)">
                                     </template>
 
-                                    <img @click="handleShowVideo" src="images/icons8-play-video-100.png" x-show="video" alt="">
+                                    <img @click="handleShowVideo" src="{{ asset('images/icons8-play-video-100.png') }}" x-show="video" alt="">
                                 </div>
                             </div>
                         @else
@@ -176,7 +176,7 @@
             <div>
                 <div class="_4-steps-wrap">
                     @foreach($resources as $idx => $complex)
-                        <div class="step-item {{ $complex->color }}"><img src="images/{{ $idx + 1 }}.svg" loading="lazy" alt="{{ $idx + 1 }}" class="step-item-number">
+                        <div class="step-item {{ $complex->color }}"><img src="{{ asset('images/' . ($idx + 1) . '.svg') }}" loading="lazy" alt="{{ $idx + 1 }}" class="step-item-number">
                             <div class="step-item-content">
                                 <h2 class="step-h">{!! $complex->title !!}</h2>
                                 <p class="step-description">{{ $complex->subtitle }}</p>
@@ -200,7 +200,7 @@
                 </div>
             </div>
         </div>
-        <div class="heart-bg sistema-section"><img sizes="100vw" srcset="images/heart-p-500.webp 500w, images/heart-p-800.webp 800w, images/heart-p-1080.webp 1080w, images/heart-p-1600.webp 1600w, images/heart-p-2000.webp 2000w, images/heart-p-2600.webp 2600w, images/heart-p-3200.webp 3200w, images/heart.webp 3868w" alt="иллюстрация сердце" src="images/heart.webp" loading="lazy" class="heart-bg-image hbgi-sistema"></div>
+        <div class="heart-bg sistema-section"><img sizes="100vw" srcset="{{ asset('images/heart-p-500.webp') }} 500w, {{ asset('images/heart-p-800.webp') }} 800w, {{ asset('images/heart-p-1080.webp') }} 1080w, {{ asset('images/heart-p-1600.webp') }} 1600w, {{ asset('images/heart-p-2000.webp') }} 2000w, {{ asset('images/heart-p-2600.webp') }} 2600w, {{ asset('images/heart-p-3200.webp') }} 3200w, {{ asset('images/heart.webp') }} 3868w" alt="иллюстрация сердце" src="{{ asset('images/heart.webp') }}" loading="lazy" class="heart-bg-image hbgi-sistema"></div>
     </section>
 @endsection
 

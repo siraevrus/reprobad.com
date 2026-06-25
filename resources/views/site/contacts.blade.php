@@ -50,10 +50,10 @@
 
 @section('content')
     <section class="section contacts-form-section">
-        <div class="container contacts-form-container"><img sizes="100vw" srcset="images/m1-p-500.webp 500w, images/m1-p-800.webp 800w, images/m1-p-1080.webp 1080w, images/m1.webp 1440w" alt="" src="images/m1.webp" loading="lazy" class="contacts-bg">
+        <div class="container contacts-form-container"><img sizes="100vw" srcset="{{ asset('images/m1-p-500.webp') }} 500w, {{ asset('images/m1-p-800.webp') }} 800w, {{ asset('images/m1-p-1080.webp') }} 1080w, {{ asset('images/m1.webp') }} 1440w" alt="" src="{{ asset('images/m1.webp') }}" loading="lazy" class="contacts-bg">
             <div class="contacts-content">
                 <div class="contacts-head">
-                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="images/RFarmLogo.svg" alt="" class="rfarm-green-logo"></div>
+                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="{{ asset('images/RFarmLogo.svg') }}" alt="" class="rfarm-green-logo"></div>
                     <h1 class="contacts-h1">Контакты</h1>
                     <div style="max-width: 300px;">
                         {{ config('address') }}<br>
@@ -63,17 +63,17 @@
                 <p class="mb-0 mw-24rem">Если у вас есть вопросы, позвоните на нашу горячую линию или напишите письмо:</p>
                 <div class="contacts-wrap">
                     <a href="tel:{{ str_replace([' ', '(', ')', '-'], '', config('phone2')) }}" class="contacts-link hot-line w-inline-block">
-                        <div class="contacts-icon-wrap"><img loading="lazy" src="images/green-phone.svg" alt="" class="contacts-link-icon">
+                        <div class="contacts-icon-wrap"><img loading="lazy" src="{{ asset('images/green-phone.svg') }}" alt="" class="contacts-link-icon">
                             <div class="contacts-link-label">Телефон горячей линии</div>
                         </div>
                         <div class="contacts-link-text">{{ config('phone2') }}</div>
                     </a>
                     <a href="tel:{{ str_replace([' ', '(', ')', '-'], '', config('phone')) }}" class="contacts-link w-inline-block">
-                        <div class="contacts-icon-wrap"><img loading="lazy" src="images/green-phone.svg" alt="" class="contacts-link-icon"></div>
+                        <div class="contacts-icon-wrap"><img loading="lazy" src="{{ asset('images/green-phone.svg') }}" alt="" class="contacts-link-icon"></div>
                         <div class="contacts-link-text">{{ config('phone') }}</div>
                     </a>
                     <a href="mailto:info@rpharm.ru" class="contacts-link w-inline-block">
-                        <div class="contacts-icon-wrap"><img loading="lazy" src="images/green-email.svg" alt="" class="contacts-link-icon"></div>
+                        <div class="contacts-icon-wrap"><img loading="lazy" src="{{ asset('images/green-email.svg') }}" alt="" class="contacts-link-icon"></div>
                         <div class="contacts-link-text">{{ config('email') }}</div>
                     </a>
                 </div>
@@ -98,7 +98,7 @@
 
                     <form class="form wf-form-Subscribe-Form" @submit.prevent="submit" method="post" action="{{ route('site.form.feedback') }}" x-show="!success">
                         <a href="#" class="close-popup-button w-inline-block">
-                            <img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon">
+                            <img src="{{ asset('images/x.svg') }}" loading="lazy" alt="закрыть" class="x-icon">
                         </a>
                         <div class="form-h">Возникли вопросы?</div>
                         <div>
@@ -131,9 +131,9 @@
                     </form>
 
                     <div class="success-message w-form-done" style="margin-top: 20px;" x-show="success">
-                        <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
+                        <img src="{{ asset('images/success-icon.svg') }}" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                         <div>Вопрос отправлен</div>
-                        <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
+                        <a href="#" class="close-popup-button w-inline-block"><img src="{{ asset('images/x.svg') }}" loading="lazy" alt="закрыть" class="x-icon"></a>
                     </div>
 
                 </div>

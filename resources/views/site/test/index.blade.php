@@ -17,8 +17,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
   <script type="text/javascript">WebFont.load({  google: {    families: ["Inter:300,400,500,600,700","Raleway:300,400,500,600,700"]  }});</script>
   <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
-  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
-  <link href="images/webclip.jpg" rel="apple-touch-icon">
+  <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+  <link href="{{ asset('images/webclip.jpg') }}" rel="apple-touch-icon">
   <style>
   :focus-visible { outline: var(--mandarin) auto 1px; }
   .bad-wrap { position: fixed; visibility: hidden; }
@@ -269,7 +269,7 @@
     </div>
   </section>
   <section class="section reprotest-about">
-      <div class="heart-bg reprotest-section"><img sizes="100vw" srcset="{{ asset("images/heart_1-p-500.webp 500w, images/heart_1-p-800.webp 800w, images/heart_1-p-1080.webp 1080w, images/heart_1-p-1600.webp 1600w, images/heart_1.webp 2000w") }}" alt="" src="{{ asset("images/heart_1.webp") }}" loading="lazy" class="heart-bg-image"></div>
+      <div class="heart-bg reprotest-section"><img sizes="100vw" srcset="{{ asset('images/heart_1-p-500.webp') }} 500w, {{ asset('images/heart_1-p-800.webp') }} 800w, {{ asset('images/heart_1-p-1080.webp') }} 1080w, {{ asset('images/heart_1-p-1600.webp') }} 1600w, {{ asset('images/heart_1.webp') }} 2000w" alt="" src="{{ asset("images/heart_1.webp") }}" loading="lazy" class="heart-bg-image"></div>
       <div class="container">
         <div class="reprotest-block rtb-advs">
           <div class="reprotest-adv-wrap">

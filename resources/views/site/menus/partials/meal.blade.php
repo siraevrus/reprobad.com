@@ -47,10 +47,10 @@
             
             @if(count($images) > 1)
                 <div class="menu-gallery-prev" @click="prevImage" x-show="slides.length > 1">
-                    <img src="/images/left-arrow.svg" alt="Предыдущее изображение">
+                    <img src="{{ asset('images/left-arrow.svg') }}" alt="Предыдущее изображение">
                 </div>
                 <div class="menu-gallery-next" @click="nextImage" x-show="slides.length > 1">
-                    <img src="/images/right-arrow.svg" alt="Следующее изображение">
+                    <img src="{{ asset('images/right-arrow.svg') }}" alt="Следующее изображение">
                 </div>
             @endif
         </div>

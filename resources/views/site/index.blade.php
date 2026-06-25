@@ -40,7 +40,7 @@
         </div>
         <div style="display:flex;justify-content:center;margin-top:20px">
             <a href="https://www.eapteka.ru/search/?q=репро" target="_blank">
-                <img src="images/apteka.svg" style="width:30rem" alt="Купить в Eapteka">
+                <img src="{{ asset('images/apteka.svg') }}" style="width:30rem" alt="Купить в Eapteka">
             </a>
         </div>
     </div>
@@ -64,7 +64,7 @@
 <section class="widgets-section">
     <div class="container widgets-container">
         @include('site.components.widgets.test-repromenu-row')
-        <div class="short-events"><img src="images/bg-cal.svg" loading="lazy" alt="иконка календарь" class="short-events-bg-image">
+        <div class="short-events"><img src="{{ asset('images/bg-cal.svg') }}" loading="lazy" alt="иконка календарь" class="short-events-bg-image">
             <div class="section-head-with-detali-button short-events-section">
                 <h2 class="big-section-h"><strong>События</strong> и&nbsp;мероприятия</h2>
                 <a href="{{ route('site.events.index') }}" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>
@@ -91,9 +91,9 @@
                     </div>
                 </div>
                 <div class="widget-footer">
-                    <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
+                    <a href="#" class="prev-slider-button w-inline-block"><img src="{{ asset('images/l-arr.svg') }}" loading="lazy" alt="" class="slider-arrow"></a>
                     <a href="/usefully-tips/etapy" class="button w-button">Узнать больше —&gt;</a>
-                    <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
+                    <a href="#" class="next-slider-button w-inline-block"><img src="{{ asset('images/r-arr.svg') }}" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
             <div class="top-5-widget">
@@ -116,9 +116,9 @@
                     </div>
                 </div>
                 <div class="widget-footer">
-                    <a href="#" class="prev-slider-button w-inline-block"><img src="images/l-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
+                    <a href="#" class="prev-slider-button w-inline-block"><img src="{{ asset('images/l-arr.svg') }}" loading="lazy" alt="" class="slider-arrow"></a>
                     <a href="/usefully-tips/etapy" class="button w-button">Все способы —&gt;</a>
-                    <a href="#" class="next-slider-button w-inline-block"><img src="images/r-arr.svg" loading="lazy" alt="" class="slider-arrow"></a>
+                    <a href="#" class="next-slider-button w-inline-block"><img src="{{ asset('images/r-arr.svg') }}" loading="lazy" alt="" class="slider-arrow"></a>
                 </div>
             </div>
         </div>

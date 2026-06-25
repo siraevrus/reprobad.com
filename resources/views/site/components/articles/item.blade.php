@@ -1,13 +1,16 @@
 @php
-    $iconSrc = $item->icon ?? 'images/bolt.svg';
+    $iconPath = $item->icon ?? 'images/bolt.svg';
+    $iconSrc = str_starts_with($iconPath, 'http') || str_starts_with($iconPath, '/')
+        ? $iconPath
+        : asset($iconPath);
     $iconAlt = match(true) {
-        str_contains($iconSrc, 'brain.svg') => 'иконка мозг',
-        str_contains($iconSrc, 'ic-heart.svg') => 'иконка Сердец',
-        str_contains($iconSrc, 'bolt.svg') => 'Иконка молния',
+        str_contains($iconPath, 'brain.svg') => 'иконка мозг',
+        str_contains($iconPath, 'ic-heart.svg') => 'иконка Сердец',
+        str_contains($iconPath, 'bolt.svg') => 'Иконка молния',
         default => 'Иконка',
     };
 @endphp
-<div class="card">
+    <div class="card">
     <div class="card-head">
         <img src="{{ $iconSrc }}" loading="lazy" alt="{{ $iconAlt }}" class="card-icon">
     </div>
@@ -17,7 +20,7 @@
     </div>
     <div class="card-footer">
         <div class="card-date">{{ $item->published_at }}</div>
-        <div class="card-read"><img src="images/sm-clock.svg" loading="lazy" alt="часы" class="clock-icon">
+        <div class="card-read"><img src="{{ asset('images/sm-clock.svg') }}" loading="lazy" alt="часы" class="clock-icon">
             <div>{{ $item->time }}</div>
         </div>
         <a href="{{ route($item->route_name ?? 'site.articles.show', $item->alias) }}" class="card-link w-inline-block">

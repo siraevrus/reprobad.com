@@ -3,7 +3,7 @@
   lottie-banner-lottie-legacy.blade.php — см. комментарий в том файле для возврата.
 --}}
 <div id="floating-banner-desktop" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
+    <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <img
             src="{{ asset('images/floating-banner-desktop.png') }}"
@@ -17,7 +17,7 @@
 </div>
 
 <div id="floating-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
+    <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <img
             src="{{ asset('images/floating-banner-mobile.png') }}"

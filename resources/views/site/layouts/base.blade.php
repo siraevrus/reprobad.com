@@ -272,8 +272,8 @@
         setTimeout(hidePageBg, 50);
     })();
     </script>
-    <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
-    <link href="images/webclip.jpg" rel="apple-touch-icon">
+    <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ asset('images/webclip.jpg') }}" rel="apple-touch-icon">
     <style>
         :focus-visible { outline: var(--mandarin) auto 1px; }
         .bad-wrap { position: fixed; visibility: hidden; }
@@ -573,7 +573,7 @@
 <div data-animation="default" data-collapse="small" data-duration="400" data-easing="ease" data-easing2="ease" data-doc-height="1" role="banner" class="navbar w-nav">
     <div class="navbar-overlay"></div>
     <div class="navbar-container w-container">
-        <a href="/" aria-current="page" class="brand w-nav-brand w--current"><img src="images/lgog-gold.svg" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
+        <a href="/" aria-current="page" class="brand w-nav-brand w--current"><img src="{{ asset('images/lgog-gold.svg') }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="navbar-logo">
             <div class="brand-text-desktop">готовимся <br>к беременности <br>вместе!</div>
             <div class="brand-text-mobile">готовимся <br><span style="white-space: nowrap;">к беременности</span> <br>вместе!</div>
         </a>
@@ -630,7 +630,7 @@
                     <div class="nav-link-divider"></div>
                     <a href="map" class="nav-link">Карта</a>
                 </div>
-                <div class="nav-family-line"><img src="images/nav-family-line.svg" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
+                <div class="nav-family-line"><img src="{{ asset('images/nav-family-line.svg') }}" loading="lazy" alt="СИСТЕМА РЕПРО" class="nav-family-image"></div>
                 <div class="nav-contacts">
                     <a href="tel:{{ str_replace([' ', ')', '(', '-'], '', config('phone')) }}" class="nav-contacts-phone">{{ config('phone') }}</a>
                     <a href="mailto:{{ config('email') }}" class="nav-contacts-email">{{ config('email') }}</a>
@@ -649,7 +649,7 @@
 
 @if(isset($isHome) || isset($bodyClass) && $bodyClass == 'products-page')
     <div class="heart-bg">
-        <img src="images/heart.webp" loading="eager" sizes="100vw" srcset="images/heart-p-500.webp 500w, images/heart-p-800.webp 800w, images/heart-p-1080.webp 1080w, images/heart-p-1600.webp 1600w, images/heart.webp 2000w" alt="иллюстрация сердце" class="heart-bg-image">
+        <img src="{{ asset('images/heart.webp') }}" loading="eager" sizes="100vw" srcset="{{ asset('images/heart-p-500.webp') }} 500w, {{ asset('images/heart-p-800.webp') }} 800w, {{ asset('images/heart-p-1080.webp') }} 1080w, {{ asset('images/heart-p-1600.webp') }} 1600w, {{ asset('images/heart.webp') }} 2000w" alt="иллюстрация сердце" class="heart-bg-image">
         <div class="heart-bg-mandarin-gradient"></div>
     </div>
 @endif
@@ -658,7 +658,7 @@
 
 <section class="footer-section">
     <div class="footer-container">
-        <a href="/" class="footer-logo-link w-inline-block"><img src="images/logo-black.svg" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
+        <a href="/" class="footer-logo-link w-inline-block"><img src="{{ asset('images/logo-black.svg') }}" loading="lazy" alt="РЕПРО АПОТЕКА • REPRO APOTHEKA" class="footer-logo"></a>
         <div class="footer-contacts">
             <div>
                 <a href="tel:{{ str_replace([' ', '-', ')', '('], '', config('phone')) }}" class="footer-phone">{{ config('phone') }}</a>
@@ -730,7 +730,7 @@
             <a href="{{ route('site.text.privacy') }}" target="_blank" class="footer-terms-link">Политика конфиденциальности в отношении персональных данных</a>
         </div>
         <div class="r-farm-footer">
-            <a href="https://www.r-pharm.com/ru" target="_blank" class="r-farm-footer-link w-inline-block"><img src="images/RFarm-footer.png" loading="lazy" alt="Р-Фарм" class="r-farm-image"></a>
+            <a href="https://www.r-pharm.com/ru" target="_blank" class="r-farm-footer-link w-inline-block"><img src="{{ asset('images/RFarm-footer.png') }}" loading="lazy" alt="Р-Фарм" class="r-farm-image"></a>
             <div>{{ config('address') }}</div>
             <div>
                 Владелец сайта: АО «Р-Фарм» 123154, Москва, ул. Берзарина, д. 19, корп. 1 <br>
@@ -746,7 +746,7 @@
         <div class="bad-container">
             <div class="bad-text"></div>
             <a href="#" class="bad-close w-inline-block">
-                <img src="images/bad-close.svg" loading="lazy" alt="Закрыть" class="bad-close-image">
+                <img src="{{ asset('images/bad-close.svg') }}" loading="lazy" alt="Закрыть" class="bad-close-image">
             </a>
         </div>
     </div>
@@ -764,7 +764,7 @@
     <div class="products-popup-head">
         <div class="product-popup-head-container">
             <a href="#" class="products-popup-close-button w-inline-block">
-                <div>Закрыть</div><img src="images/wx.svg" loading="lazy" alt="иконка крестик" class="products-popup-close-cross">
+                <div>Закрыть</div><img src="{{ asset('images/wx.svg') }}" loading="lazy" alt="иконка крестик" class="products-popup-close-cross">
             </a>
         </div>
     </div>

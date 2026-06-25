@@ -117,7 +117,7 @@
                 <p class="big-paragraph article-short">{!! strip_tags($resource->description ?? '', '<strong><em><b><i><a><br>') !!}</p>
                 <div class="article-options">
                     <div class="article-date">{{ $resource->published_at }}</div>
-                    <div class="article-read-time"><img src="images/sm-clock.svg" loading="lazy" alt="часы" class="clock-icon">
+                    <div class="article-read-time"><img src="{{ asset('images/sm-clock.svg') }}" loading="lazy" alt="часы" class="clock-icon">
                         <div>{{ $resource->time }}</div>
                     </div>
                 </div>
@@ -175,7 +175,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="card-date">{{ $item->published_at }}</div>
-                                <div class="card-read"><img loading="lazy" src="images/sm-clock.svg" alt="часы" class="clock-icon">
+                                <div class="card-read"><img loading="lazy" src="{{ asset('images/sm-clock.svg') }}" alt="часы" class="clock-icon">
                                     <div>{{ $item->time }}</div>
                                 </div>
                                 <a href="{{ route('site.articles.show', $item->alias) }}" aria-current="page" class="card-link w-inline-block w--current">
@@ -201,9 +201,9 @@
                                 </form>
 
                                 <div class="subscribe-success w-form-done" x-show="success">
-                                    <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
+                                    <img src="{{ asset('images/success-icon.svg') }}" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                     <div>Вы подписаны!</div>
-                                    <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
+                                    <a href="#" class="close-popup-button w-inline-block"><img src="{{ asset('images/x.svg') }}" loading="lazy" alt="закрыть" class="x-icon"></a>
                                 </div>
 
                             </div>
@@ -216,7 +216,7 @@
     <section class="section short-events-in-article">
         <div class="container widgets-container">
             @include('site.components.widgets.test-repromenu-row')
-            <div class="short-events"><img loading="lazy" src="images/bg-cal.svg" alt="иконка календарь" class="short-events-bg-image">
+            <div class="short-events"><img loading="lazy" src="{{ asset('images/bg-cal.svg') }}" alt="иконка календарь" class="short-events-bg-image">
                 <div class="section-head-with-detali-button short-events-section">
                     <h2 class="big-section-h"><strong>События</strong> и&nbsp;мероприятия</h2>
                     <a href="{{ route('site.events.index') }}" class="more-button w-button">все <span class="only-mobile-text">мероприятия </span>—&gt;</a>

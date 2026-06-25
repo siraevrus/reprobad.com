@@ -5,11 +5,11 @@
   Нужны файлы public/images/weUkdnuK0x.lottie и public/images/qk8EQOxYwW.lottie.
 --}}
 <div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
+    <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <dotlottie-wc
             id="lottie-desktop"
-            src="images/weUkdnuK0x.lottie"
+            src="{{ asset('images/weUkdnuK0x.lottie') }}"
             speed="1"
             style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
             mode="forward"
@@ -20,11 +20,11 @@
 </div>
 
 <div id="lottie-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
-    <div class="close"><img src="images/bad-close.svg" alt="Закрыть" /></div>
+    <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
         <dotlottie-wc
             id="lottie-mobile"
-            src="images/qk8EQOxYwW.lottie"
+            src="{{ asset('images/qk8EQOxYwW.lottie') }}"
             style="margin:auto"
             speed="1"
             autoplay

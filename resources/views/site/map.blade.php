@@ -220,11 +220,11 @@
                             <div id="map" class="map-container"></div>
                             <div class="map-info-overlay"></div>
                             <div class="map-info">
-                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="images/x.svg" alt="закрыть" class="map-info-close-icon"></a><img loading="lazy" src="" alt="" class="map-info-logo" style="display: none;">
+                                <a href="#" class="map-info-close-button w-inline-block"><img loading="lazy" src="{{ asset('images/x.svg') }}" alt="закрыть" class="map-info-close-icon"></a><img loading="lazy" src="" alt="" class="map-info-logo" style="display: none;">
                                 <div class="place-title"></div>
                                 <div class="place-subtitle"></div>
                                 <div class="place-address"></div>
-                                <div class="place-metro-wrap" style="display: none;"><img width="14" loading="lazy" alt="Метро" src="images/M.svg" class="metro-logo">
+                                <div class="place-metro-wrap" style="display: none;"><img width="14" loading="lazy" alt="Метро" src="{{ asset('images/M.svg') }}" class="metro-logo">
                                     <div class="place-metro"></div>
                                 </div>
                                 <div class="place-text" style="display: none;"></div>

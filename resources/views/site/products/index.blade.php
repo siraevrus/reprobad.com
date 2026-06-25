@@ -42,7 +42,7 @@
                                     @if($resource->link)
                                     <div class="product-item-img" style="margin-top:20px">
                                         <a href="{{ $resource->link }}" target="_blank">
-                                            <img src="/images/apteka.svg" style="width:18rem;margin-top:1rem" alt="Купить в Eapteka">
+                                            <img src="{{ asset('images/apteka.svg') }}" style="width:18rem;margin-top:1rem" alt="Купить в Eapteka">
                                         </a>
                                     </div>
                                     @endif

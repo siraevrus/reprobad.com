@@ -92,12 +92,12 @@
                     </div>
                     <div class="event-contacts">
                         @if(isset($resource->email) && $resource->email)
-                        <a href="#" class="event-link w-inline-block"><img src="images/event-email-icon_1event-email-icon.png" loading="lazy" alt="email" class="event-link-icon">
+                        <a href="#" class="event-link w-inline-block"><img src="{{ asset('images/event-email-icon_1event-email-icon.png') }}" loading="lazy" alt="email" class="event-link-icon">
                             <div>{{ $resource->email }}</div>
                         </a>
                         @endif
                         @if(isset($resource->phone) && $resource->phone)
-                        <a href="#" class="event-link w-inline-block"><img src="images/event-phone-icon_1event-phone-icon.png" loading="lazy" alt="phone" class="event-link-icon">
+                        <a href="#" class="event-link w-inline-block"><img src="{{ asset('images/event-phone-icon_1event-phone-icon.png') }}" loading="lazy" alt="phone" class="event-link-icon">
                             <div>{{ $resource->phone }}</div>
                         </a>
                         @endif
@@ -135,7 +135,7 @@
                         <div class="mobile-popup-overlay"></div>
                         <div class="question-form-block w-form">
                             <form action="{{ route('site.form.feedback') }}" @submit.prevent="feedbackForm" method="post" class="form" x-show="!successFeedback">
-                                <a href="#" class="close-popup-button w-inline-block"><img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon"></a>
+                                <a href="#" class="close-popup-button w-inline-block"><img src="{{ asset('images/x.svg') }}" loading="lazy" alt="закрыть" class="x-icon"></a>
                                 <div class="form-h">Возникли вопросы?</div>
                                 <input class="text-field w-input" x-model="formFeedback.name" autocomplete="off" maxlength="256" placeholder="ФИО*" type="text" id="name-3"  :class="errorsFeedback.name ? 'input-error' : ''">
                                 <input class="text-field w-input" x-model="formFeedback.email" autocomplete="off" maxlength="256" placeholder="Email*" type="email" id="email-6"  :class="errorsFeedback.email ? 'input-error' : ''">
@@ -154,10 +154,10 @@
                             </form>
 
                             <div x-show="successFeedback" x-cloak class="success-message w-form-done" tabindex="-1" role="region" aria-label="Question Form success">
-                                <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
+                                <img src="{{ asset('images/success-icon.svg') }}" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                 <div>Вопрос отправлен</div>
                                 <a href="#" class="close-popup-button w-inline-block" @click.prevent="successFeedback = false; formFeedback = {name: '', email: '', phone: '', message: '', agree: true}; errorsFeedback = {};">
-                                    <img src="images/x.svg" loading="lazy" alt="закрыть" class="x-icon">
+                                    <img src="{{ asset('images/x.svg') }}" loading="lazy" alt="закрыть" class="x-icon">
                                 </a>
                             </div>
 
@@ -180,7 +180,7 @@
                                 </form>
 
                                 <div x-show="successSubscribe" class="subscribe-success w-form-done" tabindex="-1" role="region" aria-label="Subscribe Form success">
-                                    <img src="images/success-icon.svg" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
+                                    <img src="{{ asset('images/success-icon.svg') }}" loading="lazy" alt="иконка письмо отправлено" class="success-icon">
                                     <div>Вы успешно подписались <br>на рассылку!</div>
                                 </div>
 
