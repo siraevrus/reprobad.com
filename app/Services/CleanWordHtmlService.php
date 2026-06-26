@@ -37,17 +37,53 @@ class CleanWordHtmlService
 
         $dom = $this->loadDom($html);
         if ($dom === null) {
-            return $html;
+            return $this->cleanWithRegex($html);
         }
 
-        $root = $dom->getElementById(self::ROOT_ID);
+        $root = $this->resolveRoot($dom);
         if ($root === null) {
-            return $html;
+            return $this->cleanWithRegex($html);
         }
 
         $this->cleanNode($root);
 
         return $this->innerHtml($root);
+    }
+
+    private function cleanWithRegex(string $html): string
+    {
+        $html = preg_replace('/\s+style=(["\']).*?\1/i', '', $html) ?? $html;
+        $html = preg_replace('/\s+class=(["\']).*?\1/i', '', $html) ?? $html;
+        $html = preg_replace('/\s+lang=(["\']).*?\1/i', '', $html) ?? $html;
+        $html = preg_replace('/\s+dir=(["\']).*?\1/i', '', $html) ?? $html;
+        $html = preg_replace('/\s+mso-[^=\s>]+=(["\']).*?\1/i', '', $html) ?? $html;
+        $html = preg_replace('/<\/?span\b[^>]*>/i', '', $html) ?? $html;
+
+        return trim($html);
+    }
+
+    private function resolveRoot(DOMDocument $dom): ?DOMElement
+    {
+        $root = $dom->getElementById(self::ROOT_ID);
+        if ($root instanceof DOMElement) {
+            return $root;
+        }
+
+        $xpath = new \DOMXPath($dom);
+        $nodes = $xpath->query('//*[@id="' . self::ROOT_ID . '"]');
+        if ($nodes !== false && $nodes->length > 0) {
+            $node = $nodes->item(0);
+            if ($node instanceof DOMElement) {
+                return $node;
+            }
+        }
+
+        $body = $dom->getElementsByTagName('body')->item(0);
+        if ($body instanceof DOMElement && $body->firstChild instanceof DOMElement) {
+            return $body->firstChild;
+        }
+
+        return null;
     }
 
     private function containsHtml(string $html): bool

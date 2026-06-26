@@ -53,12 +53,64 @@ const initializeEditor = {
                 extended_valid_elements: 'iframe[src|width|height|style|allow|allowfullscreen|frameborder|loading|referrerpolicy]',
                 valid_children: '+body[iframe],+div[iframe],+p[iframe]',
                 setup: (editor) => {
-                    editor.on('change', () => {
-                        const field = element.getAttribute('x-model').split('.')[1];
-                        this.form[field] = editor.getContent();
-                    });
+                    const syncField = () => {
+                        const model = element.getAttribute('x-model');
+                        if (!model) return;
+                        const field = model.split('.')[1];
+                        if (field) {
+                            this.form[field] = editor.getContent();
+                        }
+                    };
+
+                    editor.on('change input undo redo', syncField);
                 }
             });
+        });
+    },
+
+    syncTinyMCEToForm () {
+        if (typeof tinymce === 'undefined') {
+            return;
+        }
+
+        tinymce.editors.forEach((editor) => {
+            const textarea = editor.getElement();
+            if (!textarea) {
+                return;
+            }
+
+            const model = textarea.getAttribute('x-model');
+            if (!model) {
+                return;
+            }
+
+            const field = model.split('.')[1];
+            if (field) {
+                this.form[field] = editor.getContent();
+            }
+        });
+    },
+
+    updateTinyMCEFromForm () {
+        if (typeof tinymce === 'undefined') {
+            return;
+        }
+
+        tinymce.editors.forEach((editor) => {
+            const textarea = editor.getElement();
+            if (!textarea) {
+                return;
+            }
+
+            const model = textarea.getAttribute('x-model');
+            if (!model) {
+                return;
+            }
+
+            const field = model.split('.')[1];
+            if (field && Object.prototype.hasOwnProperty.call(this.form, field)) {
+                editor.setContent(this.form[field] || '', { format: 'html' });
+            }
         });
     }
 };
@@ -329,6 +381,8 @@ const save = {
         if (this._saving) return;
         this._saving = true;
         this.loading = true;
+
+        this.syncTinyMCEToForm();
         
         // base64 при новой загрузке, URL при пересохранении без изменений
         const formData = { ...this.form };
@@ -374,6 +428,7 @@ const save = {
                     }
                 } else {
                     this.form = data.resource;
+                    this.$nextTick(() => this.updateTinyMCEFromForm());
                     this.showAlert(data.seo_ai_queued ? seoAiMessage : 'Сохранено');
                 }
             } else {

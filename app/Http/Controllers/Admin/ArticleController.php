@@ -116,6 +116,8 @@ class ArticleController extends Controller
 
         try {
             $resource->fill($data);
+            $resource->content = $data['content'];
+            $resource->description = $data['description'] ?? null;
             $resource->save();
         } catch (QueryException $e) {
             return $this->saveErrorResponse($e);
