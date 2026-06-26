@@ -73,13 +73,17 @@ const initializeEditor = {
             return;
         }
 
-        tinymce.editors.forEach((editor) => {
-            const textarea = editor.getElement();
-            if (!textarea) {
+        document.querySelectorAll('.editor').forEach((element) => {
+            if (!element.id) {
                 return;
             }
 
-            const model = textarea.getAttribute('x-model');
+            const editor = tinymce.get(element.id);
+            if (!editor) {
+                return;
+            }
+
+            const model = element.getAttribute('x-model');
             if (!model) {
                 return;
             }
@@ -96,13 +100,17 @@ const initializeEditor = {
             return;
         }
 
-        tinymce.editors.forEach((editor) => {
-            const textarea = editor.getElement();
-            if (!textarea) {
+        document.querySelectorAll('.editor').forEach((element) => {
+            if (!element.id) {
                 return;
             }
 
-            const model = textarea.getAttribute('x-model');
+            const editor = tinymce.get(element.id);
+            if (!editor) {
+                return;
+            }
+
+            const model = element.getAttribute('x-model');
             if (!model) {
                 return;
             }
@@ -382,17 +390,17 @@ const save = {
         this._saving = true;
         this.loading = true;
 
-        this.syncTinyMCEToForm();
-        
-        // base64 при новой загрузке, URL при пересохранении без изменений
-        const formData = { ...this.form };
-        ['image', 'logo', 'file'].forEach(field => {
-            if (!(field in formData) || formData[field] === undefined) {
-                formData[field] = null;
-            }
-        });
-        
         try {
+            this.syncTinyMCEToForm();
+
+            // base64 при новой загрузке, URL при пересохранении без изменений
+            const formData = { ...this.form };
+            ['image', 'logo', 'file'].forEach(field => {
+                if (!(field in formData) || formData[field] === undefined) {
+                    formData[field] = null;
+                }
+            });
+
             const response = await fetch(this.url, {
                 method: this.action !== 'create' ? 'PUT' : 'POST',
                 headers: {
