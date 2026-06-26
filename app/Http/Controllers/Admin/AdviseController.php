@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\DispatchesContentSeoFill;
 use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
+use App\Http\Controllers\Admin\Concerns\SanitizesRichTextFields;
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
 use App\Services\InputService;
@@ -18,6 +19,7 @@ class AdviseController extends Controller
 {
     use DispatchesContentSeoFill;
     use HandlesAdminSaveErrors;
+    use SanitizesRichTextFields;
 
     public array $rules = [
         'title' => 'required|string',
@@ -82,7 +84,9 @@ class AdviseController extends Controller
 
         // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
         $imageFields = ['image'];
-        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+        $dataForSave = $this->sanitizeRichTextFields(
+            array_diff_key($validated, array_flip($imageFields))
+        );
 
         try {
             $resource = Advise::query()->create($dataForSave);
@@ -115,12 +119,20 @@ class AdviseController extends Controller
 
         // Исключаем поля с изображениями из validated, чтобы не сохранять base64 в БД
         $imageFields = ['image'];
-        $dataForSave = array_diff_key($validated, array_flip($imageFields));
+        $dataForSave = $this->sanitizeRichTextFields(
+            array_diff_key($validated, array_flip($imageFields))
+        );
 
         $resource = Advise::query()->findOrFail($id);
 
         try {
             $resource->fill($dataForSave);
+            if (array_key_exists('content', $dataForSave)) {
+                $resource->content = $dataForSave['content'];
+            }
+            if (array_key_exists('description', $dataForSave)) {
+                $resource->description = $dataForSave['description'];
+            }
             $resource->save();
             InputService::uploadFile($request->image, $resource, 'image');
         } catch (QueryException $e) {
