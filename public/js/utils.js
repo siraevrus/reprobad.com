@@ -362,11 +362,19 @@ const save = {
             }
 
             if (response.ok && data.success) {
+                const seoAiMessage = 'Сохранено. Пустые SEO-поля будут заполнены автоматически в фоне.';
                 if (this.action === 'create') {
-                    window.location.href = '/admin/' + this.route + '/';
+                    if (data.seo_ai_queued) {
+                        this.showAlert(seoAiMessage);
+                        setTimeout(() => {
+                            window.location.href = '/admin/' + this.route + '/';
+                        }, 2000);
+                    } else {
+                        window.location.href = '/admin/' + this.route + '/';
+                    }
                 } else {
                     this.form = data.resource;
-                    this.showAlert('Сохранено');
+                    this.showAlert(data.seo_ai_queued ? seoAiMessage : 'Сохранено');
                 }
             } else {
                 this.errors = data.errors || {};

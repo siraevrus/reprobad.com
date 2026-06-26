@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\DispatchesContentSeoFill;
 use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\CleanWordHtmlService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +16,12 @@ use Illuminate\View\View;
 
 class ArticleController extends Controller
 {
+    use DispatchesContentSeoFill;
     use HandlesAdminSaveErrors;
+
+    public function __construct(
+        private readonly CleanWordHtmlService $cleanWordHtmlService,
+    ) {}
 
     public array $rules = [
         'title' => 'required|string',
@@ -75,8 +82,7 @@ class ArticleController extends Controller
             return $this->validationErrorResponse($validator);
         }
 
-        $data = $validator->validated();
-        $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
+        $data = $this->sanitizeRichTextFields($validator->validated());
 
         try {
             $resource = Article::query()->create($data);
@@ -84,10 +90,12 @@ class ArticleController extends Controller
             return $this->saveErrorResponse($e);
         }
 
-        return response()->json([
+        $resource = $resource->fresh();
+
+        return response()->json($this->withSeoAiQueuedFlag([
             'success' => true,
-            'resource' => $resource
-        ]);
+            'resource' => $resource,
+        ], $resource));
     }
 
     public function update(Request $request, $id): JsonResponse
@@ -102,8 +110,7 @@ class ArticleController extends Controller
             return $this->validationErrorResponse($validator);
         }
 
-        $data = $validator->validated();
-        $data['content'] = $this->normalizeEmbeds($data['content'] ?? '');
+        $data = $this->sanitizeRichTextFields($validator->validated());
 
         $resource = Article::query()->findOrFail($id);
 
@@ -114,10 +121,12 @@ class ArticleController extends Controller
             return $this->saveErrorResponse($e);
         }
 
-        return response()->json([
+        $resource = $resource->fresh();
+
+        return response()->json($this->withSeoAiQueuedFlag([
             'success' => true,
-            'resource' => $resource
-        ]);
+            'resource' => $resource,
+        ], $resource));
     }
 
     public function destroy($id): RedirectResponse
@@ -157,6 +166,16 @@ class ArticleController extends Controller
         $resource->save();
         session()->flash('message', 'Элементы на главной странице обновлены');
         return back();
+    }
+
+    private function sanitizeRichTextFields(array $data): array
+    {
+        $data['content'] = $this->normalizeEmbeds(
+            $this->cleanWordHtmlService->clean($data['content'] ?? '')
+        );
+        $data['description'] = $this->cleanWordHtmlService->clean($data['description'] ?? '');
+
+        return $data;
     }
 
     private function normalizeEmbeds(string $html): string

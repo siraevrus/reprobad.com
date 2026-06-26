@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\DispatchesContentSeoFill;
 use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
 use App\Http\Controllers\Controller;
 use App\Models\Advise;
@@ -15,6 +16,7 @@ use Illuminate\View\View;
 
 class AdviseController extends Controller
 {
+    use DispatchesContentSeoFill;
     use HandlesAdminSaveErrors;
 
     public array $rules = [
@@ -89,10 +91,12 @@ class AdviseController extends Controller
             return $this->saveErrorResponse($e);
         }
 
-        return response()->json([
+        $resource = $resource->fresh();
+
+        return response()->json($this->withSeoAiQueuedFlag([
             'success' => true,
-            'resource' => $resource->fresh()
-        ]);
+            'resource' => $resource,
+        ], $resource));
     }
 
     public function update(Request $request, $id): JsonResponse
@@ -123,10 +127,12 @@ class AdviseController extends Controller
             return $this->saveErrorResponse($e);
         }
 
-        return response()->json([
+        $resource = $resource->fresh();
+
+        return response()->json($this->withSeoAiQueuedFlag([
             'success' => true,
-            'resource' => $resource->fresh()
-        ]);
+            'resource' => $resource,
+        ], $resource));
     }
 
     public function destroy($id): RedirectResponse
