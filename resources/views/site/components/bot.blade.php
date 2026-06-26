@@ -2,7 +2,8 @@
 <div class="chat-container" id="chatContainer">
     <div class="chat-header">
         ИИ-консультант РЕПРО
-        <button class="close-btn" id="closeChatBtn" title="Закрыть чат">×</button>
+        <button type="button" class="clear-btn" id="clearHistoryBtn" title="Очистить историю">↺</button>
+        <button type="button" class="close-btn" id="closeChatBtn" title="Закрыть чат">×</button>
     </div>
     <div class="chat-messages" id="chat">
         <div class="message bot">
@@ -63,7 +64,7 @@
     function removeTyping() {
         if (typingInterval) {
             clearInterval(typingInterval);
-            pingInterval = null;
+            typingInterval = null;
         }
         if (typingDiv) {
             chat.removeChild(typingDiv);
@@ -73,6 +74,22 @@
         sendBtn.disabled = false;
         sendBtn.style.opacity = 1;
         sendBtn.style.cursor = 'pointer';
+    }
+
+    const SLOW_RESPONSE_MSG = 'Нам требуется еще немного времени, что бы подготовить ответ';
+    const SESSION_EXPIRED_MSG = 'Сессия истекла. Обновите страницу и попробуйте снова.';
+    const CONNECTION_ERROR_MSG = 'Ошибка соединения с сервером. Попробуйте еще раз.';
+
+    function isSlowResponseStatus(status) {
+        return status === 408 || status === 502 || status === 503 || status === 504;
+    }
+
+    async function parseBotResponse(res) {
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+            return await res.json();
+        }
+        return null;
     }
 
     async function sendMessage() {
@@ -93,16 +110,39 @@
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
                 },
                 body: JSON.stringify({ message: text, user_id: userId })
             });
-    
-            const data = await res.json();
+
+            if (res.status === 419) {
+                removeTyping();
+                addMessage(SESSION_EXPIRED_MSG);
+                return;
+            }
+
+            if (isSlowResponseStatus(res.status)) {
+                removeTyping();
+                addMessage(SLOW_RESPONSE_MSG);
+                return;
+            }
+
+            const data = await parseBotResponse(res);
             removeTyping();
+
+            if (!data) {
+                addMessage(isSlowResponseStatus(res.status) ? SLOW_RESPONSE_MSG : CONNECTION_ERROR_MSG);
+                return;
+            }
+
+            if (!res.ok) {
+                addMessage(data.reply || data.message || CONNECTION_ERROR_MSG);
+                return;
+            }
             
             // Проверяем специальные команды
-            if(data.reply == 'вызвать человека' || data.reply.includes('оператор')) {
+            if(data.reply == 'вызвать человека' || (data.reply && data.reply.includes('оператор'))) {
                 if(typeof jivo_api !== 'undefined') {
                     jivo_api.open();
                     addMessage('Открываю чат с оператором...');
@@ -127,7 +167,7 @@
         } catch (err) {
             console.error('Chat error:', err);
             removeTyping();
-            addMessage('Ошибка соединения с сервером. Попробуйте еще раз.');
+            addMessage(CONNECTION_ERROR_MSG);
         }
     }
 
@@ -166,39 +206,43 @@
     }
 
     // Очистка истории
-    clearHistoryBtn.addEventListener('click', async function() {
-        if(!confirm('Очистить историю диалога? Бот забудет предыдущий контекст беседы.')) {
-            return;
-        }
-        
-        const userId = localStorage.getItem('chat_user_id') || 'guest';
-        
-        try {
-            const res = await fetch('/bot/clear-history', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-                },
-                body: JSON.stringify({ user_id: userId })
-            });
-            
-            const data = await res.json();
-            
-            if(data.status === 'success') {
-                // Очищаем визуально чат (оставляем только приветствие)
-                const messages = chat.querySelectorAll('.message');
-                messages.forEach((msg, index) => {
-                    if(index > 0) { // Оставляем первое приветственное сообщение
-                        msg.remove();
-                    }
-                });
-                addMessage('История диалога очищена. Можете начать новую беседу.');
+    if (clearHistoryBtn) {
+        clearHistoryBtn.addEventListener('click', async function() {
+            if(!confirm('Очистить историю диалога? Бот забудет предыдущий контекст беседы.')) {
+                return;
             }
-        } catch (err) {
-            console.error('Clear history error:', err);
-            addMessage('Не удалось очистить историю.');
-        }
-    });
+            
+            const userId = localStorage.getItem('chat_user_id') || 'guest';
+            
+            try {
+                const res = await fetch('/bot/clear-history', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                
+                const data = await parseBotResponse(res);
+                
+                if(res.ok && data && data.status === 'success') {
+                    const messages = chat.querySelectorAll('.message');
+                    messages.forEach((msg, index) => {
+                        if(index > 0) {
+                            msg.remove();
+                        }
+                    });
+                    addMessage('История диалога очищена. Можете начать новую беседу.');
+                } else {
+                    addMessage('Не удалось очистить историю.');
+                }
+            } catch (err) {
+                console.error('Clear history error:', err);
+                addMessage('Не удалось очистить историю.');
+            }
+        });
+    }
 
 </script>
