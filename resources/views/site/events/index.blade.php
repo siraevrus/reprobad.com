@@ -14,6 +14,34 @@
         <link rel="next" href="{{ route('site.events.index', array_merge($paginationQuery, ['page' => $paginationCurrentPage + 1])) }}">
     @endif
 @endif
+<style>
+    .items-wrap.gap-0 .events-card {
+        min-height: 12.675rem;
+        padding-top: 1.95rem;
+        padding-bottom: 1.95rem;
+        grid-row-gap: 0.65rem;
+        grid-column-gap: 0.65rem;
+    }
+
+    .items-wrap.gap-0 .events-card-head {
+        grid-row-gap: 0.325rem;
+        grid-column-gap: 0.325rem;
+    }
+
+    .items-wrap.gap-0 .events-card-body {
+        grid-row-gap: 0.65rem;
+        grid-column-gap: 0.65rem;
+    }
+
+    @media screen and (max-width: 767px) {
+        .items-wrap.gap-0 .events-card {
+            min-height: 0;
+            padding: 0.65rem 0.65rem 0;
+            grid-row-gap: 0.325rem;
+            grid-column-gap: 0.325rem;
+        }
+    }
+</style>
 @endsection
 
 @section('content')
