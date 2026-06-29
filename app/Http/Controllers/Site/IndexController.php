@@ -26,7 +26,7 @@ class IndexController extends Controller
         $resources = Article::active()
             ->select('id', 'title', 'description', 'alias', 'image', 'icon', 'created_at', 'time', 'category')
             ->orderBy('created_at', 'DESC')
-            ->take(5)
+            ->take(8)
             ->get();
         
         $complexes = Complex::active()
