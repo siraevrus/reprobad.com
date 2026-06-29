@@ -46,6 +46,12 @@
     </div>
 </section>
 
+<section class="widgets-section">
+    <div class="container widgets-container">
+        @include('site.components.widgets.test-repromenu-row')
+    </div>
+</section>
+
 <section class="articles-section" style="margin-top:2rem">
     <div class="container articles-section-container">
         <div class="section-head-with-detali-button">
@@ -63,7 +69,6 @@
 
 <section class="widgets-section">
     <div class="container widgets-container">
-        @include('site.components.widgets.test-repromenu-row')
         <div class="short-events"><img src="{{ asset('images/bg-cal.svg') }}" loading="lazy" alt="иконка календарь" class="short-events-bg-image">
             <div class="section-head-with-detali-button short-events-section">
                 <h2 class="big-section-h"><strong>События</strong> и&nbsp;мероприятия</h2>
