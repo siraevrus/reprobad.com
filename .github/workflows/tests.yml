@@ -15,10 +15,6 @@ permissions:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    env:
-      # См. предупреждение GitHub Actions про Node 20 на раннере (checkout и др.)
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     strategy:
       fail-fast: false
       matrix:
@@ -28,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
