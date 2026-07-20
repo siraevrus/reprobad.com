@@ -51,21 +51,24 @@ jobs:
 
             cd /var/www/repro
 
-            echo "=== Git: убрать неотслеживаемые файлы, мешающие merge ==="
-            U=$(git status --porcelain 2>/dev/null | grep '^??' | awk '{print $2}' | grep -E '(left-arrow\.svg|right-arrow\.svg|deployment/git-hooks/post-merge\.example|deployment/php-fpm-opcache-revalidate\.ini\.example|deployment/GITHUB_ACTIONS_DEPLOY_SCRIPT\.yml)' || true)
-            if [[ -n "$U" ]]; then
-              while IFS= read -r file; do
-                [[ -z "$file" ]] && continue
-                if [[ -f "$file" ]]; then
-                  echo "Удаление неотслеживаемого: $file"
-                  rm -f "$file"
-                fi
-              done <<< "$U"
-            fi
-
-            echo "=== Git: stash / pull master ==="
+            echo "=== Git: stash / fetch ==="
             git stash push -m "github-actions-pre-pull-$(date +%s)" 2>/dev/null || true
             git fetch origin
+
+            echo "=== Git: убрать неотслеживаемые файлы, которые есть в origin/master (мешают merge) ==="
+            # Если файл уже лежит на сервере как untracked (ручной scp и т.п.),
+            # а в приходящем коммите он tracked — git pull падает. Удаляем такие.
+            while IFS= read -r file; do
+              [[ -z "$file" ]] && continue
+              if [[ -e "$file" ]] && ! git ls-files --error-unmatch "$file" >/dev/null 2>&1; then
+                if git cat-file -e "origin/master:$file" 2>/dev/null; then
+                  echo "Удаление неотслеживаемого: $file"
+                  rm -rf -- "$file"
+                fi
+              fi
+            done < <(git ls-files --others --exclude-standard)
+
+            echo "=== Git: pull master ==="
             git pull origin master
 
             echo "=== Laravel: composer, migrate, caches, php-fpm, sitemap ==="
