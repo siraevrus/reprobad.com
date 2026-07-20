@@ -35,8 +35,27 @@ if [ ! -f ".env" ]; then
     exit 1
 fi
 
-# Загрузка переменных окружения из .env
-export $(grep -v '^#' .env | grep -v '^$' | xargs)
+# Безопасное чтение нужных ключей из .env (без export $(xargs) —
+# он ломается на значениях с пробелами/кириллицей, напр. APP_NAME="Система РЕПРО").
+env_get() {
+    local key="$1"
+    local line value
+    line=$(grep -E "^${key}=" .env | tail -n 1) || true
+    [[ -z "$line" ]] && { printf ''; return 0; }
+    value="${line#*=}"
+    if [[ "${value}" == \"*\" && "${value}" == *\" ]]; then
+        value="${value:1:${#value}-2}"
+    elif [[ "${value}" == \'*\' && "${value}" == *\' ]]; then
+        value="${value:1:${#value}-2}"
+    fi
+    printf '%s' "$value"
+}
+
+DB_HOST="$(env_get DB_HOST)"
+DB_PORT="$(env_get DB_PORT)"
+DB_DATABASE="$(env_get DB_DATABASE)"
+DB_USERNAME="$(env_get DB_USERNAME)"
+DB_PASSWORD="$(env_get DB_PASSWORD)"
 
 # Получение параметров подключения к БД
 DB_HOST="${DB_HOST:-127.0.0.1}"
