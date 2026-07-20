@@ -40,6 +40,7 @@ use App\Http\Controllers\Site\PageController as SitePageController;
 use App\Http\Controllers\Site\ProductController as SiteProductController;
 use App\Http\Controllers\Site\TestController as SiteTestController;
 use App\Http\Controllers\Site\TextController as SiteTextController;
+use App\Http\Controllers\Site\RssFeedController;
 use App\Http\Controllers\Site\YandexFeedController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,8 @@ Route::get('/.well-known/http-message-signatures-directory', [BotAuthController:
 
 Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name('short.redirect');
 Route::get('/feeds/yandex.yml', YandexFeedController::class)->name('site.feeds.yandex');
+Route::get('/feeds/rss.xml', RssFeedController::class)->name('site.feeds.rss');
+Route::get('/feed', RssFeedController::class)->name('site.feeds.rss.alt');
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');
