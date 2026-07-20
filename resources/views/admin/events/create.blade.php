@@ -1,7 +1,7 @@
 @extends('admin.layouts.base')
 
 @section('content')
-    <div x-data="app()">
+    <div x-data="app()" x-init="init()">
 
         @include('admin.components.alert')
 
@@ -66,6 +66,7 @@
                 ...get,
                 ...save,
                 ...init,
+                ...aliasFromTitle,
                 form: {
                     images: [],
                     logo: '',

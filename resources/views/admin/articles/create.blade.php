@@ -92,6 +92,7 @@
                 ...get,
                 ...save,
                 ...init,
+                ...aliasFromTitle,
                 form: {
                     active: 1,
                 },

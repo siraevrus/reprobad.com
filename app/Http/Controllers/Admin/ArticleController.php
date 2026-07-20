@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\DispatchesContentSeoFill;
+use App\Http\Controllers\Admin\Concerns\FillsAliasFromTitle;
 use App\Http\Controllers\Admin\Concerns\HandlesAdminSaveErrors;
 use App\Http\Controllers\Admin\Concerns\SanitizesRichTextFields;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ use Illuminate\View\View;
 class ArticleController extends Controller
 {
     use DispatchesContentSeoFill;
+    use FillsAliasFromTitle;
     use HandlesAdminSaveErrors;
     use SanitizesRichTextFields;
 
@@ -72,6 +74,7 @@ class ArticleController extends Controller
     public function store(Request $request) : JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+        $this->fillAliasFromTitle($request);
 
         $validator = $this->makeSaveValidator($request, $this->rules);
 
@@ -101,6 +104,7 @@ class ArticleController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+        $this->fillAliasFromTitle($request);
 
         $validator = $this->makeSaveValidator($request, array_merge($this->rules, [
             'alias' => 'required|unique:articles,alias,' . $id,

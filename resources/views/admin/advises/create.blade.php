@@ -84,6 +84,7 @@
                 ...get,
                 ...save,
                 ...init,
+                ...aliasFromTitle,
                 form: {
                     tags: [],
                     images: []

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\FillsAliasFromTitle;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Services\InputService;
@@ -13,6 +14,8 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
+    use FillsAliasFromTitle;
+
     public array $rules = [
         'title' => 'required|string',
         'content' => 'required|string',
@@ -62,6 +65,7 @@ class EventController extends Controller
     public function store(Request $request) : JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+        $this->fillAliasFromTitle($request);
 
         $validator = Validator::make($request->all(), $this->rules);
 
@@ -100,6 +104,7 @@ class EventController extends Controller
     public function update(Request $request, $id): JsonResponse
     {
         $request->headers->set('Accept', 'application/json');
+        $this->fillAliasFromTitle($request);
 
         $validator = Validator::make($request->all(), array_merge($this->rules, [
             'alias' => 'required|unique:events,alias,' . $id,

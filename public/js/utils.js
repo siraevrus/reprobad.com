@@ -498,7 +498,13 @@ const init = {
 
         if (this.action !== 'create') {
             await this.get();
+            if (Object.prototype.hasOwnProperty.call(this, 'aliasManual')) {
+                this.aliasManual = !!(this.form.alias && String(this.form.alias).trim());
+            }
+        } else if (Object.prototype.hasOwnProperty.call(this, 'aliasManual')) {
+            this.aliasManual = false;
         }
+
         this.initializeTinyMCE();
         this.initializeEditorJs();
     },
@@ -619,3 +625,48 @@ const tags = {
         this.form[field].splice(index, 1);
     }
 }
+
+/**
+ * Транслитерация заголовка в человекочитаемый алиас (кириллица → латиница).
+ */
+function slugifyTitle(title) {
+    const map = {
+        'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo',
+        'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm',
+        'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+        'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '',
+        'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu', 'я': 'ya', ' ': '-', '_': '-',
+    };
+
+    const plain = String(title || '')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .trim()
+        .toLowerCase();
+
+    return plain
+        .split('')
+        .map((char) => (Object.prototype.hasOwnProperty.call(map, char) ? map[char] : char))
+        .join('')
+        .replace(/[^a-z0-9-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Автозаполнение form.alias из form.title (пока пользователь сам не правил алиас).
+ */
+const aliasFromTitle = {
+    aliasManual: false,
+
+    syncAliasFromTitle() {
+        if (this.aliasManual) {
+            return;
+        }
+        this.form.alias = slugifyTitle(this.form.title || '');
+    },
+
+    markAliasManual() {
+        this.aliasManual = true;
+    },
+};
