@@ -40,15 +40,7 @@ class BotService {
      */
     protected function request($url, $payload, $headers = [])
     {
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER    => true,
-            CURLOPT_POST              => true,
-            CURLOPT_HTTPHEADER        => array_merge(["Content-Type: application/json"], $headers),
-            CURLOPT_POSTFIELDS        => json_encode($payload, JSON_UNESCAPED_UNICODE),
-            CURLOPT_CONNECTTIMEOUT    => 5,
-            CURLOPT_TIMEOUT           => 55,
-        ]);
+        $ch = $this->createCurlHandle($url, $payload, $headers);
         $response = curl_exec($ch);
         if ($response === false) {
             Log::error('CURL error: ' . curl_error($ch), ['url' => $url]);
@@ -60,34 +52,148 @@ class BotService {
     }
 
     /**
-     * Запрос с автоматическим переключением на резервную модель при сбое основной.
-     * Основная модель считается упавшей, если ответ не содержит choices[0].message.content.
+     * Создаёт curl-handle для chat completions.
+     *
+     * @return \CurlHandle|resource
+     */
+    protected function createCurlHandle(string $url, array $payload, array $headers)
+    {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST           => true,
+            CURLOPT_HTTPHEADER     => array_merge(["Content-Type: application/json"], $headers),
+            CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT        => 55,
+        ]);
+
+        return $ch;
+    }
+
+    /**
+     * Ответ считается успешным, если есть choices[0].message.content.
+     */
+    protected function isSuccessfulChatResult(?array $result): bool
+    {
+        return isset($result['choices'][0]['message']['content'])
+            && is_string($result['choices'][0]['message']['content'])
+            && $result['choices'][0]['message']['content'] !== '';
+    }
+
+    /**
+     * Параллельные запросы к primary и fallback: берём первый успешный ответ.
+     * Если fallback не задан или совпадает с primary — один запрос.
      */
     protected function requestWithFallback(array $data, array $headers): ?array
     {
         $primaryModel = $data['model'] ?? $this->model;
+        $models = [$primaryModel];
 
-        $response = $this->request($this->kbUrl, $data, $headers);
-        $result   = json_decode($response, true);
-
-        if (isset($result['choices'][0]['message']['content'])) {
-            return $result;
+        if ($this->fallbackModel && $this->fallbackModel !== $primaryModel) {
+            $models[] = $this->fallbackModel;
         }
 
-        // Основная модель не ответила — пробуем резервную
-        if ($this->fallbackModel && $this->fallbackModel !== $primaryModel) {
-            Log::warning('BotService: primary model failed, switching to fallback', [
-                'primary_model'  => $primaryModel,
-                'fallback_model' => $this->fallbackModel,
-                'raw_response'   => mb_substr((string) $response, 0, 300),
+        if (count($models) === 1) {
+            $response = $this->request($this->kbUrl, $data, $headers);
+            $result = json_decode($response, true);
+
+            return $this->isSuccessfulChatResult($result) ? $result : ($result ?: null);
+        }
+
+        return $this->raceModelRequests($models, $data, $headers);
+    }
+
+    /**
+     * Гонка моделей через curl_multi: первый валидный ответ побеждает, остальные обрываются.
+     */
+    protected function raceModelRequests(array $models, array $data, array $headers): ?array
+    {
+        $multi = curl_multi_init();
+        $handles = [];
+
+        foreach ($models as $model) {
+            $payload = $data;
+            $payload['model'] = $model;
+            $ch = $this->createCurlHandle($this->kbUrl, $payload, $headers);
+            $handles[spl_object_id($ch)] = ['ch' => $ch, 'model' => $model];
+            curl_multi_add_handle($multi, $ch);
+        }
+
+        $winner = null;
+        $lastFailed = null;
+        $active = null;
+
+        do {
+            $status = curl_multi_exec($multi, $active);
+            if ($status > CURLM_OK) {
+                break;
+            }
+
+            while ($info = curl_multi_info_read($multi)) {
+                $ch = $info['handle'];
+                $key = spl_object_id($ch);
+                $model = $handles[$key]['model'] ?? 'unknown';
+                $response = curl_multi_getcontent($ch);
+                $errno = curl_errno($ch);
+
+                if ($errno !== 0 || $response === false || $response === null) {
+                    Log::error('CURL error: ' . curl_error($ch), [
+                        'url' => $this->kbUrl,
+                        'model' => $model,
+                    ]);
+                    $lastFailed = ['model' => $model, 'raw' => ''];
+                } else {
+                    $result = json_decode($response, true);
+                    if ($winner === null && $this->isSuccessfulChatResult($result)) {
+                        $winner = ['model' => $model, 'result' => $result];
+                    } elseif ($winner === null) {
+                        $lastFailed = [
+                            'model' => $model,
+                            'raw' => mb_substr((string) $response, 0, 300),
+                        ];
+                    }
+                }
+
+                curl_multi_remove_handle($multi, $ch);
+                curl_close($ch);
+                unset($handles[$key]);
+            }
+
+            if ($winner !== null) {
+                break;
+            }
+
+            if ($active && curl_multi_select($multi, 1.0) === -1) {
+                usleep(10000);
+            }
+        } while ($active && $handles);
+
+        // Обрываем оставшиеся запросы после победителя / выхода из цикла
+        foreach ($handles as $item) {
+            curl_multi_remove_handle($multi, $item['ch']);
+            curl_close($item['ch']);
+        }
+        curl_multi_close($multi);
+
+        if ($winner !== null) {
+            Log::info('BotService: race winner', [
+                'winner_model' => $winner['model'],
+                'models' => $models,
             ]);
 
-            $data['model'] = $this->fallbackModel;
-            $response = $this->request($this->kbUrl, $data, $headers);
-            $result   = json_decode($response, true);
+            return $winner['result'];
         }
 
-        return $result ?: null;
+        if ($lastFailed !== null) {
+            Log::warning('BotService: all race models failed', [
+                'models' => $models,
+                'last_failed_model' => $lastFailed['model'],
+                'raw_response' => $lastFailed['raw'],
+            ]);
+        }
+
+        return null;
     }
 
     // ============================================
