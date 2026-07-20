@@ -53,7 +53,7 @@
         <div class="container contacts-form-container"><img sizes="100vw" srcset="{{ asset('images/m1-p-500.webp') }} 500w, {{ asset('images/m1-p-800.webp') }} 800w, {{ asset('images/m1-p-1080.webp') }} 1080w, {{ asset('images/m1.webp') }} 1440w" alt="" src="{{ asset('images/m1.webp') }}" loading="lazy" class="contacts-bg">
             <div class="contacts-content">
                 <div class="contacts-head">
-                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="{{ asset('images/RFarmLogo.svg') }}" alt="" class="rfarm-green-logo"></div>
+                    <div class="rfarm-contacts-logo-wrap"><img loading="lazy" src="{{ asset('images/RFarmLogo.png') }}" alt="Лого Р-ФАРМ" class="rfarm-green-logo"></div>
                     <h1 class="contacts-h1">Контакты</h1>
                     <div style="max-width: 300px;">
                         {{ config('address') }}<br>

@@ -272,8 +272,10 @@
         setTimeout(hidePageBg, 50);
     })();
     </script>
-    <link href="{{ asset('images/favicon.png') }}" rel="shortcut icon" type="image/x-icon">
-    <link href="{{ asset('images/webclip.jpg') }}" rel="apple-touch-icon">
+    <link href="{{ asset('favicon.ico') }}" rel="icon" sizes="any">
+    <link href="{{ asset('images/favicon.png') }}" rel="icon" type="image/png" sizes="32x32">
+    <link href="{{ asset('apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180">
+    <link href="{{ asset('apple-touch-icon.png') }}" rel="apple-touch-icon-precomposed">
     <style>
         :focus-visible { outline: var(--mandarin) auto 1px; }
         .bad-wrap { position: fixed; visibility: hidden; }
@@ -398,12 +400,18 @@
     <script>
         !function(e){"use strict";var t=function(t,n,r){function o(){if(i){i=!1;for(var e in a)a[e].rel="stylesheet",a[e].onload=null}if("undefined"!=typeof n&&n.call)return n.call(this)}var i=!0,l=e.document,s=l.createElement("link");if(r)s.media="only x";else{var d=l.createElement("style");d.appendChild(l.createTextNode("@media only x { "+t+" }")),l.head.appendChild(d)}s.rel="preload",s.as="style",s.href=t,s.onloadcssdefined=o,s.onload=o,s.onreadystatechange=function(){"complete"===this.readyState&&o()},l.head.appendChild(s);var a=l.styleSheets;return s},"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
     </script>
-    @isset($resource->color)
-        <link rel="stylesheet" href="{{ asset('css/' . $resource->color . '.css') }}">
-    @endisset
+    @php
+        $productThemeColors = ['blue', 'purple', 'orange', 'green', 'mandarin'];
+        $resourceThemeColor = (isset($resource) && is_object($resource) && isset($resource->color))
+            ? (string) $resource->color
+            : '';
+    @endphp
+    @if($resourceThemeColor !== '' && in_array($resourceThemeColor, $productThemeColors, true))
+        <link rel="stylesheet" href="{{ asset('css/' . $resourceThemeColor . '.css') }}">
+    @endif
 
-    @if(isset($resource->color) && in_array($resource->color, ['blue', 'purple', 'orange', 'green', 'mandarin']))
-        @include('site.components.products.' . $resource->color)
+    @if($resourceThemeColor !== '' && in_array($resourceThemeColor, $productThemeColors, true))
+        @include('site.components.products.' . $resourceThemeColor)
     @else
     <style>
         html { font-size: 1.333125rem; }
