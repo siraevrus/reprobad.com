@@ -477,6 +477,9 @@
                 max-width: none;
                 margin-bottom: 1rem;
             }
+            .mobile-search-button.is-hidden {
+                display: none !important;
+            }
         }
         .tags::-webkit-scrollbar { display: none; }
         .tags { -ms-overflow-style: none;   scrollbar-width: none; }
