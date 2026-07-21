@@ -10,9 +10,24 @@
       return head ? head.querySelector('.search') : document.querySelector('.items-head .search');
     }
 
+    function getMobileButton(form) {
+      const head = form.closest('.items-head');
+      return head ? head.querySelector('.mobile-search-button') : null;
+    }
+
+    function syncMobileButtonVisibility(form) {
+      const button = getMobileButton(form);
+      const input = form.querySelector('.search-input');
+      if (!button || !input) return;
+
+      // Когда в поле есть текст, появляется submit «—>» — прячем плавающую иконку, чтобы не накладывалась
+      button.classList.toggle('is-hidden', input.value.trim() !== '');
+    }
+
     function openSearch(form) {
       form.classList.add('mobile-search-active');
       form.style.removeProperty('display');
+      syncMobileButtonVisibility(form);
       const input = form.querySelector('.search-input');
       if (input) {
         setTimeout(() => input.focus(), 50);
@@ -22,6 +37,7 @@
     function closeSearch(form) {
       form.classList.remove('mobile-search-active');
       form.style.removeProperty('display');
+      syncMobileButtonVisibility(form);
     }
 
     function toggleSearch(form) {
@@ -45,12 +61,18 @@
       });
     });
 
-    // Если в поле уже есть запрос (страница результатов) — сразу показать форму на мобиле
     document.querySelectorAll('.items-head .search').forEach((form) => {
       const input = form.querySelector('.search-input');
-      if (input && input.value.trim() !== '') {
+      if (!input) return;
+
+      if (input.value.trim() !== '') {
         form.classList.add('mobile-search-active');
       }
+
+      syncMobileButtonVisibility(form);
+
+      input.addEventListener('input', () => syncMobileButtonVisibility(form));
+      input.addEventListener('change', () => syncMobileButtonVisibility(form));
     });
 
     // Закрытие по клику вне формы/кнопки
