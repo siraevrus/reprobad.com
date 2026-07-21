@@ -48,7 +48,7 @@
                 </div>
                 @endif
 
-                <a href="#" class="mobile-search-button w-inline-block" onclick="event.preventDefault(); toggleMobileSearch(); return false;"><img src="{{ asset('images/Search.svg') }}" loading="lazy" alt="Поиск" class="mobile-search-button-icon"></a>
+                <a href="#" class="mobile-search-button w-inline-block" role="button" aria-label="Открыть поиск"><img src="{{ asset('images/Search.svg') }}" loading="lazy" alt="" class="mobile-search-button-icon"></a>
             </div>
             <div class="items-wrap">
                 @if(!$resources->count())
@@ -175,29 +175,4 @@
             @endif
         </div>
     </section>
-@endsection
-
-@section('scripts')
-<script>
-    function toggleMobileSearch() {
-        const searchForm = document.querySelector('.items-head .search');
-        const mobileButton = document.querySelector('.mobile-search-button');
-        
-        if (searchForm) {
-            if (searchForm.style.display === 'block' || searchForm.classList.contains('mobile-search-active')) {
-                searchForm.style.display = 'none';
-                searchForm.classList.remove('mobile-search-active');
-            } else {
-                searchForm.style.display = 'block';
-                searchForm.classList.add('mobile-search-active');
-                const searchInput = searchForm.querySelector('.search-input');
-                if (searchInput) {
-                    setTimeout(() => {
-                        searchInput.focus();
-                    }, 100);
-                }
-            }
-        }
-    }
-</script>
 @endsection

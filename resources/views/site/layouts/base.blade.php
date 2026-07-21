@@ -392,7 +392,7 @@
         }
     </style>
     <link rel="preload" href="/js/head.js?v={{ md5_file(public_path('js/head.js')) }}" as="script">
-    <script async src="/js/head.js?v={{ md5_file(public_path('js/head.js')) }}"></script>
+    <script defer src="/js/head.js?v={{ md5_file(public_path('js/head.js')) }}"></script>
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -474,6 +474,7 @@
                 display: block !important;
                 order: -1;
                 width: 100%;
+                max-width: none;
                 margin-bottom: 1rem;
             }
         }
