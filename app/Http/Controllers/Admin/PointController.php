@@ -38,7 +38,11 @@ class PointController extends Controller
     public function index(): View|JsonResponse
     {
         if(request()->user()->cannot('viewAny', Point::class)) abort(403);
-        $resources = Point::query()->paginate(env('PAGINATION_LIMIT', 20));
+        $resources = Point::query()
+            ->orderByRaw('city IS NULL OR city = ""')
+            ->orderBy('city')
+            ->orderBy('title')
+            ->paginate(env('PAGINATION_LIMIT', 20));
 
         if(request()->ajax()) {
             return response()->json($resources);
