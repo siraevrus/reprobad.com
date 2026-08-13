@@ -128,7 +128,8 @@ if (!function_exists('canonical_query_string')) {
 if (!function_exists('public_asset')) {
     /**
      * URL для статики: пути из public/, storage/ или legacy «images/...».
-     * http(s)://, data: и пути с ведущим «/» возвращаются без изменений.
+     * http(s):// возвращаются без изменений. data:image/* сохраняются в storage
+     * и заменяются на /storage/..., чтобы не раздувать HTML.
      */
     function public_asset(?string $path): string
     {
@@ -138,9 +139,18 @@ if (!function_exists('public_asset')) {
         }
 
         if (str_starts_with($path, 'http://')
-            || str_starts_with($path, 'https://')
-            || str_starts_with($path, 'data:')) {
+            || str_starts_with($path, 'https://')) {
             return $path;
+        }
+
+        if (str_starts_with($path, 'data:image/')) {
+            $stored = app(\App\Support\DataUriImageMaterializer::class)->storeHashed($path, 'inline');
+
+            return $stored ?? '';
+        }
+
+        if (str_starts_with($path, 'data:')) {
+            return '';
         }
 
         if (str_starts_with($path, '/')) {

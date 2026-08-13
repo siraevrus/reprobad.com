@@ -67,6 +67,43 @@ final class DietarySupplementJsonLd
         return self::fallbackDescriptionFromContent($product, $complex);
     }
 
+    public static function resolveName(Product $product, Complex $complex, ?int $slotIndex = null): string
+    {
+        $haystack = strip_tags(implode(' ', [
+            (string) ($product->title ?? ''),
+            (string) ($product->alias ?? ''),
+            (string) ($product->subtitle ?? ''),
+            (string) ($product->description ?? ''),
+            (string) ($product->logo_alt ?? ''),
+        ]));
+        $haystack = trim(preg_replace('/\s+/u', ' ', $haystack) ?? $haystack);
+        $haystack = mb_strtolower($haystack, 'UTF-8');
+
+        foreach (config('dietary_supplement_schema.commercial_names', []) as $row) {
+            if (empty($row['markers']) || empty($row['name'])) {
+                continue;
+            }
+            foreach ($row['markers'] as $marker) {
+                $ml = mb_strtolower(trim((string) $marker), 'UTF-8');
+                if ($ml !== '' && str_contains($haystack, $ml)) {
+                    return trim((string) $row['name']);
+                }
+            }
+        }
+
+        if ($slotIndex !== null) {
+            $alias = trim((string) ($complex->alias ?? ''));
+            $byAlias = config('dietary_supplement_schema.names_by_complex_alias', []);
+            if ($alias !== '' && isset($byAlias[$alias][$slotIndex])) {
+                return trim((string) $byAlias[$alias][$slotIndex]);
+            }
+        }
+
+        $title = trim(preg_replace('/\s+/u', ' ', strip_tags((string) ($product->title ?? ''))));
+
+        return $title;
+    }
+
     public static function resolveOfferUrl(Product $product): string
     {
         $titleLc = self::normalizedTitle($product);

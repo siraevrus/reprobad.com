@@ -160,6 +160,13 @@ class GenerateSitemap extends Command
         $this->info("Sitemap generated successfully! Total URLs: " . count($urls));
         $this->info("File saved to: {$filePath}");
 
+        $submitted = app(\App\Services\IndexNowService::class)->submit(
+            array_column($urls, 'loc')
+        );
+        if ($submitted) {
+            $this->info('IndexNow: submitted '.count($urls).' URLs');
+        }
+
         return 0;
     }
 }

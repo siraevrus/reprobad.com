@@ -22,6 +22,25 @@ class SecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
+        $contentType = (string) $response->headers->get('Content-Type', '');
+        if ($contentType === '' || str_contains($contentType, 'text/html')) {
+            $response->headers->set('Content-Security-Policy', implode('; ', [
+                "default-src 'self'",
+                "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+                "style-src 'self' 'unsafe-inline' https:",
+                "img-src 'self' data: blob: https:",
+                "font-src 'self' data: https:",
+                "connect-src 'self' https: wss:",
+                "frame-src 'self' https:",
+                "media-src 'self' https:",
+                "object-src 'none'",
+                "base-uri 'self'",
+                "form-action 'self'",
+                "frame-ancestors 'self'",
+                'upgrade-insecure-requests',
+            ]));
+        }
+
         return $response;
     }
 }

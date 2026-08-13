@@ -49,6 +49,13 @@
             @endif
         </div>
         <div>
+            <label class="block font-semibold mb-2">YouTube</label>
+            <input type="text" value="{{ $config->youtube ?? 'https://www.youtube.com/@reprobad' }}" name="youtube" class="w-full p-2 border rounded" placeholder="https://www.youtube.com/@reprobad">
+            @if($errors->has('youtube'))
+                <div class="text-red-500 text-xs mt-1">{{ $errors->first('youtube') }}</div>
+            @endif
+        </div>
+        <div>
             <label class="block font-semibold mb-2">Rutube</label>
             <input type="text" value="{{ $config->rutube ?? '' }}" name="rutube" class="w-full p-2 border rounded" placeholder="">
             @if($errors->has('rutube'))

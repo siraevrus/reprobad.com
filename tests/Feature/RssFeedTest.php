@@ -68,4 +68,17 @@ class RssFeedTest extends TestCase
         $response->assertOk();
         $response->assertSee('<rss version="2.0"', false);
     }
+
+    public function test_rss_xml_well_known_route_works(): void
+    {
+        Cache::forget('feeds.rss');
+
+        $response = $this->get('/rss.xml');
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'application/rss+xml; charset=UTF-8');
+        $response->assertSee('<rss version="2.0"', false);
+        $response->assertSee('rel="self" type="application/rss+xml"', false);
+        $response->assertSee('/rss.xml', false);
+    }
 }

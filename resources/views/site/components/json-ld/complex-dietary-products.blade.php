@@ -26,9 +26,10 @@
 
     $graph = [];
 
-    foreach ($resource->products ?? [] as $product) {
+    foreach (array_values(($resource->products ?? collect())->all()) as $slotIndex => $product) {
         $description = \App\Support\DietarySupplementJsonLd::resolveDescription($product, $resource);
         $offerUrl = \App\Support\DietarySupplementJsonLd::resolveOfferUrl($product);
+        $productName = \App\Support\DietarySupplementJsonLd::resolveName($product, $resource, (int) $slotIndex);
 
         $offer = [
             '@type' => 'Offer',
@@ -44,7 +45,7 @@
 
         $item = [
             '@type' => ['Product', 'DietarySupplement'],
-            'name' => strip_tags((string) $product->title),
+            'name' => $productName,
             'description' => $description,
             'brand' => [
                 '@type' => 'Brand',

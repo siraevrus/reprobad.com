@@ -64,6 +64,10 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ route('site.articles.show', $resource->alias) }}"
+  },
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".article-h1", ".article-short", ".article-content"]
   }
 }
 </script>
@@ -82,9 +86,12 @@
         'reviewedBy' => [
             '@type' => 'Organization',
             'name' => 'Медицинское бюро АО «Р-Фарм»',
-            'url' => rtrim(config('app.url'), '/') . '/editorial-policy',
         ],
         'lastReviewed' => '2026-04-01',
+        'speakable' => [
+            '@type' => 'SpeakableSpecification',
+            'cssSelector' => ['.article-h1', '.article-short', '.article-content'],
+        ],
     ];
 @endphp
 <script type="application/ld+json">

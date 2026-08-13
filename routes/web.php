@@ -52,6 +52,7 @@ Route::get('/s/{code}', [ShortLinkRedirectController::class, 'redirect'])->name(
 Route::get('/feeds/yandex.yml', YandexFeedController::class)->name('site.feeds.yandex');
 Route::get('/feeds/rss.xml', RssFeedController::class)->name('site.feeds.rss');
 Route::get('/feed', RssFeedController::class)->name('site.feeds.rss.alt');
+Route::get('/rss.xml', RssFeedController::class)->name('site.feeds.rss.xml');
 
 Route::group(['middleware' => ['auth'], 'as' => 'admin.'], function () {
     Route::get('/admin', [IndexController::class, 'index'])->name('index');

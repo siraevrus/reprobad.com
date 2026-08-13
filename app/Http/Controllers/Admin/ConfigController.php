@@ -31,6 +31,7 @@ class ConfigController extends Controller
             'email' => 'string|nullable',
             'email2' => 'string|nullable',
             'telegram' => 'string|nullable',
+            'youtube' => 'string|nullable',
             'rutube' => 'string|nullable',
             'ok' => 'string|nullable',
             'vk' => 'string|nullable',

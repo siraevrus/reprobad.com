@@ -17,6 +17,9 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: GoogleOther
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
@@ -35,6 +38,9 @@ Allow: /
 User-agent: Meta-ExternalAgent
 Allow: /
 
+User-agent: FacebookBot
+Allow: /
+
 User-agent: Amazonbot
 Allow: /
 
@@ -45,7 +51,9 @@ Host: reprobad.com
 
 Sitemap: https://reprobad.com/sitemap.xml
 
-# AI-readable summary: https://reprobad.com/llms.txt
+# AI-readable summaries
+# https://reprobad.com/llms.txt
+# https://reprobad.com/llms-full.txt
 
 # Указываем оба параметра в одной директиве
 Clean-param: city&erid

@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\Advise;
 use App\Models\Article;
+use App\Models\Page;
 use App\Support\DataUriImageMaterializer;
 use Illuminate\Console\Command;
 
@@ -14,7 +15,7 @@ class MaterializeBase64ImagesCommand extends Command
     protected $signature = 'images:materialize-base64
                             {--dry-run : Show what would change without writing files}';
 
-    protected $description = 'Convert base64 data-URI images in articles/advises into public storage files';
+    protected $description = 'Convert base64 data-URI images in articles, advises and pages into public storage files';
 
     public function handle(DataUriImageMaterializer $materializer): int
     {
@@ -55,6 +56,40 @@ class MaterializeBase64ImagesCommand extends Command
                     $converted++;
                 });
         }
+
+        $this->info('Processing pages...');
+        Page::query()->orderBy('id')->each(function (Page $page) use ($materializer, $dryRun, &$converted, &$skipped) {
+            $content = $page->content ?? [];
+            if (! is_array($content) || $content === []) {
+                $skipped++;
+
+                return;
+            }
+
+            if ($dryRun) {
+                [, $wouldChange] = $materializer->replaceDataUrisInTree($content, 'pages');
+                if ($wouldChange) {
+                    $this->line("  [dry-run] pages#{$page->id}");
+                    $converted++;
+                } else {
+                    $skipped++;
+                }
+
+                return;
+            }
+
+            [$content, $changed] = $materializer->replaceDataUrisInTree($content, 'pages');
+            if (! $changed) {
+                $skipped++;
+
+                return;
+            }
+
+            $page->content = $content;
+            $page->save();
+            $this->line("  pages#{$page->id} materialized");
+            $converted++;
+        });
 
         $this->info("Converted: {$converted}, skipped: {$skipped}");
 

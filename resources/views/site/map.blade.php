@@ -33,8 +33,9 @@
         'url' => config('app.url'),
         'logo' => config('app.url') . '/images/lgog-gold.svg',
     ];
-    if (config('address')) {
-        $lb['address'] = ['@type' => 'PostalAddress', 'streetAddress' => config('address')];
+    $postalAddress = \App\Support\PostalAddressJsonLd::fromRaw(config('address'));
+    if ($postalAddress) {
+        $lb['address'] = $postalAddress;
     }
     if (config('phone') || config('phone2')) {
         $lb['telephone'] = config('phone2') ?: config('phone');

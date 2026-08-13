@@ -25,6 +25,9 @@ class AgentDiscoveryHeaders
         $links = [
             '</sitemap.xml>; rel="sitemap"',
             '</robots.txt>; rel="robots.txt"',
+            '</llms.txt>; rel="alternate"; type="text/plain"; title="llms.txt"',
+            '</llms-full.txt>; rel="alternate"; type="text/plain"; title="llms-full.txt"',
+            '</rss.xml>; rel="alternate"; type="application/rss+xml"; title="RSS"',
             '</faq>; rel="help"',
             '</articles>; rel="collection"',
         ];

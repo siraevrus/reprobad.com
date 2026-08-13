@@ -64,6 +64,10 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ route('site.advises.show', $resource->alias) }}"
+  },
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".article-h1", ".article-short", ".article-content"]
   }
 }
 </script>

@@ -90,6 +90,9 @@
     @if(canonical_url())
         <link rel="canonical" href="{{ canonical_url() }}">
     @endif
+    <link rel="alternate" type="text/plain" title="llms.txt" href="{{ url('/llms.txt') }}">
+    <link rel="alternate" type="text/plain" title="llms-full.txt" href="{{ url('/llms-full.txt') }}">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url('/rss.xml') }}">
 
     <meta content="summary_large_image" name="twitter:card">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -138,18 +141,19 @@
         if (count($contactPoints) > 0) {
             $organization['contactPoint'] = $contactPoints;
         }
-        
-        if (config('address')) {
-            $organization['address'] = [
-                '@type' => 'PostalAddress',
-                'streetAddress' => config('address')
-            ];
+
+        $organization['parentOrganization'] = \App\Support\PostalAddressJsonLd::parentOrganization();
+
+        $postalAddress = \App\Support\PostalAddressJsonLd::fromRaw(config('address'));
+        if ($postalAddress) {
+            $organization['address'] = $postalAddress;
         }
         
         $socialLinks = array_filter([
             config('vk'),
             config('ok'),
             config('telegram'),
+            config('youtube'),
             config('rutube'),
             config('dzen')
         ]);
@@ -177,7 +181,7 @@
         .navbar-background{background-color:#fff;display:block;position:absolute;inset:0;z-index:0}
         .navbar{position:relative;z-index:1}
         .page-background{opacity:0!important;visibility:hidden!important;z-index:-1!important;pointer-events:none!important}
-        html:not(.w-mod-js) body{visibility:hidden;opacity:0}
+        html.w-mod-js body:not(.css-loaded){visibility:hidden;opacity:0}
         html.w-mod-js body.css-loaded{visibility:visible;opacity:1;transition:opacity 0.15s ease-in}
         *{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
     </style>
@@ -680,6 +684,15 @@
                 <a href="mailto:{{ config('email') }}" class="footer-email">{{ config('email') }}</a>
             </div>
             <div class="social-icons">
+                @if(config('youtube'))
+                <a href="{{ config('youtube') }}" class="social-link w-inline-block" rel="noopener noreferrer" target="_blank" aria-label="YouTube Система РЕПРО">
+                    <div class="social-icon w-embed">
+                        <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M24 0c13.255 0 24 10.745 24 24S37.255 48 24 48 0 37.255 0 24 10.745 0 24 0zm8.16 24.54c0 2.12-.25 4.23-.25 4.23s-.24 1.72-1 2.47c-.95.99-2.02 1-2.53 1.06C24.01 32.5 24 32.5 24 32.5s-6.37.08-8.38-.2c-.54-.1-1.74-.12-2.7-1.12-.75-.75-1-2.47-1-2.47s-.25-2.11-.25-4.23V23.46c0-2.12.25-4.23.25-4.23s.25-1.72 1-2.47c.96-1 2.16-1.02 2.7-1.12C17.63 15.42 24 15.5 24 15.5s6.01 0 8.38.2c.51.06 1.58.07 2.53 1.06.76.75 1 2.47 1 2.47s.25 2.11.25 4.23v1.08zM21.6 20.4v7.2l6.4-3.6-6.4-3.6z" fill="currentColor" fill-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </a>
+                @endif
                 @if(config('rutube'))
                 <a href="{{ config('rutube') }}" class="social-link w-inline-block">
                     <div class="social-icon w-embed">

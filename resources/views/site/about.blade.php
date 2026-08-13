@@ -70,8 +70,13 @@
                 <div class="container about-schema-container">
                     @if($block['data']['title'])<h2 class="about-schema-h2"><strong>{{ $block['data']['title'] }}</strong></h2>@endif
                     @if($block['data']['subtitle'])<p class="about-schema-p">{!! $block['data']['subtitle'] !!}</p>@endif
-                    @if($block['data']['image'])<img src="{{ public_asset($block['data']['image']) }}" loading="lazy" alt="" class="about-schema">@endif
-                    @if($block['data']['image'])<img src="{{ public_asset($block['data']['image']) }}" loading="lazy" alt="" class="about-schema mob">@endif
+                    @if($block['data']['image'])
+                        @php $aboutSchemaImg = public_asset($block['data']['image']); @endphp
+                        @if($aboutSchemaImg !== '')
+                            <img src="{{ $aboutSchemaImg }}" loading="lazy" alt="{{ $block['data']['title'] ?? 'Схема системы РЕПРО' }}" class="about-schema">
+                            <img src="{{ $aboutSchemaImg }}" loading="lazy" alt="" class="about-schema mob">
+                        @endif
+                    @endif
                     @if($block['data']['text'])<div class="about-schema-footnotes">{!! $block['data']['text'] !!}</div>@endif
                 </div>
             </section>

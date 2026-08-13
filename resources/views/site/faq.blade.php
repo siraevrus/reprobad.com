@@ -3,11 +3,15 @@
 @section('head')
 @if($resources && $resources->count() > 0)
 @php
-    $faqSchema = [
-        '@context' => 'https://schema.org',
-        '@type' => 'FAQPage',
-        'mainEntity' => []
-    ];
+        $faqSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'speakable' => [
+                '@type' => 'SpeakableSpecification',
+                'cssSelector' => ['.article-h1', '.accordion-title', '.accordion-content'],
+            ],
+            'mainEntity' => []
+        ];
     
     foreach ($resources as $resource) {
         // Конвертируем HTML в текст с сохранением структуры

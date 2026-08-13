@@ -29,7 +29,7 @@ class RssFeedController extends Controller
     private function buildXml(): string
     {
         $baseUrl = rtrim((string) config('app.url'), '/');
-        $feedUrl = $baseUrl . '/feeds/rss.xml';
+        $feedUrl = $baseUrl . '/rss.xml';
         $channelTitle = 'Система РЕПРО';
         $channelDescription = 'Статьи и полезные советы о совместной подготовке к беременности и репродуктивному здоровью';
         $items = $this->collectItems($baseUrl);

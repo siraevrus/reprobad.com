@@ -18,6 +18,19 @@
   }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "{{ config('app.url') }}#webpage",
+  "url": "{{ config('app.url') }}",
+  "name": "Система РЕПРО — подготовка пары к беременности",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".sistema-repro-p", ".sistema-repro-h1", ".step-h"]
+  }
+}
+</script>
 <style>
     .sistema-repro-semibold {
         margin-right: 15px;
