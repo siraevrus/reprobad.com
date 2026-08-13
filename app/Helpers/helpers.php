@@ -185,3 +185,33 @@ if (!function_exists('product_section_heading')) {
         return trim($heading, " \t\n\r\0\x0B\"");
     }
 }
+
+if (! function_exists('social_url')) {
+    function social_url(string $network): ?string
+    {
+        $url = trim((string) config($network));
+
+        return $url !== '' ? $url : null;
+    }
+}
+
+if (! function_exists('social_links')) {
+    /**
+     * Заполненные ссылки на соцсети из настроек сайта.
+     *
+     * @return array<string, string>
+     */
+    function social_links(): array
+    {
+        $links = [];
+
+        foreach (['youtube', 'rutube', 'telegram', 'ok', 'vk', 'dzen'] as $network) {
+            $url = social_url($network);
+            if ($url !== null) {
+                $links[$network] = $url;
+            }
+        }
+
+        return $links;
+    }
+}

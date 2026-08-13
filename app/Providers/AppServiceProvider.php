@@ -41,10 +41,6 @@ class AppServiceProvider extends ServiceProvider
             // logger()->warning('Config bootstrap failed', ['exception' => $e]);
         }
 
-        if (! config('youtube')) {
-            config(['youtube' => 'https://www.youtube.com/@reprobad']);
-        }
-
         //Paginator::useTailwind();
     }
 }

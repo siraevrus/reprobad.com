@@ -44,16 +44,37 @@ class ConfigController extends Controller
             'top_p' => 'numeric|nullable|min:0|max:1',
         ]);
 
-        foreach($validated as $key => $value) {
-            if(!$value) continue;
-            if($config = Config::query()->where('key', $key)->first()) {
+        $socialKeys = ['telegram', 'youtube', 'rutube', 'ok', 'vk', 'dzen'];
+
+        foreach ($validated as $key => $value) {
+            if (is_string($value)) {
+                $value = trim($value);
+            }
+
+            $empty = $value === null || $value === '';
+
+            // Пустые поля соцсетей сохраняем, чтобы иконки исчезли с сайта.
+            if ($empty && ! in_array($key, $socialKeys, true)) {
+                continue;
+            }
+
+            $config = Config::query()->where('key', $key)->first();
+
+            if ($empty) {
+                if ($config) {
+                    $config->value = '';
+                    $config->save();
+                }
+                continue;
+            }
+
+            if ($config) {
                 $config->value = $value;
                 $config->save();
-            }
-            else {
+            } else {
                 Config::query()->create([
                     'key' => $key,
-                    'value' => $value
+                    'value' => $value,
                 ]);
             }
         }

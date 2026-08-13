@@ -31,9 +31,22 @@ class GeoHardeningTest extends TestCase
         $response->assertSee('html.w-mod-js body:not(.css-loaded){visibility:hidden', false);
         $this->assertStringContainsString('llms.txt', (string) $response->headers->get('Link'));
         $this->assertStringContainsString('rss.xml', (string) $response->headers->get('Link'));
-        $response->assertSee('https://www.youtube.com/@reprobad', false);
         $response->assertSee('"parentOrganization"', false);
         $response->assertSee('АО «Р-Фарм»', false);
+        $response->assertDontSee('class="social-link', false);
+        $response->assertDontSee('class="card-social-link', false);
+    }
+
+    public function test_filled_social_config_shows_icon(): void
+    {
+        config(['vk' => 'https://vk.com/club228615718']);
+
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('https://vk.com/club228615718', false);
+        $response->assertSee('class="social-link', false);
+        $response->assertSee('class="card-social-link', false);
     }
 
     public function test_organization_address_is_structured_postal_address(): void

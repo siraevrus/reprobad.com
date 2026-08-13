@@ -10,7 +10,7 @@ return new class extends Migration
         if (! Config::query()->where('key', 'youtube')->exists()) {
             Config::query()->create([
                 'key' => 'youtube',
-                'value' => 'https://www.youtube.com/@reprobad',
+                'value' => '',
             ]);
         }
     }
