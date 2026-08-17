@@ -1,38 +1,107 @@
 {{--
-  Статичные баннеры (PNG в public/images). Интерактивный Lottie сохранён в
-  lottie-banner-lottie-legacy.blade.php — см. комментарий в том файле для возврата.
+  Интерактивный баннер (Lottie + @lottiefiles/dotlottie-wc).
+  Статичный PNG: git show b10878c:resources/views/site/components/lottie-banner.blade.php
+  Нужны файлы public/images/weUkdnuK0x.lottie и public/images/qk8EQOxYwW.lottie.
 --}}
-<div id="floating-banner-desktop" style="visibility: hidden; position: fixed; bottom: -200px;">
+<div id="lottie-banner" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
-        <img
-            src="{{ asset('images/floating-banner-desktop.png') }}"
-            alt="Система Репро — скидка 30%, купить"
-            width="1024"
-            height="86"
-            decoding="async"
-            class="floating-banner-img"
-        />
+        <dotlottie-wc
+            id="lottie-desktop"
+            src="{{ asset('images/weUkdnuK0x.lottie') }}"
+            speed="1"
+            style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"
+            mode="forward"
+            loop
+            autoplay>
+        </dotlottie-wc>
     </a>
 </div>
 
-<div id="floating-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
+<div id="lottie-banner-mobile" style="visibility: hidden; position: fixed; bottom: -200px;">
     <div class="close"><img src="{{ asset('images/bad-close.svg') }}" alt="Закрыть" /></div>
     <a href="https://www.eapteka.ru/goods/brand/repro/" target="_blank" rel="noopener noreferrer">
-        <img
-            src="{{ asset('images/floating-banner-mobile.png') }}"
-            alt="Система Репро — скидка 30%, купить"
-            width="780"
-            height="192"
-            decoding="async"
-            class="floating-banner-img"
-        />
+        <dotlottie-wc
+            id="lottie-mobile"
+            src="{{ asset('images/qk8EQOxYwW.lottie') }}"
+            style="margin:auto"
+            speed="1"
+            autoplay
+            loop
+        ></dotlottie-wc>
     </a>
 </div>
+
+<style>
+    #lottie-banner,
+    #lottie-banner-mobile {
+        z-index: 1000;
+        width: calc(100% - 40px);
+        position: fixed;
+        left: 0;
+        right: 0;
+        margin: auto;
+        transition: bottom 0.3s ease, visibility 0.3s ease;
+        pointer-events: none;
+    }
+    #lottie-banner a:hover,
+    #lottie-banner-mobile a:hover {
+        opacity: 1 !important;
+    }
+    #lottie-banner a {
+        display: block;
+        overflow: visible;
+        aspect-ratio: 1440/120;
+        width: 100%;
+        position: relative;
+        pointer-events: auto;
+    }
+    #lottie-banner-mobile a {
+        display: block;
+        width: 100%;
+        position: relative;
+        pointer-events: auto;
+    }
+    #lottie-banner .close,
+    #lottie-banner-mobile .close {
+        pointer-events: auto;
+        position: absolute;
+        top: -50px;
+        right: 15px;
+        font-size: 40px;
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+        line-height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #lottie-banner .close img,
+    #lottie-banner-mobile .close img {
+        filter: invert(1);
+        opacity: .5;
+    }
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const bannerDesktop = document.getElementById('floating-banner-desktop');
-    const bannerMobile = document.getElementById('floating-banner-mobile');
+    let lottieLoaded = false;
+
+    function loadLottieScript() {
+        if (lottieLoaded) return;
+        lottieLoaded = true;
+
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/@lottiefiles/dotlottie-wc@0.7.1/dist/dotlottie-wc.js';
+        script.type = 'module';
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    }
+
+    const bannerDesktop = document.getElementById('lottie-banner');
+    const bannerMobile = document.getElementById('lottie-banner-mobile');
     const closeDesktop = bannerDesktop.querySelector('.close');
     const closeMobile = bannerMobile.querySelector('.close');
 
@@ -71,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 bannerMobile.style.bottom = '-200px';
                 return;
             }
+
+            loadLottieScript();
 
             if (isMobile) {
                 bannerDesktop.style.visibility = 'hidden';
