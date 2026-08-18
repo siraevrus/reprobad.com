@@ -29,10 +29,10 @@
 [21] Аминокислоты, травы и минералы против стресса
     https://reprobad.com/articles/protiv_stressa  (активна: да, категория: стресс)
 
-[22] Митохондрии и их роль для здоровья человека
+[22] Митохондрии и их роль для здоровья человека
     https://reprobad.com/articles/mitohondrii  (активна: да, категория: энерджи)
 
-[23] Оксидативный стресс и его влияние на репродуктивные функции
+[23] Оксидативный стресс и его влияние на репродуктивные функции
     https://reprobad.com/articles/oksi  (активна: да, категория: энерджи)
 
 [24] Влияние митохондрий на репродукцию
@@ -41,7 +41,7 @@
 [25] Пять способов «починить» митохондрии
     https://reprobad.com/articles/batareiky  (активна: да, категория: энерджи)
 
-[26] Как коэнзим Q10 влияет на фертильность мужчин и женщин
+[26] Как коэнзим Q10 влияет на фертильность мужчин и женщин
     https://reprobad.com/articles/Q10_vliyanie  (активна: да, категория: энерджи)
 
 [27] Шесть веществ, которые “заряжают” митохондрии
@@ -50,22 +50,22 @@
 [28] Детоксикация перед ЭКО
     https://reprobad.com/articles/detoks  (активна: да, категория: детокс)
 
-[29] Детокс для мужчин
+[29] Детокс для мужчин
     https://reprobad.com/articles/detox_myzhchiny  (активна: да, категория: детокс)
 
 [30] Как токсины в печени влияют на мужскую фертильность?
     https://reprobad.com/articles/toxiny  (активна: да, категория: детокс)
 
-[31] Как обновляется организм в процессе детоксикации
+[31] Как обновляется организм в процессе детоксикации
     https://reprobad.com/articles/obnovlenie  (активна: да, категория: детокс)
 
-[32] Компоненты для проведения детоксикации
+[32] Компоненты для проведения детоксикации
     https://reprobad.com/articles/komponenty  (активна: да, категория: детокс)
 
 [33] Что такое углеводный обмен
     https://reprobad.com/articles/yglevodny_obmen  (активна: да, категория: детокс)
 
-[34] Нормализация веса перед беременностью
+[34] Нормализация веса перед беременностью
     https://reprobad.com/articles/norm_ves  (активна: да, категория: детокс)
 
 [35] Инсулинорезистентность – что это?
@@ -74,13 +74,13 @@
 [36] Признаки нарушения углеводного обмена
     https://reprobad.com/articles/uglevod_narushenie  (активна: да, категория: детокс)
 
-[37] Как позаботиться о здоровом весе и углеводном обмене
+[37] Как позаботиться о здоровом весе и углеводном обмене
     https://reprobad.com/articles/pozabotitsa_obmen  (активна: да, категория: детокс)
 
 [38] Что такое эстрогены?
     https://reprobad.com/articles/estrogeny  (активна: да, категория: эмбрио)
 
-[39] Что такое стероидогенез?
+[39] Что такое стероидогенез?
     https://reprobad.com/articles/steroidogenez  (активна: да, категория: эмбрио)
 
 [40] Как вырабатываются половые гормоны у мужчин и женщин
@@ -92,20 +92,20 @@
 [42] Что такое индол-3-карбинол и зачем он нужен?
     https://reprobad.com/articles/indol  (активна: да, категория: эмбрио)
 
-[43] Почему нужны витамины группы В в период планирования беременности?
+[43] Почему нужны витамины группы В в период планирования беременности?
     https://reprobad.com/articles/vitaminyB  (активна: да, категория: геном)
 
 [44] Витамин B1 при подготовке к беременности
     https://reprobad.com/articles/vitaminB1  (активна: да, категория: геном)
 
-[45] Витамин B2 во время беременности
+[45] Витамин B2 во время беременности
     https://reprobad.com/articles/vitaminB2  (активна: да, категория: геном)
 
 [46] Фолиевая кислота для будущим мам и пап
     https://reprobad.com/articles/folievaya_kislota  (активна: да, категория: геном)
 
 [47] Дефицит и переизбыток витаминов B9 и В12
-    https://reprobad.com/articles/vitaminB9%D0%9212  (активна: да, категория: геном)
+    https://reprobad.com/articles/vitaminB9В12  (активна: да, категория: геном)
 
 [48] Влияние микробиома на фертильность
     https://reprobad.com/articles/microbiom_fertilnost  (активна: да, категория: детокс)
@@ -237,7 +237,7 @@
     https://reprobad.com/articles/v_deficite  (активна: да, категория: все)
 
 [99] Какие витамины помогают в борьбе с ПМС и симптомами менопаузы
-    https://reprobad.com/articles/kakie_vitamini_pomogaut_%D0%B2_pms  (активна: да, категория: Стресс)
+    https://reprobad.com/articles/kakie_vitamini_pomogaut_в_pms  (активна: да, категория: Стресс)
 
 [101] Роль витамина D в поддержании иммунной системы и здоровья костей
     https://reprobad.com/articles/D_kosty  (активна: да, категория: метабо)
@@ -277,6 +277,186 @@
 
 [114] Может ли фастфуд привести к проблемам в зачатии?
     https://reprobad.com/articles/fastfood  (активна: да, категория: эмбрио)
+
+[116] Спермограмма: расшифровка и нормы простым языком
+    https://reprobad.com/articles/spermogramma  (активна: да, категория: энерджи)
+
+[117] Плохая спермограмма: возможные причины и пути решения проблемы
+    https://reprobad.com/articles/Plohaya_spremogramma  (активна: да, категория: энерджи)
+
+[118] Биологически-активные добавки для улучшения мужской фертильности: что стоит учитывать
+    https://reprobad.com/articles/chto_ychityvat  (активна: да, категория: биом)
+
+[119] Комплексы для поддержки сперматогенеза: какие нутриенты подключить
+    https://reprobad.com/articles/komplexy_podderzhka  (активна: да, категория: эмбрио)
+
+[120] Витамины для женщин при планировании беременности
+    https://reprobad.com/articles/pri_planirovanii  (активна: да, категория: эмбрио)
+
+[121] Как улучшить качество яйцеклеток: мягкий подход
+    https://reprobad.com/articles/kachestvo_yaicekletok  (активна: да, категория: эмбрио)
+
+[122] Повышение фертильности у женщин: что важно учитывать
+    https://reprobad.com/articles/povishenie_fertilnosti  (активна: да, категория: эмбрио)
+
+[123] Подготовка эндометрия к беременности: что важно учитывать
+    https://reprobad.com/articles/endometriy  (активна: да, категория: эмбрио)
+
+[124] Витамины для овуляции: что должно быть в составе
+    https://reprobad.com/articles/dlya_ovyliacii  (активна: да, категория: геном)
+
+[125] Витамины для поддержки яйцеклеток: обзор нутриентов
+    https://reprobad.com/articles/dlya_yaicekletok  (активна: да, категория: эмбрио)
+
+[126] Фолиевая кислота при планировании беременности: как принимать
+    https://reprobad.com/articles/folievaya_kislota_plan  (активна: да, категория: геном)
+
+[127] Омега-3 при планировании беременности: зачем и сколько нужно
+    https://reprobad.com/articles/omega_skolko  (активна: да, категория: эмбрио)
+
+[128] Железо и ферритин при планировании беременности: энергия для двоих
+    https://reprobad.com/articles/energiya_2  (активна: да, категория: энерджи)
+
+[129] Магний при планировании беременности: поддержка организма
+    https://reprobad.com/articles/magniy_beremennost  (активна: да, категория: стресс)
+
+[130] Селен и цинк: какую роль играют для фертильности
+    https://reprobad.com/articles/selen_cink  (активна: да, категория: детокси)
+
+[131] Витамины группы B при подготовке к зачатию: зачем они нужны
+    https://reprobad.com/articles/B_zachatie  (активна: да, категория: геном)
+
+[132] Инозитол при планировании беременности: как выбрать и принимать
+    https://reprobad.com/articles/inozitol  (активна: да, категория: эмбрио)
+
+[133] Омега-3 и фолиевая кислота: можно ли принимать вместе?
+    https://reprobad.com/articles/omega_folievaya  (активна: да, категория: геном)
+
+[134] Пробиотики и микрофлора при планировании беременности
+    https://reprobad.com/articles/pro_pre_biotiki  (активна: да, категория: биом)
+
+[135] Влияние микрофлоры на возможность зачатия: незримый фактор фертильности
+    https://reprobad.com/articles/nezrimyi_faktor  (активна: да, категория: биом)
+
+[136] Синдром хронической усталости: как вернуть энергию с помощью магния и витаминов группы B?
+    https://reprobad.com/articles/sindrom-hronicheskoy-ustalosti-kak-vernut-energiyu-s-pomoschyu-magniya-i-vitaminov-gruppy-b  (активна: да, категория: —)
+
+[137] Коэнзим Q10: эликсир молодости или реальный источник клеточной энергии?
+    https://reprobad.com/articles/koenzim-q10-eliksir-molodosti-ili-realnyy-istochnik-kletochnoy-energii  (активна: да, категория: —)
+
+[138] Как победить «выгорание»? Роль L-карнитина в борьбе с усталостью
+    https://reprobad.com/articles/kak-pobedit-vygoranie-rol-l-karnitina-v-borbe-s-ustalostyu  (активна: да, категория: —)
+
+[139] Магний — главный минерал спокойствия. Почему его не хватает современному человеку?
+    https://reprobad.com/articles/magniy-glavnyy-mineral-spokoystviya-pochemu-ego-ne-hvataet-sovremennomu-cheloveku  (активна: да, категория: —)
+
+[140] РЕПРОРЕЛАКС: ГИПЕРКОРТИЗОЛ или ГИПОКОРТИЗОЛ: как выбрать свой антистресс-комплекс?
+    https://reprobad.com/articles/reprorelaks-giperkortizol-ili-gipokortizol-kak-vybrat-svoy-antistress-kompleks  (активна: да, категория: —)
+
+[141] Жизнь без стресса: как нутрицевтики помогают нервной системе справляться с нагрузкой
+    https://reprobad.com/articles/zhizn-bez-stressa-kak-nutritsevtiki-pomogayut-nervnoy-sisteme-spravlyatsya-s-nagruzkoy  (активна: да, категория: —)
+
+[142] Витамины группы B: почему они важны для работы мозга и концентрации внимания
+    https://reprobad.com/articles/vitaminy-gruppy-b-pochemu-oni-vazhny-dlya-raboty-mozga-i-kontsentratsii-vnimaniya  (активна: да, категория: —)
+
+[143] Истощение надпочечников: симптомы, о которых вы могли не знать, и способы поддержки
+    https://reprobad.com/articles/istoschenie-nadpochechnikov-simptomy-o-kotoryh-vy-mogli-ne-znat-i-sposoby-podderzhki  (активна: да, категория: —)
+
+[144] Альфа-липоевая кислота: универсальный антиоксидант для защиты от старения и токсинов
+    https://reprobad.com/articles/alfa-lipoevaya-kislota-universalnyy-antioksidant-dlya-zaschity-ot-stareniya-i-toksinov  (активна: да, категория: —)
+
+[145] Откуда берется утренняя разбитость? Топ-5 добавок для бодрого начала дня
+    https://reprobad.com/articles/otkuda-beretsya-utrennyaya-razbitost-top-5-dobavok-dlya-bodrogo-nachala-dnya  (активна: да, категория: —)
+
+[146] Мужская сила и энергия: зачем мужчине нужен цинк и селен
+    https://reprobad.com/articles/muzhskaya-sila-i-energiya-zachem-muzhchine-nuzhen-tsink-i-selen  (активна: да, категория: —)
+
+[147] Спокойствие и уверенность: как магний помогает мужчинам справляться со стрессом на работе
+    https://reprobad.com/articles/spokoystvie-i-uverennost-kak-magniy-pomogaet-muzhchinam-spravlyatsya-so-stressom-na-rabote  (активна: да, категория: —)
+
+[148] L-карнитин для мужчин: поддержка выносливости не только в спортзале, но и в жизни
+    https://reprobad.com/articles/l-karnitin-dlya-muzhchin-podderzhka-vynoslivosti-ne-tolko-v-sportzale-no-i-v-zhizni  (активна: да, категория: —)
+
+[149] Здоровье простаты и мужское долголетие: роль антиоксидантов и микроэлементов
+    https://reprobad.com/articles/zdorove-prostaty-i-muzhskoe-dolgoletie-rol-antioksidantov-i-mikroelementov  (активна: да, категория: —)
+
+[150] Тестостерон и питание: какие нутриенты нужны для поддержания мужского гормонального фона?
+    https://reprobad.com/articles/testosteron-i-pitanie-kakie-nutrienty-nuzhny-dlya-podderzhaniya-muzhskogo-gormonalnogo-fona  (активна: да, категория: —)
+
+[151] Профилактика мужских проблем: комплексный подход к здоровью после 40 лет
+    https://reprobad.com/articles/profilaktika-muzhskih-problem-kompleksnyy-podhod-k-zdorovyu-posle-40-let  (активна: да, категория: —)
+
+[152] Метаболизм у мужчин: как контролировать вес и уровень сахара
+    https://reprobad.com/articles/metabolizm-u-muzhchin-kak-kontrolirovat-ves-i-uroven-sahara  (активна: да, категория: —)
+
+[153] Красота изнутри: как дефицит витаминов портит кожу, волосы и ногти
+    https://reprobad.com/articles/krasota-iznutri-kak-defitsit-vitaminov-portit-kozhu-volosy-i-nogti  (активна: да, категория: —)
+
+[154] Инозитол: секрет чистой кожи и способ борьбы с тягой к сладкому
+    https://reprobad.com/articles/inozitol-sekret-chistoy-kozhi-i-sposob-borby-s-tyagoy-k-sladkomu  (активна: да, категория: —)
+
+[155] Выпадение волос: каких витаминов может не хватать, и как это исправить
+    https://reprobad.com/articles/vypadenie-volos-kakih-vitaminov-mozhet-ne-hvatat-i-kak-eto-ispravit  (активна: да, категория: —)
+
+[156] Акне у взрослых: почему косметика не работает и что делать с питанием и добавками
+    https://reprobad.com/articles/akne-u-vzroslyh-pochemu-kosmetika-ne-rabotaet-i-chto-delat-s-pitaniem-i-dobavkami  (активна: да, категория: —)
+
+[157] Коллаген и гиалуроновая кислота — это еще не всё! Что еще нужно коже для сияния?
+    https://reprobad.com/articles/kollagen-i-gialuronovaya-kislota-eto-esche-ne-vsyo-chto-esche-nuzhno-kozhe-dlya-siyaniya  (активна: да, категория: —)
+
+[158] Ломкие ногти и тусклые волосы: сигнал SOS от организма о нехватке железа и биотина
+    https://reprobad.com/articles/lomkie-nogti-i-tusklye-volosy-signal-sos-ot-organizma-o-nehvatke-zheleza-i-biotina  (активна: да, категория: —)
+
+[159] Антиоксиданты против старения: как защитить кожу от негативного влияния экологии
+    https://reprobad.com/articles/antioksidanty-protiv-stareniya-kak-zaschitit-kozhu-ot-negativnogo-vliyaniya-ekologii  (активна: да, категория: —)
+
+[160] Детокс для красоты: очистить печень, чтобы лицо засияло здоровьем
+    https://reprobad.com/articles/detoks-dlya-krasoty-ochistit-pechen-chtoby-litso-zasiyalo-zdorovem  (активна: да, категория: —)
+
+[161] Здоровый кишечник — сильный иммунитет: всё о пользе пробиотиков
+    https://reprobad.com/articles/zdorovyy-kishechnik-silnyy-immunitet-vsyo-o-polze-probiotikov  (активна: да, категория: —)
+
+[162] Пробиотики для всех: как наладить пищеварение, избавиться от вздутия и улучшить настроение
+    https://reprobad.com/articles/probiotiki-dlya-vseh-kak-naladit-pischevarenie-izbavitsya-ot-vzdutiya-i-uluchshit-nastroenie  (активна: да, категория: —)
+
+[163] Железодефицитная анемия: как распознать и восполнить запасы железа в организме
+    https://reprobad.com/articles/zhelezodefitsitnaya-anemiya-kak-raspoznat-i-vospolnit-zapasy-zheleza-v-organizme  (активна: да, категория: —)
+
+[164] Фолиевая кислота (метилфолат) нужна всем: ее роль в обновлении клеток и поддержании сосудов
+    https://reprobad.com/articles/folievaya-kislota-metilfolat-nuzhna-vsem-ee-rol-v-obnovlenii-kletok-i-podderzhanii-sosudov  (активна: да, категория: —)
+
+[165] Витамин D: инструкция по применению для жителей северных широт
+    https://reprobad.com/articles/vitamin-d-instruktsiya-po-primeneniyu-dlya-zhiteley-severnyh-shirot  (активна: да, категория: —)
+
+[166] Холестерин под контролем: могут ли нутрицевтики помочь поддержать здоровье сосудов?
+    https://reprobad.com/articles/holesterin-pod-kontrolem-mogut-li-nutritsevtiki-pomoch-podderzhat-zdorove-sosudov  (активна: да, категория: —)
+
+[167] Здоровое пищеварение = отличное самочувствие: простые шаги к нормализации работы ЖКТ
+    https://reprobad.com/articles/zdorovoe-pischevarenie-otlichnoe-samochuvstvie-prostye-shagi-k-normalizatsii-raboty-zhkt  (активна: да, категория: —)
+
+[168] Зачем нам нужен йод? Признаки дефицита и способы его восполнения
+    https://reprobad.com/articles/zachem-nam-nuzhen-yod-priznaki-defitsita-i-sposoby-ego-vospolneniya  (активна: да, категория: —)
+
+[169] Тревожность и панические атаки: можно ли помочь себе с помощью питания и добавок?
+    https://reprobad.com/articles/trevozhnost-i-panicheskie-ataki-mozhno-li-pomoch-sebe-s-pomoschyu-pitaniya-i-dobavok  (активна: да, категория: —)
+
+[170] Память и концентрация: топ-5 нутриентов для ясности ума в любом возрасте
+    https://reprobad.com/articles/pamyat-i-kontsentratsiya-top-5-nutrientov-dlya-yasnosti-uma-v-lyubom-vozraste  (активна: да, категория: —)
+
+[171] Сон как лекарство: как магний и витамины группы B помогают бороться с бессонницей
+    https://reprobad.com/articles/son-kak-lekarstvo-kak-magniy-i-vitaminy-gruppy-b-pomogayut-borotsya-s-bessonnitsey  (активна: да, категория: —)
+
+[172] Осенняя хандра: как сбалансировать рацион, чтобы поднять настроение
+    https://reprobad.com/articles/osennyaya-handra-kak-sbalansirovat-ratsion-chtoby-podnyat-nastroenie  (активна: да, категория: —)
+
+[173] Нейропластичность: как питать мозг, чтобы оставаться продуктивным долгие годы
+    https://reprobad.com/articles/neyroplastichnost-kak-pitat-mozg-chtoby-ostavatsya-produktivnym-dolgie-gody  (активна: да, категория: —)
+
+[174] Влияние стресса на когнитивные функции и как этому противостоять
+    https://reprobad.com/articles/vliyanie-stressa-na-kognitivnye-funktsii-i-kak-etomu-protivostoyat  (активна: да, категория: —)
+
+[175] Комплексный подход к ментальному здоровью: от психотерапии до поддержки организма нутриентами
+    https://reprobad.com/articles/kompleksnyy-podhod-k-mentalnomu-zdorovyu-ot-psihoterapii-do-podderzhki-organizma-nutrientami  (активна: да, категория: —)
 
 === СОВЕТЫ (/usefully-tips/{alias}) ===
 
@@ -322,16 +502,16 @@
 [18] Интегративный взгляд на подготовку пары к зачатию и беременности
     https://reprobad.com/usefully-tips/vzglyad  (активен: да, категория: —)
 
-[19] О чём спросить репродуктолога на первом приёме
+[19] О чём спросить репродуктолога на первом приёме
     https://reprobad.com/usefully-tips/sprosit  (активен: да, категория: —)
 
-[20] Какие данные подготовить для анамнеза
+[20] Какие данные подготовить для анамнеза
     https://reprobad.com/usefully-tips/anamnez  (активен: да, категория: —)
 
 [21] Список анализов на этапе подготовки к ЭКО для неё и для него
     https://reprobad.com/usefully-tips/analizy  (активен: да, категория: —)
 
-[22] Как подготовиться к спермограмме
+[22] Как подготовиться к спермограмме
     https://reprobad.com/usefully-tips/spermogramma  (активен: да, категория: —)
 
 [23] Как проходит стимуляция перед ЭКО
@@ -343,7 +523,7 @@
 [25] Лучшие виды физической нагрузки для будущих родителей
     https://reprobad.com/usefully-tips/nagruzki  (активен: да, категория: —)
 
-[26] Косвенные признаки, указывающие на дефициты витаминов и минералов
+[26] Косвенные признаки, указывающие на дефициты витаминов и минералов
     https://reprobad.com/usefully-tips/deficity  (активен: да, категория: —)
 
 [27] Чек-лист “Сигналы тела”
@@ -405,3 +585,64 @@
 
 [50] Порядок для нервов
     https://reprobad.com/usefully-tips/poryadok  (активен: да, категория: стресс)
+
+[52] Лучшие витамины и БАД для зачатия: на что обратить внимание в составе
+    https://reprobad.com/usefully-tips/vitamini_zachatie  (активен: да, категория: эмбрио)
+
+[53] БАД для фертильности
+    https://reprobad.com/usefully-tips/bad_fertilnost  (активен: да, категория: эмбрио)
+
+[54] Подготовка к беременности: с чего начать мужчине и женщине
+    https://reprobad.com/usefully-tips/podgotovka  (активен: да, категория: геном)
+
+[55] Планирование беременности по шагам: гайд для пары
+    https://reprobad.com/usefully-tips/po_shagam  (активен: да, категория: эмбрио)
+
+[56] Повышение фертильности: питание, образ жизни и поддержка организма
+    https://reprobad.com/usefully-tips/povvishenie_fertilnosti  (активен: да, категория: биом)
+
+[57] Витамины для мужчин в период подготовки к зачатию: ключевые нутриенты
+    https://reprobad.com/usefully-tips/vitaminy_men  (активен: да, категория: энерджи)
+
+[61] БАД для мужской фертильности: что должно быть в составе
+    https://reprobad.com/usefully-tips/bad_men  (активен: да, категория: энерджи)
+
+[62] Как улучшить качество спермы: питание, образ жизни и добавки
+    https://reprobad.com/usefully-tips/kachestvo_spermy  (активен: да, категория: геном)
+
+[63] Низкая подвижность сперматозоидов: что может помочь
+    https://reprobad.com/usefully-tips/podvizhnost  (активен: да, категория: геном)
+
+[64] Подготовка мужчины к зачатию: что влияет на результат
+    https://reprobad.com/usefully-tips/podgotovka_men  (активен: да, категория: —)
+
+[65] Базовые рекомендации при сдаче спермограммы
+    https://reprobad.com/usefully-tips/recomendacii  (активен: да, категория: биом)
+
+[66] БАД для женского здоровья: как выбрать комплекс
+    https://reprobad.com/usefully-tips/bad_zhenchinam  (активен: да, категория: геном)
+
+[71] Подготовка к беременности после 30: базовые рекомендации
+    https://reprobad.com/usefully-tips/podgotovka_30  (активен: да, категория: геном)
+
+[72] Подготовка к беременности после 35: на что обратить внимание
+    https://reprobad.com/usefully-tips/podgotovka_35  (активен: да, категория: эмбрио)
+
+[73] Подготовка к беременности после 40: поддержка организма
+    https://reprobad.com/usefully-tips/podgotovka_40  (активен: да, категория: геном)
+
+[74] Витамин D при планировании беременности: источники и роль в организме
+    https://reprobad.com/usefully-tips/istochniki_D  (активен: да, категория: метабо)
+
+[75] Йод при планировании беременности: что учитывать
+    https://reprobad.com/usefully-tips/iod_beremennost  (активен: да, категория: эмбрио)
+
+[76] Антиоксидантная защита при планировании беременности: почему это важно
+    https://reprobad.com/usefully-tips/antiox  (активен: да, категория: энерджи)
+
+[77] Коэнзим Q10 и энергия клеток: источники и дефициты
+    https://reprobad.com/usefully-tips/Q10_energy  (активен: да, категория: эмбрио)
+
+[78] L-карнитин: поддержка мужской фертильности
+    https://reprobad.com/usefully-tips/L_carnitin_for_men  (активен: да, категория: метабо)
+
